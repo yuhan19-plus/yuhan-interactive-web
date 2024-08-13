@@ -1,0 +1,68 @@
+/* 공통으로 사용하는 css목록
+    작성자 : 임성준
+*/
+
+.wrapper {
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+}
+
+.container {
+    width: 1280px;
+    margin: 0 auto;
+    padding: 10px 30px;
+}
+
+.footer-wrapper {
+    width: 100%;
+    height: 30%;
+    background-color: #0F275C;
+    margin-top: 100px;
+    color: white;
+    text-align: center;
+}
+
+.header {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-title {
+    font-size: 48px;
+    font-weight: 900;
+    border-left: 10px solid #0F275C;
+    padding: 15px;
+}
+
+.form-item {
+    width: 100%;
+    font-size: 18px;
+    border-radius: 25px;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: inset 7px 7px 9px #d9d9d9,
+                inset -7px -7px 9px #ffffff;
+}
+.form-item > label {
+    padding: 15px;
+}
+.form-item-pw > div > input {
+    padding: 15px 15px 0 0;
+}
+
+/* .form-item-select {
+    width: 100%;
+    font-size: 18px;
+    border-radius: 25px;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: inset 7px 7px 9px #d9d9d9,
+                inset -7px -7px 9px #ffffff;
+} */

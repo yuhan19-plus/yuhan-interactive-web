@@ -1,0 +1,44 @@
+#root {
+    width: 100vw;
+    height: 100vh;
+}
+  
+* {
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'HakgyoansimWoojuR';
+    src: url('./assets/fonts/HakgyoansimWoojuR.ttf');
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background:
+        linear-gradient(rgb(0, 248, 248), transparent),
+        linear-gradient(to top left, rgb(0, 248, 200), transparent),
+        linear-gradient(to top right, rgb(252, 205, 96), transparent);
+    background-blend-mode: screen;
+    font-family: 'HakgyoansimWoojuR';
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.image-logo {
+    width: 120px;
+}
+
+.side-icon-white {
+    color: white;
+}
+
+.side-icon-black {
+    color: black;
+}
+
+/* admin */
