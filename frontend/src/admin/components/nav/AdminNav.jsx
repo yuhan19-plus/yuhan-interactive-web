@@ -21,7 +21,8 @@ const AdminNav = () => {
             <AdminButtonList>
                 <Link to={'/admin/member'}><AdminButton>회원관리</AdminButton></Link>
                 <Link to={'/admin/foodMenu'}><AdminButton>오늘의 메뉴</AdminButton></Link>
-                <Link to={'/admin/board'}><AdminButton>게시판 관리</AdminButton></Link>
+                <Link to={'/admin/board'}><AdminButton>유한게시판</AdminButton></Link>
+                <Link to={'/admin/deptRec'}><AdminButton>전공추천</AdminButton></Link>
             </AdminButtonList>
         </>
     )

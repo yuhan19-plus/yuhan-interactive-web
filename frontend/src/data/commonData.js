@@ -1,3 +1,5 @@
+export const aspectRatio = window.innerWidth / window.innerHeight
+
 // 전공목록 - 임성준
 export const MAJORS = [
     '컴퓨터소프트웨어공학',
@@ -14,3 +16,5 @@ export const PROFESSOR_POSITION = [
     '특임교수',
     '조교'
 ]
+
+export const adminPassword = '201907012'

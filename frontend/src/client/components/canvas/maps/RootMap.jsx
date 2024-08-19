@@ -5,21 +5,22 @@
  */
 
 import React from 'react'
-import { YuhanMap } from './structures/yuhan_map/elements/YuhanMap'
 import Floor from './structures/yuhan_map/elements/Floor'
 import { BuildingEight } from './structures/yuhan_map/elements/building/BuildingEight'
 import Wall from './structures/yuhan_map/elements/testObject/Wall'
+import YuhanElements from './structures/yuhan_map/YuhanElements'
 
 const RootMap = () => {
     return (
         <group>
             {/* 바닥 셋팅 */}
             <Floor position={[50, -1, -20]} />
-            <YuhanMap />
+
+            {/* 맵 오브젝트들 */}
+            <YuhanElements />
 
             {/* 건물 오브젝트 배치 */}
             <BuildingEight position={[-305, 105, -150]} rotation={[-Math.PI, 0, -Math.PI]} />
-
 
             {/* 투명벽 셋팅 */}
             <Wall position={[50, 51, -505]} />

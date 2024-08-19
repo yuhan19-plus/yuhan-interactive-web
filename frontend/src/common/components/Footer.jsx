@@ -11,7 +11,7 @@ import styled from 'styled-components'
 const Footer = () => {
     return (
         <>
-            <p>&copy; 2024 유한대학교 3학년 1반 졸업작품</p>
+            <p>&copy; 2024 유한대학교 19PLUS 졸업작품</p>
             <p>이석재 임성준 이정민 오자현</p>
             <b>기술스택</b>
             <br />

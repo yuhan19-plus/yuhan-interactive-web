@@ -1,6 +1,10 @@
 /* 공통으로 사용하는 css목록
     작성자 : 임성준
 */
+img {
+    width: 100%;
+    height: 100%;
+}
 
 .wrapper {
     width: 100%;
@@ -17,7 +21,7 @@
 
 .footer-wrapper {
     width: 100%;
-    height: 30%;
+    height: 30vh;
     background-color: #0F275C;
     margin-top: 100px;
     color: white;

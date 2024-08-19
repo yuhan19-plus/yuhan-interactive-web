@@ -1,3 +1,7 @@
+/** 파일생성자 : 임성준
+ * 임성준
+ *  - 물리엔진 적용 및 오브젝트 배치
+ */
 import React, { useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'
@@ -15,7 +19,7 @@ export function BuildingEight({position, ...props}) {
   useEffect(() => {
     scene.traverse((obj) => {
       if(obj.isObject3D) {
-        console.log(obj)
+        // console.log(obj)
         obj.castShadow = true
         obj.receiveShadow = true
       }

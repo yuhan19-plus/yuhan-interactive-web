@@ -3,13 +3,14 @@
  */
 
 import React from 'react'
+import { YuhanMap } from './elements/YuhanMap'
 
-const GroundElements = () => {
+const YuhanElements = () => {
     return (
         <>
-            
+            <YuhanMap />
         </>
     )
 }
 
-export default GroundElements
+export default YuhanElements

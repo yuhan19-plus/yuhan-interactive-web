@@ -1,24 +1,15 @@
-/** 파일 생성자 : 임성준
- * 임성준 : 초기 설정
- * - 카메라 설정 및 빛, 중력 설정 (24/08/02)
- */
-
-import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { OrbitControls } from '@react-three/drei'
-import Light from './helper/Light'
+import { Canvas } from '@react-three/fiber'
+import DeptMap from './DeptMap'
+import { aspectRatio } from '../../../../../../data/commonData'
 import { Debug, Physics } from '@react-three/cannon'
-import RootMap from './maps/RootMap'
-import { useLocation } from 'react-router-dom'
-import { aspectRatio } from '../../../data/commonData'
+import Light from '../../../helper/Light'
+import { OrbitControls } from '@react-three/drei'
 
-const MainCanvas = () => {
-    const location = useLocation()
-
+const DepartmentCanvas = () => {
     // 빛의 위치 값 설정 변수
     const lightPosition = [-500, 500, -350]
-    const cameraPosition = [0, 100, 0]
-
+    const cameraPosition = [30, 100, 50]
     return (
         <>
             <Canvas
@@ -62,7 +53,7 @@ const MainCanvas = () => {
                     {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
                     <Debug>
                         {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
-                        <RootMap />
+                        <DeptMap />
                     </Debug>
                 </Physics>
             </Canvas>
@@ -70,4 +61,4 @@ const MainCanvas = () => {
     )
 }
 
-export default MainCanvas
+export default DepartmentCanvas

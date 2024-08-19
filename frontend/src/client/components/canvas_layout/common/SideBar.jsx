@@ -1,8 +1,8 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
  */
-import { AdminPanelSettings, Close, Login, Logout, Menu, Send } from '@mui/icons-material'
-import React, { useState } from 'react'
+import { AdminPanelSettings, Close, Login, Logout, Menu, RestaurantMenu, Send } from '@mui/icons-material'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import SchoolIcon from '@mui/icons-material/School';
 import InfoIcon from '@mui/icons-material/Info';
@@ -14,9 +14,38 @@ import MuseumIcon from '@mui/icons-material/Museum';
 import FestivalIcon from '@mui/icons-material/Festival';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { adminEnterModal, board, consultation, deptMap, deptRec, food } from '../../../../redux/actions/actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChalkboardTeacher, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 const SideBar = () => {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(true)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    
+    // const sideMenuValue = useSelector((state) => state.sideMenu)
+    
+    const dispatch = useDispatch()
+
+    const handleShowAdminEnterModal = () => {
+        dispatch(adminEnterModal())
+    }
+
+    const handleSideMenuConsultation = () => {
+        dispatch(consultation())
+    }
+    const handleSideMenuBoard = () => {
+        dispatch(board())
+    }
+    const handleSideMenuFood = () => {
+        dispatch(food())
+    }
+    const handleChangeMap = () => {
+        dispatch(deptMap())
+    }
+    const handleDeptRec = () => {
+        dispatch(deptRec())
+    }
+
+    // console.log('sideMenuValue', sideMenuValue)
 
     return (
         <>
@@ -25,14 +54,17 @@ const SideBar = () => {
                         <div>
                             <a href='/login'><Login /><p>로그인</p></a>
                         </div>
-                        <div>
+                        {/* <div>
                             <a href='#'><Logout /><p>로그아웃</p></a>
-                        </div>
+                        </div> */}
                         <div>
                             <a href='/join'><PersonAddIcon /><p>회원가입</p></a>
                         </div>
                         <div>
-                            <a href='/admin'><AdminPanelSettings /><p>관리자</p></a>
+                            <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
+                        </div>
+                        <div>
+                            <a href='/admin'><AdminPanelSettings /><p>TEST</p></a>
                         </div>
                     </SideBarHeader>
                     <SideBarList>
@@ -53,16 +85,28 @@ const SideBar = () => {
                             <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091'>학과안내</a></span>
                         </div>
                         <div>
+                            <FontAwesomeIcon icon={faChalkboardTeacher}/>
+                            <span><a onClick={handleChangeMap}>학과체험</a></span>
+                        </div>
+                        <div>
                             <SupportIcon />
                             <span><a href='https://www.yuhan.ac.kr/ibuilder.do?per_menu_idx=3101&menu_idx=3415'>학생서비스</a></span>
                         </div>
                         <div>
                             <AssignmentIcon />
-                            <span><a href='/board'>게시판</a></span>
+                            <span><a onClick={handleSideMenuBoard}>게시판</a></span>
                         </div>
                         <div>
                             <Send />
-                            <span><a href='/consultation'>상담신청</a></span>
+                            <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
+                        </div>
+                        <div>
+                            <RestaurantMenu />
+                            <span><a onClick={handleSideMenuFood}>오늘의 메뉴</a></span>
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faLightbulb} />
+                            <span><a onClick={handleDeptRec}>전공추천</a></span>
                         </div>
                         <div>
                             <FestivalIcon />
@@ -91,7 +135,7 @@ const SideBar = () => {
 const SideBarContainer = styled.div`
     position: fixed;
     left: 0;
-    top: 0;
+    bottom: 0;
     background-color: #0F275Cdd;
     width: 220px;
     height: 100%;
@@ -138,7 +182,9 @@ const SideBarList = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 40px;
     div {
         width: 100%;
         display: flex;
@@ -181,7 +227,7 @@ const SideBarList = styled.div`
 `
 
 const DropdownController = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     display: flex;
     align-items: center;

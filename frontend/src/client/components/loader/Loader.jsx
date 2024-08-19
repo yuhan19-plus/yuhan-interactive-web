@@ -3,11 +3,18 @@
  * 기능구현 : 오자현
  */
 import React from 'react'
+import styled from 'styled-components'
 
 const Loader = () => {
     return (
-        <div>Loader</div>
+        <LoaderLayout>Loader</LoaderLayout>
     )
 }
+
+const LoaderLayout = styled.div`
+    width: 100%;
+    height: 100%;
+    background-color: red;
+`
 
 export default Loader
