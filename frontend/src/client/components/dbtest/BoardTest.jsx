@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+/** 파일 생성자 : 오자현
+ *  db연동 test페이지
+ *  저장, 조회 구현
+ *  페이지가 열리면 자동으로 테이블을 조회하여 저장된 데이터를 불러온다.
+ *
+ * */
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const BoardTest = () => {
@@ -8,6 +14,8 @@ const BoardTest = () => {
     id: "", // 초기값으로 빈 문자열을 설정
   });
 
+  const [dataList, setDataList] = useState([]);
+
   // 입력 필드의 값이 변경될 때 호출되는 함수
   // 이벤트 객체에서 name과 value를 추출하여 상태를 업데이트합니다.
   const handleInputChange = (e) => {
@@ -16,8 +24,26 @@ const BoardTest = () => {
     setTestdata({ ...testdata, [name]: value });
   };
 
+  // 데이터를 읽어오는 녀석
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/testdb"); // 서버에서 데이터를 가져오는 요청
+        if (!response.ok) {
+          throw new Error("데이터를 불러오는데 실패했습니다.");
+        }
+        const data = await response.json();
+        setDataList(data);
+      } catch (error) {
+        console.error("데이터불러오는 중 에러발생", error);
+      }
+    };
+
+    // 페이지가 로드(컴포넌트가 마운트될 때)되면 기본데이터 불러옴
+    fetchData();
+  }, []);
+
   // 데이터를 추가하는 버튼 클릭 시 호출되는 함수
-  // 비동기 함수로, 서버에 데이터를 POST 요청으로 전송합니다.
   const handleAddData = async () => {
     try {
       // fetch API를 사용하여 서버에 POST 요청을 보냄
@@ -46,7 +72,7 @@ const BoardTest = () => {
 
   const handleUpdateData = async () => {
     if (!testdata.id) {
-      alert("수정할 ID를 입력");
+      alert("수정할 ID");
       return;
     }
     try {
@@ -124,16 +150,17 @@ const BoardTest = () => {
             </tr>
           </thead>
           <tbody>
-            {/* 예시 데이터: 실제 데이터는 이곳에 map을 사용하여 렌더링할 수 있습니다 */}
-            <tr>
-              <td>exampleID1</td>
-              <td>
-                <button onClick={handleUpdateData}>수정</button>
-              </td>
-              <td>
-                <button onClick={handleDeleteData}>삭제</button>
-              </td>
-            </tr>
+            {dataList.map((data, index) => (
+              <tr key={index}>
+                <td>{data.id}</td>
+                <td>
+                  <button onClick={handleUpdateData}>수정</button>
+                </td>
+                <td>
+                  <button onClick={handleDeleteData}>삭제</button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </Dataload>
