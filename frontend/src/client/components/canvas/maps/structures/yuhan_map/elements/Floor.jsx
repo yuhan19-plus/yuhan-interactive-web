@@ -6,7 +6,7 @@ import React from 'react'
 
 const Floor = (props) => {
     const [meshRef] = usePlane(
-        () => ({ args: [1000, 1000], mass: 1, type: 'Static', rotation:[-Math.PI / 2, 0, 0], ...props})
+        () => ({ args: [1080, 960], mass: 1, type: 'Static', rotation:[-Math.PI / 2, 0, 0], ...props})
     )
     return (    
         <mesh
@@ -14,7 +14,7 @@ const Floor = (props) => {
             receiveShadow
             {...props}
         >
-            <planeGeometry args={[1000, 1000]} />
+            <planeGeometry args={[1080, 960]} />
             <meshStandardMaterial color='#333333' />
         </mesh>
     )

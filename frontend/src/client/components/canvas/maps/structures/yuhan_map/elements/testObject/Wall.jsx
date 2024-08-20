@@ -8,7 +8,7 @@ import React from 'react'
 
 const Wall = (props) => {
     const [meshRef, api] = useBox(
-        () => ({ args: [1000, 100, 30], type: 'Static', mass: 1, ...props})
+        () => ({ args: [1080, 100, 30], type: 'Static', mass: 1, ...props})
     )
 
     return (
@@ -18,7 +18,7 @@ const Wall = (props) => {
             castShadow
             receiveShadow
         >
-            <boxGeometry args={[1000, 100, 30]} />
+            <boxGeometry args={[1080, 100, 30]} />
             <meshStandardMaterial color={'white'} transparent opacity={0.1} />
         </mesh>
     )

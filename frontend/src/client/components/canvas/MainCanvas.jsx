@@ -3,12 +3,14 @@
  * - 카메라 설정 및 빛, 중력 설정 (24/08/02)
  */
 
-import { Canvas } from '@react-three/fiber'
-import React, { useRef } from 'react'
-import RootMap from './maps/RootMap'
-import { OrbitControls, useHelper } from '@react-three/drei'
-import Light from './helper/Light'
 import { Debug, Physics } from '@react-three/cannon'
+import { OrbitControls } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import React from 'react'
+import Light from './helper/Light'
+import GroundElements from './maps'
+import RootMap from './maps/RootMap'
+
 
 const MainCanvas = () => {
     const aspectRatio = window.innerWidth / window.innerHeight
@@ -61,6 +63,7 @@ const MainCanvas = () => {
                 <Debug>
                     {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
                     <RootMap />
+                    <GroundElements/>
                 </Debug>
             </Physics>
         </Canvas>
