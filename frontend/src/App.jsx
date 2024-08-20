@@ -14,6 +14,8 @@ import AdminBoard from "./admin/components/content/AdminBoard";
 import AdminMain from "./admin/components/content/AdminMain";
 import MemberIndex from "./client/components/member/MemberIndex";
 import { TestSocketControls } from "./sockets/TestSocketControls";
+import BoardTest from "./client/components/dbtest/BoardTest";
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,19 +24,20 @@ function App() {
         <Route path="/" element={<ClientIndex />} />
         <Route path="/login" element={<MemberIndex value="login" />} />
         <Route path="/join" element={<MemberIndex value="join" />} />
-		
+
         <Route path="/admin" element={<AdminIndex />}>
           <Route path="/admin" element={<AdminMain />} />
-          <Route path='/admin/member' element={<AdminMember />}>
+          <Route path="/admin/member" element={<AdminMember />}>
             {/* 경로설정 */}
           </Route>
-          <Route path='/admin/foodMenu' element={<AdminFood />}>
+          <Route path="/admin/foodMenu" element={<AdminFood />}>
             {/* 경로설정 */}
           </Route>
-          <Route path='/admin/board' element={<AdminBoard />}>
+          <Route path="/admin/board" element={<AdminBoard />}>
             {/* 경로설정 */}
           </Route>
         </Route>
+        <Route path="/boardtest" element={<BoardTest />} />
       </Routes>
     </BrowserRouter>
   );

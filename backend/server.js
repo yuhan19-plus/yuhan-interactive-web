@@ -24,23 +24,28 @@ app.use(cors());
 app.use(express.json()); // JSON 파싱 미들웨어
 
 // MySQL 연결 설정
-const connection = mysql.createConnection({
+const mysqlconnection = mysql.createConnection({
   host: "localhost",
-  user: "tester", // MySQL에 계정명이 tester로 있어야함
-  password: "1234", // tester의 비밀번호는 1234로 존재해야함
-  database: "test1234", // tester이 사용가능한 데이터베이스로 test1234가 존재해야한다.
+  user: "tester",
+  password: "1234",
+  database: "test1234",
 });
 
-
 // MySQL 연결 체크
-connection.connect((err)=>{
-  if(err){
-    console.error("MySQL 연결 실패:",err.message);
-  } else{
-    console.log("MySQL연결성공")
+mysqlconnection.connect((err) => {
+  if (err) {
+    console.error("MySQL 연결 실패:", err.message);
+  } else {
+    console.log("MySQL 연결 성공");
   }
-})
+});
 
+// mysqlconnection 객체를 모듈로 내보내기
+module.exports = mysqlconnection;
+
+// testdb.js 라우트 가져오기
+const testdbRoutes = require('./models/testdb');
+app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 
 // 클라이언트 연결 처리
 io.on("connection", (socket) => {
@@ -48,12 +53,13 @@ io.on("connection", (socket) => {
 
   // 클라이언트 연결 끊김 처리
   socket.on("disconnecting", () => {
-    console.log("연결 끊어지는 중")
+    console.log("연결 끊어지는 중");
   });
 
   // 클라이언트 연결 종료 처리
   socket.on("disconnect", () => {
-    console.log("연결 끊어짐")});
+    console.log("연결 끊어짐");
+  });
 });
 
 // 서버 시작

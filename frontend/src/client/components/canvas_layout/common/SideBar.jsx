@@ -76,6 +76,10 @@ const SideBar = () => {
                             <MuseumIcon />
                             <span><a href='https://newih.yuhan.ac.kr/index.do'>유일한기념관</a></span>
                         </div>
+                        <div>
+                            <AssignmentIcon />
+                            <span><a href='/boardtest'>디비test</a></span>
+                        </div>
                     </SideBarList>
                 </SideBarContainer>
                 <DropdownController onClick={(e) => {
