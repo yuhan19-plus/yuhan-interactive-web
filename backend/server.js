@@ -26,10 +26,21 @@ app.use(express.json()); // JSON 파싱 미들웨어
 // MySQL 연결 설정
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "tester",
-  password: "1234",
-  database: "test1234",
+  user: "tester", // MySQL에 계정명이 tester로 있어야함
+  password: "1234", // tester의 비밀번호는 1234로 존재해야함
+  database: "test1234", // tester이 사용가능한 데이터베이스로 test1234가 존재해야한다.
 });
+
+
+// MySQL 연결 체크
+connection.connect((err)=>{
+  if(err){
+    console.error("MySQL 연결 실패:",err.message);
+  } else{
+    console.log("MySQL연결성공")
+  }
+})
+
 
 // 클라이언트 연결 처리
 io.on("connection", (socket) => {
