@@ -1,8 +1,6 @@
 /** 파일 생성자 : 오자현
  *  db연동 test페이지
  *  저장, 조회, 업데이트, 삭제 구현
- *  페이지가 열리면 자동으로 테이블을 조회하여 저장된 데이터를 불러온다.
- *
  * */
 import { Input } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
