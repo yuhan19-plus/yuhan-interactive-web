@@ -11,6 +11,8 @@
  *  - 전공추천관리
  *  - 학과체험
  *  - 에러
+ * 오자현
+ *  - 소캣컨트롤 추가
  */
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
@@ -26,11 +28,14 @@ import AdminMember from './admin/components/content/member/AdminMember'
 import AdminDeptRec from './admin/components/content/dept_rec/AdminDeptRec'
 import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
 import ErrorPage from './client/components/error/ErrorPage'
+import BoardTest from './client/components/dbtest/BoardTest'
+import { TestSocketControls } from './sockets/TestSocketControls'
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <TestSocketControls />
         <Routes>
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />
@@ -66,6 +71,7 @@ function App() {
             </Route>
           </Route>
           <Route path='/error' element={<ErrorPage />} />
+          <Route path="/boardtest" element={<BoardTest />} />
         </Routes>
       </BrowserRouter>
     </Provider>
