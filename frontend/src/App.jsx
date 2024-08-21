@@ -1,8 +1,18 @@
 /** 파일 생성자 : 임성준
  * 임성준
- *  - 초기 루트, 로그인, 회원가입, 관리자페이지, 회원관리, 오늘의 메뉴, 게시판 라우터 설정
+ * 라우터 설정
+ *  - 초기 루트
+ *  - 로그인
+ *  - 회원가입
+ *  - 관리자페이지
+ *  - 회원관리
+ *  - 오늘의 메뉴관리
+ *  - 게시판관리
+ *  - 전공추천관리
+ *  - 학과체험
+ *  - 에러
  */
-import { BrowserRouter, Link, Route, Router, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ClientIndex from './client/ClientIndex'
 import AdminIndex from './admin/AdminIndex'
@@ -10,11 +20,12 @@ import AdminMain from './admin/components/content/AdminMain'
 import MemberIndex from './client/components/member/MemberIndex'
 import { Provider } from 'react-redux'
 import store from './redux/store/store'
-import DepartmentCanvas from './client/components/canvas/maps/structures/department_map/DepartmentCanvas'
 import AdminBoard from './admin/components/content/board/AdminBoard'
 import AdminFood from './admin/components/content/food/AdminFood'
 import AdminMember from './admin/components/content/member/AdminMember'
 import AdminDeptRec from './admin/components/content/dept_rec/AdminDeptRec'
+import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
+import ErrorPage from './client/components/error/ErrorPage'
 
 function App() {
 
@@ -32,7 +43,7 @@ function App() {
             유한게시판
             오늘의 메뉴
           */}
-          <Route path='/department' element={<DepartmentCanvas />} />
+          <Route path='/department/*' element={<DeptCanvasLayout />} />
           {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
             <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
             <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
@@ -55,6 +66,7 @@ function App() {
               {/* 경로설정 */}
             </Route>
           </Route>
+          <Route path='/error' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>

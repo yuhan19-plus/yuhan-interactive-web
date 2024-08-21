@@ -1,3 +1,7 @@
+/** 파일생성자 : 임성준
+ * 임성준 : 프론트엔드 개발
+ * 
+ */
 import React from 'react'
 import { Canvas } from '@react-three/fiber'
 import DeptMap from './DeptMap'
@@ -9,7 +13,7 @@ import { OrbitControls } from '@react-three/drei'
 const DepartmentCanvas = () => {
     // 빛의 위치 값 설정 변수
     const lightPosition = [-500, 500, -350]
-    const cameraPosition = [30, 100, 50]
+    const cameraPosition = [30, 300, 50]
     return (
         <>
             <Canvas

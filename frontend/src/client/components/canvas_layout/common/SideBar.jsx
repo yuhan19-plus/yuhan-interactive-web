@@ -1,133 +1,74 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
  */
-import { AdminPanelSettings, Close, Login, Logout, Menu, RestaurantMenu, Send } from '@mui/icons-material'
-import React, { useCallback, useState } from 'react'
+import { AdminPanelSettings, Close, Login, Menu } from '@mui/icons-material'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import SchoolIcon from '@mui/icons-material/School';
-import InfoIcon from '@mui/icons-material/Info';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import SupportIcon from '@mui/icons-material/Support';
-import BusinessIcon from '@mui/icons-material/Business';
-import MuseumIcon from '@mui/icons-material/Museum';
-import FestivalIcon from '@mui/icons-material/Festival';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useDispatch, useSelector } from 'react-redux';
-import { adminEnterModal, board, consultation, deptMap, deptRec, food } from '../../../../redux/actions/actions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardTeacher, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faSchool } from '@fortawesome/free-solid-svg-icons';
+import MainSideBarMenu from './MainSideBarMenu';
+import DeptSideBarMenu from './DeptSideBarMenu';
+import { adminEnterModal } from '../../../../redux/actions/actions';
+import { useLocation, useNavigate } from 'react-router-dom';
 const SideBar = () => {
+    const location = useLocation()
+    const currentPath = location.pathname
+    console.log('currentPath', currentPath) // 현재 경로 출력
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    
-    // const sideMenuValue = useSelector((state) => state.sideMenu)
+
+    const currentMap = useSelector((state) => state.groundMap)
+    const currentMapName = currentMap.mapName
+
+    console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
     
     const dispatch = useDispatch()
-
     const handleShowAdminEnterModal = () => {
         dispatch(adminEnterModal())
     }
-
-    const handleSideMenuConsultation = () => {
-        dispatch(consultation())
-    }
-    const handleSideMenuBoard = () => {
-        dispatch(board())
-    }
-    const handleSideMenuFood = () => {
-        dispatch(food())
-    }
-    const handleChangeMap = () => {
-        dispatch(deptMap())
-    }
-    const handleDeptRec = () => {
-        dispatch(deptRec())
-    }
+    
+    // const sideMenuValue = useSelector((state) => state.sideMenu)
 
     // console.log('sideMenuValue', sideMenuValue)
 
     return (
         <>
-                <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
-                    <SideBarHeader>
-                        <div>
-                            <a href='/login'><Login /><p>로그인</p></a>
-                        </div>
-                        {/* <div>
-                            <a href='#'><Logout /><p>로그아웃</p></a>
-                        </div> */}
-                        <div>
-                            <a href='/join'><PersonAddIcon /><p>회원가입</p></a>
-                        </div>
-                        <div>
-                            <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
-                        </div>
-                        <div>
-                            <a href='/admin'><AdminPanelSettings /><p>TEST</p></a>
-                        </div>
-                    </SideBarHeader>
-                    <SideBarList>
-                        <div>
-                            <AccountBalanceIcon />
-                            <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3007'>대학소개</a></span>
-                        </div>
-                        <div>
-                            <InfoIcon />
-                            <span><a href="https://sky.yuhan.ac.kr/intro.html">입학안내</a></span>
-                        </div>
-                        <div>
-                            <CampaignIcon />
-                            <span><a href='https://www.yuhan.ac.kr/bbs/data/list.do?menu_idx=3071'>대학홍보</a></span>
-                        </div>
-                        <div>
-                            <SchoolIcon />
-                            <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091'>학과안내</a></span>
-                        </div>
-                        <div>
-                            <FontAwesomeIcon icon={faChalkboardTeacher}/>
-                            <span><a onClick={handleChangeMap}>학과체험</a></span>
-                        </div>
-                        <div>
-                            <SupportIcon />
-                            <span><a href='https://www.yuhan.ac.kr/ibuilder.do?per_menu_idx=3101&menu_idx=3415'>학생서비스</a></span>
-                        </div>
-                        <div>
-                            <AssignmentIcon />
-                            <span><a onClick={handleSideMenuBoard}>게시판</a></span>
-                        </div>
-                        <div>
-                            <Send />
-                            <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
-                        </div>
-                        <div>
-                            <RestaurantMenu />
-                            <span><a onClick={handleSideMenuFood}>오늘의 메뉴</a></span>
-                        </div>
-                        <div>
-                            <FontAwesomeIcon icon={faLightbulb} />
-                            <span><a onClick={handleDeptRec}>전공추천</a></span>
-                        </div>
-                        <div>
-                            <FestivalIcon />
-                            <span><a href='https://www.yuhan.ac.kr/bbs/data/list.do?menu_idx=3160'>유한광장</a></span>
-                        </div>
-                        <div>
-                            <BusinessIcon />
-                            <span><a href='https://sanhak.yuhan.ac.kr/index.do'>산학협력단</a></span>
-                        </div>
-                        <div>
-                            <MuseumIcon />
-                            <span><a href='https://newih.yuhan.ac.kr/index.do'>유일한기념관</a></span>
-                        </div>
-                    </SideBarList>
-                </SideBarContainer>
-                <DropdownController onClick={(e) => {
-                    e.stopPropagation()
-                    setIsDropdownOpen((prev) => !prev)
-                }}>
-                    {isDropdownOpen ? <Close className="side-icon-white" /> : <Menu className="side-icon-black" /> }
-                </DropdownController>
+            <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
+                <SideBarHeader>
+                    <div>
+                        <a href='/login'><Login /><p>로그인</p></a>
+                    </div>
+                    {/* <div>
+                        <a href='#'><Logout /><p>로그아웃</p></a>
+                    </div> */}
+                    <div>
+                        <a href='/join'><PersonAddIcon /><p>회원가입</p></a>
+                    </div>
+                    <div>
+                        <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
+                    </div>
+                    <div>
+                        <a href='/admin'><AdminPanelSettings /><p>TEST</p></a>
+                    </div>
+                </SideBarHeader>
+                <SideBarList>
+                    <div>
+                        <FontAwesomeIcon icon={faSchool} />
+                        <span><a href='/'>유한대학교</a></span>
+                    </div>
+                    {
+                        (currentMapName === 'yh_map' &&  currentPath === '/') ? <MainSideBarMenu /> : <DeptSideBarMenu mapName={currentMapName} />
+                    }
+                </SideBarList>
+            </SideBarContainer>
+            <DropdownController onClick={(e) => {
+                e.stopPropagation()
+                setIsDropdownOpen((prev) => !prev)
+            }}>
+                {isDropdownOpen ? <Close className="side-icon-white" /> : <Menu className="side-icon" /> }
+            </DropdownController>
         </>
     )
 }

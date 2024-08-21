@@ -1,3 +1,8 @@
+/** 파일생성자 : 임성준
+ * 임성준 : 프론트엔드 개발
+ * 
+ */
+
 import { Close } from '@mui/icons-material'
 import { Button, TextField } from '@mui/material'
 import React from 'react'
@@ -15,6 +20,7 @@ const AdminEnterModal = () => {
     }
     return (
         <>
+        {/* Form 넣어서 작업 진행할 것 */}
             <AdminEnterModalWrapper>
                 <AdminEnterModalHeader>
                     <p>유한대 관리자</p>

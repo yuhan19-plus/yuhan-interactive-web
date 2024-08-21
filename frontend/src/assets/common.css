@@ -1,25 +1,24 @@
-/* 공통으로 사용하는 css목록
-    작성자 : 임성준
+/* 공통으로 사용하는 css목록 - 임성준
 */
-img {
+img { // 성준
     width: 100%;
     height: 100%;
 }
 
-.wrapper {
+.wrapper { // 성준
     width: 100%;
     height: 100vh;
     overflow-y: auto;
     background: linear-gradient(145deg, #ffffff, #e6e6e6);
 }
 
-.container {
+.container { // 성준
     width: 1280px;
     margin: 0 auto;
     padding: 10px 30px;
 }
 
-.footer-wrapper {
+.footer-wrapper { // 성준
     width: 100%;
     height: 30vh;
     background-color: #0F275C;
@@ -28,7 +27,7 @@ img {
     text-align: center;
 }
 
-.header {
+.header { // 성준
     width: 100%;
     height: 100%;
     margin-bottom: 15px;
@@ -38,14 +37,14 @@ img {
     align-items: center;
 }
 
-.content-title {
+.content-title { // 성준
     font-size: 48px;
     font-weight: 900;
     border-left: 10px solid #0F275C;
     padding: 15px;
 }
 
-.form-item {
+.form-item { // 성준
     width: 100%;
     font-size: 18px;
     border-radius: 25px;
@@ -54,14 +53,14 @@ img {
     box-shadow: inset 7px 7px 9px #d9d9d9,
                 inset -7px -7px 9px #ffffff;
 }
-.form-item > label {
+.form-item > label { // 성준
     padding: 15px;
 }
-.form-item-pw > div > input {
+.form-item-pw > div > input { // 성준
     padding: 15px 15px 0 0;
 }
 
-/* .form-item-select {
+/* .form-item-select { // 성준
     width: 100%;
     font-size: 18px;
     border-radius: 25px;

@@ -9,7 +9,7 @@ import SideMenuLayout from '../canvas/maps/structures/yuhan_map/3dUIs/SideMenuLa
 import MiniMap from './MiniMap'
 import AdminEnterModal from '../canvas/maps/structures/yuhan_map/3dUIs/modal/AdminEnterModal'
 
-const CanvasLayout = ({children}) => {
+const CanvasLayout = ({ children }) => {
     // children : 학교맵
     console.log(children)
     const currentSideMenu = useSelector((state) => state.sideMenu)
@@ -19,6 +19,11 @@ const CanvasLayout = ({children}) => {
     const currentModal = useSelector((state) => state.modal)
     const currentModalName = currentModal.name
     const currentModalValue = currentModal.value
+
+    // const currentMap = useSelector((state) => state.groundMap)
+    // const currentMapName = currentMap.mapName
+
+    // console.log('currentMapName', currentMapName)
 
     console.log('sideMenuValue', currentSideMenuValue)
     console.log('sideMenuName', currentSideMenuName)
@@ -33,6 +38,10 @@ const CanvasLayout = ({children}) => {
                 <>
                     <SideBar />
                     <MiniMap />
+                    {/* {
+                        currentMapName === 'yh_map' &&
+                            <MiniMap />
+                    } */}
                     {
                         currentModalValue && 
                         <AdminEnterModal />
