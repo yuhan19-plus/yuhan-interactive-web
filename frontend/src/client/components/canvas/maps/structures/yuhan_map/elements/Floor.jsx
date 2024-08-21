@@ -11,6 +11,7 @@ const Floor = (props) => {
     return (    
         <mesh
             ref={meshRef}
+            castShadow
             receiveShadow
             {...props}
         >

@@ -50,6 +50,7 @@ import { B9Enter } from './structures/yuhan_map/elements/building/B9Enter'
 import { SideWalk } from './structures/yuhan_map/elements/building/SideWalk'
 
 import Wall from './structures/yuhan_map/elements/testObject/Wall'
+import YuhanElements from './structures/yuhan_map/YuhanElements'
 
 
 
@@ -62,7 +63,10 @@ const RootMap = () => {
             {/* 바닥 셋팅 */}
             <Floor position={[12, -1, -82.5]} />
             <YuhanMap/>
-            
+
+            {/* 맵 오브젝트들 */}
+            <YuhanElements />
+
             {/* 건물 오브젝트 배치 */}
 
             {/* 1호관 */}
