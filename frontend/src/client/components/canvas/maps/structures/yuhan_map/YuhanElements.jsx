@@ -7,6 +7,8 @@
  * - 오브젝트 통합(24/08/23)
  * 이정민 : 프론트엔드 개발
  * - 초기 오브젝트 position 설정 및 오브젝트 물리엔진(24/08/14)
+ * 오자현 : 프론트엔드 개발
+ * - 유한TV 셋팅 (24/08/27)
  */
 import React from 'react'
 import Floor from './elements/Floor'
@@ -25,6 +27,7 @@ import Welcome from './elements/etc/Welcome'
 import { Statue } from './elements/etc/Statue'
 import { SideWalk } from './elements/road/SideWalk'
 import { YuhanEntrance } from './elements/etc/YuhanEntrance'
+import { YuhanTV } from './elements/yuhanTv/YuhanTV'
 
 // 그룹화
 import SmokingGroup from './elements/SmokingGroup'
@@ -59,6 +62,9 @@ const YuhanElements = () => {
             {/* 공원 */}
             <MainPark />
             <SubPark />
+
+            {/* 유한TV */}
+            <YuhanTV position={[-150, 75, -557.49]} rotation={[0,0,0]}/>
 
             {/* 투명벽 셋팅 */}
             <Wall position={[12, 51, -577.5]} />
