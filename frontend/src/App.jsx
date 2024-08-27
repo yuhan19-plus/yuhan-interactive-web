@@ -57,16 +57,16 @@ function App() {
 
           <Route path='/admin' element={<AdminIndex />}>
             <Route path='/admin' element={<AdminMain />} />
-            <Route path='/admin/member' element={<AdminMember />}>
+            <Route path='/admin/member' element={<AdminMain />}>
               {/* 경로설정 */}
             </Route>
-            <Route path='/admin/foodMenu' element={<AdminFood />}>
+            <Route path='/admin/foodMenu' element={<AdminMain />}>
               {/* 경로설정 */}
             </Route>
-            <Route path='/admin/board' element={<AdminBoard />}>
+            <Route path='/admin/board' element={<AdminMain />}>
               {/* 경로설정 */}
             </Route>
-            <Route path='/admin/deptRec' element={<AdminDeptRec />}>
+            <Route path='/admin/deptRec' element={<AdminMain />}>
               {/* 경로설정 */}
             </Route>
           </Route>

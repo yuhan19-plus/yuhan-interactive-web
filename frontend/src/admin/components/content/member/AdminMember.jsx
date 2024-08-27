@@ -8,10 +8,7 @@ import styled from 'styled-components'
 const AdminMember = () => {
     return (
         <>
-            <div className='content-title'>회원관리</div>
-            <div className='admin-content'>
-                Content
-            </div>
+            회원관리 페이지
         </>
     )
 }

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
-useGLTF.preload("/assets/models/bus.glb");
+useGLTF.preload("/assets/models/etc/bus.glb");
 export function Bus(props) {
   const group = useRef();
-  const { nodes, materials, animations } = useGLTF("/assets/models/bus.glb");
+  const { nodes, materials, animations } = useGLTF("/assets/models/etc/bus.glb");
   const { actions } = useAnimations(animations, group);
   useEffect(() => {
     if (actions) {

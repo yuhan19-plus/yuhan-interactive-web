@@ -2,7 +2,6 @@
  * 임성준 : 초기 설정
  * - 카메라 설정 및 빛, 중력 설정 (24/08/02)
  */
-import GroundElements from './maps'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import { OrbitControls } from '@react-three/drei'
@@ -11,6 +10,7 @@ import { Debug, Physics } from '@react-three/cannon'
 import RootMap from './maps/RootMap'
 import { useLocation } from 'react-router-dom'
 import { aspectRatio } from '../../../data/commonData'
+import SpotLightHelper from './helper/SpotLightHelper'
 
 const MainCanvas = () => {
     const location = useLocation()
@@ -56,16 +56,16 @@ const MainCanvas = () => {
                     minPolarAngle={Math.PI / 6}
                     maxPolarAngle={Math.PI - Math.PI / 2}
                     // minDistance={100} // 카메라 확대 최소 범위
-                    maxDistance={700} // 카메라 확대 최대 범위
+                    maxDistance={1700} // 카메라 확대 최대 범위
                 />
 
+                {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
                 <Physics gravity={[0, -2.6, 0]}>
-                    {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
+                    {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
                     <Debug>
-                        {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
                         <RootMap />
-                        <GroundElements/>
                     </Debug>
+                    {/* <RootMap /> */}
                 </Physics>
             </Canvas>
         </>

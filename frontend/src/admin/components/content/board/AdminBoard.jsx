@@ -8,10 +8,7 @@ import styled from 'styled-components'
 const AdminBoard = () => {
     return (
         <>
-            <div className='content-title'>게시판 관리</div>
-            <div className='admin-content'>
-                Content
-            </div>
+            게시판 페이지
         </>
     )
 }

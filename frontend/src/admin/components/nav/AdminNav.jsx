@@ -11,7 +11,13 @@ const AdminNav = () => {
     return (
         <>
             <AdminNavList>
-                <Link to={'/admin'}><AdminPanelSettings className='adminLogo' /><span>Yuhan Admin</span></Link>
+                <Link 
+                    to={'/admin'}
+                    state={{
+                        title: '관리자'
+                    }}>
+                        <AdminPanelSettings className='adminLogo' /><span>Yuhan Admin</span>
+                </Link>
                 <div>
                     {/* 로그아웃 기능구현할 때 태그 변경할 것 */}
                     <p><Logout />&nbsp;로그아웃</p>
@@ -19,10 +25,33 @@ const AdminNav = () => {
                 </div>
             </AdminNavList>
             <AdminButtonList>
-                <Link to={'/admin/member'}><AdminButton>회원관리</AdminButton></Link>
-                <Link to={'/admin/foodMenu'}><AdminButton>오늘의 메뉴</AdminButton></Link>
-                <Link to={'/admin/board'}><AdminButton>유한게시판</AdminButton></Link>
-                <Link to={'/admin/deptRec'}><AdminButton>전공추천</AdminButton></Link>
+                <Link 
+                    to={'/admin/member'}
+                    state={{
+                        title: '회원관리'
+                    }}>
+                    <AdminButton>회원관리</AdminButton>
+                </Link>
+                <Link 
+                    to={'/admin/foodMenu'}
+                    state={{
+                        title: '오늘의 메뉴'
+                    }}>
+                        <AdminButton>오늘의 메뉴</AdminButton>
+                    </Link>
+                <Link to={'/admin/board'}
+                    state={{
+                        title: '유한게시판'
+                    }}>
+                        <AdminButton>유한게시판</AdminButton>
+                    </Link>
+                <Link 
+                    to={'/admin/deptRec'}
+                    state={{
+                        title: '전공추천'
+                    }}>
+                        <AdminButton>전공추천</AdminButton>
+                    </Link>
             </AdminButtonList>
         </>
     )

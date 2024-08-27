@@ -11,7 +11,7 @@ import AdminEnterModal from '../canvas/maps/structures/yuhan_map/3dUIs/modal/Adm
 
 const CanvasLayout = ({ children }) => {
     // children : 학교맵
-    console.log(children)
+    // console.log(children)
     const currentSideMenu = useSelector((state) => state.sideMenu)
     const currentSideMenuValue = currentSideMenu.value
     const currentSideMenuName = currentSideMenu.name

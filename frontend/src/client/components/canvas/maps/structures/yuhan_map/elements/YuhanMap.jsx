@@ -14,7 +14,7 @@ export function YuhanMap (props) {
   useEffect(() => {
     scene.traverse((obj) => {
       if(obj.isObject3D) {
-        // console.log(obj)
+        // 
         obj.castShadow = true
         obj.receiveShadow = true
       }

@@ -11,8 +11,10 @@ import { faSchool } from '@fortawesome/free-solid-svg-icons';
 import MainSideBarMenu from './MainSideBarMenu';
 import DeptSideBarMenu from './DeptSideBarMenu';
 import { adminEnterModal } from '../../../../redux/actions/actions';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+const title = ''
 const SideBar = () => {
+
     const location = useLocation()
     const currentPath = location.pathname
     console.log('currentPath', currentPath) // 현재 경로 출력
@@ -38,19 +40,22 @@ const SideBar = () => {
             <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
                 <SideBarHeader>
                     <div>
-                        <a href='/login'><Login /><p>로그인</p></a>
+                        <Link to={'/login'}><Login /><p>로그인</p></Link>
                     </div>
-                    {/* <div>
-                        <a href='#'><Logout /><p>로그아웃</p></a>
-                    </div> */}
                     <div>
-                        <a href='/join'><PersonAddIcon /><p>회원가입</p></a>
+                        <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
                     </div>
                     <div>
                         <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
                     </div>
                     <div>
-                        <a href='/admin'><AdminPanelSettings /><p>TEST</p></a>
+                        <Link 
+                            to={'/admin'}
+                            state={{
+                                title: '관리자'
+                            }}>
+                                <AdminPanelSettings /><p>TEST</p>
+                        </Link>
                     </div>
                 </SideBarHeader>
                 <SideBarList>
