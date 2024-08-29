@@ -24,6 +24,10 @@ body {
     background-blend-mode: screen;
     font-family: 'HakgyoansimWoojuR';
 }
+/* JavaScript에서 추가할 클래스 */
+body.dynamic-background {
+    background: none; /* 기존 배경을 무시하고 JavaScript가 제어하게 만듦 */
+}
 
 a {
     text-decoration: none;
