@@ -110,20 +110,25 @@ const MainSideBarMenu = () => {
                 <span><a>학과체험</a></span>
             </div> */}
             <div>
-                <FontAwesomeIcon icon={faCode}/>
+                <FontAwesomeIcon icon={faCode} />
                 <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
             </div>
             <div>
-                <FontAwesomeIcon icon={faPenRuler}/>
+                <FontAwesomeIcon icon={faPenRuler} />
                 <span><a onClick={handleIndustrialDesign}>산업디자인학과체험</a></span>
             </div>
             <div>
-                <FontAwesomeIcon icon={faBowlFood}/>
+                <FontAwesomeIcon icon={faBowlFood} />
                 <span><a onClick={handleFoodNutrition}>식품영양학과체험</a></span>
             </div>
             <div>
-                <FontAwesomeIcon icon={faDna}/>
+                <FontAwesomeIcon icon={faDna} />
                 <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
+            </div>
+            {/* test용도 아침까지 남아있으면 삭제 */}
+            <div>
+                <AssignmentIcon />
+                <span><a href='/boardtest'>디비test</a></span>
             </div>
         </>
     )

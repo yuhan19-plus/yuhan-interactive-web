@@ -5,23 +5,18 @@
  *
  * */
 const express = require("express");
-const { Server } = require("socket.io");
 const http = require("http");
 const mysql = require("mysql2");
 const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    credentials: true,
-  },
-});
 
 // CORS 설정 추가
 app.use(cors());
-app.use(express.json()); // JSON 파싱 미들웨어
+// JSON 파싱 미들웨어에 크기 제한 설정
+app.use(express.json({ limit: '50mb' })); // 요청 본문 크기를 50MB로 제한
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // URL 인코딩된 데이터도 동일하게 설정
 
 // MySQL 연결 설정
 const mysqlconnection = mysql.createConnection({
@@ -43,24 +38,10 @@ mysqlconnection.connect((err) => {
 // mysqlconnection 객체를 모듈로 내보내기
 module.exports = mysqlconnection;
 
-// testdb.js 라우트 가져오기
-const testdbRoutes = require('./models/testdb');
+const testdbRoutes = require('./models/testdb'); 
+// const testdbRoutes2 = require('./db/BoardTable'); // db/BoardTable의 라우트 가져오기
+// app.use('/board', testdbRoutes2); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
-
-// 클라이언트 연결 처리
-io.on("connection", (socket) => {
-  console.log("새 클라이언트 연결됨:", socket.id);
-
-  // 클라이언트 연결 끊김 처리
-  socket.on("disconnecting", () => {
-    console.log("연결 끊어지는 중");
-  });
-
-  // 클라이언트 연결 종료 처리
-  socket.on("disconnect", () => {
-    console.log("연결 끊어짐");
-  });
-});
 
 // 서버 시작
 server.listen(4000, () => {

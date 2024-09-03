@@ -29,13 +29,11 @@ import AdminDeptRec from './admin/components/content/dept_rec/AdminDeptRec'
 import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
 import ErrorPage from './client/components/error/ErrorPage'
 import BoardTest from './client/components/dbtest/BoardTest'
-import { TestSocketControls } from './sockets/TestSocketControls'
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <TestSocketControls />
         <Routes>
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />
