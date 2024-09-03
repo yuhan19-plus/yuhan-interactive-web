@@ -38,7 +38,7 @@ mysqlconnection.connect((err) => {
 // mysqlconnection 객체를 모듈로 내보내기
 module.exports = mysqlconnection;
 
-const testdbRoutes = require('./models/testdb'); 
+const testdbRoutes = require('./db/testdb'); 
 // const testdbRoutes2 = require('./db/BoardTable'); // db/BoardTable의 라우트 가져오기
 // app.use('/board', testdbRoutes2); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
@@ -46,4 +46,10 @@ app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 // 서버 시작
 server.listen(4000, () => {
   console.log("서버가 4000번 포트에서 실행 중입니다.");
+});
+
+// 서버와 프론트 연결체크
+app.get('/healthcheck', (req, res) => {  // 경로를 절대 경로가 아닌 상대 경로로 설정
+  console.log("프론트와 연결에 성공했습니다.");
+  res.status(200).json({ message: '서버가 정상적으로 작동 중입니다!' });
 });

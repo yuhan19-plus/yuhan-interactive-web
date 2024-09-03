@@ -125,11 +125,11 @@ const MainSideBarMenu = () => {
                 <FontAwesomeIcon icon={faDna} />
                 <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
             </div>
-            {/* test용도 아침까지 남아있으면 삭제 */}
+            {/* test용도 아침에 병합 시 삭제 
             <div>
                 <AssignmentIcon />
                 <span><a href='/boardtest'>디비test</a></span>
-            </div>
+            </div> */}
         </>
     )
 }
