@@ -16,7 +16,6 @@ const MainCanvas = () => {
     const location = useLocation()
 
     // 빛의 위치 값 설정 변수
-    const lightPosition = [-500, 500, -350]
     const cameraPosition = [0, 100, 0]
 
     return (
@@ -49,7 +48,7 @@ const MainCanvas = () => {
                 /> */}
 
                 {/* 빛설정을 돕기 위한 LightHelper */}
-                <Light lightPosition={lightPosition} />
+                <Light/>
 
                 <OrbitControls
                     makeDefault // 카메라의 설정이 계속 변경될 예정일 경우에 튕기거나 끊김없게 해주기 위해 설정
