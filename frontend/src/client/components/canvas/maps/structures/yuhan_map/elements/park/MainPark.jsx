@@ -16,7 +16,7 @@ import { MainParkFloor } from './floor/MainParkFloor'
 const MainPark = () => {
   return (
     <>
-        <MainParkFloor position={[63.195, 0, -203.254]} />
+        <MainParkFloor position={[63.195, -4, -203.254]} />
         <TreeTwo position={[23.195, 0, -237.254]} />
         <TreeThree position={[-0.195, 0, -192.254]} />
         <TreeFour position={[33.195, 0, -203.254]} />

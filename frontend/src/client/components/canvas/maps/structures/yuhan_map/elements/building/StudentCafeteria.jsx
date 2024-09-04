@@ -27,7 +27,11 @@ export function StudentCafeteria({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,0,0]} rotation={[0,0,0]} scale={[18.615, 4.051, 38.03]}>
         <mesh geometry={nodes.Cube001.geometry} material={materials['E2EBCA (B1,B4,B5,B6(BodyFrame)).001']} />
         <mesh geometry={nodes.Cube001_1.geometry} material={materials['858585 (B4,B9,B2).001']} />

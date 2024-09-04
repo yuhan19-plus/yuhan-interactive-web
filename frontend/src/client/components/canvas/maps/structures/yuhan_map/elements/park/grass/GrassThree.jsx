@@ -27,7 +27,11 @@ export function GrassThree({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group scale={[4.452, 15, 4.429]}>
         <mesh geometry={nodes.실린더011.geometry} material={materials['0CFF0F(Leaf,Smoking Booth).001']} />
         <mesh geometry={nodes.실린더011_1.geometry} material={materials['0EA6EF (Leaf, Smoking Booth).001']} />

@@ -26,7 +26,11 @@ export function SmokingBooth({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[1,-1,-1.5]} scale={[10.993, 9.714, 15.914]}>
         <mesh geometry={nodes.Cube002.geometry} material={materials['0CFF0F(Leaf,Smoking Booth).001']} />
         <mesh geometry={nodes.Cube002_1.geometry} material={materials['C0E8F6 (B1~9(Window)).001']} />

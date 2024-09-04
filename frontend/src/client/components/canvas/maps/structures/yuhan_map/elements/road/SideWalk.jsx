@@ -11,7 +11,7 @@ export function SideWalk({position, ...props}) {
   const [meshRef, api] = useBox(() => ({
     args: [0, 0, 0],
     type: 'Static',
-    mass: 1,
+    mass: 0,
     position,
     ...props
   }))

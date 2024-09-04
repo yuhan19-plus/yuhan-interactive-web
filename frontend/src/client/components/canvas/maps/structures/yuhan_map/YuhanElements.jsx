@@ -9,22 +9,15 @@
  * - 초기 오브젝트 position 설정 및 오브젝트 물리엔진(24/08/14)
  */
 import React from 'react'
-import Floor from './elements/Floor'
 
 // 공원
 import MainPark from './elements/park/MainPark'
 import SubPark from './elements/park/SubPark'
 
 // etc
-import { Wire_Netting } from './elements/etc/Wire_Netting'
-import { BusStationOne } from './elements/etc/BusStationOne'
-import { BusStationTwo } from './elements/etc/BusStationTwo'
 import Wall from './elements/testObject/Wall'
-import { BasketballHoop } from './elements/etc/BasketballHoop'
 import Welcome from './elements/etc/Welcome'
-import { Statue } from './elements/etc/Statue'
 import { SideWalk } from './elements/road/SideWalk'
-import { YuhanEntrance } from './elements/etc/YuhanEntrance'
 
 // 그룹화
 import SmokingGroup from './elements/SmokingGroup'
@@ -38,9 +31,6 @@ import EtcGroup from './elements/EtcGroup'
 const YuhanElements = () => {
     return (
         <>
-            {/* 바닥 셋팅 */}
-            <Floor position={[12, -25, -82.5]} />
-
             {/* 유한대 Welcome */}
             <Welcome />
 
@@ -54,7 +44,7 @@ const YuhanElements = () => {
             <EtcGroup />
 
             {/* 인도 */}
-            <SideWalk position={[-0.5, -1.5, 0]} />
+            <SideWalk position={[-0.5, -6.4, 0]} />
             
             {/* 공원 */}
             <MainPark />

@@ -27,7 +27,11 @@ export function B5_B6_Between_B({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[-12,-1.7,-7]} scale={[0.253, 12, 3.955]}>
         <mesh geometry={nodes.Cube073.geometry} material={materials['C0E8F6 (B1~9(Window))']} />
         <mesh geometry={nodes.Cube073_1.geometry} material={materials['E2E2E2(B1~9(Body,Number))']} />

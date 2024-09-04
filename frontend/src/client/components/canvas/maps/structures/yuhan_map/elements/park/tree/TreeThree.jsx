@@ -27,7 +27,11 @@ export function TreeThree({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[88, 16, -22]} scale={61.994}>
         <mesh geometry={nodes.Plane002.geometry} material={materials['006400 (Leaf)']} />
         <mesh geometry={nodes.Plane002_1.geometry} material={materials['0CFF0F(Leaf,Smoking Booth)']} />

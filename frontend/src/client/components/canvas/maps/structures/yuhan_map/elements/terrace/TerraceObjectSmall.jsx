@@ -27,7 +27,11 @@ export function TerraceObjectSmall({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,0,-6.5]} scale={[0.25, 3.25, 0.25]}>
         <mesh geometry={nodes.Cube052.geometry} material={materials['D2D2D2 & Metal (B4,B5,B6,B7)']} />
         <mesh geometry={nodes.Cube052_1.geometry} material={materials['455A33(T1)']} />

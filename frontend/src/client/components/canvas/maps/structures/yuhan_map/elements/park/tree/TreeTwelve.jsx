@@ -27,7 +27,11 @@ export function TreeTwelve({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[2,-1.4,2]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane004.geometry} material={materials['654321 (Wood)']} />
         <mesh geometry={nodes.Plane004_1.geometry} material={materials['006400 (Leaf)']} />

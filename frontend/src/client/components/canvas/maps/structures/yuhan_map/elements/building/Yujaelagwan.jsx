@@ -27,7 +27,11 @@ export function Yujaelagwan({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,0,-10]} rotation={[0,0,0]} scale={[4.452, 15, 4.429]}>
         <mesh geometry={nodes.실린더001.geometry} material={materials['E2E2E2(B1~9(Body,Number)).001']} />
         <mesh geometry={nodes.실린더001_1.geometry} material={materials['18226AA (Number Plane).001']} />

@@ -26,7 +26,11 @@ export function BusStationOne({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[-3,-1.3,0]} scale={[1.027, 6.844, 6.844]}>
         <mesh geometry={nodes.Cube057.geometry} material={materials['373737 (BusStaion)']} />
         <mesh geometry={nodes.Cube057_1.geometry} material={materials['373737 (BusStaion)']} />

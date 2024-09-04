@@ -28,7 +28,11 @@ export function SmokingArea({position, scale, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,1.5,0]} rotation={[0,0,0]} scale={scale}>
         <mesh geometry={nodes.Pillar001.geometry} material={materials['654321 (Wood)']} />
         <mesh geometry={nodes.Pillar001_1.geometry} material={materials['774D15(SmokingBench)']} />

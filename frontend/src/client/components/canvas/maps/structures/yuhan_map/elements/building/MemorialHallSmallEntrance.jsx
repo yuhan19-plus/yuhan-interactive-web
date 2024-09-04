@@ -27,7 +27,11 @@ export function MemorialHallSmallEntrance({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[80,-85,1]} rotation={[0,0,0]} scale={[3.242, 3.242, 4.501]}>
         <mesh geometry={nodes.Text007.geometry} material={materials['E2E2E2(B1~9(Body,Number)).001']} />
         <mesh geometry={nodes.Text007_1.geometry} material={materials['E2EBCA (B1,B4,B5,B6(BodyFrame)).001']} />

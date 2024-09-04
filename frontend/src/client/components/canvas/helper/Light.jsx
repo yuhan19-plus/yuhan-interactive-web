@@ -11,7 +11,7 @@ const Light = ({lightPosition}) => {
     useHelper(lightRef, THREE.DirectionalLightHelper, 300, 0xff0000)
     return (
         <directionalLight
-            ref={lightRef}
+            // ref={lightRef}
             args={[0xffffff, 1]}
             castShadow
             intensity={5}

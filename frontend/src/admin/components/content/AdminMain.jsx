@@ -38,4 +38,8 @@ const AdminMain = () => {
     )
 }
 
+const ContentTitle = styled.div`
+    font-size: 48px;
+`
+
 export default AdminMain

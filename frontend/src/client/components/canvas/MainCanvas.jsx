@@ -11,12 +11,14 @@ import RootMap from './maps/RootMap'
 import { useLocation } from 'react-router-dom'
 import { aspectRatio } from '../../../data/commonData'
 import SpotLightHelper from './helper/SpotLightHelper'
+import Clouds from './maps/structures/yuhan_map/elements/etc/Clouds'
+import { AxesHelper } from 'three'
 
 const MainCanvas = () => {
     const location = useLocation()
 
     // 빛의 위치 값 설정 변수
-    const lightPosition = [-500, 500, -350]
+    const lightPosition = [0, 500, 0]
     const cameraPosition = [0, 100, 0]
 
     return (
@@ -34,6 +36,7 @@ const MainCanvas = () => {
                     position: cameraPosition
                 }}
             >
+                {/* <Clouds position={[0, 300, 0]} /> */}
                 <ambientLight name="ambientLight" intensity={0.5} />
                 {/* <directionalLight
                     castShadow
@@ -62,10 +65,10 @@ const MainCanvas = () => {
                 {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
                 <Physics gravity={[0, -2.6, 0]}>
                     {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
-                    <Debug>
+                    {/* <Debug>
                         <RootMap />
-                    </Debug>
-                    {/* <RootMap /> */}
+                    </Debug> */}
+                    <RootMap />
                 </Physics>
             </Canvas>
         </>

@@ -27,7 +27,11 @@ export function TreeSixteen({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,-1.4,0]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane008.geometry} material={materials['654321 (Wood)']} />
         <mesh geometry={nodes.Plane008_1.geometry} material={materials['006400 (Leaf)']} />
