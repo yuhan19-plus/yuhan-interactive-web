@@ -1,9 +1,11 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 
+ * 이석재
+ *   - 회원가입 처리 로직 추가
  */
-
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { FilledInput, FormControl, FormControlLabel, FormLabel, IconButton, InputAdornment, InputLabel, MenuItem, NativeSelect, OutlinedInput, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material'
+import { FilledInput, FormControl, FormControlLabel, FormLabel, FormHelperText, IconButton, InputAdornment, InputLabel, MenuItem, NativeSelect, OutlinedInput, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { MAJORS, PROFESSOR_POSITION } from '../../../data/commonData'
@@ -64,6 +66,160 @@ const MemberJoin = () => {
         )
     }
 
+    // 텍스트필드 상태 및 관련 메서드
+    const [memberID, setMemberID] = useState('');
+    const [memberPW, setMemberPW] = useState('');
+    const [memberPhone, setMemberPhone] = useState('');
+    const [memberEmail, setMemberEmail] = useState('');
+    const [studentNum, setStudentNum] = useState('');
+
+    const handleIDChange = (event) => {
+        setMemberID(event.target.value);
+    };
+
+    const handlePWChange = (event) => {
+        setMemberPW(event.target.value);
+    };
+
+    const handlePhoneChange = (event) => {
+        setMemberPhone(event.target.value);
+    };
+
+    const handleEmailChange = (event) => {
+        setMemberEmail(event.target.value);
+    };
+
+    const handleStudentNumChange = (event) => {
+        setStudentNum(event.target.value);
+    };
+    
+    // 라디오 버튼 상태 및 관련 메서드
+    const [memberGender, setMemberGender] = useState(''); // 기본값을 선택하지 않음으로 설정
+
+    const handleGenderChange = (event) => {
+        setMemberGender(event.target.value);
+    };
+
+    // 유효성 검사 상태 및 관련 메서드
+    const [errors, setErrors] = useState({
+        memberID: '',
+        memberPW: '',
+        memberPhone: '',
+        memberEmail: '',
+        memberMajor: '',
+        studentNum: '',
+        studentGrade: '',
+        studentClass: '',
+        professorPosition: ''
+    });
+
+    // 유효성 검사 메서드
+    const validate = () => {
+        let tempErrors = {};
+
+        if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
+        if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
+        if (!memberPhone || !memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = "유효한 전화번호를 입력하세요.";  // 수정된 부분
+        if (!memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
+        if (!memberMajor) tempErrors.memberMajor = "전공을 선택하세요.";
+        if (!memberGender) tempErrors.memberGender = "성별을 선택하세요."; // 성별에 대한 유효성 검사 추가
+
+        if (memberType) { // 학생일 경우
+            if (!studentNum) tempErrors.studentNum = "학번을 입력하세요.";
+            if (!studentGrade) tempErrors.studentGrade = "학년을 선택하세요.";
+            if (!studentClass) tempErrors.studentClass = "반을 선택하세요.";
+        } else { // 교수일 경우
+            if (!professorPosition) tempErrors.professorPosition = "직책을 선택하세요.";
+        }
+
+        setErrors(tempErrors);
+
+        return Object.keys(tempErrors).length === 0;
+    };
+
+    // 폼 제출 처리 메서드
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (validate()) {
+            console.log("폼이 제출되었습니다.");
+
+            const formData = {
+                memberID,
+                memberPW,
+                memberPhone,
+                memberEmail,
+                memberMajor,
+                memberGender,
+                studentNum: memberType ? studentNum : null,
+                studentGrade: memberType ? studentGrade : null,
+                studentClass: memberType ? studentClass : null,
+                professorPosition: !memberType ? professorPosition : null,
+                memberType
+            };
+    
+            try {
+                const response = await fetch('http://localhost:4000/member/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+    
+                if (response.status === 409) {
+                    // ID 중복
+                    alert('이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.');
+                } else if (response.ok) {
+                    console.log('회원가입이 성공적으로 완료되었습니다.');
+                    alert('회원가입이 성공적으로 완료되었습니다.');
+                    window.location.href = '/'; // 회원가입 후 루트 경로로 이동
+                } else {
+                    console.log('회원가입에 실패했습니다.');
+                    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+                }
+            } catch (error) {
+                console.error('서버 오류 발생:', error);
+                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            }
+
+
+            // 디버깅 코드
+            /*
+            console.log({
+                memberID,
+                memberPW,
+                memberPhone,
+                memberEmail,
+                memberMajor,
+                memberGender,
+                studentNum: memberType ? studentNum : null,
+                studentGrade: memberType ? studentGrade : null,
+                studentClass: memberType ? studentClass : null,
+                professorPosition: !memberType ? professorPosition : null,
+            });
+            */
+        } else {
+            console.log("유효성 검사를 통과하지 못했습니다.");
+            // 디버깅 코드
+            /*
+            console.log({
+                memberID,
+                memberPW,
+                memberPhone,
+                memberEmail,
+                memberMajor,
+                memberGender,
+                studentNum: memberType ? studentNum : null,
+                studentGrade: memberType ? studentGrade : null,
+                studentClass: memberType ? studentClass : null,
+                professorPosition: !memberType ? professorPosition : null,
+            });
+            */
+        }
+    };
+    
+
     return (
         <div
             // action=""
@@ -73,7 +229,7 @@ const MemberJoin = () => {
             <MemberJoinContent>
                 <FormControl>
                     <div>
-                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' />
+                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' value={memberID} onChange={handleIDChange} error={!!errors.memberID} helperText={errors.memberID}/>
                     </div>
                     <div>
                         <TextField
@@ -83,6 +239,10 @@ const MemberJoin = () => {
                             id="memberPW"
                             name="memberPW"
                             placeholder='비밀번호를 입력하세요'
+                            value={memberPW}
+                            onChange={handlePWChange}
+                            error={!!errors.memberPW}
+                            helperText={errors.memberPW}
                             InputProps={{
                                 endAdornment:
                                     <InputAdornment style={{
@@ -102,18 +262,18 @@ const MemberJoin = () => {
                         />
                     </div>
                     <div>
-                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' />
+                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={memberPhone} onChange={handlePhoneChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
                     </div>
 
                     {/* 본인인증 휴대폰 혹은 이메일 선택 후 나머지는 주석처리 (둘 다 가능) */}
                     <FormControl>
                         <JoinAuthArea>
-                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' />
+                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' value={memberEmail} onChange={handleEmailChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
                             <JoinAuthButton>인증하기</JoinAuthButton>
                         </JoinAuthArea>
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl error={!!errors.memberMajor}>
                         <div className='form-item'>
                             <Select
                                 defaultValue={1}
@@ -135,19 +295,22 @@ const MemberJoin = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <FormHelperText>{errors.memberMajor}</FormHelperText>
                         </div>
                     </FormControl>
-                    <FormControl>
+                    <FormControl error={!!errors.memberGender}>
                         <FormLabel id="memberGender">성별</FormLabel>
                         <RadioGroup
                             row
                             aria-labelledby="memberGender"
-                            defaultValue="male"
+                            value={memberGender}
+                            onChange={handleGenderChange}
                             name="memberGender"
                         >
-                            <FormControlLabel value="여성" control={<Radio />} label="여성" />
-                            <FormControlLabel value="남성" control={<Radio />} label="남성" />
+                            <FormControlLabel value="0" control={<Radio />} label="남성" />
+                            <FormControlLabel value="1" control={<Radio />} label="여성" />
                         </RadioGroup>
+                        <FormHelperText>{errors.memberGender}</FormHelperText>
                     </FormControl>
 
                     {/* 학생일 경우 혹은 교수일 경우 선택 */}
@@ -174,9 +337,13 @@ const MemberJoin = () => {
                                         name="studentNum"
                                         placeholder='학번을 입력하세요'
                                         label='학번'
+                                        value={studentNum}
+                                        onChange={handleStudentNumChange}
+                                        error={!!errors.studentNum}
+                                        helperText={errors.studentNum}
                                     />
                                 </FormControl>
-                                <FormControl>
+                                <FormControl error={!!errors.studentGrade}>
                                     <div className='form-item'>
                                         <Select
                                             defaultValue={1}
@@ -193,9 +360,10 @@ const MemberJoin = () => {
                                             <MenuItem value={2}>2학년</MenuItem>
                                             <MenuItem value={3}>3학년</MenuItem>
                                         </Select>
+                                        <FormHelperText>{errors.studentGrade}</FormHelperText>
                                     </div>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl error={!!errors.studentClass}>
                                     <div className='form-item'>
                                         <Select
                                             defaultValue={1}
@@ -212,13 +380,14 @@ const MemberJoin = () => {
                                             <MenuItem value={2}>2반</MenuItem>
                                             <MenuItem value={3}>3반</MenuItem>
                                         </Select>
+                                        <FormHelperText>{errors.studentClass}</FormHelperText>
                                     </div>
                                 </FormControl>
                             </>
                         :
                             <>
                             {/* 교수일 경우 */}
-                                <FormControl>
+                                <FormControl error={!!errors.professorPosition}>
                                     <div className='form-item'>
                                         <Select
                                             defaultValue={1}
@@ -240,12 +409,13 @@ const MemberJoin = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <FormHelperText>{errors.professorPosition}</FormHelperText>
                                     </div>
                                 </FormControl>
                             </>
                     }
                 </FormControl>
-                <JoinButton type='submit'>회원가입</JoinButton>
+                <JoinButton type='submit' onClick={handleSubmit}>회원가입</JoinButton>
             </MemberJoinContent>
         </div>
     )

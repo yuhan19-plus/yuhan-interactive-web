@@ -3,12 +3,15 @@
  * 초기 연결셋팅 : 오자현
  * 시작방법 터미널에 node server.js 입력
  *
+ * 이석재
+ *   - nas의 mysql 컨테이너와 연결 설정 및 회원 라우트 연결
  * */
 const express = require("express");
 const { Server } = require("socket.io");
 const http = require("http");
 const mysql = require("mysql2");
 const cors = require("cors");
+const dbconfig = require('./config');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,10 +28,10 @@ app.use(express.json()); // JSON 파싱 미들웨어
 
 // MySQL 연결 설정
 const mysqlconnection = mysql.createConnection({
-  host: "localhost",
-  user: "tester",
-  password: "1234",
-  database: "test1234",
+  host: dbconfig.host,
+  user: dbconfig.user,
+  password: dbconfig.password,
+  database: dbconfig.database,
 });
 
 // MySQL 연결 체크
@@ -46,6 +49,10 @@ module.exports = mysqlconnection;
 // testdb.js 라우트 가져오기
 const testdbRoutes = require('./models/testdb');
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
+
+// memberdb.js 라우트 가져오기
+const memberdbRoutes = require('./models/memberdb');
+app.use('/member', memberdbRoutes); // 새로운 라우트 설정
 
 // 클라이언트 연결 처리
 io.on("connection", (socket) => {
