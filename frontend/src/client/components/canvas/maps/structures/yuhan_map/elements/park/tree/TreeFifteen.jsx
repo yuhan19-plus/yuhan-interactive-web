@@ -27,7 +27,11 @@ export function TreeFifteen({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[-6,-1.4,2.5]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane007.geometry} material={materials['006400 (Leaf)']} />
         <mesh geometry={nodes.Plane007_1.geometry} material={materials['654321 (Wood)']} />

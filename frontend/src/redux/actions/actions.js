@@ -2,6 +2,11 @@
 
 /* 액션타입 정의영역 - 성준 */
 
+// 캐릭터
+export const MAIN_CHARACTER = 'MAIN_CHARACTER'
+
+// 애니메이션
+
 // 클라이언트 사이드 메뉴
 export const INIT_SIDE_MENU = 'INIT_SIDE_MENU'
 export const SIDE_MENU_CONSULTATION = 'SIDE_MENU_CONSULTATION'
@@ -24,6 +29,11 @@ export const INIT_MODAL = 'INIT_MODAL'
 
 
 /* 액션 생성자 정의영역 - 성준 */
+
+// 캐릭터
+export const mainChar = () => ({
+    type: MAIN_CHARACTER
+})
 
 // 맵
 export const yhMap = () => ({

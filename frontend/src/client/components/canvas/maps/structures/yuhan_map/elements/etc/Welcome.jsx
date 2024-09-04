@@ -21,7 +21,7 @@ const Welcome = () => {
         fontSize: 1,
     }
 
-    const welcomeFloorRef = useBox(() => ({
+    const [welcomeFloorRef] = useBox(() => ({
         args: [200, 16, 230],
         mass: 1,
         type: 'Static',

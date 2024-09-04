@@ -26,7 +26,11 @@ export function Bongsagwan({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0, 0, 1]} rotation={[0,0,0]} scale={[2.59, 1, 4.787]}>
         <mesh geometry={nodes.Text002.geometry} material={materials['DCE759 & Metal (DEVName, Statue).001']} />
         <mesh geometry={nodes.Text002_2.geometry} material={materials['000000 & Metal (C2,T2).001']} />

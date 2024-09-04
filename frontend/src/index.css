@@ -20,7 +20,7 @@ body {
         linear-gradient(rgb(0, 248, 248), transparent),
         linear-gradient(to top left, rgb(0, 248, 200), transparent),
         linear-gradient(to top right, rgb(252, 205, 96), transparent);
-        /* background:black; */
+        /* background: #87CEEB; */
     background-blend-mode: screen;
     font-family: 'HakgyoansimWoojuR';
 }

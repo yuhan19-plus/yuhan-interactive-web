@@ -27,7 +27,11 @@ export function GrassFour({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <mesh geometry={nodes.GrassFour.geometry} material={materials['006400 (Leaf).001']} position={[-0.04, 10.182, -3.66]} rotation={[-Math.PI, 0, -Math.PI]} scale={[4.452, 15, 4.429]} />
     </group>
   )

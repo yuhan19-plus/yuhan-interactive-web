@@ -18,7 +18,7 @@ import { SubParkFloor } from './floor/SubParkFloor'
 const SubPark = () => {
     return (
         <group>
-            <SubParkFloor position={[-360.743, -0.7, 6.593]}/>
+            <SubParkFloor position={[-360.743, -5, 6.593]}/>
             <TreeNine position={[-348.221, 24.792, -26.805]}/>
             <TreeTen position={[-313.936, 17.834, -15.873]}/>
             <TreeEleven position={[-320.533, 27.045, 14.808]} />

@@ -6,6 +6,7 @@ import React from 'react'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
+import { Kiosk } from '../elements/etc/Kiosk'
 
 let title
 

@@ -11,7 +11,7 @@ export function Kiosk({position, ...props}) {
   const [meshRef, api] = useBox(() => ({
     args: [10, 2.5, 26],
     type: 'Static',
-    mass: 1,
+    mass: 100,
     position,
     ...props
   }))
@@ -27,7 +27,11 @@ export function Kiosk({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[0,1,0]} scale={0.766}>
         <mesh geometry={nodes.Empty004.geometry} material={materials['YuhanLogo(B9, Kiosk)']} />
         <mesh geometry={nodes.Empty004_1.geometry} material={materials['D7EFD4 (Kiosk)']} />

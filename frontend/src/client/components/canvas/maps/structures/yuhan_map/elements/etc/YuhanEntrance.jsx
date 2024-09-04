@@ -27,7 +27,11 @@ export function YuhanEntrance({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <mesh geometry={nodes.Enter_L.geometry} material={materials['A2A2A2(B9, Park(Rock),B5-6 Plane)']} position={[0,-1,4]} scale={[8.47, 22.599, 8.47]} />
     </group>
   )

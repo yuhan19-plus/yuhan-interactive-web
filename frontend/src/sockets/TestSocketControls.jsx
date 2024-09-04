@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 export const socket = io("http://localhost:4000");
 

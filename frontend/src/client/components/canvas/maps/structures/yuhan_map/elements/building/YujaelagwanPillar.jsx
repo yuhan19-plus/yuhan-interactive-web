@@ -28,7 +28,11 @@ export function YujaelagwanPillar({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <mesh geometry={nodes.B8Pipe_L.geometry} material={materials['E2E2E2(B1~9(Body,Number))']} position={[0,-1,0]} rotation={[0,0,0]} scale={[4.452, 15, 4.429]} />
     </group>
   )

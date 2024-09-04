@@ -27,7 +27,11 @@ export function GrassSix({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group scale={[4.452, 15, 4.429]}>
         <mesh geometry={nodes.실린더004.geometry} material={materials['0CFF0F(Leaf,Smoking Booth).001']} />
         <mesh geometry={nodes.실린더004_1.geometry} material={materials['006400 (Leaf).001']} />

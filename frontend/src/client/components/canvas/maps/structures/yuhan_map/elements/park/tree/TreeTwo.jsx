@@ -27,7 +27,11 @@ export function TreeTwo({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[74.5, 16, 7.5]} scale={61.994}>
         <mesh geometry={nodes.Plane001.geometry} material={materials['006400 (Leaf)']} />
         <mesh geometry={nodes.Plane001_1.geometry} material={materials['006400 (Leaf)']} />

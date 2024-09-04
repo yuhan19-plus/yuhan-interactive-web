@@ -29,12 +29,12 @@ const AdminIndex = () => {
 
 const AdminContentWrapper = styled.div`
     width: 100%;
-    height: 80%;
+    min-height: 500px;
     margin-top: 40px;
     border-radius: 25px;
     box-shadow:  5px 5px 7px #d9d9d9,
                 -5px -5px 7px #ffffff;
-    padding: 15px;
+    padding: 35px;
 `
 
 export default AdminIndex

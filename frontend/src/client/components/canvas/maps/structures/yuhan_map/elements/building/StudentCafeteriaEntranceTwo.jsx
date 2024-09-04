@@ -26,7 +26,11 @@ export function StudentCafeteriaEntranceTwo({position, ...props}) {
     })
   }, [scene])
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <mesh geometry={nodes.B4Enter2.geometry} material={materials['858585 (B4,B9,B2)']} position={[0,-1.3,0]} rotation={[0,0,0]} scale={[18.7, 4, 39]} />
     </group>
   )

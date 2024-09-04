@@ -27,7 +27,11 @@ export function TreeTen({position, ...props}) {
   }, [scene])
 
   return (
-    <group ref={meshRef}>
+    <group
+      ref={meshRef}
+      onPointerUp={(e) => {
+            onMove(null)
+    }}>
       <group position={[-2,-1.6,-2]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane002.geometry} material={materials['0CFF0F(Leaf,Smoking Booth)']} />
         <mesh geometry={nodes.Plane002_1.geometry} material={materials['654321 (Wood)']} />
