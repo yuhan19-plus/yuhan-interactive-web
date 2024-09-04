@@ -7,8 +7,13 @@
  * - 오브젝트 통합(24/08/23)
  * 이정민 : 프론트엔드 개발
  * - 초기 오브젝트 position 설정 및 오브젝트 물리엔진(24/08/14)
+<<<<<<< HEAD
  * 오자현 : 프론트엔드 개발
  * - 유한TV 셋팅 (24/08/27)
+=======
+ * 오자현 : 오브젝트 추가
+ * - 가로등 position, 물리엔진적용, 그룹화(24/08/28)
+>>>>>>> feature/StreeLamp-hyun
  */
 import React from 'react'
 import Floor from './elements/Floor'
@@ -37,6 +42,7 @@ import TerraceGroup from './elements/TerraceGroup'
 import KioskGroup from './elements/KioskGroup'
 import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
+import StreetLampGroup from './elements/StreetLampGroup'
 
 const YuhanElements = () => {
     return (
@@ -55,6 +61,7 @@ const YuhanElements = () => {
             <TerraceGroup />
             <SmokingGroup />
             <EtcGroup />
+            <StreetLampGroup/>
 
             {/* 인도 */}
             <SideWalk position={[-0.5, -1.5, 0]} />
