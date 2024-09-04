@@ -43,9 +43,6 @@ import StreetLampGroup from './elements/StreetLampGroup'
 const YuhanElements = () => {
     return (
         <>
-            {/* 바닥 셋팅 */}
-            <Floor position={[12, -25, -82.5]} />
-
             {/* 유한대 Welcome */}
             <Welcome />
 
@@ -60,7 +57,7 @@ const YuhanElements = () => {
             <StreetLampGroup/>
 
             {/* 인도 */}
-            <SideWalk position={[-0.5, -1.5, 0]} />
+            <SideWalk position={[-0.5, -6.4, 0]} />
             
             {/* 공원 */}
             <MainPark />

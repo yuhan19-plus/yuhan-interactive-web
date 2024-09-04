@@ -29,13 +29,34 @@ import AdminDeptRec from './admin/components/content/dept_rec/AdminDeptRec'
 import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
 import ErrorPage from './client/components/error/ErrorPage'
 import BoardTest from './client/components/dbtest/BoardTest'
-import { TestSocketControls } from './sockets/TestSocketControls'
+import { useEffect } from 'react'
 
 function App() {
+
+  // 서버 연결 상태를 확인하는 함수
+  const checkServerConnection = async () => {
+    console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
+    try {
+      const response = await fetch('/api/healthcheck'); // 백엔드 서버의 헬스체크 엔드포인트
+      if (!response.ok) {
+        throw new Error('서버 연결에 실패했습니다');
+      }
+      const data = await response.json();
+      console.log('서버와 연결되었습니다:', data.message); // 서버 연결 성공 메시지 출력
+    } catch (error) {
+      console.error('서버 연결 확인 중 오류 발생:', error);
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 서버 연결 상태를 확인
+  useEffect(() => {
+    checkServerConnection();
+  }, []);
+
+
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <TestSocketControls />
         <Routes>
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />

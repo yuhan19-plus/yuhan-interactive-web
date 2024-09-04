@@ -69,7 +69,7 @@ const MemberLogin = () => {
             };
 
             try {
-                const response = await fetch('http://localhost:4000/member/login', {
+                const response = await fetch('/api/member/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -159,7 +159,7 @@ const MemberJoin = () => {
             };
     
             try {
-                const response = await fetch('http://localhost:4000/member/register', {
+                const response = await fetch('/api/member/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

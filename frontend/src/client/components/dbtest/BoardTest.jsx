@@ -27,7 +27,7 @@ const BoardTest = () => {
   // 데이터를 읽어오는 함수
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:4000/testdb"); // 서버에서 데이터를 가져오는 요청
+      const response = await fetch("/api/testdb"); // 서버에서 데이터를 가져오는 요청
       if (!response.ok) {
         throw new Error("데이터를 불러오는데 실패했습니다.");
       }
@@ -47,7 +47,7 @@ const BoardTest = () => {
   const handleAddData = async () => {
     try {
       // fetch API를 사용하여 서버에 POST 요청을 보냄
-      const response = await fetch("http://localhost:4000/testdb", {
+      const response = await fetch("/api/testdb", {
         method: "POST", // HTTP 메서드로 POST를 사용하여 데이터 전송
         headers: { "Content-Type": "application/json" }, // JSON 형식으로 전송할 것을 명시
         body: JSON.stringify(testdata), // 상태 데이터를 JSON 문자열로 변환하여 요청의 본문에 포함
@@ -88,7 +88,7 @@ const BoardTest = () => {
     try {
       // fetch API를 사용하여 서버에 put 요청을 보냄
       const response = await fetch(
-        `http://localhost:4000/testdb/${dataList[index].ID_num}`,
+        `/api/testdb/${dataList[index].ID_num}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" }, // JSON 형식으로 전송할 것을 명시
@@ -115,7 +115,7 @@ const BoardTest = () => {
     const ID_num = dataList[index].ID_num; // 데이터베이스의 실제 ID 값을 가져옴
     try {
       // fetch API를 사용하여 서버에 POST 요청을 보냄
-      const response = await fetch(`http://localhost:4000/testdb/${ID_num}`, {
+      const response = await fetch(`/api/testdb/${ID_num}`, {
         method: "DELETE", // HTTP 메서드로 POST를 사용하여 데이터 전송
         headers: { "Content-Type": "application/json" }, // JSON 형식으로 전송할 것을 명시
       });

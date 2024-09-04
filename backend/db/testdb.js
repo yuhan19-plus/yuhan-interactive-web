@@ -83,7 +83,7 @@ router.get("/testdb", (req, res) => {
           console.error("테이블 검색 중 에러 발생:", err);
           return res.status(500).send("테이블 검색 중 오류가 발생했습니다."); // 500 상태 코드와 함께 오류 메시지 반환
         }
-        console.log("테이블이 검색되었습니다.", results);
+        // console.log("테이블이 검색되었습니다.", results);
         res.json(results); // 클라이언트에게 쿼리 결과를 JSON 형식으로 반환
       });
     }
