@@ -1,13 +1,40 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 
+ * 이석재
+ *   - 로그인 기능 구현완료
  */
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { FormControl, IconButton, InputAdornment, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie';
 import styled from 'styled-components'
 
 const MemberLogin = () => {
+
+    // 텍스트필드 상태 및 관련 메서드
+    const [memberID, setMemberID] = useState('');
+    const [memberPW, setMemberPW] = useState('');
+
+    // 쿠키(세션 쿠키)
+    const [cookies, setCookie] = useCookies(['user']);
+
+   // 쿠키가 존재하면 루트 경로로 리다이렉트
+   useEffect(() => {
+    if (cookies.user) {
+        window.location.href = '/';
+    }
+}, [cookies]);
+
+    const handleIDChange = (event) => {
+        setMemberID(event.target.value);
+    };
+
+    const handlePWChange = (event) => {
+        setMemberPW(event.target.value);
+    };
+
     // 패스워드 상태 및 관련 메서드
     const [showPassword, setShowPassword] = useState(false)
 
@@ -16,6 +43,60 @@ const MemberLogin = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
     };
+
+    // 유효성검사 상태 및 관련 메서드
+    const [errors, setErrors] = useState({ memberID: '', memberPW: '' });
+
+    // 유효성검사 메서드
+    const validate = () => {
+        let tempErrors = {};
+
+        if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
+        if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
+
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
+
+    // 폼 제출 처리 메서드
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
+        if (validate()) {
+            const loginData = {
+                memberID,
+                memberPW,
+            };
+
+            try {
+                const response = await fetch('http://localhost:4000/member/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    setCookie('user', memberID, { path: '/' });
+                    window.location.href = '/'; // 로그인 성공 후 루트 경로로 이동
+                } else {
+                    alert('아이디 혹은 비밀번호가 올바르지 않습니다.');
+                }
+            } catch (error) {
+                console.error('로그인 중 오류 발생:', error);
+                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+            }
+        }
+    };
+
+     // 로그인 페이지에 접근 시 쿠키가 존재하고 로그인 성공이 아닌 경우에만 리다이렉트
+     useEffect(() => {
+        if (cookies.user && !loginSuccess) {
+            window.location.href = '/';
+        }
+    }, cookies);
 
     return (
         <div
@@ -26,7 +107,7 @@ const MemberLogin = () => {
             <MemberJoinContent>
                 <FormControl>
                     <div>
-                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' />
+                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' value={memberID} onChange={handleIDChange} error={!!errors.memberID} helperText={errors.memberID} />
                     </div>
                     <div>
                         <TextField
@@ -36,6 +117,10 @@ const MemberLogin = () => {
                             id="memberPW"
                             name="memberPW"
                             placeholder='비밀번호를 입력하세요'
+                            value={memberPW}
+                            onChange={handlePWChange}
+                            error={!!errors.memberPW}
+                            helperText={errors.memberPW}
                             InputProps={{
                                 endAdornment:
                                     <InputAdornment style={{
@@ -54,7 +139,7 @@ const MemberLogin = () => {
                             }}
                         />
                     </div>
-                    <JoinButton type='submit'>로그인</JoinButton>
+                    <JoinButton type='submit' onClick={handleLogin}>로그인</JoinButton>
                 </FormControl>
             </MemberJoinContent>
         </div>

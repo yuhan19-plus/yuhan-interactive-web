@@ -1,7 +1,9 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 이석재
+ *   - 로그아웃 기능 구현
  */
-import { AdminPanelSettings, Close, Login, Menu } from '@mui/icons-material'
+import { AdminPanelSettings, Close, Login, Logout, Menu } from '@mui/icons-material'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -12,6 +14,7 @@ import MainSideBarMenu from './MainSideBarMenu';
 import DeptSideBarMenu from './DeptSideBarMenu';
 import { adminEnterModal } from '../../../../redux/actions/actions';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 const title = ''
 const SideBar = () => {
 
@@ -35,13 +38,28 @@ const SideBar = () => {
 
     // console.log('sideMenuValue', sideMenuValue)
 
+    // 쿠키(세션 쿠키)
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+    // 로그아웃 메서드
+    const handleLogout = () => {
+        removeCookie('user', { path: '/' }); // 쿠키 삭제
+        alert('로그아웃 되었습니다.');
+    };
+
     return (
         <>
             <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
                 <SideBarHeader>
-                    <div>
-                        <Link to={'/login'}><Login /><p>로그인</p></Link>
-                    </div>
+                {cookies.user ? ( // 쿠키가 존재하면 로그아웃 버튼을 보여줍니다.
+                        <div>
+                            <Link to={'/'} onClick={handleLogout}><Logout /><p>로그아웃</p></Link>
+                        </div>
+                    ) : ( // 쿠키가 없으면 로그인 버튼을 보여줍니다.
+                        <div>
+                            <Link to={'/login'}><Login /><p>로그인</p></Link>
+                        </div>
+                    )}
                     <div>
                         <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
                     </div>
