@@ -56,13 +56,15 @@ const SideBar = () => {
                             <Link to={'/'} onClick={handleLogout}><Logout /><p>로그아웃</p></Link>
                         </div>
                     ) : ( // 쿠키가 없으면 로그인 버튼을 보여줍니다.
+                        <>
                         <div>
                             <Link to={'/login'}><Login /><p>로그인</p></Link>
                         </div>
+                        <div>
+                            <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
+                        </div>
+                        </>
                     )}
-                    <div>
-                        <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
-                    </div>
                     <div>
                         <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
                     </div>
