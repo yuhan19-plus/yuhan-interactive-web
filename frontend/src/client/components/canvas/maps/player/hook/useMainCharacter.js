@@ -69,7 +69,7 @@ export const useMainCharacter = ({position, myChar}) => {
             setTargetPosition(new Vector3(...position))
         }
     }, [position])
-
+ 
     useFrame(({ camera }) => {
         if (!player || !charRef.current || !targetPosition) return
     

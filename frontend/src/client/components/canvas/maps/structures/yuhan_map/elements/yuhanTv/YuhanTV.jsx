@@ -58,7 +58,7 @@ export function YuhanTV({ position, rotation, ...props }) {
 
 
   return (
-    <group ref={groupRef} position={[x, y + 10, z]} rotation={rotation} scale={50}>
+    <group ref={groupRef} position={[x, y + 5, z]} rotation={rotation} scale={50}>
       <mesh>
         <boxGeometry args={[4, 3.4, 0.2]} position={[x, y + 25, z]} />
         <meshPhongMaterial color={0x000000} />

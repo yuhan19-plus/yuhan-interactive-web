@@ -25,7 +25,7 @@ const Welcome = () => {
         args: [200, 16, 230],
         mass: 1,
         type: 'Static',
-        position: [-428, 6, -447],
+        position: [-428, 2.5, -447],
         rotation:[0, 0, 0]
     }))
 

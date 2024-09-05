@@ -14,7 +14,7 @@ const TreeGroup = () => {
             <TreeOne position={[-91.358, 0.475, -7.105]} />
             <TreeOne position={[-3.355, 0.438, -7.105]} />
             <TreeOne position={[112.294, 0.438, -7.105]} />
-            <FlowerBed position={[69.012, -8, -324.727]} rotation={[0, Math.PI / 2, 0]} />
+            <FlowerBed position={[69.012, -2, -324.727]} rotation={[0, Math.PI / 2, 0]} />
 
             {/* 7호관 뒷 숲 */}
             <BigForest position={[-465.7, 34.7, 182]} />

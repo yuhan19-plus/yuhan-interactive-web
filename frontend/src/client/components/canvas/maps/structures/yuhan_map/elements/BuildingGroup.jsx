@@ -51,8 +51,8 @@ const BuildingGroup = () => {
             
             {/* 5호관 */}
             <Nanumgwan position={[13.651, 73, 121.584]} rotation={[0, 1.571, 0]} />
-            <NanumgwanLeftPillar position={[83, 69, 163]} rotation={[0, 1.571, 0]} />
-            <NanumgwanRightPillar position={[-67.348, 74, 160.355]} rotation={[0, 1.571, 0]} />
+            <NanumgwanLeftPillar position={[83, 78, 163]} rotation={[0, 1.571, 0]} />
+            <NanumgwanRightPillar position={[-67.348, 78, 160.355]} rotation={[0, 1.571, 0]} />
             
             {/* 56호관 */}
             <B5_B6 position={[128.273, 82, 199.836]} rotation={[0, 0, 0]} />

@@ -35,7 +35,7 @@ export function Street_lamp({ position, ...props }) {
 
   return (
     <group ref={meshRef} scale={4}>
-      <group position={[0, 1.66, 0]} scale={[0.25, 5, 0.25]}>
+      <group position={[0, 0.45, 0]} scale={[0.25, 5, 0.25]}>
         <mesh geometry={nodes.Cylinder001_1.geometry} material={materials.main} />
         <mesh geometry={nodes.Cylinder001_2.geometry} material={materials.white} />
         {(hours > 17 || hours < 7) && ( //18시부터 6시까지 불이 킨다.

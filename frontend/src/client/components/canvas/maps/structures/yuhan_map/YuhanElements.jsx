@@ -67,10 +67,10 @@ const YuhanElements = () => {
             <YuhanTV position={[-150, 75, -557.49]} rotation={[0,0,0]}/>
 
             {/* 투명벽 셋팅 */}
-            <Wall position={[12, 51, -577.5]} />
-            <Wall position={[12, 51, 412.5]} />
-            <Wall position={[-543.5, 51, -90]} rotation={[0,  Math.PI / 2, 0]} />
-            <Wall position={[566.5, 51, -90]} rotation={[0,  Math.PI / 2, 0]} />
+            <Wall position={[12, 46, -577.5]} />
+            <Wall position={[12, 46, 412.5]} />
+            <Wall position={[-543.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} />
+            <Wall position={[566.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} />
         </>
     )
 }
