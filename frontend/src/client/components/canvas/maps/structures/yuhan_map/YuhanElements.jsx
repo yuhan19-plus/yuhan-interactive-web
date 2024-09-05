@@ -64,7 +64,7 @@ const YuhanElements = () => {
             <SubPark />
 
             {/* 유한TV */}
-            <YuhanTV position={[-150, 75, -557.49]} rotation={[0,0,0]}/>
+            <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
 
             {/* 투명벽 셋팅 */}
             <Wall position={[12, 46, -577.5]} />

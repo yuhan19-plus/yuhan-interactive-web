@@ -16,10 +16,10 @@ export function YuhanTV({ position, rotation, ...props }) {
   const z = position[2];
 
   const [_, api] = useBox(() => ({
-    args: [200, 170, 11],
+    args: [200, 150, 11],
     type: 'Static',
     mass: 1,
-    position: [x, y + 10, z+0.495],
+    position: [x, y , z+0.495],
     ...props
   }))
 
@@ -41,7 +41,7 @@ export function YuhanTV({ position, rotation, ...props }) {
     texture.magFilter = THREE.LinearFilter;
 
     // TV 화면 메쉬 생성
-    const screenGeometry = new THREE.PlaneGeometry(3.8, 2.8);
+    const screenGeometry = new THREE.PlaneGeometry(3.8, 2);
     const screenMaterial = new THREE.MeshBasicMaterial({ map: texture });
     const screenMesh = new THREE.Mesh(screenGeometry, screenMaterial);
     screenMesh.position.z = 0.11;
@@ -60,7 +60,7 @@ export function YuhanTV({ position, rotation, ...props }) {
   return (
     <group ref={groupRef} position={[x, y + 5, z]} rotation={rotation} scale={50}>
       <mesh>
-        <boxGeometry args={[4, 3.4, 0.2]} position={[x, y + 25, z]} />
+        <boxGeometry args={[4, 2.6, 0.2]} position={[x, y + 25, z]} />
         <meshPhongMaterial color={0x000000} />
       </mesh>
     </group>
