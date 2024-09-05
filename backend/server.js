@@ -23,10 +23,15 @@ app.use(express.urlencoded({ limit: '50mb', extended: true })); // URL 인코딩
 
 // MySQL 연결 설정
 const mysqlconnection = mysql.createConnection({
-  host: dbconfig.host,
-  user: dbconfig.user,
-  password: dbconfig.password,
-  database: dbconfig.database,
+  // 로컬에서 list 실험용 push되어잇으면 삭제하기
+  host: "localhost",
+  user: "tester",
+  password: "1234",
+  database: "test1234",
+  // host: dbconfig.host,
+  // user: dbconfig.user,
+  // password: dbconfig.password,
+  // database: dbconfig.database,
 });
 
 // MySQL 연결 체크
@@ -43,8 +48,8 @@ module.exports = mysqlconnection;
 
 const testdbRoutes = require('./db/testdb'); 
 const memberRoutes = require('./db/memberdb');
-// const testdbRoutes2 = require('./db/BoardTable'); // db/BoardTable의 라우트 가져오기
-// app.use('/board', testdbRoutes2); // testdb2 라우트를 '/board' 경로로 사용
+const boardRoutes = require('./db/BoardTable'); // db/BoardTable의 라우트 가져오기
+app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/member', memberRoutes);
 

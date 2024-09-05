@@ -7,6 +7,7 @@ import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
 import { Kiosk } from '../elements/etc/Kiosk'
+import SideBoard from '../../../../../../../common/components/board/SideBoard'
 
 let title
 
@@ -16,19 +17,22 @@ const SideMenuLayout = (props) => {
 
     title = pageName
 
-    if(title === 'consultation') title = '상담신청'
-    else if(title === 'board') title = '유한게시판'
-    else if(title === 'food') title = '오늘의 메뉴'
-    else if(title === 'deptRec') title = '전공추천'
+    if (title === 'consultation') title = '상담신청'
+    else if (title === 'board') title = '유한게시판'
+    else if (title === 'food') title = '오늘의 메뉴'
+    else if (title === 'deptRec') title = '전공추천'
 
     // console.log(title)
 
     return (
         <>
-            {value && 
+            {value &&
                 <>
                     <DetailHeader title={title} />
                     <DetailContent>
+                        {title === '유한게시판' &&
+                            <SideBoard /> //여기가 게시판 내용물이 들어갈 곳
+                        }
                         {/* 내용작성 */}
                     </DetailContent>
                     <DetailFooter />
