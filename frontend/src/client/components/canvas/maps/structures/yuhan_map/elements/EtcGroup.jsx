@@ -19,7 +19,7 @@ const EtcGroup = () => {
 
             {/* 동상 */}
             <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12} />
-            <Statue position={[-480, 26, -500]} rotation={[0, Math.PI / 2.7, 0]} scale={26} />
+            <Statue position={[-480, 26+4, -500]} rotation={[0, Math.PI / 2.7, 0]} scale={26} />
 
             {/* 철조망 */}
             <Wire_Netting position={[50.639, 6.42, 395.918]} rotation={[Math.PI / 2, 0, 0]} />
