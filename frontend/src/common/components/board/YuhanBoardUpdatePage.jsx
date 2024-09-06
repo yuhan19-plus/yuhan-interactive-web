@@ -26,8 +26,6 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         board_comments_count: 0,
         files: [],
     });
-    // 첨부파일id변수
-    let attachment_id = 0;
     // attachment 테이블의 데이터를 관리하기 위한 상태
     const [attachments, setAttachments] = useState([]);
     // 파일 입력요소 접근용 ref
@@ -86,9 +84,9 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         }
     };
 
-    // 업데이트시키는 핵심부분 저장과 비슷하게 하자고
+    // 게시판업데이트
     const handleUpdateData = async () => {
-        console.log("수정버튼눌림")
+        // console.log("수정버튼눌림")
         try {
             const response = await fetch(`/api/board/update/${board_id}`, {
                 method: "PUT",
@@ -102,14 +100,12 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
             if (!response.ok) {
                 throw new Error("데이터를 수정하는 데 실패했습니다.");
             }
-
+            onCancel();
             console.log("수정 성공");
         } catch (error) {
             console.error("데이터 수정 중 에러 발생", error);
         }
 
-        // 수정 후 리스트로 귀환
-        onCancel();
     }
 
     const handleInputChange = (e) => {
@@ -117,19 +113,23 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         setBoardData({ ...boardData, [name]: value });
     };
 
-    // 지금해결하려는 것 files에 기존파일, 수정파일이 같이 올라가서 데이터가 많이 오고가는 현상해결,
-    // 일단 프론트에서 보내는 files배열에 기존파일의 index부분에 수정된 파일이 들어가는 것
-    // 그냥 초기화시키는 과정에서 files의 모든 내용이 그냥 날려버리는 것이 문제 files의 특정 index만 초기화 해야함
-    let attachmentId = 0;
+    // 기존파일의 attachment_id를 받아와 관리하는 상태
+    const [attachmentId, setAttachmentId] = useState(0)
+    // boardData의 files배열의 수정할 인덱스를 관리하는 상태
+    const [fileIndex, setFileIndex] = useState(0)
+    // 기존파일의 데이터를 보관하는 상태
+    const [backupFile, setBackupFile] = useState([])
 
     const handleAttachmentEdit = (attachment_id, index) => {
         // console.log("첨부파일 수정 버튼이 눌림, 파일 id:", attachment_id);
-        console.log("boardData.files[index].attachment_id", boardData.files[index].attachment_id)
+        // console.log("boardData.files[index].attachment_id", boardData.files[index].attachment_id)
+        // console.log("fileIndex(index):",index);
 
-        if (attachment_id = boardData.files[index].attachment_id) {
+        if (attachment_id === boardData.files[index].attachment_id) {
             // 배열 복사 후 해당 인덱스의 파일 정보를 빈 배열로 초기화
             setBoardData((prevState) => {
                 const updatedFiles = [...prevState.files]; // 파일 배열 전체 복사
+                setBackupFile(updatedFiles);
                 updatedFiles[index] = {}; // 해당 인덱스의 파일을 빈 객체로 초기화
 
                 return {
@@ -139,8 +139,12 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
             });
         }
 
-        attachmentId = attachment_id;
+        setFileIndex(index); // boardData의 files의 배열의 인덱스값을 설정 파일처리에서 해당 인덱스에 집어넣기 위함
+        setAttachmentId(attachment_id);
+        // console.log("attachmentId", attachmentId)
+
         // 파일 선택기 트리거
+        // input태그의 type="file"을 이용
         if (fileInputRef.current) {
             fileInputRef.current.click(); // 파일 선택기 열기
         }
@@ -148,9 +152,11 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
     // 파일이 선택되었을 때 처리
     const handleFileChange = (e) => {
+        // console.log("파일변경 진입 fileIndex:", fileIndex)
         const file = e.target.files[0];
         if (!file) return;
 
+        // 파일을 base64로 읽기
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
@@ -162,14 +168,29 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                 file_size: file.size,
                 file_type: file.type,
             };
+            // console.log("uploadedFile", uploadedFile)
+// 현문제 같은 파일이 존재하면 막으려는 시도 중 
+            // 배열을 순회하며 동일한 파일이 있는지 확인
+            const isDuplicate = boardData.files.some((existingFile) => {
+                console.log("isDuplicate진입")
+                return (
+                    existingFile.file_name === uploadedFile.file_name &&
+                    existingFile.file_size === uploadedFile.file_size
+                );
+            });
 
+            if (isDuplicate) {
+                // 중복된 파일이 있으면 업로드를 막음
+                console.log("이미 동일한 파일이 존재합니다. 업로드할 수 없습니다.");
+                return;
+            }
             // files 배열의 해당 인덱스를 새 파일로 교체
             setBoardData((prevState) => {
                 const updatedFiles = [...prevState.files]; // 배열 복사
-                const index = prevState.files.findIndex((file) => file.attachment_id === attachmentId); // 교체할 파일 인덱스 찾기
 
-                if (index !== -1) {
-                    updatedFiles[index] = uploadedFile; // 기존 파일 대체
+
+                if (fileIndex !== -1) {
+                    updatedFiles[fileIndex] = uploadedFile; // 기존 파일 대체
                 } else {
                     updatedFiles.push(uploadedFile); // 만약 attachment_id가 없으면 새로 추가
                 }
@@ -180,9 +201,12 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                 };
             });
         };
-        console.log("변경된 첨부파일", boardData.files)
+        // console.log("변경된 첨부파일", boardData.files)
     };
 
+    // useEffect(() => {
+    //     console.log("첨부파일", boardData.files)
+    // },[boardData.files])
 
     useEffect(() => {
         fetchData();

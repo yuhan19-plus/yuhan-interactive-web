@@ -4,9 +4,9 @@
 
 import React, { useState } from 'react';
 import YuhanBoardInsert from './YuhanBoardInsert';
-import BoardList from './BoardList';
 import YuhanBoardPage from './YuhanBoardPage';
 import YuhanBoardUpdatePage from './YuhanBoardUpdatePage';
+import SideBoardList from './SideBoardList';
 
 const SideBoard = () => {
     const [currentView, setCurrentView] = useState('list');
@@ -18,13 +18,13 @@ const SideBoard = () => {
 
     const handleSelectItem = (boardId) => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        console.log(boardId)
+        // console.log(boardId)
         setCurrentView('page'); // 페이지 보기로 전환
     }; 
     
     const handleSelectUpdateItem = (boardId) => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        console.log(boardId)
+        // console.log(boardId)
         setCurrentView('update'); // 업데이트 페이지 보기로 전환
     };
 
@@ -41,8 +41,7 @@ const SideBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} />
             ) : (
-                // <BoardList mode="side" onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} onSelectUpdateItem={handleSelectUpdateItem} />
-                <BoardList mode="side" onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
+                <SideBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}
         </>
     );

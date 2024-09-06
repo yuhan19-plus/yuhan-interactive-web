@@ -2,19 +2,24 @@
  * 게시판 글작성페이지
  *  임시로 여기서 test하기 위해서 배치해둠 실제로는 따로 폴더 뽑아서 해야할지도
  */
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
+import { useCookies } from "react-cookie";
 
 const YuhanBoardInsert = ({ onCancel }) => {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [boardData, setBoardData] = useState({
         board_title: "",
         board_content: "",
-        board_writer: "testmain", // 세션에서 user_id 받아서 처리 수정
+        board_writer: cookies.user, // 세션쿠키에서 user를 받아서 작성자로 입력
         files: []  // 파일 데이터를 저장하는 배열
     });
 
+    // console.log("cookies",cookies)
+
+    // 파일드랍
     const onDrop = useCallback((acceptedFiles) => {
         // 1. acceptedFiles는 사용자가 드롭한 파일 목록
         const files = acceptedFiles.map((file) => {
@@ -70,7 +75,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             const result = await response.text();
             alert(result);
             setBoardData({ board_title: "", board_content: "", board_writer: "실험가", files: [] });
-            // 게시물 등록 완료 후 BoardList로 돌아가기
+            // 게시물 등록 완료 후 게시판목록으로 돌아가기
             onCancel();
         } catch (error) {
             console.error("Error adding data:", error);

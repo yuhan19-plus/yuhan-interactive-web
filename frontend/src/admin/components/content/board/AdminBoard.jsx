@@ -4,10 +4,10 @@
 
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import BoardList from '../../../../common/components/board/BoardList'
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
+import AdminBoardList from '../../../../common/components/board/AdminBoardList';
 
 
 // 첨부파일관리, 댓글관리 추가필요
@@ -47,8 +47,8 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} />
             ) : (
-                // <BoardList mode="side" onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} onSelectUpdateItem={handleSelectUpdateItem} />
-                <BoardList mode="admin" onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
+                
+                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}
         </>
     );
