@@ -166,7 +166,7 @@ router.get("/:board_id", (req, res) => {
 // 추가아이디어 관리자가 게시판을 다시 복구하게 하는 기능
 router.delete("/delete/:board_id", (req, res) => {
     const board_id = req.params.board_id; // URL에서 board_id 추출
-    console.log("삭제요청 들어옴 board_id:", board_id)
+    // console.log("삭제요청 들어옴 board_id:", board_id)
     const deleteQuery = "UPDATE board set board_status = 'delete' where board_id = ?"
 
     mysqlconnection.query(deleteQuery, [board_id], (err, results) => {
@@ -189,37 +189,37 @@ router.put("/update/:board_id", (req, res) => {
     const updateAttachmentQuery = `UPDATE attachment SET file_name = ? , file_data = ?, file_size = ?, file_type = ? where attachment_id = ?`;
 
 
-    // mysqlconnection.query(updateBoardQuery, [board_title, board_content, board_id], (err, updateResult) => {
-    //     if (err) {
-    //         console.error("수정 중 오류 발생")
-    //         return res.status(500).send("게시물 수정 중 오류발생");
-    //     }
+    mysqlconnection.query(updateBoardQuery, [board_title, board_content, board_id], (err, updateResult) => {
+        if (err) {
+            console.error("수정 중 오류 발생")
+            return res.status(500).send("게시물 수정 중 오류발생");
+        }
 
-    //     // 첨부파일이 있는 경우
-    //     if (files && files.length > 0 && board_id) {
-    //         // 파일 업데이트를 위한 Promise 배열 생성
+        // 첨부파일이 있는 경우
+        if (files && files.length > 0 && board_id) {
+            // 파일 업데이트를 위한 Promise 배열 생성
 
-    //         // 문제상황 파일이 4개가 오간다. 수정된파일의 attachment_id를 포함해서 보내게 처리하면
-    //         for (i = 0; i < files.length; i++) {
-    //             const { attachment_id, file_name, file_data, file_size, file_type } = files[i];
-    //             const fileBuffer = Buffer.from(file_data, 'base64');
-    //             //문제는 새롭게 변경할 파일의 attachment_id는 당연히 없으니 attachment_id로 나온다.
+            // 문제상황 파일이 4개가 오간다. 수정된파일의 attachment_id를 포함해서 보내게 처리하면
+            for (i = 0; i < files.length; i++) {
+                const { attachment_id, file_name, file_data, file_size, file_type } = files[i];
+                const fileBuffer = Buffer.from(file_data, 'base64');
+                //문제는 새롭게 변경할 파일의 attachment_id는 당연히 없으니 attachment_id로 나온다.
 
-    //             mysqlconnection.query(updateAttachmentQuery, [file_name, fileBuffer, file_size, file_type, attachment_id], (err) => {
-    //                 console.log("쿼리실행됨 파일 이름", file_name, " 첨부파일id", attachment_id)
-    //                 if (err) {
-    //                     console.error("첨부파일 수정 중 에러 발생:", err);
-    //                     return reject(err);
-    //                 }
-    //             })
+                mysqlconnection.query(updateAttachmentQuery, [file_name, fileBuffer, file_size, file_type, attachment_id], (err) => {
+                    console.log("쿼리실행됨 파일 이름", file_name, " 첨부파일id", attachment_id)
+                    if (err) {
+                        console.error("첨부파일 수정 중 에러 발생:", err);
+                        return reject(err);
+                    }
+                })
 
-    //         }
-    //     } else {
-    //         // 파일이 없는 경우에도 성공적으로 게시물만 수정되었다고 응답
-    //         res.status(200).send("게시물이 성공적으로 수정되었습니다.");
-    //     }
+            }
+        } else {
+            // 파일이 없는 경우에도 성공적으로 게시물만 수정되었다고 응답
+            res.status(200).send("게시물이 성공적으로 수정되었습니다.");
+        }
 
-    // })
+    })
 
 })
 
