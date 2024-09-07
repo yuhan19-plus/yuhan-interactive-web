@@ -29,7 +29,7 @@ export function Street_lamp({ position, ...props }) {
         obj.receiveShadow = true
       }
     })
-    console.log("현재시간", hours);
+    // console.log("현재시간", hours);
     // console.log('위치', position)
   }, [scene])
 

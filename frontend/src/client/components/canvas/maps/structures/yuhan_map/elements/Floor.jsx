@@ -3,8 +3,12 @@
  */
 import { useBox } from '@react-three/cannon'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Floor = ({onMove, ...props}) => {
+    const btnValue = useSelector((state) => state.btnMenu)
+    const aerialViewState = btnValue.value
+
     const [meshRef] = useBox(
         () => ({ args: [1080, 50, 960], mass: 0, type: 'Static', rotation:[0, 0, 0], ...props})
     )
@@ -15,10 +19,12 @@ const Floor = ({onMove, ...props}) => {
             receiveShadow
             onPoint
             onPointerUp={(e) => {
-                const currentPosition = [e.point.x, 0.3, e.point.z]
-                console.log('currentPosition', currentPosition) // 확인을 위한 출력
-                if (onMove) {
-                    onMove(currentPosition)  // 클릭한 좌표를 전달
+                if(!aerialViewState) {
+                    const currentPosition = [e.point.x, 0.3, e.point.z]
+                    console.log('currentPosition', currentPosition) // 확인을 위한 출력
+                    if (onMove) {
+                        onMove(currentPosition)  // 클릭한 좌표를 전달
+                    }
                 }
             }}
             {...props}

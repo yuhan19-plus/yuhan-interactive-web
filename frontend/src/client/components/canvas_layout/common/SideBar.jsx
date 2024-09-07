@@ -20,14 +20,14 @@ const SideBar = () => {
 
     const location = useLocation()
     const currentPath = location.pathname
-    console.log('currentPath', currentPath) // 현재 경로 출력
+    // console.log('currentPath', currentPath) // 현재 경로 출력
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const currentMap = useSelector((state) => state.groundMap)
     const currentMapName = currentMap.mapName
 
-    console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
+    // console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
     
     const dispatch = useDispatch()
     const handleShowAdminEnterModal = () => {

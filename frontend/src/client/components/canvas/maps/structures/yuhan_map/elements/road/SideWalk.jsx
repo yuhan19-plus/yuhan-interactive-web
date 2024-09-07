@@ -1,5 +1,5 @@
 /**
- * 물리엔진 적용 : 이정민
+ * 
  * position 및 scale 등 수정 : 임성준
  */
 import { useBox } from '@react-three/cannon'

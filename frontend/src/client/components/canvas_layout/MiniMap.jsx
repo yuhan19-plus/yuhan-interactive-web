@@ -21,6 +21,7 @@ const MiniMapWrapper = styled.div`
     height: 300px;
     background-color: #00000055;
     border-radius: 7px 7px 0px 7px;
+    border: 5px solid #0F275C;
 `
 
 const ClientPointer = styled.div`

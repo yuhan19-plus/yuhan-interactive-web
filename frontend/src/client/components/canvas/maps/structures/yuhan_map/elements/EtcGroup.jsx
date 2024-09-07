@@ -5,6 +5,7 @@ import { Statue } from './etc/Statue'
 import { Wire_Netting } from './etc/Wire_Netting'
 import { BusStationOne } from './etc/BusStationOne'
 import { BusStationTwo } from './etc/BusStationTwo'
+import EventArea from './etc/EventArea'
 
 const EtcGroup = () => {
     return (
@@ -26,6 +27,7 @@ const EtcGroup = () => {
 
             {/* 버스정류장 */}
             <BusStationOne position={[271.453, 9.959, -163.289]}/>
+            {/* <EventArea position={[287, -4, -163.289]} /> */}
             <BusStationTwo position={[526.536, 9.408, -235.881]} rotation={[Math.PI, 0, Math.PI]}/>
         </>
     )

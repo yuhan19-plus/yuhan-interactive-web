@@ -12,22 +12,15 @@
  * - 가로등 position, 그룹화(24/08/28)
  */
 import React from 'react'
-import Floor from './elements/Floor'
 
 // 공원
 import MainPark from './elements/park/MainPark'
 import SubPark from './elements/park/SubPark'
 
 // etc
-import { Wire_Netting } from './elements/etc/Wire_Netting'
-import { BusStationOne } from './elements/etc/BusStationOne'
-import { BusStationTwo } from './elements/etc/BusStationTwo'
 import Wall from './elements/testObject/Wall'
-import { BasketballHoop } from './elements/etc/BasketballHoop'
 import Welcome from './elements/etc/Welcome'
-import { Statue } from './elements/etc/Statue'
 import { SideWalk } from './elements/road/SideWalk'
-import { YuhanEntrance } from './elements/etc/YuhanEntrance'
 import { YuhanTV } from './elements/yuhanTv/YuhanTV'
 
 // 그룹화

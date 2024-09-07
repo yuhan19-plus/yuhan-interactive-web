@@ -27,6 +27,9 @@ export const YUHAN_LIFE_BIO_MAP = 'YUHAN_LIFE_BIO_MAP'
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
 export const INIT_MODAL = 'INIT_MODAL'
 
+// 항공뷰
+export const AERIAL_VIEW = 'AERIAL_VIEW'
+
 
 /* 액션 생성자 정의영역 - 성준 */
 
@@ -78,4 +81,9 @@ export const initModal = () => ({
 })
 export const adminEnterModal = () => ({
     type: ADMIN_ENTER_MODAL
+})
+
+// 항공뷰
+export const aerialView = () => ({
+    type: AERIAL_VIEW
 })
