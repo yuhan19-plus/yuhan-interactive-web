@@ -30,7 +30,6 @@ const MainCanvas = () => {
                     position: cameraPosition
                 }}
             >
-                {/* <Clouds position={[0, 300, 0]} /> */}
                 <ambientLight name="ambientLight" intensity={0.5} />
                 {/* <directionalLight
                     castShadow

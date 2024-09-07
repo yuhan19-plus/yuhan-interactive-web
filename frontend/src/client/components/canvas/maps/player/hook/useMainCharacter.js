@@ -1,3 +1,9 @@
+/** 임성준
+ * 캐릭터 이동 기능
+ * 카메라 설정
+ * 캐릭터 애니메이션 설정
+ */
+
 import { useGLTF } from "@react-three/drei"
 import { useFrame, useGraph, useThree } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -211,7 +217,6 @@ export const useMainCharacter = ({position, myChar}) => {
                         }
                 }
                 if(currentPosition.x <= -270) {
-                    // console.log('??')
                     handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
                     if((currentPosition.x <= -289 && currentPosition.x >= -309) &&
                         (currentPosition.z <= -65 && currentPosition.z >= -85)) {
