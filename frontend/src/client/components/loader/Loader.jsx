@@ -3,26 +3,24 @@
  * 기능구현 : 오자현
  */
 import { Canvas } from '@react-three/fiber';
-import { useProgress} from '@react-three/drei';
 import React from 'react';
 import styled from 'styled-components';
-import { Bus } from './testObject/Bus';
+import { LoadingAnimation } from './loadingObject/Loading';
 
-const Loader = () => {
-  const { progress } = useProgress();
+const Loader = ({ progress }) => {
   return (
     <LoaderLayout>
       {/* 3D 모델을 렌더링할 Canvas */}
       <CanvasWrapper>
-        <Canvas camera={{ position: [0, 0, 5] }}> {/* 카메라 위치 조정 */}
-            <ambientLight intensity={0.7} /> {/* 조명 강도 증가 */}
-            <Bus position={[0, -0.5, 0]} scale={0.2} /> 
+        <Canvas camera={{ position: [0, 4, 15] }}> 
+          <ambientLight intensity={2.5} /> 
+          <LoadingAnimation />
         </Canvas>
       </CanvasWrapper>
 
       {/* 로딩 바 */}
       <Progressing>
-        <Bar width={progress}>Loading {progress.toFixed(2)}%</Bar>
+        <Bar width={progress}>Loading {progress.toFixed(0)}%</Bar>
       </Progressing>
     </LoaderLayout>
   );
@@ -33,7 +31,7 @@ export default Loader;
 const LoaderLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: yellowgreen;//#0f275c
+  background-color:#56bbb6;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,33 +41,32 @@ const LoaderLayout = styled.div`
 
 const CanvasWrapper = styled.div`
   width: 100%;
-  height: 50%; /* 캔버스가 로딩 바 위에 적절히 배치되도록 크기 조정 */
+  height: 70%; 
   position: absolute;
-  top: 20%; /* 캔버스가 화면 중앙 위쪽에 오도록 배치 */
+  top: 10%; 
 `;
-
 const Progressing = styled.div`
-  width: 50%;
-  max-width: 400px;
-  height: 25px;
+  width: 60%; /* 폭을 키움 */
+  max-width: 500px; /* 최대 폭을 키움 */
+  height: 30px; /* 높이를 키움 */
   background-color: white;
-  border-radius: 12.5px;
+  border-radius: 15px; /* 높이에 맞춰 둥글게 */
   overflow: hidden;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
-  margin-top: 20px;
+  margin-top: 25vh;
 `;
 
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
   background-color: yellow;
-  border-radius: 12.5px 0 0 12.5px;
+  border-radius: 15px 0 0 15px; /* 높이에 맞춰 둥글게 */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 16px; /* 폰트 크기도 살짝 키움 */
   font-weight: bold;
   color: #0f275c;
   transition: width 0.3s ease;
