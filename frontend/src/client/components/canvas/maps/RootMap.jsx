@@ -1,4 +1,4 @@
-/** 파일 생성자 : 임성준
+/** 작성자 : 임성준
  */
 import React, { useEffect, useState } from 'react'
 import YuhanElements from './structures/yuhan_map/YuhanElements'
@@ -12,8 +12,9 @@ const RootMap = () => {
     const dispatch = useDispatch()
     // console.log('myChar.name', myChar.name)
 
-    const initialPosition = [0, 0, 0] // 초기 위치
+    const initialPosition = [280, 0, -355] // 초기 위치
     const [targetPosition, setTargetPosition] = useState(initialPosition)
+    // console.log(targetPosition)
 
     useEffect(() => {
         dispatch(mainChar())

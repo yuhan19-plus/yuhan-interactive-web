@@ -41,7 +41,7 @@ const DetailFooterLayout = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 7px 15px 7px;
+    padding: 20px 7px 20px 7px;
 `
 
 const DetailFooterLogo = styled.div`

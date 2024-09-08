@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import SideMenuLayout from '../canvas/maps/structures/yuhan_map/3dUIs/SideMenuLayout'
 import MiniMap from './MiniMap'
 import AdminEnterModal from '../canvas/maps/structures/yuhan_map/3dUIs/modal/AdminEnterModal'
+import BtnMenuGroup from './BtnMenuGroup'
 
 const CanvasLayout = ({ children }) => {
     // children : 학교맵
@@ -25,11 +26,11 @@ const CanvasLayout = ({ children }) => {
 
     // console.log('currentMapName', currentMapName)
 
-    console.log('sideMenuValue', currentSideMenuValue)
-    console.log('sideMenuName', currentSideMenuName)
+    // console.log('sideMenuValue', currentSideMenuValue)
+    // console.log('sideMenuName', currentSideMenuName)
     
-    console.log('currentModalValue', currentModalValue)
-    console.log('currentModalName', currentModalName)
+    // console.log('currentModalValue', currentModalValue)
+    // console.log('currentModalName', currentModalName)
 
     return (
         <>
@@ -38,6 +39,7 @@ const CanvasLayout = ({ children }) => {
                 <>
                     <SideBar />
                     <MiniMap />
+                    <BtnMenuGroup />
                     {/* {
                         currentMapName === 'yh_map' &&
                             <MiniMap />

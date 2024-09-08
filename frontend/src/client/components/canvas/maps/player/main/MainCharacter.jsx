@@ -7,7 +7,7 @@
 
   export function MainCharacter({ myChar, position }) {
     // 위치와 캐릭터 객체 로그 확인
-    console.log(position)
+    // console.log(position)
 
     // useMainCharacter 훅을 통해 캐릭터 상태와 물리적 몸체 참조 가져오기
     const { nodes, materials, charRef } = useMainCharacter({ position, myChar })
@@ -16,7 +16,6 @@
       <group ref={charRef}>
         <group name="Scene">
             <group name="MainCharacter" scale={1.2}>
-              {/* 캐릭터의 각 부위 */}
               <primitive object={nodes.Hip} />
               <primitive object={nodes.Thigh_L} />
               <primitive object={nodes.Thigh_R} />

@@ -18,14 +18,14 @@ export const PROFESSOR_POSITION = [
     '조교'
 ]
 
-// 컴소과 경로
+// 컴소과 경로 - 임성준
 export const CSW_PATH = [
     'https://cse.yuhan.ac.kr/ibuilder.do?menu_idx=1021',
     'https://cse.yuhan.ac.kr/bbs/data/list.do?menu_idx=1032',
     'https://cse.yuhan.ac.kr/bbs/data/list.do?menu_idx=1036'
 ]
 
-// 산업디자인과 경로
+// 산업디자인과 경로 - 임성준
 export const ID_PATH = [
     'https://id06.yuhan.ac.kr/ibuilder.do?menu_idx=1290',
     'https://id06.yuhan.ac.kr/bbs/data/list.do?menu_idx=630',
@@ -33,7 +33,7 @@ export const ID_PATH = [
     'https://id06.yuhan.ac.kr/bbs/data/list.do?menu_idx=642'
 ]
 
-// 식품영양학과 경로
+// 식품영양학과 경로 - 임성준
 export const FN_PATH = [
     'https://fn.yuhan.ac.kr/ibuilder.do?menu_idx=1353',
     'https://fn.yuhan.ac.kr/bbs/data/list.do?menu_idx=856',
@@ -41,7 +41,7 @@ export const FN_PATH = [
     'https://fn.yuhan.ac.kr/bbs/data/list.do?menu_idx=895'
 ]
 
-// 유한생명바이오학과 경로
+// 유한생명바이오학과 경로 - 임성준
 export const BIO_PATH = [
     'https://bio.yuhan.ac.kr/ibuilder.do?menu_idx=6849',
     'https://bio.yuhan.ac.kr/couresChart.do?menu_idx=6852',

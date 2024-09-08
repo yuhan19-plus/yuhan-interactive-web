@@ -7,7 +7,6 @@ import React from 'react'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
-import { Kiosk } from '../elements/etc/Kiosk'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
 
 
@@ -47,6 +46,7 @@ const SideMenuLayout = (props) => {
 const DetailContent = styled.div`
     width: 100%;
     height: 65vh;
+    overflow-y: auto;
     background-color: #ffffffdd;
 `
 

@@ -4,21 +4,15 @@
  */
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, StatsGl } from '@react-three/drei'
 import Light from './helper/Light'
 import { Debug, Physics } from '@react-three/cannon'
 import RootMap from './maps/RootMap'
-import { useLocation } from 'react-router-dom'
 import { aspectRatio } from '../../../data/commonData'
-import SpotLightHelper from './helper/SpotLightHelper'
-import Clouds from './maps/structures/yuhan_map/elements/etc/Clouds'
-import { AxesHelper } from 'three'
 
 const MainCanvas = () => {
-    const location = useLocation()
-
     // 빛의 위치 값 설정 변수
-    const cameraPosition = [0, 100, 0]
+    const cameraPosition = [0, 1000, 0]
 
     return (
         <>
@@ -35,7 +29,6 @@ const MainCanvas = () => {
                     position: cameraPosition
                 }}
             >
-                {/* <Clouds position={[0, 300, 0]} /> */}
                 <ambientLight name="ambientLight" intensity={0.5} />
                 {/* <directionalLight
                     castShadow
@@ -57,8 +50,8 @@ const MainCanvas = () => {
                     makeDefault // 카메라의 설정이 계속 변경될 예정일 경우에 튕기거나 끊김없게 해주기 위해 설정
                     minPolarAngle={Math.PI / 6}
                     maxPolarAngle={Math.PI - Math.PI / 2}
-                    // minDistance={100} // 카메라 확대 최소 범위
-                    maxDistance={1700} // 카메라 확대 최대 범위
+                    minDistance={700} // 카메라 확대 최소 범위
+                    maxDistance={1000} // 카메라 확대 최대 범위
                 />
 
                 {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
@@ -69,6 +62,9 @@ const MainCanvas = () => {
                     </Debug> */}
                     <RootMap />
                 </Physics>
+
+                {/* 최적화 */}
+                {/* <StatsGl /> */}
             </Canvas>
         </>
     )
