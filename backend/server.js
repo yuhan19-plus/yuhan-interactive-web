@@ -43,10 +43,15 @@ module.exports = mysqlconnection;
 
 const testdbRoutes = require('./db/testdb'); 
 const memberRoutes = require('./db/memberdb');
-// const testdbRoutes2 = require('./db/BoardTable'); // db/BoardTable의 라우트 가져오기
-// app.use('/board', testdbRoutes2); // testdb2 라우트를 '/board' 경로로 사용
+const boardRoutes = require('./db/boarddb');
+const tempboardRoutes = require('./db/tempBoarddb'); 
+const boardLikeRoutes = require('./db/boardLikeddb'); 
+app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/member', memberRoutes);
+app.use('/tempboard', tempboardRoutes);
+app.use('/boardlike', boardLikeRoutes);
+
 
 // 서버 시작
 server.listen(4000, () => {

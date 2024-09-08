@@ -1,16 +1,16 @@
-/** 파일생성자 : 임성준
- * 게시판관리 루트 컴포넌트 - 임성준
- * 기능구현 - 오자현
+/**
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 사이드메뉴에서 보여지는 것들 조절하는 컴포넌트
  */
 
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
-import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
+import React, { useState } from 'react';
+import SideBoardList from './SideBoardList';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
-import AdminBoardList from './AdminBoardList';
+import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
+import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 
-const AdminBoard = () => {
+const SideBoard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
 
@@ -20,17 +20,16 @@ const AdminBoard = () => {
 
     const handleSelectItem = (boardId) => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        console.log(boardId)
+        // console.log(boardId)
         setCurrentView('page'); // 페이지 보기로 전환
-    };
-
+    }; 
+    
     const handleSelectUpdateItem = (boardId) => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        console.log(boardId)
+        // console.log(boardId)
         setCurrentView('update'); // 업데이트 페이지 보기로 전환
     };
 
-    
     const handleBackToList = () => {
         setCurrentView('list');
     };
@@ -44,10 +43,10 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} />
             ) : (
-                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
+                <SideBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}
         </>
     );
-}
+};
 
-export default AdminBoard
+export default SideBoard;

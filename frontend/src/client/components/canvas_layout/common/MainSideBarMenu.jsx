@@ -125,7 +125,7 @@ const MainSideBarMenu = () => {
                 <FontAwesomeIcon icon={faDna} />
                 <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
             </div>
-            {/* test용도 아침에 병합 시 삭제 
+            {/* test용 디비 
             <div>
                 <AssignmentIcon />
                 <span><a href='/boardtest'>디비test</a></span>
