@@ -1,6 +1,7 @@
 /** 파일생성자 : 임성준
  * 임성준 : 프론트엔드 개발
- * 
+ * 이석재
+ *   - 상담신청 메뉴가 로그인 시에만 표시되도록 수정
  */
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { RestaurantMenu, Send } from '@mui/icons-material';
 import { board, computerSoftwareMap, consultation, deptMap, deptRec, food, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../redux/actions/actions';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const MainSideBarMenu = () => {
     const dispatch = useDispatch()
@@ -55,6 +57,10 @@ const MainSideBarMenu = () => {
     const handleDeptRec = () => {
         dispatch(deptRec())
     }
+
+    // 쿠키 값 가져오기를 위한 훅
+    const [cookies] = useCookies(['user']);
+
     return (
         <>
             <div>
@@ -81,10 +87,13 @@ const MainSideBarMenu = () => {
                 <AssignmentIcon />
                 <span><a onClick={handleSideMenuBoard}>게시판</a></span>
             </div>
-            <div>
-                <Send />
-                <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
-            </div>
+            {/* 쿠키가 있을 때만 상담신청 메뉴를 표시 */}
+            {cookies.user && (
+                <div>
+                    <Send />
+                    <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
+                </div>
+            )}
             <div>
                 <RestaurantMenu />
                 <span><a onClick={handleSideMenuFood}>오늘의 메뉴</a></span>

@@ -2,6 +2,7 @@
  * 임성준 : 프론트엔드 개발
  * 이석재
  *   - 로그아웃 기능 구현
+ *   - 로그인 시 사용자 아이디를 보여줄 수 있도록 수정
  */
 import { AdminPanelSettings, Close, Login, Logout, Menu } from '@mui/icons-material'
 import React, { useEffect, useState } from 'react'
@@ -77,6 +78,11 @@ const SideBar = () => {
                                 <AdminPanelSettings /><p>TEST</p>
                         </Link>
                     </div>
+                    {cookies.user && (
+                        <div>
+                            <p>{cookies.user}님 안녕하세요!</p>
+                        </div>
+                    )}
                 </SideBarHeader>
                 <SideBarList>
                     <div>
