@@ -3,26 +3,24 @@
  * 기능구현 : 오자현
  */
 import { Canvas } from '@react-three/fiber';
-import { useProgress} from '@react-three/drei';
 import React from 'react';
 import styled from 'styled-components';
-import { Bus } from './testObject/Bus';
+import { LoadingAnimation } from './loadingObject/Loading';
 
-const Loader = () => {
-  const { progress } = useProgress();
+const Loader = ({ progress }) => {
   return (
     <LoaderLayout>
       {/* 3D 모델을 렌더링할 Canvas */}
       <CanvasWrapper>
-        <Canvas camera={{ position: [0, 0, 5] }}> {/* 카메라 위치 조정 */}
-            <ambientLight intensity={0.7} /> {/* 조명 강도 증가 */}
-            <Bus position={[0, -0.5, 0]} scale={0.2} /> 
+        <Canvas camera={{ position: [0, 5, 10] }}> 
+          <ambientLight intensity={1} /> 
+          <LoadingAnimation />
         </Canvas>
       </CanvasWrapper>
 
       {/* 로딩 바 */}
       <Progressing>
-        <Bar width={progress}>Loading {progress.toFixed(2)}%</Bar>
+        <Bar width={progress}>Loading {progress.toFixed(0)}%</Bar>
       </Progressing>
     </LoaderLayout>
   );
@@ -33,7 +31,7 @@ export default Loader;
 const LoaderLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: yellowgreen;//#0f275c
+  background-color:#587ac4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,9 +41,9 @@ const LoaderLayout = styled.div`
 
 const CanvasWrapper = styled.div`
   width: 100%;
-  height: 50%; /* 캔버스가 로딩 바 위에 적절히 배치되도록 크기 조정 */
+  height: 70%; 
   position: absolute;
-  top: 20%; /* 캔버스가 화면 중앙 위쪽에 오도록 배치 */
+  top: 10%; 
 `;
 
 const Progressing = styled.div`
@@ -58,7 +56,7 @@ const Progressing = styled.div`
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
-  margin-top: 20px;
+  margin-top: 10vh;
 `;
 
 const Bar = styled.div`
