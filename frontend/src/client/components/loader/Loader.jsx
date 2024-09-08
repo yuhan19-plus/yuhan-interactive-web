@@ -12,8 +12,8 @@ const Loader = ({ progress }) => {
     <LoaderLayout>
       {/* 3D 모델을 렌더링할 Canvas */}
       <CanvasWrapper>
-        <Canvas camera={{ position: [0, 5, 10] }}> 
-          <ambientLight intensity={1} /> 
+        <Canvas camera={{ position: [0, 4, 15] }}> 
+          <ambientLight intensity={2.5} /> 
           <LoadingAnimation />
         </Canvas>
       </CanvasWrapper>
@@ -31,7 +31,7 @@ export default Loader;
 const LoaderLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color:#587ac4;
+  background-color:#56bbb6;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,29 +45,28 @@ const CanvasWrapper = styled.div`
   position: absolute;
   top: 10%; 
 `;
-
 const Progressing = styled.div`
-  width: 50%;
-  max-width: 400px;
-  height: 25px;
+  width: 60%; /* 폭을 키움 */
+  max-width: 500px; /* 최대 폭을 키움 */
+  height: 30px; /* 높이를 키움 */
   background-color: white;
-  border-radius: 12.5px;
+  border-radius: 15px; /* 높이에 맞춰 둥글게 */
   overflow: hidden;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
-  margin-top: 10vh;
+  margin-top: 25vh;
 `;
 
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
   background-color: yellow;
-  border-radius: 12.5px 0 0 12.5px;
+  border-radius: 15px 0 0 15px; /* 높이에 맞춰 둥글게 */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 16px; /* 폰트 크기도 살짝 키움 */
   font-weight: bold;
   color: #0f275c;
   transition: width 0.3s ease;

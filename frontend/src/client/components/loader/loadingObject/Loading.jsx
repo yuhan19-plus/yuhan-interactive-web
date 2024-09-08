@@ -11,7 +11,7 @@ export function LoadingAnimation(props) {
   const { actions } = useAnimations(animations || [], group);
 
   // console.log("GLTF Animations:", animations); // 애니메이션 데이터 확인
-  
+
   // 애니메이션 실행
   useEffect(() => {
     if (actions) {
@@ -28,9 +28,9 @@ export function LoadingAnimation(props) {
       }
     }
   }, [actions, animations]);
-  
+
   return (
-    <group ref={group} scale={0.3} >
+    <group ref={group} scale={0.3} position={[0, -3, 0]} rotation={[0, Math.PI / 8, 0]} >
       <group name="Scene">
         <group name="MainCharacter" position={[0.481, 4.632, -15.238]} scale={2.032}>
           <primitive object={nodes.Hip} />
