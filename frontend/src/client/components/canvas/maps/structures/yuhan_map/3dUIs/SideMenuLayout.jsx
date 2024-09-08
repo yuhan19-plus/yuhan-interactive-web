@@ -1,5 +1,6 @@
 /** 파일생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 오자현 : sideboard 추가
  */
 
 import React from 'react'
@@ -7,7 +8,8 @@ import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
 import { Kiosk } from '../elements/etc/Kiosk'
-import SideBoard from '../../../../../../../common/components/board/SideBoard'
+import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
+
 
 let title
 
@@ -31,7 +33,7 @@ const SideMenuLayout = (props) => {
                     <DetailHeader title={title} />
                     <DetailContent>
                         {title === '유한게시판' &&
-                            <SideBoard /> //여기가 게시판 내용물이 들어갈 곳
+                            <SideBoard />
                         }
                         {/* 내용작성 */}
                     </DetailContent>

@@ -1,3 +1,9 @@
+/**
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 사이드에서 보이는 게시판 목록 컴포넌트
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -59,7 +65,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
-        const targetWriter = 'admin'; // 관리자 또는 특정 유저 우선순위
+        const targetWriter = 'admin'; // admin이 들어간 사용자가 우선순위로 보여짐
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
         const sortedData = [...activeData].sort((a, b) => {
             let compareA = a[sortCriteria];
@@ -135,36 +141,45 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                     />
                     <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
                     {/* 정렬 기준 선택 드롭다운 */}
-                    <FormControl sx={{ marginLeft: '20px', minWidth: 120 }}>
+                    <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
                         <Select
                             labelId="sort-label"
                             value={sortCriteria}
                             onChange={(e) => setSortCriteria(e.target.value)}
+                            sx={{
+                                height: '4vh', // 높이 조정
+                                padding: '0px 8px', // 내부 패딩 줄이기
+                            }}
                         >
                             <MenuItem value="board_date">날짜순</MenuItem>
                             <MenuItem value="board_like">좋아요순</MenuItem>
                             <MenuItem value="board_view">조회수순</MenuItem>
                         </Select>
                     </FormControl>
+
                 </div>
 
-                <List>
+                <List sx={{ textAlign: 'center' }}>
                     {/* 헤더 부분 */}
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2 }}>
-                        <Box sx={{ width: '40%' }}>제목</Box> {/* 제목 너비 수정 */}
-                        <Box sx={{ width: '30%' }}>작성자</Box> {/* 작성자 너비 수정 */}
-                        <Box sx={{ width: '30%' }}>작성일</Box> {/* 작성일 너비 수정 */}
-                        <Box sx={{ width: '10%' }}>좋아요</Box> {/* 좋아요 추가 */}
-                        <Box sx={{ width: '10%' }}>조회수</Box> {/* 조회수 추가 */}
+                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5 }}>
+                        <Box sx={{ width: '5%', borderRight: '1px solid ' }}>번호</Box>
+                        <Box sx={{ width: '60%', borderRight: '1px solid ' }}>제목</Box>
+                        <Box sx={{ width: '15%', borderRight: '1px solid' }}>작성자</Box>
+                        <Box sx={{ width: '10%', borderRight: '1px solid ' }}>좋아요</Box>
+                        <Box sx={{ width: '10%', textAlign: 'center' }}>조회수</Box>
                     </Box>
 
                     {/* 리스트 아이템 부분 */}
-                    {getCurrentPageData().map((item) => (
+                    {getCurrentPageData().map((item, index) => (
                         (item.board_status === 'active') && (
                             <ListItem key={item.board_id} divider>
                                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    {/* 번호 */}
+                                    <Box sx={{ width: '5%', textAlign: 'center' }}>
+                                        <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
+                                    </Box>
                                     {/* 제목 */}
-                                    <Box sx={{ width: '40%' }}>
+                                    <Box sx={{ width: '60%' }}>
                                         <ListItemText
                                             primary={isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
                                             onPointerOver={(e) => e.target.style.cursor = 'pointer'}
@@ -172,19 +187,9 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                         />
                                     </Box>
                                     {/* 작성자 */}
-                                    <Box sx={{ width: '30%' }}>
+                                    <Box sx={{ width: '15%', textAlign: 'center' }}>
                                         <ListItemText
                                             primary={isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
-                                            onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                            onClick={() => handleSelectItem(item.board_id)}
-                                        />
-                                    </Box>
-                                    {/* 작성일 */}
-                                    <Box sx={{ width: '30%' }}>
-                                        <ListItemText
-                                            primary={isWideScreen
-                                                ? `${new Date(item.board_date).toLocaleDateString()} ${new Date(item.board_date).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}`
-                                                : `${new Date(item.board_date).toLocaleDateString()}`}
                                             onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                             onClick={() => handleSelectItem(item.board_id)}
                                         />
@@ -202,6 +207,8 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                         )
                     ))}
                 </List>
+
+
 
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, position: 'relative' }}>

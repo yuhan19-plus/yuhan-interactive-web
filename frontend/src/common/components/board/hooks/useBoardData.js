@@ -1,3 +1,9 @@
+/** 
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 게시판상세페이지의 기능을 관리하는 커스텀 훅
+ */
+
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
@@ -70,7 +76,7 @@ export const useBoardData = (boardId) => {
 
             // 서버에서 받은 liked 값을 상태에 반영
             setLiked(data.liked);
-            console.log("좋아요체크", data.liked);
+            // console.log("좋아요체크", data.liked);
 
 
         } catch (error) {
@@ -112,6 +118,9 @@ export const useBoardData = (boardId) => {
             const response = await fetch(`/api/board/delete/${boardId}`, { method: "DELETE" });
             if (!response.ok) {
                 throw new Error("데이터를 삭제하는 것에 실패했습니다.");
+                return false;
+            } else {
+                return true;
             }
         } catch (error) {
             setError(error.message);

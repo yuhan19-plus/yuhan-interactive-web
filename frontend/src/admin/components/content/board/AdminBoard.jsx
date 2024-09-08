@@ -1,5 +1,6 @@
 /** 파일생성자 : 임성준
  * 게시판관리 루트 컴포넌트 - 임성준
+ * 기능구현 - 오자현
  */
 
 import React, { useState } from 'react'
@@ -7,11 +8,7 @@ import styled from 'styled-components'
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
-import AdminBoardList from '../../../../common/components/board/AdminBoardList';
-
-
-// 첨부파일관리, 댓글관리 추가필요
-// 세션에서 관리자여부를 확인하고 관리자라면 boardList에 mode에 admin을 추가하는 코드 필요
+import AdminBoardList from './AdminBoardList';
 
 const AdminBoard = () => {
     const [currentView, setCurrentView] = useState('list');
@@ -47,7 +44,6 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} />
             ) : (
-                
                 <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}
         </>

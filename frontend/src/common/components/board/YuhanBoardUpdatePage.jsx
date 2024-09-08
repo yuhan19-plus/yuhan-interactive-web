@@ -1,13 +1,11 @@
+/**
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 게시판수정페이지 컴포넌트
+ */
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
-
-
-// 이 페이지에 들어오는 경우는 권한이 있는 경우만 들어오는 것임 그러니 글 작성자를 만질 이유 없음 관리자, 글작성자
-
-//할일1 첨부파일도 수정가능하게 ui 디자인
-//할일2 회원인 경우 - 제목, 내용, 첨부파일 수정
-//할일3 관리자인 경우 - 작성자, 작성일을 제외한 모든 내용 수정 가능
 
 const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     const board_id = boardId;
@@ -182,9 +180,9 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         // console.log("변경된 첨부파일", boardData.files)
     };
 
-    useEffect(() => {
-        console.log("첨부파일", boardData.files)
-    },[boardData.files])
+    // useEffect(() => {
+    //     console.log("첨부파일", boardData.files) // 체크용
+    // },[boardData.files])
 
     useEffect(() => {
         fetchData();

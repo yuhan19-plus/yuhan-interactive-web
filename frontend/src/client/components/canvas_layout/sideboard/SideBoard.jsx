@@ -1,12 +1,14 @@
 /**
- * 파일생성 오자현
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 사이드메뉴에서 보여지는 것들 조절하는 컴포넌트
  */
 
 import React, { useState } from 'react';
-import YuhanBoardInsert from './YuhanBoardInsert';
-import YuhanBoardPage from './YuhanBoardPage';
-import YuhanBoardUpdatePage from './YuhanBoardUpdatePage';
 import SideBoardList from './SideBoardList';
+import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
+import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
+import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 
 const SideBoard = () => {
     const [currentView, setCurrentView] = useState('list');

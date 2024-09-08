@@ -1,10 +1,11 @@
 /** 파일 생성자 : 오자현
  *  boarddb 모듈화
- *  게시물과 첨부파일등록, 수정, 삭제, 검색기능
+ *  게시물과 첨부파일등록, 수정, 삭제, 검색(게시판만)기능
  * */
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
 const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 객체 가져오기
+
 
 // 데이터저장
 router.post("/", (req, res) => {
@@ -21,7 +22,7 @@ router.post("/", (req, res) => {
     mysqlconnection.query(insertBoardQuery, [board_title, board_content, board_writer], (err, results) => {
         if (err) {
             console.error("게시물 삽입 중 에러 발생:", err);
-            return res.status(500).send("게시물 삽입 중 오류가 발생했습니다.");
+            return res.status(500).json({ message: "게시물 삽입 중 오류가 발생했습니다."});
         }
 
         const boardId = results.insertId; // 삽입된 게시물의 ID를 가져옵니다.
@@ -37,7 +38,7 @@ router.post("/", (req, res) => {
                 mysqlconnection.query(insertAttachmentQuery, [boardId, file_name, fileBuffer, file_size, file_type], (err) => {
                     if (err) {
                         console.error("첨부파일 삽입 중 에러 발생:", err);
-                        return res.status(500).send("첨부파일 삽입 중 오류가 발생했습니다.");
+                        return res.status(500).json({ message: "첨부파일 삽입 중 오류가 발생했습니다."});
                     }
                 });
             });
@@ -56,7 +57,7 @@ router.get("/", (req, res) => {
     mysqlconnection.query(checkTableQuery, (err, results) => {
         if (err) {
             console.error("테이블 확인 중 에러 발생:", err);
-            return res.status(500).send("테이블 확인 중 오류가 발생했습니다.");
+            return res.status(500).json({ message: "테이블 확인 중 오류가 발생했습니다."});
         }
         if (results.length === 0) {
             console.log("테이블이 없습니다.");
@@ -65,7 +66,7 @@ router.get("/", (req, res) => {
             mysqlconnection.query(selectQuery, (err, results) => {
                 if (err) {
                     console.error("테이블 검색 중 에러 발생:", err);
-                    return res.status(500).send("테이블 검색 중 오류가 발생했습니다."); // 500 상태 코드와 함께 오류 메시지 반환
+                    return res.status(500).json({ message: "테이블 검색 중 오류가 발생했습니다." });  // 500 상태 코드와 함께 오류 메시지 반환
                 }
                 // console.log("테이블이 검색되었습니다.", results);
                 console.log("테이블이 검색되었습니다.");
@@ -79,12 +80,12 @@ router.get("/", (req, res) => {
 router.get("/search/:searchQuery", (req, res) => {
     // console.log("검색요청 진입")
     const searchData = `%${req.params.searchQuery}%`; // 부분 일치를 위해 '%'를 추가
-    const searchQuery = "SELECT * FROM BOARD WHERE board_title LIKE ? OR board_writer LIKE ?";
+    const searchQuery = "SELECT * FROM board WHERE board_title LIKE ? OR board_writer LIKE ?";
 
     mysqlconnection.query(searchQuery, [searchData, searchData], (err, results) => {
         if (err) {
             console.error("테이블 검색 중 에러 발생:", err);
-            return res.status(500).send("테이블 검색 중 오류가 발생했습니다.");
+            return res.status(500).json({ message: "테이블 검색 중 오류가 발생했습니다."});
         } else if (results.length === 0) {
             console.log("검색 결과와 일치하는 데이터가 없습니다.");
             return res.status(404).json({ error: "해당 검색어와 일치하는 게시물이 없습니다." }); // JSON 형식으로 반환
@@ -114,7 +115,7 @@ router.get("/:board_id", (req, res) => {
     mysqlconnection.query(checkTableQuery, (err, results) => {
         if (err) {
             console.error("테이블 확인 중 에러 발생:", err);
-            return res.status(500).send("테이블 확인 중 오류가 발생했습니다.");
+            return res.status(500).json({ message: "테이블 확인 중 오류가 발생했습니다."});
         }
         if (results.length === 0) {
             console.log("테이블이 없습니다.");
@@ -124,7 +125,7 @@ router.get("/:board_id", (req, res) => {
             mysqlconnection.query(selectIdQuery, [board_id], (err, boardResults) => {
                 if (err) {
                     console.error("테이블 검색 중 에러 발생:", err);
-                    return res.status(500).send("테이블 검색 중 오류가 발생했습니다."); // 500 상태 코드와 함께 오류 메시지 반환
+                    return res.status(500).json({ message: "테이블 검색 중 오류가 발생했습니다."}); // 500 상태 코드와 함께 오류 메시지 반환
                 }
                 if (boardResults.length === 0) {
                     console.log("board_id와 일치하는 항목이 없습니다.");
@@ -143,7 +144,7 @@ router.get("/:board_id", (req, res) => {
                 mysqlconnection.query(checkAttachmentQuery, [board_id], (err, attachmentResults) => {
                     if (err) {
                         console.error("첨부파일 검색 중 에러 발생:", err);
-                        return res.status(500).send("첨부파일 검색 중 오류가 발생했습니다.");
+                        return res.status(500).json({ message: "첨부파일 검색 중 오류가 발생했습니다."});
                     }
 
                     // 결과를 클라이언트에 반환
@@ -167,7 +168,7 @@ router.delete("/delete/:board_id", (req, res) => {
     mysqlconnection.query(deleteQuery, [board_id], (err, results) => {
         if (err) {
             console.error("삭제중 오류 발생")
-            return res.status(500).send("게시판삭제중 오류발생");
+            return res.status(500).json({ message: "게시판삭제중 오류발생"});
         }
         console.log("테이블이 삭제되었습니다.")
         res.send("테이블 삭제 성공!")
@@ -188,7 +189,7 @@ router.put("/update/:board_id", (req, res) => {
     mysqlconnection.query(updateBoardQuery, [board_title, board_content, board_id], (err, updateResult) => {
         if (err) {
             console.error("게시물 수정 중 오류 발생:", err);
-            return res.status(500).send("게시물 수정 중 오류 발생");
+            return res.status(500).json({ message: "게시물 수정 중 오류 발생"});
         }
 
         // 첨부파일이 있는 경우
@@ -218,7 +219,7 @@ router.put("/update/:board_id", (req, res) => {
                 })
                 .catch((error) => {
                     console.error("파일 수정 중 에러 발생:", error);
-                    res.status(500).send("첨부파일 수정 중 오류 발생");
+                    res.status(500).json({ message: "첨부파일 수정 중 오류 발생"});
                 });
 
         } else {

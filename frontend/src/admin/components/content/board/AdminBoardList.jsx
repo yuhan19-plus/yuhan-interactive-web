@@ -1,10 +1,17 @@
+/**
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 관리자에서 보는 게시판 목록 컴포넌트
+ * 
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 
-const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
+const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +24,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
 
     // 삭제는 리스트에서 관리자라면 가능하게 하는 식으로 처리하면 될듯
-    const hendleDeleteItem = async (boardId) => {
+    const handleDeleteItem = async (boardId) => {
         // console.log("삭제요청헨들러 진입, board_id", boardId);
         // 삭제하는 것으로 동작하게 백엔드와 연결하기 
         try {
@@ -30,23 +37,10 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         } catch (error) {
             console.error("게시판 삭제하는 중 에러 발생:", error);
         }
-        // 삭제 후 리스트로 귀환
-        onCancel();
+        // 삭제 후 새로고침
+        fetchData();
     }
 
-    // 삭제글 복구 아직 백엔드에서의 기능은 X
-    const handleRestoreDeletedItem = async (boardId) => {
-        console.log("복구버튼클릭", boardId)
-        // try {
-        //     const response = await fetch(`/api/board/restore/${boardId}`);
-        //     if (!response.ok) {
-        //         throw new Error("데이터를 삭제하는 것에 실패했습니다.");
-        //     }
-        // } catch (error) {
-        //     console.log("게시판 복구 중 에러 발생", error)
-
-        // }
-    }
 
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
@@ -167,12 +161,13 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                         }
                     />
                     <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
-                    {/* 정렬 기준 선택 드롭다운 */}
-                    <FormControl sx={{ marginLeft: '20px', minWidth: 120 }}>
+
+                    <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
                         <Select
                             labelId="sort-label"
                             value={sortCriteria}
                             onChange={(e) => setSortCriteria(e.target.value)}
+                            sx={{ height: '4vh', padding: '0px 8px' }}
                         >
                             <MenuItem value="board_date">날짜순</MenuItem>
                             <MenuItem value="board_like">좋아요순</MenuItem>
@@ -183,78 +178,65 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                 </div>
 
                 <List>
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2 }}>
-                        <Box sx={{ width: '18%' }}>제목</Box>
+                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: 'center' }}>
+                        <Box sx={{ width: '10%' }}>번호</Box>
+                        <Box sx={{ width: '45%' }}>제목</Box>
                         <Box sx={{ width: '15%' }}>작성자</Box>
-                        <Box sx={{ width: '17%' }}>작성일</Box>
                         <Box sx={{ width: '10%' }}>View</Box>
                         <Box sx={{ width: '10%' }}>Like</Box>
-                        <Box sx={{ width: '12%' }}>State</Box>
-                        <Box sx={{ width: '8%' }}>관리</Box>
+                        <Box sx={{ width: '10%' }}>관리</Box>
                     </Box>
 
-                    {getCurrentPageData().map((item) => (
+                    {getCurrentPageData().map((item, index) => (
                         <ListItem key={item.board_id} divider>
                             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                                <Box sx={{ width: '18%' }}>
+                                {/* 번호 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
+                                </Box>
+                                {/* 제목 */}
+                                <Box sx={{ width: '45%' }}>
                                     <ListItemText
-                                        primary={isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
+                                        primary={isWideScreen ? item.board_title.substring(0, 25) : item.board_title.substring(0, 15)}
                                         onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                         onClick={() => handleSelectItem(item.board_id)}
                                     />
                                 </Box>
-                                <Box sx={{ width: '15%' }}>
+                                {/* 작성자 */}
+                                <Box sx={{ width: '15%', textAlign: 'center' }}>
                                     <ListItemText
-                                        primary={isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
+                                        primary={item.board_writer}
                                         onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                         onClick={() => handleSelectItem(item.board_id)}
                                     />
                                 </Box>
-                                <Box sx={{ width: '17%' }}>
-                                    <ListItemText
-                                        primary={isWideScreen
-                                            ? `${new Date(item.board_date).toLocaleDateString()} ${new Date(item.board_date).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}`
-                                            : `${new Date(item.board_date).toLocaleDateString()}`}
-                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                        onClick={() => handleSelectItem(item.board_id)}
-                                    />
-                                </Box>
-
-                                <Box sx={{ width: '10%' }}>
+                                {/* 조회수 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
                                     <ListItemText primary={`${item.board_view}`} />
                                 </Box>
-                                <Box sx={{ width: '10%' }}>
+                                {/* 좋아요 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
                                     <ListItemText primary={`${item.board_like}`} />
                                 </Box>
-                                <Box sx={{ width: '12%' }}>
-                                    <ListItemText primary={`${item.board_status}`} />
-                                </Box>
-
+                                {/* 관리 */}
                                 <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
-                                    {item.board_status === 'active' ?
-                                        (<Button
+                                    {item.board_status === 'active' &&
+                                        <Button
                                             variant="outlined"
                                             size="small"
                                             color="error"
                                             sx={{ marginLeft: '5px' }}
-                                            onClick={() => { hendleDeleteItem(item.board_id) }}
+                                            onClick={() => handleDeleteItem(item.board_id)}
                                         >
                                             삭제
-                                        </Button>) : (<Button
-                                            variant="outlined"
-                                            size="small"
-                                            color="success"
-                                            sx={{ marginLeft: '5px' }}
-                                            onClick={() => { handleRestoreDeletedItem(item.board_id) }}
-                                        >
-                                            복구
-                                        </Button>)
+                                        </Button>
                                     }
                                 </Box>
                             </Box>
                         </ListItem>
                     ))}
                 </List>
+
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, position: 'relative' }}>
                     <Pagination

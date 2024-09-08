@@ -1,3 +1,8 @@
+/**
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
+ * 게시판상세페이지 ui
+ */
 import React, { useState } from "react";
 import { Grid, Button, Typography, Box } from "@mui/material";
 import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
@@ -9,7 +14,7 @@ import styled from "styled-components";
 const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem }) => {
     const [cookies] = useCookies(["user"]);
     const { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle } = useBoardData(boardId);
-    
+
     // 로딩 또는 에러 상태 처리
     if (loading) return <Typography>로딩 중...</Typography>;
     if (error) return <Typography>오류 발생: {error}</Typography>;
@@ -69,7 +74,12 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem }) => {
                                         color: "#ffffff"
                                     }
                                 }}
-                                onClick={handleDeleteItem}
+                                onClick={async () => {
+                                    const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
+                                    if (isDeleted) {
+                                        onCancel();  // 삭제 성공 시 onCancel 호출
+                                    }
+                                }}
                             >
                                 삭제
                             </Button>

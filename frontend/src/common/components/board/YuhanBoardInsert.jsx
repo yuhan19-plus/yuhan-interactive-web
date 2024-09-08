@@ -1,4 +1,6 @@
-/** 오자현 
+/** 
+ * 파일생성자 - 오자현 
+ * 기능 구현- 오자현
  * 게시판 글작성페이지
  * 임시저장 기능 추가
  */
@@ -16,16 +18,9 @@ const YuhanBoardInsert = ({ onCancel }) => {
         board_writer: cookies.user, // 세션쿠키에서 user를 받아서 작성자로 입력
         files: []  // 파일 데이터를 저장하는 배열
     });
-    // 저장상태를 확인하고 임시저장을 관리하는 상태
-    const [isSaved, setIsSaved] = useState(false);
     // shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
     const shouldSkipCleanup = useRef(false);
-
-    // 글작성페이지에서도 처음에 마운트될 때 db의 임시저장된 데이터를 확인하고 읽어올지 여부를 뭍고 
-    // 하겠다고 하면 그 때 불러오는 식으로 구현 일단 임시저장을 저장하는 것부터 시작
-    // 단 임시저장에서는 첨부파일은 저장되지 않는다. 내용만 저장하기
-
-
+    const boardDataRef = useRef(boardData); // useRef로 boardData 참조값 유지
 
     // 파일드랍
     const onDrop = useCallback((acceptedFiles) => {
@@ -79,7 +74,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             const result = await response.text();
             // console.log(result);
 
@@ -91,8 +85,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
             // 상태가 반영된 후에 언마운트 (onCancel 호출)
             onCancel();  // 목록으로 돌아가거나 페이지 이동
-
-
         } catch (error) {
             console.error("Error adding data:", error);
             alert("데이터 추가 중 오류 발생!");
@@ -109,53 +101,67 @@ const YuhanBoardInsert = ({ onCancel }) => {
         }));
     };
 
-    // useEffect(() => {
-    //     console.log("게시판 데이터 변경", boardData)
-    // }, [boardData])
+    useEffect(() => {
+        boardDataRef.current = boardData; // 상태가 변경될 때마다 참조값을 업데이트
+        // console.log("boardData", boardData)
+    }, [boardData]);
 
     // 임시저장부분
-    // 임시저장을 진행하는 함수
     const saveTempBoard = async () => {
         try {
-            console.log("boardData", boardData) // 여기에 이미 없음
+            // console.log("boardData", boardDataRef.current); // boardDataRef를 사용한 상태 확인
             // files 배열을 제외한 데이터만 tempData 설정
             const tempData = {
-                board_title: boardData.board_title,
-                board_content: boardData.board_content,
+                board_title: boardDataRef.current.board_title,
+                board_content: boardDataRef.current.board_content,
                 board_writer: cookies.user
             };
+
             const response = await fetch("/api/tempboard/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(tempData),
             });
+
             if (response.ok) {
-                console.log("임시저장성공")
+                console.log("임시저장성공");
+            } else {
+                // 응답이 성공하지 않았을 때
+                const message = await response.text();
+                console.log("백엔드에서 온 내용:", message);
+                alert(message);
             }
         } catch (error) {
-            console.error("Error fetching draft data:", error);
+            console.error("임시 저장 중 오류 발생:", error);
         }
-    }
+    };
 
-    // 임시저장을 확인하고 사용할지 삭제할지 결졍하는 함수
+
+    // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
     const checkTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/checkTempData");
-            if (response.ok) {
-                const data = await response.json();
+            const response = await fetch("/api/tempboard/checkTempData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: cookies.user, // 현재 사용자 ID
+                }),
+            });
+            const data = await response.json();
 
-                if (data) {
-                    // 임시 저장 데이터가 있으면 확인 메시지 표시
-                    const userChoice = window.confirm("임시 저장된 데이터가 있습니다. 사용하시겠습니까?");
+            if (data.hasTempData) {
+                // 임시 저장 데이터가 있으면 확인 메시지 표시
+                const userChoice = window.confirm("임시 저장된 데이터가 있습니다. 사용하시겠습니까?");
 
-                    if (userChoice) {
-                        // "Yes"를 선택하면 임시 저장된 데이터를 불러옴
-                        fetchTempData();
-                    } else {
-                        // "No"를 선택하면 데이터를 삭제
-                        deleteTempData();
-                    }
+                if (userChoice) {
+                    // "Yes"를 선택하면 임시 저장된 데이터를 불러옴
+                    fetchTempData();
+                } else {
+                    // "No"를 선택하면 데이터를 삭제
+                    deleteTempData();
                 }
+            } else {
+                console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
             }
         } catch (error) {
             console.error("Error checking temp data:", error);
@@ -165,7 +171,13 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시 저장 데이터를 삭제하는 함수
     const deleteTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/delete", { method: 'DELETE' });
+            const response = await fetch("/api/tempboard/delete", {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: cookies.user, // 현재 사용자 ID
+                }),
+            });
             if (response.ok) {
                 alert("임시 저장된 데이터가 삭제되었습니다.");
             }
@@ -177,13 +189,34 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시저장데이터를 읽어오는 함수
     const fetchTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/read");
+            const response = await fetch("/api/tempboard/read", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: cookies.user,  // 현재 사용자 ID를 전송
+                }),
+            });
+
             if (response.ok) {
                 const data = await response.json();
                 // 임시 저장된 데이터가 있으면 state에 반영
-                if (data) {
-                    console.log("읽어온 데이터", data)
+                if (data.tempData) {
+                    // console.log("읽어온 데이터", data.tempData);
+
+                    // 데이터를 상태에 반영 (필요한 부분에서 반영)
+                    setBoardData({
+                        board_title: data.tempData.board_title,
+                        board_content: data.tempData.board_content,
+                        board_writer: cookies.user,
+                        files: [],  // 파일 데이터는 제외
+                    });
+                } else {
+                    console.log(data.message);  // 임시 저장 데이터가 없는 경우 메시지 출력
                 }
+            } else {
+                console.error("Failed to fetch temporary data.");
             }
         } catch (error) {
             console.error("Error fetching draft data:", error);
@@ -191,11 +224,9 @@ const YuhanBoardInsert = ({ onCancel }) => {
     };
 
     useEffect(() => {
-
         const handleBeforeUnload = (event) => {
             saveTempBoard();
         };
-
         // 브라우저 종료 시 (beforeunload 이벤트)
         window.addEventListener('beforeunload', handleBeforeUnload);
 
@@ -204,11 +235,10 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
             // 클린업을 스킵할 경우 처리
             if (shouldSkipCleanup.current) {
-                console.log("클린업 로직이 스킵되었습니다.");
+                // console.log("클린업 로직이 스킵되었습니다.");
                 return;
             }
             else {
-
                 const shouldSave = window.confirm('임시 저장하시겠습니까?');
                 if (shouldSave) {
                     saveTempBoard();
@@ -217,10 +247,9 @@ const YuhanBoardInsert = ({ onCancel }) => {
         };
     }, []);
 
-
     // 이 컴포넌트가 실행될 때 임시저장여부확인 
     useEffect(() => {
-        // 임시저장데이터여부를 알려주고 원하면 불러오도록 처리 거부하면 임시저장데이터를 삭제한다고 알려주고 삭제
+        // 임시저장데이터여부를 알려주고 원하면 불러오도록 처리 거부하면 임시저장데이터를 삭제한다고 알려주고 삭제예정
         checkTempData();
     }, []); // 빈 배열로 첫 렌더링 시에만 실행
 
@@ -240,6 +269,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                                 name="board_title"
                                 variant="outlined"
                                 required
+                                value={boardData.board_title}
                                 onChange={handleInputChange}
                             />
                         </Grid>
@@ -303,6 +333,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                                 required
                                 multiline
                                 rows={8}
+                                value={boardData.board_content}
                                 onChange={handleInputChange}
                             />
                         </Grid>

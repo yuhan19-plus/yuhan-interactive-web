@@ -1,6 +1,7 @@
 /** 파일 생성자 : 오자현
  *  boardLikeddb 모듈화
- * 저장, 수정, 검색기능
+ *  좋아요 관리하는 곳
+ * 저장, 수정, 삭제 기능
  * */
 const express = require("express");
 const router = express.Router();
