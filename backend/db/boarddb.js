@@ -1,6 +1,6 @@
 /** 파일 생성자 : 오자현
- *  testdb2 모듈화
- * 저장, 조회기능
+ *  boarddb 모듈화
+ *  게시물과 첨부파일등록, 수정, 삭제, 검색기능
  * */
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
@@ -228,48 +228,4 @@ router.put("/update/:board_id", (req, res) => {
     });
 });
 
-
-
-/*
-// 여기서는 "/:index"로 사용 가능. "/testdb2/:index"로 설정해도 작동
-router.put("/:index", (req, res) => {
-    const index = req.params.index; // URL에서 index 추출
-    const { text } = req.body; // 요청의 본문에서 업데이트할 텍스트를 가져옴
-    console.log("index:", index); // index 확인
-    console.log("text:", text); // 업데이트할 텍스트 확인
-    if (!text) {
-        return res.status(400).send("업데이트할 텍스트가 필요합니다."); // 텍스트가 없으면 400 에러 반환
-    }
-    const updateQuery = `UPDATE test_table2 SET text = ? WHERE ID_num = ?`;
-    mysqlconnection.query(updateQuery, [text, index], (err, results) => {
-        if (err) {
-            console.error("테이블 수정 중 에러 발생:", err);
-            return res.status(500).send("테이블 수정 중 오류가 발생했습니다.");
-        }
-        console.log("데이터가 성공적으로 업데이트되었습니다.");
-        res.send("데이터 업데이트 성공!");
-    });
-});
- 
-// 여기서는 "/testdb2/:ID_num"로 설정되어 절대 경로로 동작함
-router.delete("/:ID_num", (req, res) => {
-    const ID_num = req.params.ID_num;
-    const deleteQuery = `DELETE FROM test_table2 WHERE ID_num = ?`;
- 
-    mysqlconnection.query(deleteQuery, [ID_num], (err, results) => {
-        if (err) {
-            console.error("테이블 삭제 중 에러 발생:", err);
-            return res.status(500).send("테이블 삭제 중 오류가 발생했습니다.");
-        }
- 
-        if (results.affectedRows === 0) {
-            console.log("삭제된 데이터가 없습니다.");
-            return res.status(404).send("해당 ID_num을 가진 데이터가 없습니다.");
-        }
- 
-        console.log("데이터가 성공적으로 삭제되었습니다.");
-        res.send("데이터 삭제 성공!");
-    });
-});
-*/
 module.exports = router; // 라우터 객체 내보내기

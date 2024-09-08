@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 
-// 목록정렬 항목필요
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
     const pageNum = 8;
     // 전체화면이 화면크기에 따라 제목의 내용 글자수 제한 -> 못생김방지
     const fullScreenWinth = window.screen.width;
@@ -28,12 +28,25 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                 throw new Error("데이터를 삭제하는 것에 실패했습니다.");
             }
         } catch (error) {
-            console.error("데이터 삭제하는 중 에러 발생:", error);
+            console.error("게시판 삭제하는 중 에러 발생:", error);
         }
         // 삭제 후 리스트로 귀환
         onCancel();
     }
 
+    // 삭제글 복구 아직 백엔드에서의 기능은 X
+    const handleRestoreDeletedItem = async (boardId) => {
+        console.log("복구버튼클릭", boardId)
+        // try {
+        //     const response = await fetch(`/api/board/restore/${boardId}`);
+        //     if (!response.ok) {
+        //         throw new Error("데이터를 삭제하는 것에 실패했습니다.");
+        //     }
+        // } catch (error) {
+        //     console.log("게시판 복구 중 에러 발생", error)
+
+        // }
+    }
 
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
@@ -65,10 +78,52 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
+    // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
+        const targetWriter = 'admin'; // 관리자 또는 특정 유저 우선순위
+        const sortedData = [...dataList].sort((a, b) => {
+            let compareA = a[sortCriteria];
+            let compareB = b[sortCriteria];
+
+            // 관리자가 작성한 글 우선순위 부여
+            if (a.board_writer === targetWriter && b.board_writer !== targetWriter) {
+                return -1; // a를 더 앞에 배치
+            }
+            if (a.board_writer !== targetWriter && b.board_writer === targetWriter) {
+                return 1;  // b를 더 앞에 배치
+            }
+
+            // 상태 순 정렬일 경우 우선순위 부여 (오름차순으로 처리)
+            if (sortCriteria === 'board_status') {
+                const statusPriority = (status) => {
+                    if (status === 'active') return 1;
+                    if (status === 'delete') return 2;
+                    return 3; // 그 외 상태의 기본 우선순위
+                };
+
+                compareA = statusPriority(a.board_status);
+                compareB = statusPriority(b.board_status);
+
+                if (compareA < compareB) return -1; // 오름차순
+                if (compareA > compareB) return 1;
+                return 0;
+            }
+
+            // 날짜일 경우 Date 객체로 변환하여 비교
+            if (sortCriteria === 'board_date') {
+                compareA = new Date(a[sortCriteria]);
+                compareB = new Date(b[sortCriteria]);
+            }
+
+            // 기본 내림차순 정렬
+            if (compareA > compareB) return -1;
+            if (compareA < compareB) return 1;
+            return 0;
+        });
+
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
-        return dataList.slice(startIndex, endIndex);
+        return sortedData.slice(startIndex, endIndex);
     };
 
 
@@ -112,6 +167,19 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                         }
                     />
                     <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
+                    {/* 정렬 기준 선택 드롭다운 */}
+                    <FormControl sx={{ marginLeft: '20px', minWidth: 120 }}>
+                        <Select
+                            labelId="sort-label"
+                            value={sortCriteria}
+                            onChange={(e) => setSortCriteria(e.target.value)}
+                        >
+                            <MenuItem value="board_date">날짜순</MenuItem>
+                            <MenuItem value="board_like">좋아요순</MenuItem>
+                            <MenuItem value="board_view">조회수순</MenuItem>
+                            <MenuItem value="board_status">상태순</MenuItem>
+                        </Select>
+                    </FormControl>
                 </div>
 
                 <List>
@@ -163,16 +231,25 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                 </Box>
 
                                 <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
-                                    {/* 이미 delete인 녀석들한테는 안보이도록 하기 아니면 복구버튼을 만들고 복구하게 하든지 */}
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        color="error"
-                                        sx={{ marginLeft: '5px' }}
-                                        onClick={() => { hendleDeleteItem(item.board_id) }}
-                                    >
-                                        삭제
-                                    </Button>
+                                    {item.board_status === 'active' ?
+                                        (<Button
+                                            variant="outlined"
+                                            size="small"
+                                            color="error"
+                                            sx={{ marginLeft: '5px' }}
+                                            onClick={() => { hendleDeleteItem(item.board_id) }}
+                                        >
+                                            삭제
+                                        </Button>) : (<Button
+                                            variant="outlined"
+                                            size="small"
+                                            color="success"
+                                            sx={{ marginLeft: '5px' }}
+                                            onClick={() => { handleRestoreDeletedItem(item.board_id) }}
+                                        >
+                                            복구
+                                        </Button>)
+                                    }
                                 </Box>
                             </Box>
                         </ListItem>

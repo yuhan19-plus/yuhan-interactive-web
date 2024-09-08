@@ -1,227 +1,211 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Grid, Button, Typography, Box } from "@mui/material";
+import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
+import { useCookies } from "react-cookie";
+import { useBoardData } from "./hooks/useBoardData";
 import styled from "styled-components";
 
-
-// 돌아가기 버튼 또는 게시판 이거 둘중하나로 통일
-
+// 코드가 너무 길어져서 훅과 ui로 분리
 const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem }) => {
-    const board_id = boardId;
-
-    // 읽어온 데이터 관리
-    const [boardData, setBoardData] = useState({
-        board_id: "",
-        board_title: "",
-        board_content: "",
-        board_writer: "",
-        board_date: "",
-        board_last_modified: "",
-        board_status: "",
-        board_view: 0,
-        board_like: 0,
-        board_comments_count: 0,
-        files: [],
-    });
-
-    // 삭제는 리스트에서 관리자라면 가능하게 하는 식으로 처리하면 될듯
-    const hendleDeleteItem = async (boardId) => {
-        // console.log("삭제요청헨들러 진입, board_id", boardId);
-        // 삭제하는 것으로 동작하게 백엔드와 연결하기 
-        try {
-            const response = await fetch(`/api/board/delete/${boardId}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) {
-                throw new Error("데이터를 삭제하는 것에 실패했습니다.");
-            }
-        } catch (error) {
-            console.error("데이터 삭제하는 중 에러 발생:", error);
-        }
-        // 삭제 후 리스트로 귀환
-        onCancel();
-    }
-
-    // attachment 테이블의 데이터를 관리하기 위한 상태
-    const [attachments, setAttachments] = useState([]);
-
-    // 데이터 가져오기 함수
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`/api/board/${board_id}`); // 서버에서 ID에 맞는 데이터를 가져옴
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-
-            // board 데이터 설정
-            setBoardData({
-                ...data["board"],
-                files: data["attachments"] || []  // 첨부파일이 있으면 추가, 없으면 빈 배열
-            });
-            // attachments 배열 업데이트
-            if (data["attachments"]) {
-                // console.log("파일 길이는", data["attachments"].length);
-                setAttachments(data["attachments"]);  // 첨부파일 데이터를 저장
-                // console.log("첨부파일", attachments);
-            }
-
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생", error);
-        }
-    };
-
-    const hendleUpdateItem = (boardId) => {
-        onSelectUpdateItem(boardId)
-    }
-    // 첨부파일다운로드 
-    const handleDownload = (fileName, fileData, fileType) => {
-        try {
-            // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
-            const arrayBufferView = new Uint8Array(fileData.data);
-            const blob = new Blob([arrayBufferView], { type: fileType });
-            // console.log("Blob 생성:", blob);
-
-            // Blob을 다운로드 가능한 URL로 변환
-            const url = URL.createObjectURL(blob);
-
-            // a 태그를 생성하고 클릭하여 파일 다운로드
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // URL 해제
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("파일 다운로드 중 에러 발생:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-        // console.log("들어온게시판 id", board_id);
-
-    }, [board_id]);
+    const [cookies] = useCookies(["user"]);
+    const { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle } = useBoardData(boardId);
+    
+    // 로딩 또는 에러 상태 처리
+    if (loading) return <Typography>로딩 중...</Typography>;
+    if (error) return <Typography>오류 발생: {error}</Typography>;
 
     return (
         <BoardLayout>
-            <BoardMainLayout>
-                <Box sx={{ p: 3 }}>
-                    <Grid container alignItems="center">
-                        {/* 게시판 제목 */}
-                        <Grid item xs={8}>
-                            <Typography
-                                variant="h4"
-                                gutterBottom
-                                onClick={onCancel}
-                                onPointerOver={(e) => (e.target.style.cursor = "pointer")}
-                            >
-                                게시판
-                            </Typography>
-                        </Grid>
-
-                        {/* 수정, 삭제 버튼 */}
-                        <Grid item xs={4} style={{ textAlign: "right" }}>
-                            {boardData.board_writer && (
-                                <>
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{ marginLeft: "5px" }}
-                                        onClick={() => hendleUpdateItem(boardData.board_id)}
-                                    >
-                                        수정
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        color="error"
-                                        sx={{ marginLeft: "5px" }}
-                                        onClick={() => hendleDeleteItem(boardData.board_id)}
-                                    >
-                                        삭제
-                                    </Button>
-                                </>
-                            )}
-                        </Grid>
+            <Box sx={{ p: 3 }}>
+                {/* 버튼구역 */}
+                <Grid container alignItems="center" justifyContent="space-between">
+                    {/* 돌아가기 버튼 */}
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            color="primary"
+                            sx={{
+                                backgroundColor: "#2ecc71",
+                                '&:hover': {
+                                    backgroundColor: "#27ae60"
+                                },
+                                padding: "0.5vh 2vw"
+                            }}
+                            onClick={onCancel}
+                        >
+                            돌아가기
+                        </Button>
                     </Grid>
 
-                    <Grid container spacing={2}>
-                        {/* 제목과 작성자 영역 */}
-                        <Grid item xs={9}>
-                            <Typography variant="h6" gutterBottom>
-                                제목: {boardData.board_title}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Typography variant="h6" gutterBottom>
-                                작성자: {boardData.board_writer}
-                            </Typography>
-                        </Grid>
-                        {/* 회원이 볼 수 있는 속성들 */}
-                        <Grid item xs={4}>
-                            <Typography>
-                                조회수 : {boardData.board_view}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography>
-                                좋아요 : {boardData.board_like}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Typography>
-                                {boardData.board_date ? boardData.board_date.replace('T', ' ').slice(0, 16) : ""}
-                            </Typography>
-                        </Grid>
-                        {/* 첨부파일 영역 */}
-                        <Grid item xs={8}>
-                            {attachments.length > 0 ? (
-                                attachments.map((attachment, index) => (
-                                    <Typography key={index} variant="body1">
-                                        첨부파일:
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleDownload(
-                                                    attachment.file_name,
-                                                    attachment.file_data,
-                                                    attachment.file_type
-                                                );
-                                            }}
-                                            style={{ textDecoration: "none", color: "blue" }}
-                                        >
-                                            {attachment.file_name}
-                                        </a>
-                                    </Typography>
-                                ))
-                            ) : (
-                                <Typography variant="body1">첨부파일이 없습니다.</Typography>
-                            )}
-                        </Grid>
-
-                        {/* 내용 영역 */}
-                        <Grid item xs={12}>
-                            <Typography variant="body1" gutterBottom>
-                                내용: {boardData.board_content}
-                            </Typography>
-                        </Grid>
-
-                        {/* 돌아가기 버튼 */}
-                        <Grid item xs={12} textAlign="right">
-                            <Button variant="contained" color="primary" onClick={onCancel}>
-                                돌아가기
+                    {/* 수정 및 삭제 버튼 */}
+                    {(cookies.user === "admin" || (cookies.user === boardData.board_writer)) && (
+                        <Grid item>
+                            <Button
+                                variant="outlined"
+                                size="medium"
+                                sx={{
+                                    marginRight: "1vw",
+                                    color: "#3498db",
+                                    borderColor: "#3498db",
+                                    '&:hover': {
+                                        backgroundColor: "#3498db",
+                                        color: "#ffffff"
+                                    }
+                                }}
+                                onClick={() => onSelectUpdateItem(boardData.board_id)}
+                            >
+                                수정
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                size="medium"
+                                color="error"
+                                sx={{
+                                    marginRight: "1vw",
+                                    borderColor: "#e74c3c",
+                                    '&:hover': {
+                                        backgroundColor: "#e74c3c",
+                                        color: "#ffffff"
+                                    }
+                                }}
+                                onClick={handleDeleteItem}
+                            >
+                                삭제
                             </Button>
                         </Grid>
+                    )}
+                </Grid>
+
+
+                <Grid container sx={{ marginTop: "10px", border: "1px solid #ccc", borderRadius: "8px", padding: "20px" }}>
+                    {/* 제목과 작성자 영역 */}
+                    <Grid item xs={9}>
+                        <Typography variant="h5" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2rem" }}>
+                            {boardData.board_title}
+                        </Typography>
                     </Grid>
-                </Box>
-            </BoardMainLayout>
+                    <Grid item xs={3} sx={{ textAlign: "right" }}>
+                        <Typography variant="h6" sx={{ color: "#7F8C8D" }}>
+                            작성자ID {boardData.board_writer}
+                        </Typography>
+                    </Grid>
+
+                    {/* 추가 정보 영역 */}
+                    <Grid item xs={4}>
+                        <Typography>
+                            <VisibilityIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
+                            : {boardData.board_view}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography>
+                            <ThumbUpIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
+                            : {boardData.board_like}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography>
+                            작성일: {new Intl.DateTimeFormat('ko-KR', {
+                                year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                            }).format(new Date(boardData.board_date))}
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+
+                {/* 첨부파일 영역 */}
+                <Grid item xs={12} style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "10px" }}>
+                    <Grid container spacing={2}>
+                        {attachments.length > 0 ? (
+                            <>
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" sx={{ fontWeight: "bold", color: "#2C3E50" }}>
+                                        첨부파일
+                                    </Typography>
+                                </Grid>
+                                {attachments.map((attachment, index) => {
+                                    const displayName = attachment.file_name.length > 15
+                                        ? attachment.file_name.slice(0, 15) + "..."
+                                        : attachment.file_name;
+
+                                    return (
+                                        <Grid item xs={2} key={index}>
+                                            <Typography
+                                                variant="body1"
+                                                sx={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}
+                                            >
+                                                <a
+                                                    href="#"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleDownload(
+                                                            attachment.file_name,
+                                                            attachment.file_data,
+                                                            attachment.file_type
+                                                        );
+                                                    }}
+                                                    style={{ textDecoration: "underline", color: "#2980B9" }}
+                                                >
+                                                    {displayName}
+                                                </a>
+                                            </Typography>
+                                        </Grid>
+                                    );
+                                })}
+                            </>
+                        ) : (
+                            <Grid item xs={12}>
+                                <Typography variant="body1" sx={{ color: "#E74C3C" }}>
+                                    첨부파일이 없습니다.
+                                </Typography>
+                            </Grid>
+                        )}
+                    </Grid>
+                </Grid>
+
+                {/* 내용 영역 */}
+                <Grid
+                    item xs={12}
+                    sx={{
+                        marginBottom: "2vh",
+                        padding: "1vh 1vw",
+                        borderRadius: "0.5vh",
+                        boxShadow: "0 0.4vh 0.8vh rgba(0, 0, 0, 0.1)",
+                        minHeight: "15vh",
+                        maxHeight: "40vh",
+                        overflowY: "auto"
+                    }}
+                >
+                    <Typography
+                        variant="body1"
+                        gutterBottom
+                        sx={{
+                            lineHeight: "1.8",
+                            color: "#2C3E50",
+                            wordWrap: "break-word",
+                            whiteSpace: "pre-line"
+                        }}
+                    >
+                        {boardData.board_content}
+                    </Typography>
+                </Grid>
+
+                {/* 좋아요 버튼영역 */}
+                <Grid>
+                    <Button
+                        onClick={handleLikeToggle}
+                        sx={{
+                            color: liked ? '#e74c3c' : '#7f8c8d', // 좋아요 상태에 따른 색상 변경
+                        }}
+                        startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />} // 아이콘 조건부 렌더링
+                    >
+                        {liked ? '좋아요 취소' : '좋아요'}
+                    </Button>
+                </Grid>
+            </Box>
         </BoardLayout>
     );
-
 };
 
 export default YuhanBoardPage;
@@ -232,13 +216,11 @@ const BoardLayout = styled.div`
     flex-direction: column;
     
     .header {
-    color: white;
+        color: white;
     }
 
     .container {
         max-width: 1200px;
         margin: 0 auto;
     }
-`;
-const BoardMainLayout = styled.div`
 `;

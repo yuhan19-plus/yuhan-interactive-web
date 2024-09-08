@@ -94,7 +94,6 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                     "Content-Type": "application/json", // JSON 형식으로 데이터 전송
                 },
                 body: JSON.stringify(boardData), // 수정된 boardData를 서버로 보냄
-
             });
 
             if (!response.ok) {
@@ -117,28 +116,8 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     const [attachmentId, setAttachmentId] = useState(0)
     // boardData의 files배열의 수정할 인덱스를 관리하는 상태
     const [fileIndex, setFileIndex] = useState(0)
-    // 기존파일의 데이터를 보관하는 상태
-    const [backupFile, setBackupFile] = useState([])
 
     const handleAttachmentEdit = (attachment_id, index) => {
-        // console.log("첨부파일 수정 버튼이 눌림, 파일 id:", attachment_id);
-        // console.log("boardData.files[index].attachment_id", boardData.files[index].attachment_id)
-        // console.log("fileIndex(index):",index);
-
-        if (attachment_id === boardData.files[index].attachment_id) {
-            // 배열 복사 후 해당 인덱스의 파일 정보를 빈 배열로 초기화
-            setBoardData((prevState) => {
-                const updatedFiles = [...prevState.files]; // 파일 배열 전체 복사
-                setBackupFile(updatedFiles);
-                updatedFiles[index] = {}; // 해당 인덱스의 파일을 빈 객체로 초기화
-
-                return {
-                    ...prevState,
-                    files: updatedFiles, // 새 배열로 업데이트
-                };
-            });
-        }
-
         setFileIndex(index); // boardData의 files의 배열의 인덱스값을 설정 파일처리에서 해당 인덱스에 집어넣기 위함
         setAttachmentId(attachment_id);
         // console.log("attachmentId", attachmentId)
@@ -168,11 +147,11 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                 file_size: file.size,
                 file_type: file.type,
             };
+
             // console.log("uploadedFile", uploadedFile)
-// 현문제 같은 파일이 존재하면 막으려는 시도 중 
-            // 배열을 순회하며 동일한 파일이 있는지 확인
+            // 기존의 dataBoard.files배열에 있는 것과 동일한 것을 업로드하는 지 체크
             const isDuplicate = boardData.files.some((existingFile) => {
-                console.log("isDuplicate진입")
+                // console.log("isDuplicate진입")
                 return (
                     existingFile.file_name === uploadedFile.file_name &&
                     existingFile.file_size === uploadedFile.file_size
@@ -181,13 +160,12 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
             if (isDuplicate) {
                 // 중복된 파일이 있으면 업로드를 막음
-                console.log("이미 동일한 파일이 존재합니다. 업로드할 수 없습니다.");
+                alert("이미 동일한 파일이 존재합니다. 업로드할 수 없습니다.");
                 return;
             }
             // files 배열의 해당 인덱스를 새 파일로 교체
             setBoardData((prevState) => {
                 const updatedFiles = [...prevState.files]; // 배열 복사
-
 
                 if (fileIndex !== -1) {
                     updatedFiles[fileIndex] = uploadedFile; // 기존 파일 대체
@@ -204,9 +182,9 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         // console.log("변경된 첨부파일", boardData.files)
     };
 
-    // useEffect(() => {
-    //     console.log("첨부파일", boardData.files)
-    // },[boardData.files])
+    useEffect(() => {
+        console.log("첨부파일", boardData.files)
+    },[boardData.files])
 
     useEffect(() => {
         fetchData();
