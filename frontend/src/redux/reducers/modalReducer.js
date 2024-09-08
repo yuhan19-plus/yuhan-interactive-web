@@ -1,4 +1,4 @@
-/** 파일생성자 : 임성준
+/** 임성준
  * 모달 리듀서
  */
 import { ADMIN_ENTER_MODAL, INIT_MODAL } from "../actions/actions"

@@ -1,4 +1,4 @@
-/** 파일생성자 : 임성준
+/** 임성준
  * 사이드 메뉴 리듀서
  */
 import { INIT_SIDE_MENU, SIDE_MENU_BOARD, SIDE_MENU_CONSULTATION, SIDE_MENU_DEPT_REC, SIDE_MENU_FOOD } from "../actions/actions";

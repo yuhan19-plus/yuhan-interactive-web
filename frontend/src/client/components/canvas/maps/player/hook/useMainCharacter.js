@@ -293,6 +293,10 @@ export const useMainCharacter = ({position, myChar}) => {
                 if(currentPosition.x >= -30 && currentPosition.x <= 58) {
                     // 흡연구역 이벤트 발생 지역
                     handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 120)
+                    if((currentPosition.x <= 61 && currentPosition.x >= 21) &&
+                        currentPosition.z <= -255 && currentPosition.z >= -301) {
+                            handleCamera(currentPosition.x + 10, currentPosition.y + 50, currentPosition.z + 50)     
+                    }
                 }
             }
 

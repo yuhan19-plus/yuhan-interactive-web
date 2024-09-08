@@ -1,5 +1,5 @@
-/** 담당자 : 임성준
- * 학교 바닥맵
+/** 임성준
+ * 학교 바닥맵 제작 및 클릭 이벤트 추가
  */
 import { useBox } from '@react-three/cannon'
 import React from 'react'

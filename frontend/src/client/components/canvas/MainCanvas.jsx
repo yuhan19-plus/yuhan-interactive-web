@@ -8,7 +8,6 @@ import { OrbitControls, StatsGl } from '@react-three/drei'
 import Light from './helper/Light'
 import { Debug, Physics } from '@react-three/cannon'
 import RootMap from './maps/RootMap'
-import { useLocation } from 'react-router-dom'
 import { aspectRatio } from '../../../data/commonData'
 
 const MainCanvas = () => {
@@ -65,7 +64,7 @@ const MainCanvas = () => {
                 </Physics>
 
                 {/* 최적화 */}
-                <StatsGl />
+                {/* <StatsGl /> */}
             </Canvas>
         </>
     )

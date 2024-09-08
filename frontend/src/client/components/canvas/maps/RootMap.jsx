@@ -1,4 +1,4 @@
-/** 파일 생성자 : 임성준
+/** 작성자 : 임성준
  */
 import React, { useEffect, useState } from 'react'
 import YuhanElements from './structures/yuhan_map/YuhanElements'

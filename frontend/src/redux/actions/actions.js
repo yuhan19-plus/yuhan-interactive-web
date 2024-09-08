@@ -2,19 +2,19 @@
 
 /* 액션타입 정의영역 - 성준 */
 
-// 캐릭터
+// 캐릭터 - 성준
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
 
 // 애니메이션
 
-// 클라이언트 사이드 메뉴
+// 클라이언트 사이드 메뉴 - 성준
 export const INIT_SIDE_MENU = 'INIT_SIDE_MENU'
 export const SIDE_MENU_CONSULTATION = 'SIDE_MENU_CONSULTATION'
 export const SIDE_MENU_BOARD = 'SIDE_MENU_BOARD'
 export const SIDE_MENU_FOOD = 'SIDE_MENU_FOOD'
 export const SIDE_MENU_DEPT_REC = 'SIDE_MENU_DEPT_REC'
 
-// 맵
+// 맵 - 성준
 export const YH_MAP = 'YH_MAP'
 export const DEPT_MAP = 'DEPT_MAP'
 export const COMPUTER_SOFTWARE_MAP = 'COMPUTER_SOFTWARE_MAP'
@@ -23,22 +23,22 @@ export const FOOD_NUTRITION_MAP = 'FOOD_NUTRITION_MAP'
 export const YUHAN_LIFE_BIO_MAP = 'YUHAN_LIFE_BIO_MAP'
 
 
-// 모달
+// 모달 - 성준
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
 export const INIT_MODAL = 'INIT_MODAL'
 
-// 항공뷰
+// 미니맵 상단 버튼 그룹 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 
 
 /* 액션 생성자 정의영역 - 성준 */
 
-// 캐릭터
+// 캐릭터 - 성준
 export const mainChar = () => ({
     type: MAIN_CHARACTER
 })
 
-// 맵
+// 맵 - 성준
 export const yhMap = () => ({
     type: YH_MAP
 })
@@ -58,7 +58,7 @@ export const yuhanBioMap = () => ({
     type: YUHAN_LIFE_BIO_MAP
 })
 
-// 클라이언트 사이드 메뉴
+// 클라이언트 사이드 메뉴 - 성준
 export const initSideMenu = () =>({
     type: INIT_SIDE_MENU
 })
@@ -75,7 +75,7 @@ export const deptRec = () => ({
     type: SIDE_MENU_DEPT_REC
 })
 
-// 모달
+// 모달 - 성준
 export const initModal = () => ({
     type: INIT_MODAL
 })
@@ -83,7 +83,7 @@ export const adminEnterModal = () => ({
     type: ADMIN_ENTER_MODAL
 })
 
-// 항공뷰
+// 미니맵 상단 버튼 그룹 - 성준
 export const aerialView = () => ({
     type: AERIAL_VIEW
 })
