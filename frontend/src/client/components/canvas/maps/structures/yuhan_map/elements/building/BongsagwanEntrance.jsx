@@ -30,7 +30,7 @@ export function BongsagwanEntrance({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[3,0,1]} rotation={[0,0,0]} scale={[2.6, 1, 4.73]}>
         <mesh geometry={nodes.Text004.geometry} material={materials['D18A8D (B2)']} />

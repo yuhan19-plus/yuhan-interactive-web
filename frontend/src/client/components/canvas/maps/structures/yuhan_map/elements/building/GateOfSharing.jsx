@@ -30,7 +30,7 @@ export function GateOfSharing({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[5,-1,0]} rotation={[0,0,0]} scale={[39.404, 65, 60.498]}>
         <mesh geometry={nodes.Cylinder001.geometry} material={materials['A2A2A2(B9, Park(Rock),B5-6 Plane).001']} />

@@ -31,11 +31,8 @@ const BtnMenuGroup = () => {
 }
 
 const BtnMenuWrapper = styled.div`
-    position: fixed;
-    right: 0;
-    bottom: 40vh;
-    width: 300px;
-    height: 10vh;
+    width: 100%;
+    height: 30px;
 `
 
 const BtnList = styled.div`

@@ -30,7 +30,7 @@ export function MemorialHallBigEntrance({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[80,0,1]} rotation={[0,0,0]} scale={[3.242, 3.242, 4.501]}>
         <mesh geometry={nodes.Text005.geometry} material={materials['E2E2E2(B1~9(Body,Number)).001']} />

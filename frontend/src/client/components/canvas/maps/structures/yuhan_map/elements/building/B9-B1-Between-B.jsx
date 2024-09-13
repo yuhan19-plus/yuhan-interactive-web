@@ -30,7 +30,7 @@ export function B9_B1_Between_B({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[7,-1.3,0]} rotation={[0,0,0]} scale={[-25.054, -75.261, -13.44]}>
         <mesh geometry={nodes.Cube079.geometry} material={materials['858585 (B4,B9,B2)']} />

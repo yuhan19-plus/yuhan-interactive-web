@@ -30,7 +30,7 @@ export function B5_B6({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[0,-1,0]} rotation={[0, 0.384, 0]} scale={[0.353, 1.489, 3.966]}>
         <mesh geometry={nodes.Cube085.geometry} material={materials['A2A2A2(B9, Park(Rock),B5-6 Plane)']} />

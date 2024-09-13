@@ -30,7 +30,7 @@ export function FlowerBed({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[0,-1,0]} rotation={[0,0,0]} scale={[12.72, 2.183, 87.156]}>
         <mesh geometry={nodes.Cube013.geometry} material={materials['A2A2A2(B9, Park(Rock),B5-6 Plane)']} />

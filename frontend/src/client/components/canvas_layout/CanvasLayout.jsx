@@ -39,7 +39,6 @@ const CanvasLayout = ({ children }) => {
                 <>
                     <SideBar />
                     <MiniMap />
-                    <BtnMenuGroup />
                     {/* {
                         currentMapName === 'yh_map' &&
                             <MiniMap />

@@ -118,7 +118,7 @@ const MainSideBarMenu = () => {
                 <FontAwesomeIcon icon={faChalkboardTeacher}/>
                 <span><a>학과체험</a></span>
             </div> */}
-            <div>
+            {/* <div>
                 <FontAwesomeIcon icon={faCode} />
                 <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
             </div>
@@ -133,7 +133,7 @@ const MainSideBarMenu = () => {
             <div>
                 <FontAwesomeIcon icon={faDna} />
                 <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
-            </div>
+            </div> */}
             {/* test용 디비 
             <div>
                 <AssignmentIcon />

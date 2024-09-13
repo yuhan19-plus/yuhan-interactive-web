@@ -30,7 +30,7 @@ export function NanumgwanRightPillar({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group scale={[0.5, 0.5, 5]}>
         <mesh geometry={nodes.Cube019.geometry} material={materials['E2EBCA.001']} />

@@ -5,6 +5,7 @@ import { Statue } from './etc/Statue'
 import { Wire_Netting } from './etc/Wire_Netting'
 import { BusStationOne } from './etc/BusStationOne'
 import { BusStationTwo } from './etc/BusStationTwo'
+import { NoEntry } from './etc/NoEntry'
 
 const EtcGroup = () => {
     return (
@@ -27,6 +28,9 @@ const EtcGroup = () => {
             {/* 버스정류장 */}
             <BusStationOne position={[271.453, 6.15, -163.289]}/>
             <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]}/>
+
+            {/* 바리게이트 */}
+            <NoEntry position={[-460, -9, -97]} rotation={[0, Math.PI / 2, 0]} scale={1.7} />
         </>
     )
 }

@@ -28,7 +28,7 @@ export function StudentCafeteriaEntrance({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group scale={[18.615, 4.051, 38.03]}>
         <mesh geometry={nodes.Cube001.geometry} material={materials['E2EBCA (B1,B4,B5,B6(BodyFrame)).001']} />

@@ -30,7 +30,7 @@ export function GateOfSharingEntrance({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <mesh geometry={nodes.B9Enter.geometry} material={materials['858585 (B4,B9,B2)']} position={[0,-1,0]} rotation={[0,0,0]} scale={[39.404, 65, 60.498]} />
     </group>

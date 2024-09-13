@@ -11,6 +11,10 @@
     font-family: 'HakgyoansimWoojuR';
     src: url('./assets/fonts/HakgyoansimWoojuR.ttf');
 }
+
+p {
+    margin: 0;
+}
   
 body {
     margin: 0;

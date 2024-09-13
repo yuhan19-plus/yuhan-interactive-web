@@ -30,7 +30,7 @@ export function TreeFour({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[60, 16, -16]} scale={61.994}>
         <mesh geometry={nodes.Plane003.geometry} material={materials['0CFF0F(Leaf,Smoking Booth)']} />

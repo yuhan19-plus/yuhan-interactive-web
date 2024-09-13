@@ -30,7 +30,7 @@ export function GrassOne({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group scale={[4.452, 15, 4.429]}>
         <mesh geometry={nodes.실린더017.geometry} material={materials['0CFF0F(Leaf,Smoking Booth).001']} />

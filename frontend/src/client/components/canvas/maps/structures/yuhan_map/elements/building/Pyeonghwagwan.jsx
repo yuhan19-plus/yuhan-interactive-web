@@ -30,7 +30,7 @@ export function Pyeonghwagwan({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[0,-1,0]} rotation={[Math.PI/2, 0, -Math.PI]} scale={[8.072, 8.072, 9.321]}>
         <mesh geometry={nodes.텍스트003.geometry} material={materials['DCE759 & Metal (DEVName, Statue).002']} />

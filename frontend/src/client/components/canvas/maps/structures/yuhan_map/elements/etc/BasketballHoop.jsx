@@ -30,7 +30,7 @@ export function BasketballHoop({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[-44, 16, 12]} scale={61.994}>
         <mesh geometry={nodes.Plane008.geometry} material={materials['E71512 (Flower, BaskiBall, Smoking Booth)']} />

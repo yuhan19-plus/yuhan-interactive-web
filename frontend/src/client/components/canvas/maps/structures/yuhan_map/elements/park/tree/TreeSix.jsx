@@ -30,7 +30,7 @@ export function TreeSix({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[7, 16, -49]} scale={61.994}>
         <mesh geometry={nodes.Plane005.geometry} material={materials['654321 (Wood)']} />

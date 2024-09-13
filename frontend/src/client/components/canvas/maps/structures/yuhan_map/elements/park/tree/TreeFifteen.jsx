@@ -30,7 +30,7 @@ export function TreeFifteen({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[-6,-1.4,2.5]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane007.geometry} material={materials['006400 (Leaf)']} />

@@ -9,12 +9,19 @@ import { useFrame, useGraph, useThree } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { SkeletonUtils } from "three-stdlib"
 import { AnimationMixer, Vector3 } from "three"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
+import { initKiosk, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela } from "../../../../../../redux/actions/actions"
 
 export const useMainCharacter = ({position, myChar}) => {
+    const kiosk = useSelector((state) => state.kiosk)
+    const kioskValue = kiosk.value
+    const kioskName = kiosk.name
+    const dispatch = useDispatch()
+    // 추가적인 useRef 선언으로 kioskDispatchFlag 상태를 추적
+    const kioskDispatchFlag = useRef(false)
+
     const btnValue = useSelector((state) => state.btnMenu)
-    // console.log(btnValue.value)
     const aerialViewState = btnValue.value
 
     const { camera } = useThree()
@@ -27,7 +34,6 @@ export const useMainCharacter = ({position, myChar}) => {
     const [targetPosition, setTargetPosition] = useState(new Vector3(...position))
 
     const { scene, materials, animations } = useGLTF('/assets/models/character/MainCharacter.glb')
-    // console.log(animations)
     
     // 씬을 복제하여 상태 변화로부터 안전하게 만듦
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
@@ -92,72 +98,30 @@ export const useMainCharacter = ({position, myChar}) => {
         if(aerialViewState) {
             return
         } else {
-            const currentPosition = charRef.current.position
-            const distance = currentPosition.distanceTo(targetPosition)
+            const currentPosition = charRef.current.position // 현재 위치
+            const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리
     
             // 카메라 설정 부분
             const handleCamera = (x, y, z) => {
-                // console.log(x, y, z)
                 camera.position.set(x, y, z)
-                // gsap.to(camera.position, {
-                //     x: x,
-                //     y: y,
-                //     z: z,
-                //     duration: 0.01,
-                //     ease: 'power2.inOut',
-                //     onUpdate: () => {
-                //         camera.updateProjectionMatrix() // 카메라 업데이트
-                //     }
-                // })
             }
-            // const handleGetXYZ = (x, y, z) => {
-            //     const newX = gsap.getProperty(camera.position, 'x') + x
-            //     const newY = gsap.getProperty(camera.position, 'y') + y
-            //     const newZ = gsap.getProperty(camera.position, 'z') + z
-
-            //     handleCamera(newX, newY, newZ)
-            // }
-            
             handleCamera(currentPosition.x + 130, currentPosition.y + 400, currentPosition.z - 150)
 
             // Start Zone
             if(currentPosition.x <= 285 && currentPosition.x >= 275) {
                 if(currentPosition.z >= -360 && currentPosition.z <= -350) {
-                    // console.log('Start Zone')
                     handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
-                    // gsap.to({}, {
-                    //     duration: 0.5,
-                    //     ease: 'power2.inOut',
-                    //     onUpdate: () => {
-                    //         handleGetXYZ(0, 50, 100)
-                    //     },
-                    //     onComplete: () => {
-                    //         // 애니메이션 완료 후 최종 위치 설정
-                    //         handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100);
-                    //     }
-                    // })
                 }
             }
 
             // Bus Zone
-            if(currentPosition.x <= 302 && currentPosition.x >= 282) {
-                if(currentPosition.z >= -168 && currentPosition.z <= -148) {
+            if(currentPosition.x <= 322 && currentPosition.x >= 262) {
+                if(currentPosition.z >= -188 && currentPosition.z <= -138) {
                     handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
-                    // gsap.to({}, {
-                    //     duration: 0.5,
-                    //     ease: 'power2.inOut',
-                    //     onUpdate: () => {
-                    //         handleGetXYZ(50, 50, 0)
-                    //     },
-                    //     onComplete: () => {
-                    //         // 애니메이션 완료 후 최종 위치 설정
-                    //         handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0);
-                    //     }
-                    // })
                 }
             }
-            if(currentPosition.x <= 512 && currentPosition.x >= 492) {
-                if(currentPosition.z >= -247 && currentPosition.z <= -237) {
+            if(currentPosition.x <= 522 && currentPosition.x >= 482) {
+                if(currentPosition.z >= -257 && currentPosition.z <= -217) {
                     handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
                 }
             }
@@ -166,16 +130,37 @@ export const useMainCharacter = ({position, myChar}) => {
             if(currentPosition.x >= -128 && currentPosition.x <= 147) {
                 if(currentPosition.z >= -28  && currentPosition.z <= 80){
                     handleCamera(currentPosition.x - 180, currentPosition.y + 100, currentPosition.z + 0)
-                    // 나눔관 키오스크
-                    if((currentPosition.x >= 22 && currentPosition.x <= 44) &&
-                        (currentPosition.z >= 57  && currentPosition.z <= 77)) {
-                            handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
-                        }
-                    // 평화관 키오스크
-                    if((currentPosition.x >= 26 && currentPosition.x <= 46) &&
-                        (currentPosition.z >= -15  && currentPosition.z <= 5)) {
+                    // 평화관 키오스크 + 이벤트
+                    if((currentPosition.x >= 25 && currentPosition.x <= 45) &&
+                        (currentPosition.z >= 11 && currentPosition.z <= 33)) {
                             handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 50)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskPyeonghwaTwo())
+                            }
                         }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
+                }
+            }
+            // 나눔관 키오스크 + 이벤트
+            if((currentPosition.x >= 12 && currentPosition.x <= 54) &&
+            (currentPosition.z >= 57  && currentPosition.z <= 77)) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
+                if (!kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = true
+                    dispatch(kioskNanum())
+                    // console.log('나눔관')
+                }
+            }
+            else {
+                if (kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = false
+                    dispatch(initKiosk())
                 }
             }
             
@@ -184,25 +169,57 @@ export const useMainCharacter = ({position, myChar}) => {
                 if(currentPosition.z >= -28 && currentPosition.z < 285) {
                     handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
 
-                    // 학생식당 키오스크
-                    if((currentPosition.x >= 182 && currentPosition.x <= 202) &&
-                        (currentPosition.z >= 138  && currentPosition.z <= 158)) {
+                    // 학생식당 키오스크 + 이벤트
+                    if((currentPosition.x >= 179 && currentPosition.x <= 202) &&
+                        (currentPosition.z >= 128  && currentPosition.z <= 168)) {
                             handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskCafeteria())
+                            }
                         }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
                 }
             }
             
             if(currentPosition.x <= 150 && currentPosition.z > 120) {
-                if(currentPosition.x > -240) {
+                if(currentPosition.x < -170 && currentPosition.x > -240) {
                     handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
                 }
-                if(currentPosition.x > -170) {
+                if(currentPosition.x > -170 && currentPosition.x <= -48) {
+                    // 테라스 입구
                     handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 0)
-                    // 창조관 키오스크
-                    if((currentPosition.x >= -175 && currentPosition.x <= -155) &&
-                        (currentPosition.z >= 254  && currentPosition.z <= 274)) {
-                            handleCamera(currentPosition.x - 40, currentPosition.y + 40, currentPosition.z + 0)
+                }
+                if(currentPosition.x > -48 && currentPosition.x <= 0) {
+                    // 테라스 안쪽 우측
+                    handleCamera(currentPosition.x - 60, currentPosition.y + 60, currentPosition.z + 0)
+                }
+                // 창조관 키오스크 + 이벤트
+                if((currentPosition.x >= -175 && currentPosition.x <= -155) &&
+                    (currentPosition.z >= 244  && currentPosition.z <= 284)) {
+                        handleCamera(currentPosition.x - 40, currentPosition.y + 40, currentPosition.z + 0)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskChangjo())
                         }
+                }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+
+            // 테라스 안쪽 좌측
+            if(currentPosition.z <= 213 && currentPosition.z >= 143) {
+                if(currentPosition.x <= 0 && currentPosition.x >= -42) {
+                    handleCamera(currentPosition.x + 0, currentPosition.y + 30, currentPosition.z + 30)
                 }
             }
 
@@ -210,18 +227,39 @@ export const useMainCharacter = ({position, myChar}) => {
             if(currentPosition.z <= 120 && currentPosition.z > -130) {
                 if(currentPosition.x < -128 && currentPosition.x > -270) {
                     handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 100)
-                    // 유일한기념관 키오스크
+                    // 유일한기념관 키오스크 + 이벤트
                     if((currentPosition.x >= -248 && currentPosition.x <= -228) &&
-                        (currentPosition.z >= 84  && currentPosition.z <= 104)) {
+                        (currentPosition.z >= 74  && currentPosition.z <= 114)) {
                             handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskMemorialHall())
+                            }
                         }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
                 }
                 if(currentPosition.x <= -270) {
                     handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
-                    if((currentPosition.x <= -289 && currentPosition.x >= -309) &&
+                    // 유재라관 키오스크 + 이벤트
+                    if((currentPosition.x <= -279 && currentPosition.x >= -319) &&
                         (currentPosition.z <= -65 && currentPosition.z >= -85)) {
                             handleCamera(currentPosition.x + 0, currentPosition.y + 70, currentPosition.z + 40)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskYujaela())
+                            }
                         }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
                 }
             }
 
@@ -229,11 +267,21 @@ export const useMainCharacter = ({position, myChar}) => {
             if(currentPosition.x < -128 && currentPosition.x > -270) {
                 if(currentPosition.z < -60 && currentPosition.z > -270) {
                     handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z + 180)
-                    // 자유관 키오스크
-                    if((currentPosition.x >= -181 && currentPosition.x <= -161) &&
-                        (currentPosition.z <= -224 && currentPosition.z <= -224)) {
+                    // 자유관 키오스크 + 이벤트
+                    if((currentPosition.x >= -191 && currentPosition.x <= -161) &&
+                        (currentPosition.z <= -204 && currentPosition.z >= -244)) {
                             handleCamera(currentPosition.x -50, currentPosition.y + 50, currentPosition.z + 0)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskJayu())
+                            }
                         }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
                 }
                 if(currentPosition.z <= -270) {
                     handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
@@ -244,13 +292,6 @@ export const useMainCharacter = ({position, myChar}) => {
             if(currentPosition.z < -260) {
                 if(currentPosition.x < -230) {
                     handleCamera(currentPosition.x + 400, currentPosition.y + 200, currentPosition.z + 0)
-                }
-            }
-
-            // 유한TV Zone
-            if(currentPosition.x > -230 && currentPosition.x < -80) {
-                if(currentPosition.z < -430) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 40, currentPosition.z + 230)
                 }
             }
 
@@ -266,26 +307,45 @@ export const useMainCharacter = ({position, myChar}) => {
                 if(currentPosition.x >= -69 && currentPosition.x <= 58) {
                     handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 50)
                     // 평화관 키오스크
-                    if((currentPosition.x <= 35 && currentPosition.x >= 15) &&
+                    if((currentPosition.x <= 45 && currentPosition.x >= 5) &&
                         (currentPosition.z <= -126 && currentPosition.z >= -146)) {
                             handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z -50)
+                            if (!kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = true
+                                dispatch(kioskPyeonghwaOne())
+                            }
+                    }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
                     }
 
                 }
                 if(currentPosition.x > 58 && currentPosition.x <= 190) {
                     handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z - 50)
+                    if((currentPosition.x <= 189 && currentPosition.x >= 159) &&
+                        (currentPosition.z <= -170 && currentPosition.z >= -210)) {
+                            handleCamera(currentPosition.x - 50, currentPosition.y + 70, currentPosition.z + 0)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskBongSa())
+                        }
+                    }
+                    else {
+                        if (kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
+                        }
+                    }
                 }
             }
             
             // 나눔의 숲 3사분면, 4사분면(4-1, 4-2)
             if(currentPosition.z < -200 && currentPosition.z >= -320) {
                 if(currentPosition.x > 58 && currentPosition.x <= 190) {
-                    // console.log('??')
                     handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 50)
-                    if((currentPosition.x <= 175 && currentPosition.x >= 155) &&
-                        (currentPosition.z >= -211 && currentPosition.z <= -191)) {
-                            handleCamera(currentPosition.x - 50, currentPosition.y + 70, currentPosition.z + 0)
-                        }
                 }
                 if(currentPosition.x >= -69 && currentPosition.x < -30) {
                     handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
@@ -304,28 +364,30 @@ export const useMainCharacter = ({position, myChar}) => {
             if(currentPosition.z <= -340) {
                 if(currentPosition.x >= -128 && currentPosition.x <= -30) {
                     handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
+                    
+                }
+            }
+            // 유한TV Zone
+            if(currentPosition.x > -225 && currentPosition.x < -30) {
+                if(currentPosition.z < -400) {
+                    handleCamera(currentPosition.x + 0, currentPosition.y + 5, currentPosition.z + 150)
                 }
             }
 
             // 학교입구
             if(currentPosition.x > -30 && currentPosition.x <= 245) {
                 if(currentPosition.z < -337) {
-                    // console.log(currentPosition)
                     handleCamera(currentPosition.x + 180, currentPosition.y + 230, currentPosition.z + 0)
                 }
                 // 동상 Zone
-                if(currentPosition.x <= 49 && currentPosition.x >= 29) {
-                    if(currentPosition.z <= -507 && currentPosition.z >= -527) {
+                if(currentPosition.x <= 69 && currentPosition.x >= 9) {
+                    if(currentPosition.z <= -487 && currentPosition.z >= -537) {
                         handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110)
                     }
                 }
             }
 
             camera.lookAt(currentPosition)
-            // console.log(camera)
-            // console.log('distance', distance)
-            // console.log('currentPosition', currentPosition)
-            // console.log('targetPosition', targetPosition)
         
             if (distance > 0.4) {
                 // 방향을 구하고 스칼라를 곱하여 이동량을 설정

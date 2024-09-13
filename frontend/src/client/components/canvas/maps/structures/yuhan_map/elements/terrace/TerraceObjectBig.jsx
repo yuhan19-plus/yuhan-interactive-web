@@ -30,7 +30,7 @@ export function TerraceObjectBig({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[4.5,0,-9.5]} scale={[0.25, 0.25, 3.25]}>
         <mesh geometry={nodes.Cube018.geometry} material={materials['000000 & Metal (C2,T2)']} />

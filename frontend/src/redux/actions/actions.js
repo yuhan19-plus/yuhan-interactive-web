@@ -27,6 +27,18 @@ export const YUHAN_LIFE_BIO_MAP = 'YUHAN_LIFE_BIO_MAP'
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
 export const INIT_MODAL = 'INIT_MODAL'
 
+// 키오스크 - 성준
+export const INIT_KIOSK = 'INIT_KIOSK'
+export const KIOSK_PYEONGHWA_ONE = 'KIOSK_PYEONGHWA_ONE'
+export const KIOSK_PYEONGHWA_TWO = 'KIOSK_PYEONGHWA_TWO'
+export const KIOSK_BONGSA = 'KIOSK_BONGSA'
+export const KIOSK_JAYU = 'KIOSK_JAYU'
+export const KIOSK_STUDENT_CAFETERIA = 'KIOSK_STUDENT_CAFETERIA'
+export const KIOSK_NANUM = 'KIOSK_NANUM'
+export const KIOSK_CHANGJO = 'KIOSK_CHANGJO'
+export const KIOSK_MEMORIAL_HALL = 'KIOSK_MEMORIAL_HALL'
+export const KIOSK_YUJAELA = 'KIOSK_YUJAELA'
+
 // 미니맵 상단 버튼 그룹 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 
@@ -86,4 +98,36 @@ export const adminEnterModal = () => ({
 // 미니맵 상단 버튼 그룹 - 성준
 export const aerialView = () => ({
     type: AERIAL_VIEW
+})
+
+// 키오스크
+export const initKiosk = () => ({
+    type: INIT_KIOSK
+})
+export const kioskPyeonghwaOne = () => ({
+    type: KIOSK_PYEONGHWA_ONE
+})
+export const kioskPyeonghwaTwo = () => ({
+    type: KIOSK_PYEONGHWA_TWO
+})
+export const kioskBongSa = () => ({
+    type: KIOSK_BONGSA
+})
+export const kioskJayu = () => ({
+    type: KIOSK_JAYU
+})
+export const kioskCafeteria = () => ({
+    type: KIOSK_STUDENT_CAFETERIA
+})
+export const kioskNanum = () => ({
+    type: KIOSK_NANUM
+})
+export const kioskChangjo = () => ({
+    type: KIOSK_CHANGJO
+})
+export const kioskMemorialHall = () => ({
+    type: KIOSK_MEMORIAL_HALL
+})
+export const kioskYujaela = () => ({
+    type: KIOSK_YUJAELA
 })

@@ -30,7 +30,7 @@ export function GateOfSharingRightPillar({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <mesh geometry={nodes['B9-Pipe_R'].geometry} material={materials['E2E2E2(B1~9(Body,Number))']} position={[5,-1,0]} rotation={[0,0,0]} scale={[39.404, 65, 60.498]} />
     </group>
