@@ -5,7 +5,7 @@
 import { Canvas } from '@react-three/fiber';
 import React from 'react';
 import styled from 'styled-components';
-import { LoadingAnimation } from './loadingObject/Loading';
+import { LoadingAnimation } from './loadingObject/LoaderObject';
 
 const Loader = ({ progress }) => {
   return (
@@ -31,7 +31,7 @@ export default Loader;
 const LoaderLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color:#56bbb6;
+  background-color:#56bbb6; // 그라데이션인데 위아래 색은 다시 물어봐야함 햇갈림
   display: flex;
   flex-direction: column;
   align-items: center;
