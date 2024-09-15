@@ -48,6 +48,8 @@ export const useBoardData = (boardId) => {
 
             // 서버에서 성공 응답을 받은 후 상태를 변경
             setLiked(!liked);
+            // 좋아요 누르고 해당페이지에서 바로 좋아요 올라간 것을 확인 가능하도록 수정
+            fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
             alert("좋아요 상태 변경 중 오류가 발생했습니다!");
@@ -78,7 +80,6 @@ export const useBoardData = (boardId) => {
             setLiked(data.liked);
             // console.log("좋아요체크", data.liked);
 
-
         } catch (error) {
             console.error("좋아요 상태 체크 중 오류 발생:", error);
         }
@@ -102,6 +103,31 @@ export const useBoardData = (boardId) => {
         }
     };
 
+    // 첨부파일다운로드 
+    const handleDownload = (fileName, fileData, fileType) => {
+        try {
+            // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
+            const arrayBufferView = new Uint8Array(fileData.data);
+            const blob = new Blob([arrayBufferView], { type: fileType });
+            // console.log("Blob 생성:", blob);
+
+            // Blob을 다운로드 가능한 URL로 변환
+            const url = URL.createObjectURL(blob);
+
+            // a 태그를 생성하고 클릭하여 파일 다운로드
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // URL 해제
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("파일 다운로드 중 에러 발생:", error);
+        }
+    };
 
     useEffect(() => {
         const fetchDataAndCheckLiked = async () => {
@@ -127,5 +153,6 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    return { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle };
+
+    return { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle, handleDownload };
 };

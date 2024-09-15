@@ -46,11 +46,16 @@ const memberRoutes = require('./db/memberdb');
 const boardRoutes = require('./db/boarddb');
 const tempboardRoutes = require('./db/tempBoarddb'); 
 const boardLikeRoutes = require('./db/boardLikeddb'); 
-app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
+const commentRoutes = require('./db/commentdb'); 
+const reportRoutes = require('./db/reportdb'); 
+
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
+app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/member', memberRoutes);
 app.use('/tempboard', tempboardRoutes);
 app.use('/boardlike', boardLikeRoutes);
+app.use('/comment', commentRoutes);
+app.use('/report', reportRoutes);
 
 
 // 서버 시작

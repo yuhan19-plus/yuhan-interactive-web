@@ -10,10 +10,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 
-// 목록정렬 항목필요
 const SideBoardList = ({ onCreatePost, onSelectItem }) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     // console.log("사이드게시판리스트 진입")
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -27,24 +26,27 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
-        try {
-            const response = await fetch(`/api/board/search/${searchQuery}`);
-            const data = await response.json();
+        if (searchQuery === '') {
+            fetchData();
+        } else {
+            try {
+                const response = await fetch(`/api/board/search/${searchQuery}`);
+                const data = await response.json();
 
-            // console.log("데이터여부", data);
-            if (data.board) {
-                const activeData = data.board.filter(item => item.board_status === 'active');
-                // 게시판목록에 데이터 저장
-                setDataList(data.board);
-                // 활성화된 게시물만 모아서 저장
-                setFilteredData(activeData);
-                // 페이지의 총 수를 계산하여 저장
-                setTotalPages(Math.ceil(activeData.length / pageNum));
+                // console.log("데이터여부", data);
+                if (data.board) {
+                    const activeData = data.board.filter(item => item.board_status === 'active');
+                    // 게시판목록에 데이터 저장
+                    setDataList(data.board);
+                    // 활성화된 게시물만 모아서 저장
+                    setFilteredData(activeData);
+                    // 페이지의 총 수를 계산하여 저장
+                    setTotalPages(Math.ceil(activeData.length / pageNum));
+                }
+            } catch (error) {
+                console.error("단어를 검색하는 중 에러 발생:", error);
             }
-        } catch (error) {
-            console.error("단어를 검색하는 중 에러 발생:", error);
         }
-
     };
 
     const fetchData = async () => {
@@ -65,7 +67,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
-        const targetWriter = 'admin'; // admin이 들어간 사용자가 우선순위로 보여짐
+        const targetWriter = 'testadmin'; // testadmin을 관리자로 가정하고 진행
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
         const sortedData = [...activeData].sort((a, b) => {
             let compareA = a[sortCriteria];
@@ -139,7 +141,15 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                             </InputAdornment>
                         }
                     />
-                    <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
+                    <Button variant="contained" onClick={handleSearch}
+                        sx={{
+                            background: 'linear-gradient( #56bbb6 30%, #33677f 90%)',
+                            '&:hover': {
+                                backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
+                            }
+                            , color: '#fff'
+                        }} >검색</Button>
+
                     {/* 정렬 기준 선택 드롭다운 */}
                     <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
                         <Select
@@ -151,9 +161,9 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                 padding: '0px 8px', // 내부 패딩 줄이기
                             }}
                         >
-                            <MenuItem value="board_date">날짜순</MenuItem>
+                            <MenuItem value="board_date">기본순</MenuItem>
                             <MenuItem value="board_like">좋아요순</MenuItem>
-                            <MenuItem value="board_view">조회수순</MenuItem>
+                            <MenuItem value="board_view">조회순</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -161,7 +171,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
                 <List sx={{ textAlign: 'center' }}>
                     {/* 헤더 부분 */}
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5 }}>
+                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5 }}>
                         <Box sx={{ width: '5%', borderRight: '1px solid ' }}>번호</Box>
                         <Box sx={{ width: '60%', borderRight: '1px solid ' }}>제목</Box>
                         <Box sx={{ width: '15%', borderRight: '1px solid' }}>작성자</Box>
@@ -208,19 +218,38 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                     ))}
                 </List>
 
-
-
-
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, position: 'relative' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                     <Pagination
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        color="primary"
+                        sx={{
+                            "& .Mui-selected": {
+                                background: 'linear-gradient( #56bbb6 30%, #33677f 90%)', // PANTONE 570C와 더 조화로운 중간 파란색
+                                color: '#fff', // 선택된 페이지 텍스트 색상
+                            },
+                            "& .MuiPaginationItem-root": {
+                                backgroundColor: '#56bbb6', // 페이지 넘버 배경 색상 (PANTONE 570C)
+                                color: '#fff', // 페이지 넘버 텍스트 색상
+                            },
+                            "& .MuiPaginationItem-root:hover": {
+                                backgroundColor: '#33677f', // 마우스 오버 시 부드러운 파란색
+                                color: '#fff', // 마우스 오버 시 텍스트 색상 유지
+                            }
+                        }}
                     />
+
+
                     {cookies.user &&
                         <Box sx={{ position: 'absolute', right: 5 }}>
-                            <Button variant="contained" color="primary" onClick={onCreatePost}>
+                            <Button variant="contained" color="primary" onClick={onCreatePost}
+                                sx={{
+                                    background: 'linear-gradient( #56bbb6 30%, #33677f 90%)',
+                                    '&:hover': {
+                                        backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
+                                    }
+                                }}
+                            >
                                 글작성
                             </Button>
                         </Box>

@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 
-const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
+const AdminBoardList = ({ onCreatePost, onSelectItem, onReport }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -142,6 +142,9 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
         <BoardLayout>
             <Box sx={{ p: 3 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
+                    <Button sx={{ marginRight: "1vw" }} onClick={onReport}>
+                        신고내역
+                    </Button>
                     <InputBase
                         placeholder="검색할 제목이나 작성자를 입력하세요"
                         value={searchQuery}
@@ -177,8 +180,8 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                     </FormControl>
                 </div>
 
-                <List>
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: 'center' }}>
+                <List sx={{ textAlign: 'center' }}>
+                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5 }}>
                         <Box sx={{ width: '10%' }}>번호</Box>
                         <Box sx={{ width: '45%' }}>제목</Box>
                         <Box sx={{ width: '15%' }}>작성자</Box>
