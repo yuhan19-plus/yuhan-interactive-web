@@ -9,12 +9,13 @@
     // 위치와 캐릭터 객체 로그 확인
     // console.log(position)
     // console.log(myChar.name)
+    const player = myChar.name
 
     // useMainCharacter 훅을 통해 캐릭터 상태와 물리적 몸체 참조 가져오기
     const { nodes, materials, charRef } = useMainCharacter({ position, myChar })
 
     return (
-      <group ref={charRef}>
+      <group ref={charRef} name={player ?? ''}>
         <group name="Scene">
             <group name="MainCharacter" scale={1.2}>
               <primitive object={nodes.Hip} />

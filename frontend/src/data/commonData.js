@@ -52,6 +52,8 @@ export const BIO_PATH = [
 // 관리자 입장 코드 - 임성준
 export const adminPassword = 'csw'
 
+
+// 키오스크 관련 데이터 - 성준
 // 평화관
 export const PEACE_HALL = [
     "전기공학전공", 

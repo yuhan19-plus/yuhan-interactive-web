@@ -12,6 +12,7 @@ import { AnimationMixer, Vector3 } from "three"
 import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
 import { initKiosk, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela } from "../../../../../../redux/actions/actions"
+import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({position, myChar}) => {
     const kiosk = useSelector((state) => state.kiosk)
@@ -29,6 +30,7 @@ export const useMainCharacter = ({position, myChar}) => {
     // 현재 플레이어의 이름을 가져옴
     const player = myChar.name // 값 : SJ
     const charRef = useRef(null)
+    const point = document.getElementById(`student-point-${player}`)
 
     // 초기 목표 위치를 설정
     const [targetPosition, setTargetPosition] = useState(new Vector3(...position))
@@ -127,42 +129,33 @@ export const useMainCharacter = ({position, myChar}) => {
             }
 
             // 학생식당 가는 길목
-            if(currentPosition.x >= -128 && currentPosition.x <= 147) {
-                if(currentPosition.z >= -28  && currentPosition.z <= 80){
-                    handleCamera(currentPosition.x - 180, currentPosition.y + 100, currentPosition.z + 0)
-                    // 평화관 키오스크 + 이벤트
-                    if((currentPosition.x >= 25 && currentPosition.x <= 45) &&
-                        (currentPosition.z >= 11 && currentPosition.z <= 33)) {
-                            handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 50)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskPyeonghwaTwo())
-                            }
-                        }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
+            if((currentPosition.x >= -128 && currentPosition.x <= 147) && (currentPosition.z >= -28  && currentPosition.z <= 80)) {
+                handleCamera(currentPosition.x - 180, currentPosition.y + 100, currentPosition.z + 0)
+                // 평화관 키오스크 + 이벤트
+                if ((currentPosition.x >= 25 && currentPosition.x <= 45) && (currentPosition.z >= 11 && currentPosition.z <= 33)) {
+                    handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 50)
+                    if (!kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = true
+                        dispatch(kioskPyeonghwaTwo())
+                    }
+                } 
+                // 나눔관 키오스크 + 이벤트
+                else if ((currentPosition.x >= 12 && currentPosition.x <= 54) && (currentPosition.z >= 57 && currentPosition.z <= 77)) {
+                    handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
+                    if (!kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = true
+                        dispatch(kioskNanum())
+                    }
+                } 
+                
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
                     }
                 }
             }
-            // 나눔관 키오스크 + 이벤트
-            if((currentPosition.x >= 12 && currentPosition.x <= 54) &&
-            (currentPosition.z >= 57  && currentPosition.z <= 77)) {
-                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
-                if (!kioskDispatchFlag.current) {
-                    kioskDispatchFlag.current = true
-                    dispatch(kioskNanum())
-                    // console.log('나눔관')
-                }
-            }
-            else {
-                if (kioskDispatchFlag.current) {
-                    kioskDispatchFlag.current = false
-                    dispatch(initKiosk())
-                }
-            }
+            
             
             // 9호관 & 학생식당 앞
             if(currentPosition.x > 147 && currentPosition.x <= 224) {
@@ -397,10 +390,17 @@ export const useMainCharacter = ({position, myChar}) => {
                 currentPosition.add(direction)
 
                 // 물리 엔진에서 캐릭터의 위치를 업데이트
-                charRef.current.position.copy(currentPosition)
+                currentPosition.copy(currentPosition)
         
                 // 캐릭터가 이동 방향을 바라보도록 설정
                 charRef.current.lookAt(targetPosition)
+
+                if(point) {
+                    point.style.transform = `
+                        translate(${calculateMinimapPosition(currentPosition).x}px,
+                        ${(calculateMinimapPosition(currentPosition).y)}px)
+                    `
+                }
         
                 setAnimation('WalkSpeed24')
             } else {
