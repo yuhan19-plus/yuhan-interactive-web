@@ -128,7 +128,7 @@ const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
 
                 <List>
                     {/* 테이블 헤더 */}
-                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: "center" }}>
+                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
                         <Box sx={{ width: '5%', textAlign: 'center' }}>번호</Box>
                         <Box sx={{ width: '10%', textAlign: 'center' }}>종류</Box>
                         <Box sx={{ width: '60%', textAlign: 'center' }}>신고내용</Box>

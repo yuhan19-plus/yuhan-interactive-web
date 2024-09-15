@@ -17,7 +17,7 @@ router.post("/save", (req, res) => {
             console.error("댓글 저장 중 에러발생", err);
             return res.status(500).json({ message: "댓글 저장 중 에러가 발생" });
         }
-        res.send("댓글 저장 성공")
+        res.json({ message: "댓글 저장 성공" });
     })
 
 })
@@ -41,7 +41,7 @@ router.get("/List/:boardID", (req, res) => {
 
 // 댓글 삭제
 router.delete("/delete", (req, res) => {
-    const { userId, commentId } = req.query; 
+    const { userId, commentId } = req.query;
     console.log("요청진입체크 commentId", commentId)
     // console.log("req.params",req)
     const commentDeleteQuery = "DELETE FROM comment WHERE comment_id =?;"

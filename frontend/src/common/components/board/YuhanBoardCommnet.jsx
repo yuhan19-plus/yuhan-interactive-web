@@ -69,7 +69,9 @@ export const YuhanBoardComment = ({ boardData }) => {
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }
-            const data = await response.json();
+            comment.comment_content = "";
+            // console.log(comment.comment_content)
+            fetchComment();
         } catch (error) {
             console.error(error.message);
         }
@@ -88,7 +90,7 @@ export const YuhanBoardComment = ({ boardData }) => {
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }
-            const data = await response.json();
+            fetchComment();
         } catch (error) {
             console.error(error.message);
         }
@@ -262,6 +264,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                         color: "#FFFFFF",  // 기본 입력 글자 색상
                                     }
                                 }}
+                                value={comment.comment_content}
                                 onChange={handleInputChange}
                             />
                         </Grid>

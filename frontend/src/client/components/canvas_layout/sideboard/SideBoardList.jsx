@@ -18,11 +18,14 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState([]);
+    const [loading, setLoading] = useState(true); // 로딩 상태 변수 추가
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
     const pageNum = 8;
     // 전체화면이 화면크기에 따라 제목의 내용 글자수 제한 -> 못생김방지
     const fullScreenWinth = window.screen.width;
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
+
+
 
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
@@ -62,6 +65,8 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
             setTotalPages(Math.ceil(activeData.length / pageNum));
         } catch (error) {
             console.error("데이터 불러오는 중 에러 발생:", error);
+        } finally {
+            setLoading(false); // 데이터를 다 불러오면 로딩 상태를 false로 변경
         }
     };
 
@@ -121,141 +126,145 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     return (
         <BoardLayout>
-            <Box sx={{ p: 3 }}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
-                    <InputBase
-                        placeholder="검색할 제목이나 작성자를 입력하세요"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        sx={{
-                            width: '50%',
-                            marginRight: '10px',
-                            padding: '6px 12px',
-                            border: '1px solid #ced4da',
-                            borderRadius: '4px',
-                            fontSize: '1rem',
-                        }}
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        }
-                    />
-                    <Button variant="contained" onClick={handleSearch}
-                        sx={{
-                            background: 'linear-gradient( #56bbb6 30%, #33677f 90%)',
-                            '&:hover': {
-                                backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
-                            }
-                            , color: '#fff'
-                        }} >검색</Button>
-
-                    {/* 정렬 기준 선택 드롭다운 */}
-                    <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
-                        <Select
-                            labelId="sort-label"
-                            value={sortCriteria}
-                            onChange={(e) => setSortCriteria(e.target.value)}
+            {loading ? (
+                <p>데이터를 불러오는 중입니다...</p> // 로딩 중일 때 표시할 내용
+            ) : (
+                <Box sx={{ p: 3 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
+                        <InputBase
+                            placeholder="검색할 제목이나 작성자를 입력하세요"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             sx={{
-                                height: '4vh', // 높이 조정
-                                padding: '0px 8px', // 내부 패딩 줄이기
+                                width: '50%',
+                                marginRight: '10px',
+                                padding: '6px 12px',
+                                border: '1px solid #ced4da',
+                                borderRadius: '4px',
+                                fontSize: '1rem',
                             }}
-                        >
-                            <MenuItem value="board_date">기본순</MenuItem>
-                            <MenuItem value="board_like">좋아요순</MenuItem>
-                            <MenuItem value="board_view">조회순</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                </div>
-
-                <List sx={{ textAlign: 'center' }}>
-                    {/* 헤더 부분 */}
-                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5 }}>
-                        <Box sx={{ width: '5%', borderRight: '1px solid ' }}>번호</Box>
-                        <Box sx={{ width: '60%', borderRight: '1px solid ' }}>제목</Box>
-                        <Box sx={{ width: '15%', borderRight: '1px solid' }}>작성자</Box>
-                        <Box sx={{ width: '10%', borderRight: '1px solid ' }}>좋아요</Box>
-                        <Box sx={{ width: '10%', textAlign: 'center' }}>조회수</Box>
-                    </Box>
-
-                    {/* 리스트 아이템 부분 */}
-                    {getCurrentPageData().map((item, index) => (
-                        (item.board_status === 'active') && (
-                            <ListItem key={item.board_id} divider>
-                                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                                    {/* 번호 */}
-                                    <Box sx={{ width: '5%', textAlign: 'center' }}>
-                                        <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
-                                    </Box>
-                                    {/* 제목 */}
-                                    <Box sx={{ width: '60%' }}>
-                                        <ListItemText
-                                            primary={isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
-                                            onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                            onClick={() => handleSelectItem(item.board_id)}
-                                        />
-                                    </Box>
-                                    {/* 작성자 */}
-                                    <Box sx={{ width: '15%', textAlign: 'center' }}>
-                                        <ListItemText
-                                            primary={isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
-                                            onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                            onClick={() => handleSelectItem(item.board_id)}
-                                        />
-                                    </Box>
-                                    {/* 좋아요 */}
-                                    <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                        <ListItemText primary={`${item.board_like}`} />
-                                    </Box>
-                                    {/* 조회수 */}
-                                    <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                        <ListItemText primary={`${item.board_view}`} />
-                                    </Box>
-                                </Box>
-                            </ListItem>
-                        )
-                    ))}
-                </List>
-
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        sx={{
-                            "& .Mui-selected": {
-                                background: 'linear-gradient( #56bbb6 30%, #33677f 90%)', // PANTONE 570C와 더 조화로운 중간 파란색
-                                color: '#fff', // 선택된 페이지 텍스트 색상
-                            },
-                            "& .MuiPaginationItem-root": {
-                                backgroundColor: '#56bbb6', // 페이지 넘버 배경 색상 (PANTONE 570C)
-                                color: '#fff', // 페이지 넘버 텍스트 색상
-                            },
-                            "& .MuiPaginationItem-root:hover": {
-                                backgroundColor: '#33677f', // 마우스 오버 시 부드러운 파란색
-                                color: '#fff', // 마우스 오버 시 텍스트 색상 유지
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
                             }
-                        }}
-                    />
+                        />
+                        <Button variant="contained" onClick={handleSearch}
+                            sx={{
+                                background: 'radial-gradient(circle, #33677f 30%, #56bbb6 70%)',
+                                '&:hover': {
+                                    backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
+                                }
+                                , color: '#fff'
+                            }} >검색</Button>
 
-
-                    {cookies.user &&
-                        <Box sx={{ position: 'absolute', right: 5 }}>
-                            <Button variant="contained" color="primary" onClick={onCreatePost}
+                        {/* 정렬 기준 선택 드롭다운 */}
+                        <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
+                            <Select
+                                labelId="sort-label"
+                                value={sortCriteria}
+                                onChange={(e) => setSortCriteria(e.target.value)}
                                 sx={{
-                                    background: 'linear-gradient( #56bbb6 30%, #33677f 90%)',
-                                    '&:hover': {
-                                        backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
-                                    }
+                                    height: '4vh', // 높이 조정
+                                    padding: '0px 8px', // 내부 패딩 줄이기
                                 }}
                             >
-                                글작성
-                            </Button>
+                                <MenuItem value="board_date">기본순</MenuItem>
+                                <MenuItem value="board_like">좋아요순</MenuItem>
+                                <MenuItem value="board_view">조회순</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                    </div>
+
+                    <List sx={{ textAlign: 'center' }}>
+                        {/* 헤더 부분 */}
+                        <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
+                            <Box sx={{ width: '5%', borderRight: '1px solid ' }}>번호</Box>
+                            <Box sx={{ width: '60%', borderRight: '1px solid ' }}>제목</Box>
+                            <Box sx={{ width: '15%', borderRight: '1px solid' }}>작성자</Box>
+                            <Box sx={{ width: '10%', borderRight: '1px solid ' }}>좋아요</Box>
+                            <Box sx={{ width: '10%', textAlign: 'center' }}>조회수</Box>
                         </Box>
-                    }
+
+                        {/* 리스트 아이템 부분 */}
+                        {getCurrentPageData().map((item, index) => (
+                            (item.board_status === 'active') && (
+                                <ListItem key={item.board_id} divider>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                        {/* 번호 */}
+                                        <Box sx={{ width: '5%', textAlign: 'left', pl:1 }}>
+                                            <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
+                                        </Box>
+                                        {/* 제목 */}
+                                        <Box sx={{ width: '60%' }}>
+                                            <ListItemText
+                                                primary={isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
+                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                                onClick={() => handleSelectItem(item.board_id)}
+                                            />
+                                        </Box>
+                                        {/* 작성자 */}
+                                        <Box sx={{ width: '15%', textAlign: 'center' }}>
+                                            <ListItemText
+                                                primary={isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
+                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                                onClick={() => handleSelectItem(item.board_id)}
+                                            />
+                                        </Box>
+                                        {/* 좋아요 */}
+                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                            <ListItemText primary={`${item.board_like}`} />
+                                        </Box>
+                                        {/* 조회수 */}
+                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                            <ListItemText primary={`${item.board_view}`} />
+                                        </Box>
+                                    </Box>
+                                </ListItem>
+                            )
+                        ))}
+                    </List>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                        <Pagination
+                            count={totalPages}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            sx={{
+                                "& .Mui-selected": {
+                                    background: 'radial-gradient(circle, #56bbb6 30%, #33677f 90%)', // PANTONE 570C와 더 조화로운 중간 파란색
+                                    color: '#fff', // 선택된 페이지 텍스트 색상
+                                },
+                                "& .MuiPaginationItem-root": {
+                                    backgroundColor: '#56bbb6', // 페이지 넘버 배경 색상 (PANTONE 570C)
+                                    color: '#fff', // 페이지 넘버 텍스트 색상
+                                },
+                                "& .MuiPaginationItem-root:hover": {
+                                    backgroundColor: '#33677f', // 마우스 오버 시 부드러운 파란색
+                                    color: '#fff', // 마우스 오버 시 텍스트 색상 유지
+                                }
+                            }}
+                        />
+
+
+                        {cookies.user &&
+                            <Box sx={{ position: 'absolute', right: 5 }}>
+                                <Button variant="contained" color="primary" onClick={onCreatePost}
+                                    sx={{
+                                        background: 'radial-gradient(circle, #33677f 30%, #56bbb6 70%)',
+                                        '&:hover': {
+                                            backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
+                                        }
+                                    }}
+                                >
+                                    글작성
+                                </Button>
+                            </Box>
+                        }
+                    </Box>
                 </Box>
-            </Box>
+            )}
         </BoardLayout>
     );
 };
