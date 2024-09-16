@@ -12,8 +12,8 @@ const Loader = ({ progress }) => {
     <LoaderLayout>
       {/* 3D 모델을 렌더링할 Canvas */}
       <CanvasWrapper>
-        <Canvas camera={{ position: [0, 4, 15] }}> 
-          <ambientLight intensity={2.5} /> 
+        <Canvas camera={{ position: [0, 4, 15] }}>
+          <ambientLight intensity={2.5} />
           <LoadingAnimation />
         </Canvas>
       </CanvasWrapper>
@@ -31,7 +31,7 @@ export default Loader;
 const LoaderLayout = styled.div`
   width: 100%;
   height: 100%;
-  background-color:#56bbb6; // 그라데이션인데 위아래 색은 다시 물어봐야함 햇갈림
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFCB05 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,11 +46,11 @@ const CanvasWrapper = styled.div`
   top: 10%; 
 `;
 const Progressing = styled.div`
-  width: 60%; /* 폭을 키움 */
-  max-width: 500px; /* 최대 폭을 키움 */
-  height: 30px; /* 높이를 키움 */
+  width: 60%;
+  max-width: 500px;
+  height: 30px;
   background-color: white;
-  border-radius: 15px; /* 높이에 맞춰 둥글게 */
+  border-radius: 15px; 
   overflow: hidden;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -61,7 +61,7 @@ const Progressing = styled.div`
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
-  background-color: yellow;
+  background: #F58220;
   border-radius: 15px 0 0 15px; /* 높이에 맞춰 둥글게 */
   display: flex;
   align-items: center;
