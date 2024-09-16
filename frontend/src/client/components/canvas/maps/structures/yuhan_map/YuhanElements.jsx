@@ -30,7 +30,6 @@ import SmokingGroup from './elements/SmokingGroup'
 import GrassGroup from './elements/park/grass/GrassGroup'
 import TreeGroup from './elements/park/tree/TreeGroup'
 import TerraceGroup from './elements/TerraceGroup'
-import KioskGroup from './elements/KioskGroup'
 import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
@@ -45,7 +44,6 @@ const YuhanElements = () => {
             <BuildingGroup />
             <TreeGroup />
             <GrassGroup />
-            <KioskGroup />
             <TerraceGroup />
             <SmokingGroup />
             <EtcGroup />

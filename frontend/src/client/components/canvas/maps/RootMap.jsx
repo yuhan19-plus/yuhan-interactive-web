@@ -6,6 +6,7 @@ import { MainCharacter } from './player/main/MainCharacter'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainChar } from '../../../../redux/actions/actions'
 import Floor from './structures/yuhan_map/elements/Floor'
+import KioskGroup from './structures/yuhan_map/elements/KioskGroup'
 
 const RootMap = () => {
     const myChar = useSelector((state) => state.mChar)
@@ -34,6 +35,7 @@ const RootMap = () => {
             />
 
             {/* 맵 오브젝트들 */}
+            <KioskGroup />
             <YuhanElements />
 
             {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}

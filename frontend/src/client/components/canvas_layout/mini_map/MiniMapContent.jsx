@@ -2,7 +2,7 @@
  * 미니맵 Content 컴포넌트
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Physics } from '@react-three/cannon'
