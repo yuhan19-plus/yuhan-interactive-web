@@ -17,10 +17,12 @@ const Loader = ({ progress }) => {
           <LoadingAnimation />
         </Canvas>
       </CanvasWrapper>
-
+      <BubbleChat>
+        학교가야지~
+      </BubbleChat>
       {/* 로딩 바 */}
       <Progressing>
-        <Bar width={progress}>Loading {progress.toFixed(0)}%</Bar>
+        <Bar width={progress}>학교갈 준비 중 {progress.toFixed(0)}%</Bar>
       </Progressing>
     </LoaderLayout>
   );
@@ -41,34 +43,61 @@ const LoaderLayout = styled.div`
 
 const CanvasWrapper = styled.div`
   width: 100%;
-  height: 70%; 
+  height: 90%; 
   position: absolute;
-  top: 10%; 
+  top: -3%; 
 `;
+
 const Progressing = styled.div`
   width: 60%;
-  max-width: 500px;
-  height: 30px;
+  max-width: 40vw; 
+  height: 5vh;
   background-color: white;
-  border-radius: 15px; 
+  border-radius: 2.5vh; 
   overflow: hidden;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0vw 0.4vh 1.5vh rgba(0, 0, 0, 0.2); 
   position: relative;
   z-index: 1;
-  margin-top: 25vh;
+  margin-top: 45vh; /* margin-top을 vh 단위로 유지 */
 `;
 
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
   background: #F58220;
-  border-radius: 15px 0 0 15px; /* 높이에 맞춰 둥글게 */
+  border-radius: 2.5vh 0 0 2.5vh; 
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px; /* 폰트 크기도 살짝 키움 */
+  font-size: 1.5vw;
   font-weight: bold;
-  color: #0f275c;
+  color: #FDF6E3 ;
   transition: width 0.3s ease;
-  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0vw 0.2vh 0.5vh rgba(0, 0, 0, 0.1); /* 안쪽 그림자도 vh 단위로 조정 */
+`;
+
+const BubbleChat = styled.div`
+  background-color: #fff;
+  padding: 2vw 4vh;
+  border-radius: 1vw;
+  position: relative;
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #2C3E50 ;
+  margin-top: -10vh;
+  margin-left: 20vw; 
+  box-shadow: 0vw 0.4vw 1vw rgba(0, 0, 0, 0.2);
+  
+  /* 말풍선 꼬리 부분 */
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 2vh; 
+    left: -4vh;
+    width: 0;
+    height: 0;
+    border-width: 1.5vh 5vh 1.5vh 0; /* 꼬리 크기를 더 자연스럽게 조정 */
+    border-style: solid;
+    border-color: transparent #fff transparent transparent; /* 오른쪽을 흰색으로 설정 */
+  }
 `;
