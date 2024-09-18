@@ -14,22 +14,18 @@
  * 오자현
  *  - 소캣컨트롤 추가
  */
+import { useEffect } from 'react'
+import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import ClientIndex from './client/ClientIndex'
 import AdminIndex from './admin/AdminIndex'
 import AdminMain from './admin/components/content/AdminMain'
-import MemberIndex from './client/components/member/MemberIndex'
-import { Provider } from 'react-redux'
-import store from './redux/store/store'
-import AdminBoard from './admin/components/content/board/AdminBoard'
-import AdminFood from './admin/components/content/food/AdminFood'
-import AdminMember from './admin/components/content/member/AdminMember'
-import AdminDeptRec from './admin/components/content/dept_rec/AdminDeptRec'
+import ClientIndex from './client/ClientIndex'
 import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
-import ErrorPage from './client/components/error/ErrorPage'
 import BoardTest from './client/components/dbtest/BoardTest'
-import { useEffect } from 'react'
+import ErrorPage from './client/components/error/ErrorPage'
+import MemberIndex from './client/components/member/MemberIndex'
+import store from './redux/store/store'
 
 function App() {
 
@@ -61,12 +57,11 @@ function App() {
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />
           <Route path='/join' element={<MemberIndex value='join' />} />
-
           {/* client 부분 경로
+            오늘의 메뉴
             학과체험
             상담신청
             유한게시판
-            오늘의 메뉴
           */}
           <Route path='/department/*' element={<DeptCanvasLayout />} />
           {/* <Route path='/sideMenu' element={<SideMenuLayout />}>

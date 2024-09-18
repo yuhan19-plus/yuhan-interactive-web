@@ -42,10 +42,12 @@ mysqlconnection.connect((err) => {
 module.exports = mysqlconnection;
 
 const testdbRoutes = require('./db/testdb'); 
+const todaymenuRoutes = require('./db/todaymenudb');
 const memberRoutes = require('./db/memberdb');
 const boardRoutes = require('./db/boarddb');
 const tempboardRoutes = require('./db/tempBoarddb'); 
 const boardLikeRoutes = require('./db/boardLikeddb'); 
+app.use('/food', todaymenuRoutes);
 app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/member', memberRoutes);

@@ -3,23 +3,23 @@
  * 이석재
  *   - 상담신청 메뉴가 로그인 시에만 표시되도록 수정
  */
-import React from 'react'
+import { faBowlFood, faCode, faDna, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SchoolIcon from '@mui/icons-material/School';
-import InfoIcon from '@mui/icons-material/Info';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import SupportIcon from '@mui/icons-material/Support';
-import BusinessIcon from '@mui/icons-material/Business';
-import MuseumIcon from '@mui/icons-material/Museum';
-import FestivalIcon from '@mui/icons-material/Festival';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { faBowlFood, faChalkboardTeacher, faCode, faDna, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
 import { RestaurantMenu, Send } from '@mui/icons-material';
-import { board, computerSoftwareMap, consultation, deptMap, deptRec, food, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../redux/actions/actions';
-import { useNavigate } from 'react-router-dom';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import BusinessIcon from '@mui/icons-material/Business';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import FestivalIcon from '@mui/icons-material/Festival';
+import InfoIcon from '@mui/icons-material/Info';
+import MuseumIcon from '@mui/icons-material/Museum';
+import SchoolIcon from '@mui/icons-material/School';
+import SupportIcon from '@mui/icons-material/Support';
+import React from 'react';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { board, computerSoftwareMap, consultation, deptMap, deptRec, food, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../redux/actions/actions';
 
 const MainSideBarMenu = () => {
     const dispatch = useDispatch()

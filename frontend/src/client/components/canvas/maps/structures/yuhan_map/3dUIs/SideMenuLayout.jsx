@@ -4,10 +4,11 @@
  */
 
 import React from 'react'
-import DetailFooter from './DetailFooter'
-import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
+import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
+import DetailFooter from './DetailFooter'
+import DetailHeader from './DetailHeader'
 
 
 let title
@@ -34,6 +35,9 @@ const SideMenuLayout = (props) => {
                         {title === '유한게시판' &&
                             <SideBoard />
                         }
+                        {title === '오늘의 메뉴' &&
+                        <ClientFood /> }            
+
                         {/* 내용작성 */}
                     </DetailContent>
                     <DetailFooter />

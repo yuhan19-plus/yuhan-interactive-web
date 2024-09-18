@@ -5,10 +5,10 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import AdminMember from './member/AdminMember'
-import AdminFood from './food/AdminFood'
 import AdminBoard from './board/AdminBoard'
 import AdminDeptRec from './dept_rec/AdminDeptRec'
+import AdminFood from './foodMenu/AdminFood'
+import AdminMember from './member/AdminMember'
 
 const AdminMain = () => {
     const title = useLocation()

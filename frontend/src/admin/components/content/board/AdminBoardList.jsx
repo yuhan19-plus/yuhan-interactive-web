@@ -5,11 +5,11 @@
  * 
  */
 
-import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import styled from 'styled-components';
+import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, ListItemText, MenuItem, Pagination, Select, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import styled from 'styled-components';
 
 const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);

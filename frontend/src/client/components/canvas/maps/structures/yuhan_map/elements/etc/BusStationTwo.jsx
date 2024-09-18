@@ -1,5 +1,5 @@
-/**
- * 
+/** 파일생성자 : 이정민
+ *초기 position, scale 설정 : 이정민
  * position, scale 수정 및 그림자 설정 : 임성준
  */
 import { useBox } from '@react-three/cannon'

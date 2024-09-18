@@ -1,6 +1,7 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
  *  - 투명벽
+ *  scale 수정 - 이정민
  */
 
 import { useBox } from '@react-three/cannon'
