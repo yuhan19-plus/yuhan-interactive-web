@@ -9,10 +9,11 @@ import { useFrame, useGraph, useThree } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { SkeletonUtils } from "three-stdlib"
 import { AnimationMixer, Vector3 } from "three"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
+import { enterBusStationOne, leaveBusStationOne } from "../../../../../../redux/actions/actions"
 
-export const useMainCharacter = ({position, myChar}) => {
+export const useMainCharacter = ({position, myChar, onEnterBusZone }) => {
     const btnValue = useSelector((state) => state.btnMenu)
     // console.log(btnValue.value)
     const aerialViewState = btnValue.value
@@ -41,6 +42,11 @@ export const useMainCharacter = ({position, myChar}) => {
 
     // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
     const [animation, setAnimation] = useState('Stand')
+
+    // 버스영역에 있는지 상태를 관리하는 상태변수
+    const [isInBusZone, setIsInBusZone] = useState(false);
+
+    const dispatch = useDispatch(); // 디스패치 함수 추가
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -140,6 +146,7 @@ export const useMainCharacter = ({position, myChar}) => {
             }
 
             // Bus Zone
+            /*  기존코드
             if(currentPosition.x <= 302 && currentPosition.x >= 282) {
                 if(currentPosition.z >= -168 && currentPosition.z <= -148) {
                     handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
@@ -161,6 +168,32 @@ export const useMainCharacter = ({position, myChar}) => {
                     handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
                 }
             }
+                
+            */
+           // Bus Zone 버스영역
+            // Bus Zone 1
+            if (currentPosition.x <= 302 && currentPosition.x >= 282 && currentPosition.z >= -168 && currentPosition.z <= -148) {
+                handleCamera(currentPosition.x -25, currentPosition.y + 20, currentPosition.z + 90)
+                if (!isInBusZone) {
+                    setIsInBusZone(true); // 상태 변경
+                    dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
+                    console.log("버스존 1에 진입했습니다.");
+                }
+            } 
+            // Bus Zone 2
+            else if (currentPosition.x <= 512 && currentPosition.x >= 492 && currentPosition.z >= -247 && currentPosition.z <= -237) {
+                handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
+                if (!isInBusZone) {
+                    setIsInBusZone(true); // 상태 변경
+                    dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
+                    console.log("버스존 2에 진입했습니다.");
+                }
+            } else if (isInBusZone) {
+                setIsInBusZone(false); // 상태를 false로 변경
+                dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
+                console.log("버스존을 벗어났습니다.");
+            }
+            
 
             // 학생식당 가는 길목
             if(currentPosition.x >= -128 && currentPosition.x <= 147) {

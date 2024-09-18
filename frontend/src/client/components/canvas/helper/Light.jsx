@@ -92,7 +92,7 @@ const Light = () => {
     }, [NowHour]); // NowHour가 변경될 때마다 실행
 
 
-    console.log("objectPosition", objectPosition)
+    // console.log("objectPosition", objectPosition)
 
     useHelper(lightRef, THREE.DirectionalLightHelper, 300, 0xff0000)
 
