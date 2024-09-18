@@ -52,7 +52,7 @@ const YuhanElements = () => {
             <StreetLampGroup/>
 
             {/* 인도 */}
-            <SideWalk position={[-0.5, -6.4, 0]} />
+            <SideWalk position={[-0.5, -6.6, 0]} />
             
             {/* 공원 */}
             <MainPark />

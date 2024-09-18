@@ -17,6 +17,7 @@ const Light = () => {
     const [lightIntensity, setLightIntensity] = useState(0); // 초기 강도는 0 (빛 없음)
     const today = new Date();
     const [NowHour, setNowHour] = useState(today.getHours()); // today.getHours() 대신 원하는 시간 입력 가능
+    const [objectPosition, setObjectPosition] = useState([0, 0, 0]);
 
     // 시간대별 위치값확인을 위한 test코드
     // useEffect(() => {
@@ -33,6 +34,7 @@ const Light = () => {
     //     console.log("현재밝기", lightIntensity);
     // }, [NowHour]); // NowHour가 변경될 때마다 실행
 
+
     useEffect(() => {
         let targetPos;
         let targetIntensity = 0;
@@ -44,6 +46,7 @@ const Light = () => {
 
         if (NowHour >= 7 && NowHour < 12) {
             targetPos = [250, 500, 500];
+            setObjectPosition([186.75, 373.50, 373.50]); // 상태 업데이트
             targetIntensity = 1.5;
             backgroundStyles = `
                 linear-gradient(rgb(88, 103, 212), transparent),
@@ -52,14 +55,16 @@ const Light = () => {
             `; // 아침 배경
         } else if (NowHour >= 12 && NowHour <= 17) {
             targetPos = [0, 700, 0];
+            setObjectPosition([0, 500, 0]); // 상태 업데이트
             targetIntensity = 5;
             backgroundStyles = `
                 linear-gradient(rgb(2, 125, 204), transparent),
                 linear-gradient(to top left, rgb(67, 149, 220), transparent),
                 linear-gradient(to top right, rgb(190, 225, 254), transparent)
             `; // 정오 배경
-        } else if (NowHour > 17 && NowHour < 20) {  // 상한 값 추가
+        } else if (NowHour > 17 && NowHour < 20) {
             targetPos = [-250, 500, -500];
+            setObjectPosition([-186.75, 373.50, -373.50]); // 상태 업데이트
             targetIntensity = 2.5;
             backgroundStyles = `
                 linear-gradient(rgb(85, 70, 200), transparent),
@@ -67,7 +72,8 @@ const Light = () => {
                 linear-gradient(to top right, rgb(240, 55, 25), transparent)
             `; // 저녁 배경
         } else {
-            targetPos = [-250, 500, -500]; // 기본 위치
+            targetPos = [-250, 500, -500];
+            setObjectPosition([-186.75, 373.50, -373.50]); // 상태 업데이트
             targetIntensity = 1;
             backgroundStyles = `
                 linear-gradient(rgb(0, 0, 50), transparent),
@@ -84,6 +90,9 @@ const Light = () => {
         document.body.style.setProperty('background-blend-mode', 'screen');
 
     }, [NowHour]); // NowHour가 변경될 때마다 실행
+
+
+    console.log("objectPosition", objectPosition)
 
     useHelper(lightRef, THREE.DirectionalLightHelper, 300, 0xff0000)
 
@@ -105,9 +114,9 @@ const Light = () => {
                 shadow-mapSize-height={1024}
             />
             {(NowHour >= 7 && NowHour < 20) &&
-                <Sun position={lightPos} />}
+                <Sun position={objectPosition} />}
             {(NowHour >= 20 || NowHour < 7) && (<>
-                <Moon position={lightPos} />
+                <Moon position={objectPosition} />
                 <Stars
                     radius={1000}           // 별들이 나타날 반경
                     depth={50}             // 별들의 깊이 (z축)
