@@ -246,7 +246,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onReport }) => {
                                 <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
                                     {item.board_status === 'active' &&
                                         <Button
-                                            variant="outlined"
+                                            variant="contained"
                                             size="small"
                                             color="error"
                                             sx={{ marginLeft: '5px' }}

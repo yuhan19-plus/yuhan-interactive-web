@@ -149,14 +149,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                 </InputAdornment>
                             }
                         />
-                        <Button variant="contained" onClick={handleSearch}
-                            sx={{
-                                background: 'radial-gradient(circle, #33677f 30%, #56bbb6 70%)',
-                                '&:hover': {
-                                    backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
-                                }
-                                , color: '#fff'
-                            }} >검색</Button>
+                        <Button variant="contained" color='info' onClick={handleSearch}>검색</Button>
 
                         {/* 정렬 기준 선택 드롭다운 */}
                         <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
