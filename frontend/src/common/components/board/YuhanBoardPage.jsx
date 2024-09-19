@@ -27,7 +27,8 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 
     return (
         <BoardLayout>
-            <Box sx={{ p: 3, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" }}>
+            {/* background 맨뒤 cc는 투명도 */}
+            <Box sx={{ p: 3, background: "#ffffffcc", }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}

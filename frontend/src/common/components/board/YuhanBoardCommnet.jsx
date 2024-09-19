@@ -195,7 +195,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                                 primary={item.comment_content}
                                                 sx={{
                                                     borderRadius: "0.5vh",
-                                                    backgroundColor: "rgba(86, 187, 182, 0.8)",
+                                                    backgroundColor: "#0F275C",
                                                     color: "#FFFFFF",
                                                     padding: "2vh",
                                                 }}
@@ -249,12 +249,9 @@ export const YuhanBoardComment = ({ boardData }) => {
                                 maxRows={4}
                                 fullWidth
                                 sx={{
+                                    backgroundColor: "#0F275C",
+                                    color: "#FFFFFF",
                                     borderRadius: "0.5vh",  // 모서리 둥글게           
-                                    backgroundColor: "rgb(86, 187, 182)",
-                                    '&:hover': {
-                                        backgroundColor: "rgba(86, 187, 182, 0.8)",
-                                    },
-                                    color: "#FFFFFF",  // 기본 글자 색상
                                     "& .MuiInputBase-input::placeholder": {
                                         color: "#FFFFFF"  // 기본 placeholder 색상
                                     },
@@ -276,9 +273,9 @@ export const YuhanBoardComment = ({ boardData }) => {
                                 sx={{
                                     padding: "3vh 1vw",  // 세로 길이는 유지, 가로 패딩 살짝 증가
                                     fontSize: "1rem",
-                                    backgroundColor: "rgb(86, 187, 182)",
+                                    backgroundColor: "#0F275C",
                                     '&:hover': {
-                                        backgroundColor: "rgba(86, 187, 182, 0.8)",
+                                        backgroundColor: "#325db8",
                                     },
                                 }}
                                 onClick={() => handleSaveComment(boardData.board_id)}
