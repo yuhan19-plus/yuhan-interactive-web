@@ -14,7 +14,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import MuseumIcon from '@mui/icons-material/Museum';
 import FestivalIcon from '@mui/icons-material/Festival';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { faBowlFood, faChalkboardTeacher, faCode, faDna, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
+import { faBowlFood, faChalkboardTeacher, faCode, faDna, faEnvelopeOpenText, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { RestaurantMenu, Send } from '@mui/icons-material';
 import { board, computerSoftwareMap, consultation, deptMap, deptRec, food, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../redux/actions/actions';
@@ -90,7 +90,7 @@ const MainSideBarMenu = () => {
             {/* 쿠키가 있을 때만 상담신청 메뉴를 표시 */}
             {cookies.user && (
                 <div>
-                    <Send />
+                    <FontAwesomeIcon icon={faEnvelopeOpenText} />
                     <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
                 </div>
             )}

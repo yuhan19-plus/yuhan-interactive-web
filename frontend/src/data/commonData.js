@@ -51,3 +51,51 @@ export const BIO_PATH = [
 
 // 관리자 입장 코드 - 임성준
 export const adminPassword = 'csw'
+
+// 상담신청 테스트 데이터 - 성준
+export const counselTestData = [
+    { id: 1, title: 'test1', date: '2024-09-16', name: '임성준', submitDate: '2024-09-10', status: '상담완료' },
+    { id: 2, title: 'test2', date: '2024-09-17', name: '홍길동', submitDate: '2024-09-11', status: '승인대기중' },
+    { id: 3, title: 'test3', date: '2024-09-18', name: '이순신', submitDate: '2024-09-12', status: '상담승인' },
+    { id: 4, title: 'test4', date: '2024-09-19', name: '박지성', submitDate: '2024-09-13', status: '상담취소' },
+    { id: 5, title: 'test5', date: '2024-09-20', name: '유관순', submitDate: '2024-09-14', status: '상담완료' },
+    { id: 6, title: 'test6', date: '2024-09-21', name: '강감찬', submitDate: '2024-09-15', status: '승인거절' },
+    { id: 7, title: 'test7', date: '2024-09-22', name: '김유신', submitDate: '2024-09-16', status: '승인대기중' },
+    { id: 8, title: 'test8', date: '2024-09-23', name: '장보고', submitDate: '2024-09-17', status: '상담취소' },
+    { id: 9, title: 'test9', date: '2024-09-24', name: '세종대왕', submitDate: '2024-09-18', status: '상담승인' },
+    { id: 10, title: 'test10', date: '2024-09-25', name: '김홍도', submitDate: '2024-09-19', status: '승인거절' },
+    { id: 11, title: 'test11', date: '2024-09-26', name: '신사임당', submitDate: '2024-09-20', status: '상담완료' },
+    { id: 12, title: 'test12', date: '2024-09-27', name: '김정호', submitDate: '2024-09-21', status: '승인대기중' },
+    { id: 13, title: 'test13', date: '2024-09-28', name: '황희', submitDate: '2024-09-22', status: '상담취소' },
+    { id: 14, title: 'test14', date: '2024-09-29', name: '이황', submitDate: '2024-09-23', status: '상담승인' },
+    { id: 15, title: 'test15', date: '2024-09-30', name: '율곡이이', submitDate: '2024-09-24', status: '승인거절' },
+    { id: 16, title: 'test16', date: '2024-10-01', name: '정몽주', submitDate: '2024-09-25', status: '상담완료' },
+    { id: 17, title: 'test17', date: '2024-10-02', name: '안중근', submitDate: '2024-09-26', status: '승인대기중' },
+    { id: 18, title: 'test18', date: '2024-10-03', name: '김구', submitDate: '2024-09-27', status: '상담취소' },
+    { id: 19, title: 'test19', date: '2024-10-04', name: '허준', submitDate: '2024-09-28', status: '상담승인' },
+    { id: 20, title: 'test20', date: '2024-10-05', name: '이성계', submitDate: '2024-09-29', status: '승인거절' },
+];
+
+
+export const counselListTestData = [
+    { id: 1, title: 'test1', date: '2024-09-16', name: '임성준', submitDate: '2024-09-10', status: '승인대기중' },
+    { id: 2, title: 'test2', date: '2024-09-17', name: '홍길동', submitDate: '2024-09-11', status: '상담완료' },
+    { id: 3, title: 'test3', date: '2024-09-18', name: '이순신', submitDate: '2024-09-12', status: '상담취소' },
+    { id: 4, title: 'test4', date: '2024-09-19', name: '박지성', submitDate: '2024-09-13', status: '상담승인' },
+    { id: 5, title: 'test5', date: '2024-09-20', name: '유관순', submitDate: '2024-09-14', status: '승인거절' },
+    { id: 6, title: 'test6', date: '2024-09-21', name: '강감찬', submitDate: '2024-09-15', status: '상담완료' },
+    { id: 7, title: 'test7', date: '2024-09-22', name: '김유신', submitDate: '2024-09-16', status: '승인대기중' },
+    { id: 8, title: 'test8', date: '2024-09-23', name: '장보고', submitDate: '2024-09-17', status: '상담취소' },
+    { id: 9, title: 'test9', date: '2024-09-24', name: '세종대왕', submitDate: '2024-09-18', status: '상담승인' },
+    { id: 10, title: 'test10', date: '2024-09-25', name: '김홍도', submitDate: '2024-09-19', status: '승인거절' },
+    { id: 11, title: 'test11', date: '2024-09-26', name: '신사임당', submitDate: '2024-09-20', status: '상담완료' },
+    { id: 12, title: 'test12', date: '2024-09-27', name: '김정호', submitDate: '2024-09-21', status: '상담취소' },
+    { id: 13, title: 'test13', date: '2024-09-28', name: '황희', submitDate: '2024-09-22', status: '승인대기중' },
+    { id: 14, title: 'test14', date: '2024-09-29', name: '이황', submitDate: '2024-09-23', status: '상담승인' },
+    { id: 15, title: 'test15', date: '2024-09-30', name: '율곡이이', submitDate: '2024-09-24', status: '승인거절' },
+    { id: 16, title: 'test16', date: '2024-10-01', name: '정몽주', submitDate: '2024-09-25', status: '상담완료' },
+    { id: 17, title: 'test17', date: '2024-10-02', name: '안중근', submitDate: '2024-09-26', status: '상담취소' },
+    { id: 18, title: 'test18', date: '2024-10-03', name: '김구', submitDate: '2024-09-27', status: '승인대기중' },
+    { id: 19, title: 'test19', date: '2024-10-04', name: '허준', submitDate: '2024-09-28', status: '상담승인' },
+    { id: 20, title: 'test20', date: '2024-10-05', name: '이성계', submitDate: '2024-09-29', status: '승인거절' },
+]

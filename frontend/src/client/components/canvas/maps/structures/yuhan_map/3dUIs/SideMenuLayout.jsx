@@ -8,6 +8,7 @@ import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
+import CounselContent from './counsel/CounselContent'
 
 
 let title
@@ -26,7 +27,7 @@ const SideMenuLayout = (props) => {
     // console.log(title)
 
     return (
-        <>
+        <SideMenuLayoutWrapper>
             {value &&
                 <>
                     <DetailHeader title={title} />
@@ -35,19 +36,30 @@ const SideMenuLayout = (props) => {
                             <SideBoard />
                         }
                         {/* 내용작성 */}
+                        {title === '상담신청' &&
+                            <CounselContent />
+                        }
                     </DetailContent>
                     <DetailFooter />
                 </>
             }
-        </>
+        </SideMenuLayoutWrapper>
     )
 }
 
+const SideMenuLayoutWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`
+
 const DetailContent = styled.div`
     width: 100%;
-    height: 65vh;
+    height: 100%;
     overflow-y: auto;
     background-color: #ffffffdd;
+    padding: 15px;
 `
 
 export default SideMenuLayout

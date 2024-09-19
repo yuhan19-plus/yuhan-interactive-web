@@ -14,6 +14,12 @@ export const SIDE_MENU_BOARD = 'SIDE_MENU_BOARD'
 export const SIDE_MENU_FOOD = 'SIDE_MENU_FOOD'
 export const SIDE_MENU_DEPT_REC = 'SIDE_MENU_DEPT_REC'
 
+// 상담신청 - 성준
+export const REQ_FOR_CONSULTATION = 'REQ_FOR_CONSULTATION'
+export const MY_COUNSEL = 'MY_COUNSEL'
+export const COUNSEL_DATE = 'COUNSEL_DATE'
+export const REQ_FOR_CONSULTATION_LIST = 'REQ_FOR_CONSULTATION_LIST'
+
 // 맵 - 성준
 export const YH_MAP = 'YH_MAP'
 export const DEPT_MAP = 'DEPT_MAP'
@@ -73,6 +79,20 @@ export const food = () => ({
 })
 export const deptRec = () => ({
     type: SIDE_MENU_DEPT_REC
+})
+
+// 상담신청 - 성준
+export const myCounsel = () => ({
+    type: MY_COUNSEL
+})
+export const counselDate = () => ({
+    type: COUNSEL_DATE
+})
+export const counselBtn = () => ({
+    type: REQ_FOR_CONSULTATION
+})
+export const reqForConsultation = () => ({
+    type: REQ_FOR_CONSULTATION_LIST
 })
 
 // 모달 - 성준
