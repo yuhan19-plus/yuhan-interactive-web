@@ -40,7 +40,7 @@ const EtcGroup = () => {
             {/* 찾아오는 길 안내문 */}
             {isInBusStationOne && (
                 <>
-                    {/* <Direction position={[250, 10, -140]} /> */}
+                    <Direction position={[250, 10, -140]} />
                     <Bus position={[350, 17.5, -150]}/>
                 </>
             )}
