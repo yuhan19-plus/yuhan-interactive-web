@@ -35,7 +35,7 @@ const CounselCalendar = () => {
     }
 
     // 상담 가능 날짜
-    const okDay = ['2024-09-23', '2024-09-27']
+    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
 
     const handleReqForCounsel = (clickedDate) => {
         // navigate 함수의 state를 사용해 날짜를 루트 경로로 전달
