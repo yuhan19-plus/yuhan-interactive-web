@@ -19,6 +19,7 @@ export const REQ_FOR_CONSULTATION = 'REQ_FOR_CONSULTATION'
 export const MY_COUNSEL = 'MY_COUNSEL'
 export const COUNSEL_DATE = 'COUNSEL_DATE'
 export const REQ_FOR_CONSULTATION_LIST = 'REQ_FOR_CONSULTATION_LIST'
+export const COUNSEL_DATE_REGISTER = 'COUNSEL_DATE_REGISTER'
 
 // 맵 - 성준
 export const YH_MAP = 'YH_MAP'
@@ -93,6 +94,9 @@ export const counselBtn = () => ({
 })
 export const reqForConsultation = () => ({
     type: REQ_FOR_CONSULTATION_LIST
+})
+export const counselDateRegister = () => ({
+    type: COUNSEL_DATE_REGISTER
 })
 
 // 모달 - 성준

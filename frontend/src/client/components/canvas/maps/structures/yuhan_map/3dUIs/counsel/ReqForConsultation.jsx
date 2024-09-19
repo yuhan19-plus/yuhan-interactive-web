@@ -1,4 +1,4 @@
-import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField, RadioGroup, FormControlLabel, Radio } from '@mui/material'
+import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -137,6 +137,29 @@ const ReqForConsultation = () => {
                     <TextField type='text' style={{width: '100%'}} />
                 </FormContent>
             </StyledFormControl>
+            <StyledFormControl>
+                <FormContent
+                    style={{
+                        justifyContent: 'flex-end',
+                        marginTop: '15px'
+                    }}
+                >
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        style={{
+                            marginRight: '15px'
+                        }}
+                    >
+                        취소하기
+                    </Button>
+                    <Button
+                        variant="contained"
+                    >
+                        신청하기
+                    </Button>
+                </FormContent>
+            </StyledFormControl>
         </ReqForConsultationWrapper>
     )
 }
@@ -172,5 +195,7 @@ const StyledFormLabel = styled(MuiFormLabel)`
 
 const FormContent = styled.div`
     width: 100%;
+    display: flex;
+    align-items: center;
 `
 export default ReqForConsultation
