@@ -10,8 +10,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { counselDate, counselDateRegister, myCounsel, reqForConsultation } from '../../../../../../../../redux/actions/actions'
 import ReqForConsultationList from './professor/ReqForConsultationList'
 import CounselDateRegister from './professor/CounselDateRegister'
+import { useCookies } from 'react-cookie'
 
 const CounselContent = () => {
+    // 쿠키(세션 쿠키)
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    console.log(cookies)
+    console.log(cookies.user)
+    const currentUser = cookies.user
+
     const counsel = useSelector((state) => state.counsel)
     const counselName = counsel.name
 
@@ -34,42 +41,51 @@ const CounselContent = () => {
         <CounselContentMain>
             <ContentHeader>
                 <CounselBtn>
-                    <Button
-                        variant="contained"
-                        style={{marginRight: '5px'}}
-                        onClick={() => {
-                            handleMyCounsel()
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faList} />&nbsp;상담이력
-                    </Button>
-                    <Button
-                        variant="contained"
-                        style={{marginRight: '5px'}}
-                        onClick={() => {
-                            handleCounselDate()
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faCalendarCheck} />&nbsp;상담날짜
-                    </Button>
-                    <Button
-                        variant="contained"
-                        style={{marginRight: '5px'}}
-                        onClick={() => {
-                            handleReqForConsultation()
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faListCheck} />&nbsp;상담신청목록
-                    </Button>
-                    <Button
-                        variant="contained"
-                        style={{marginRight: '5px'}}
-                        onClick={() => {
-                            handleCounselDateRegister()
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faCalendarPlus} />&nbsp;상담날짜등록
-                    </Button>
+                    {
+                        currentUser === 'sjsj' ? (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    style={{marginRight: '5px'}}
+                                    onClick={() => {
+                                        handleMyCounsel()
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faList} />&nbsp;상담이력
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    style={{marginRight: '5px'}}
+                                    onClick={() => {
+                                        handleCounselDate()
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faCalendarCheck} />&nbsp;상담날짜
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    style={{marginRight: '5px'}}
+                                    onClick={() => {
+                                        handleReqForConsultation()
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faListCheck} />&nbsp;상담신청목록
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    style={{marginRight: '5px'}}
+                                    onClick={() => {
+                                        handleCounselDateRegister()
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faCalendarPlus} />&nbsp;상담날짜등록
+                                </Button>
+                            </>
+                        )
+                    }
                 </CounselBtn>
             </ContentHeader>
             <ContentContainer>

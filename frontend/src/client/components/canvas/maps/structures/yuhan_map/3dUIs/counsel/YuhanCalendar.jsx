@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarPlus, faCircleXmark, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar'
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
@@ -83,53 +83,144 @@ const YuhanCalendar = () => {
                         if (okDay.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
                             html.push(
                                 <React.Fragment key={moment(date).format("okDay")}>
-                                    <CounselBtn
-                                        variant="contained"
-                                        className='font-color-green'
-                                        onClick={() => {
-                                            const clickedDate = moment(date).format("YYYY-MM-DD")
-                                            Swal.fire({
-                                                icon: "success",
-                                                title: "상담신청",
-                                                text: `${clickedDate}에 신청하시겠습니까?`,
-                                                showCancelButton: true,
-                                                confirmButtonText: "신청",
-                                                cancelButtonText: "닫기",
-                                            }).then((res) => {
-                                                if (res.isConfirmed) {
-                                                    //삭제 요청 처리
-                                                    handleReqForCounsel(clickedDate)
-                                                }
-                                                else{
-                                                   //취소
-                                                   return
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {/* <FontAwesomeIcon icon={faCircleCheck} color='green' /> */}
-                                        <FontAwesomeIcon icon={faEnvelopeOpenText} />
-                                        <p>상담신청</p>
-                                    </CounselBtn>
+                                    {
+                                        currentUser === 'sjsj' ? (
+                                            <>
+                                                <CounselBtn
+                                                    variant="contained"
+                                                    className='font-color-green'
+                                                    onClick={() => {
+                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
+                                                        Swal.fire({
+                                                            icon: "success",
+                                                            title: "상담신청",
+                                                            text: `${clickedDate}에 신청하시겠습니까?`,
+                                                            showCancelButton: true,
+                                                            confirmButtonText: "신청",
+                                                            cancelButtonText: "닫기",
+                                                        }).then((res) => {
+                                                            if (res.isConfirmed) {
+                                                                handleReqForCounsel(clickedDate)
+                                                            }
+                                                            else{
+                                                                return
+                                                            }
+                                                        })
+                                                    }}
+                                                >
+                                                    {/* <FontAwesomeIcon icon={faCircleCheck} color='green' /> */}
+                                                    <FontAwesomeIcon icon={faEnvelopeOpenText} />
+                                                    <p>상담신청</p>
+                                                </CounselBtn>
+                                            </>
+                                        ) : (
+                                            <>
+                                                {/* <CounselBtn
+                                                    variant="contained"
+                                                    className='font-color-green'
+                                                    onClick={() => {
+                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
+                                                        Swal.fire({
+                                                            icon: "success",
+                                                            title: "날짜등록",
+                                                            text: `${clickedDate}에 신청하시겠습니까?`,
+                                                            showCancelButton: true,
+                                                            confirmButtonText: "신청",
+                                                            cancelButtonText: "닫기",
+                                                        }).then((res) => {
+                                                            if (res.isConfirmed) {
+                                                                handleReqForCounsel(clickedDate)
+                                                            }
+                                                            else{
+                                                            //취소
+                                                            return
+                                                            }
+                                                        })
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faCalendarPlus} />
+                                                    <p>날짜등록</p>
+                                                </CounselBtn> */}
+                                                <CounselBtn
+                                                    variant="contained"
+                                                    className='font-color-red'
+                                                    onClick={() => {
+                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
+                                                        Swal.fire({
+                                                            icon: "warning",
+                                                            title: "등록불가",
+                                                            text: `${clickedDate}은 이미 등록된 날짜입니다. 등록을 취소하시겠습니까?`,
+                                                            showCancelButton: true,
+                                                            confirmButtonText: "등록취소",
+                                                            cancelButtonText: "닫기",
+                                                        }).then((res) => {
+                                                            if (res.isConfirmed) {
+                                                                // 등록취소 메서드 호출
+                                                            }
+                                                            else{
+                                                                return
+                                                            }
+                                                        })
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faCircleXmark} />
+                                                    <p>등록불가</p>
+                                                </CounselBtn>
+                                            </>
+                                        )
+                                    }
                                 </React.Fragment>
                             )
                         } else {
                             html.push(
                                 <React.Fragment key={moment(date).format("noDay")}>
-                                    <CounselBtn
-                                        variant="contained"
-                                        className='font-color-red'
-                                        onClick={() => {
-                                            Swal.fire({
-                                                icon: "warning",
-                                                title: "상담불가",
-                                                text: "상담신청 날짜를 선택해주세요"
-                                            })
-                                        }}
-                                    >
-                                        <FontAwesomeIcon icon={faCircleXmark} color='red' />
-                                        <p>상담불가</p>
-                                    </CounselBtn>
+                                    {
+                                        currentUser === 'sjsj' ? (
+                                            <>
+                                                <CounselBtn
+                                                    variant="contained"
+                                                    className='font-color-red'
+                                                    onClick={() => {
+                                                        Swal.fire({
+                                                            icon: "warning",
+                                                            title: "상담불가",
+                                                            text: "상담신청 날짜를 선택해주세요"
+                                                        })
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faCircleXmark} color='red' />
+                                                    <p>상담불가</p>
+                                                </CounselBtn>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <CounselBtn
+                                                    variant="contained"
+                                                    className='font-color-green'
+                                                    onClick={() => {
+                                                        Swal.fire({
+                                                            icon: "success",
+                                                            title: "날짜등록",
+                                                            text: "상담가능 날짜로 등록하시겠습니까?",
+                                                            showCancelButton: true,
+                                                            confirmButtonText: "등록",
+                                                            cancelButtonText: "닫기",
+                                                        }).then((res) => {
+                                                            if (res.isConfirmed) {
+                                                                // 상담등록 메서드 호출
+                                                            }
+                                                            else{
+                                                                return
+                                                            }
+                                                        })
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faCalendarPlus} color='green' />
+                                                    <p>날짜등록</p>
+                                                </CounselBtn>
+                                            </>
+                                        )
+                                    }
                                 </React.Fragment>
                             )
                         }
