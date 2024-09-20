@@ -5,6 +5,8 @@
 // 캐릭터 - 성준
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
 
+export const MINI_MAP_TELEPORT = 'MINI_MAP_TELEPORT'
+
 // 애니메이션
 
 // 클라이언트 사이드 메뉴 - 성준
@@ -46,8 +48,14 @@ export const AERIAL_VIEW = 'AERIAL_VIEW'
 /* 액션 생성자 정의영역 - 성준 */
 
 // 캐릭터 - 성준
-export const mainChar = () => ({
-    type: MAIN_CHARACTER
+export const mainChar = (newPosition) => ({
+    type: MAIN_CHARACTER,
+    payload: newPosition
+})
+
+export const miniMapTeleport = (teleportPosition) => ({
+    type: MINI_MAP_TELEPORT,
+    payload: teleportPosition
 })
 
 // 맵 - 성준
@@ -104,30 +112,39 @@ export const aerialView = () => ({
 export const initKiosk = () => ({
     type: INIT_KIOSK
 })
-export const kioskPyeonghwaOne = () => ({
-    type: KIOSK_PYEONGHWA_ONE
+export const kioskPyeonghwaOne = (boolValue) => ({
+    type: KIOSK_PYEONGHWA_ONE,
+    payload: boolValue
 })
-export const kioskPyeonghwaTwo = () => ({
-    type: KIOSK_PYEONGHWA_TWO
+export const kioskPyeonghwaTwo = (boolValue) => ({
+    type: KIOSK_PYEONGHWA_TWO,
+    payload: boolValue
 })
-export const kioskBongSa = () => ({
-    type: KIOSK_BONGSA
+export const kioskBongSa = (boolValue) => ({
+    type: KIOSK_BONGSA,
+    payload: boolValue
 })
-export const kioskJayu = () => ({
-    type: KIOSK_JAYU
+export const kioskJayu = (boolValue) => ({
+    type: KIOSK_JAYU,
+    payload: boolValue
 })
-export const kioskCafeteria = () => ({
-    type: KIOSK_STUDENT_CAFETERIA
+export const kioskCafeteria = (boolValue) => ({
+    type: KIOSK_STUDENT_CAFETERIA,
+    payload: boolValue
 })
-export const kioskNanum = () => ({
-    type: KIOSK_NANUM
+export const kioskNanum = (boolValue) => ({
+    type: KIOSK_NANUM,
+    payload: boolValue
 })
-export const kioskChangjo = () => ({
-    type: KIOSK_CHANGJO
+export const kioskChangjo = (boolValue) => ({
+    type: KIOSK_CHANGJO,
+    payload: boolValue
 })
-export const kioskMemorialHall = () => ({
-    type: KIOSK_MEMORIAL_HALL
+export const kioskMemorialHall = (boolValue) => ({
+    type: KIOSK_MEMORIAL_HALL,
+    payload: boolValue
 })
-export const kioskYujaela = () => ({
-    type: KIOSK_YUJAELA
+export const kioskYujaela = (boolValue) => ({
+    type: KIOSK_YUJAELA,
+    payload: boolValue
 })

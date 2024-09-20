@@ -41,8 +41,9 @@ export function Kiosk({position, name, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            e.stopPropagation()
-    }}>
+          e.stopPropagation()
+      }}
+    >
       <group position={[0,1,0]} scale={0.766}>
         <mesh geometry={nodes.Empty004.geometry} material={materials['YuhanLogo(B9, Kiosk)']} />
         <mesh geometry={nodes.Empty004_1.geometry} material={materials['D7EFD4 (Kiosk)']} />

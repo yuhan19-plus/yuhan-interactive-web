@@ -3,14 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { aerialView } from '../../../redux/actions/actions'
+import { aerialView, initKiosk } from '../../../redux/actions/actions'
 
 const BtnMenuGroup = () => {
-    const btnValue = useSelector((state) => state.btnMenu)
     const dispatch = useDispatch()
-    const [clickEvent, setClickEvent] = useState(false)
     const handleAerialView = (e) => {
         e.stopPropagation()
+        dispatch(initKiosk())
         dispatch(aerialView())
     }
     return (

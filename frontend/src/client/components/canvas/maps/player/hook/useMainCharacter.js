@@ -11,7 +11,7 @@ import { SkeletonUtils } from "three-stdlib"
 import { AnimationMixer, Vector3 } from "three"
 import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
-import { initKiosk, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela } from "../../../../../../redux/actions/actions"
+import { initKiosk, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({position, myChar}) => {
@@ -24,6 +24,12 @@ export const useMainCharacter = ({position, myChar}) => {
 
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
+
+    // 텔레포트
+    const teleportState = useSelector((state) => state.teleport)
+    const teleportValue = teleportState.value
+    const teleportPosition = teleportState.position
+    // console.log('teleportPosition', teleportPosition)
 
     const { camera } = useThree()
 
@@ -70,18 +76,39 @@ export const useMainCharacter = ({position, myChar}) => {
 
     // 처음 렌더링 시 초기 위치를 설정
     useEffect(() => {
+        // console.log(myChar.currentPosition)
         if (charRef.current) {
-            charRef.current.position.set(...position)
+            charRef.current.position.set(
+                myChar.currentPosition[0],
+                myChar.currentPosition[1],
+                myChar.currentPosition[2]
+            )
         }
     }, [])
 
     // 목표 위치가 변경되면 캐릭터 이동 시작
     useEffect(() => {
+        console.log('useMainPosition', position)
         if (position) {
             setTargetPosition(new Vector3(...position))
+            dispatch(mainChar(position))
         }
     }, [position])
 
+    // 텔레포트
+    useEffect(() => {
+        if(teleportValue) {
+            setTargetPosition(new Vector3(...teleportPosition))
+            dispatch(mainChar(teleportPosition))
+            charRef.current.position.set(
+                teleportPosition[0],
+                teleportPosition[1],
+                teleportPosition[2]
+            )
+        }
+    }, [teleportValue, teleportPosition])
+
+    // 항공뷰
     useEffect(() => {
         if(aerialViewState) {
             gsap.to(camera.position, {
@@ -101,313 +128,315 @@ export const useMainCharacter = ({position, myChar}) => {
             return
         } else {
             const currentPosition = charRef.current.position // 현재 위치
-            const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리
-    
-            // 카메라 설정 부분
-            const handleCamera = (x, y, z) => {
-                camera.position.set(x, y, z)
-            }
-            handleCamera(currentPosition.x + 130, currentPosition.y + 400, currentPosition.z - 150)
 
-            // Start Zone
-            if(currentPosition.x <= 285 && currentPosition.x >= 275) {
-                if(currentPosition.z >= -360 && currentPosition.z <= -350) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
-                }
-            }
+        const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리
 
-            // Bus Zone
-            if(currentPosition.x <= 322 && currentPosition.x >= 262) {
-                if(currentPosition.z >= -188 && currentPosition.z <= -138) {
-                    handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
-                }
-            }
-            if(currentPosition.x <= 522 && currentPosition.x >= 482) {
-                if(currentPosition.z >= -257 && currentPosition.z <= -217) {
-                    handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
-                }
-            }
-
-            // 학생식당 가는 길목
-            if((currentPosition.x >= -128 && currentPosition.x <= 147) && (currentPosition.z >= -28  && currentPosition.z <= 80)) {
-                handleCamera(currentPosition.x - 180, currentPosition.y + 100, currentPosition.z + 0)
-                // 평화관 키오스크 + 이벤트
-                if ((currentPosition.x >= 25 && currentPosition.x <= 45) && (currentPosition.z >= 11 && currentPosition.z <= 33)) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 50)
-                    if (!kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = true
-                        dispatch(kioskPyeonghwaTwo())
-                    }
-                } 
-                // 나눔관 키오스크 + 이벤트
-                else if ((currentPosition.x >= 12 && currentPosition.x <= 54) && (currentPosition.z >= 57 && currentPosition.z <= 77)) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
-                    if (!kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = true
-                        dispatch(kioskNanum())
-                    }
-                } 
-                
-                else {
-                    if (kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = false
-                        dispatch(initKiosk())
-                    }
-                }
-            }
-            
-            
-            // 9호관 & 학생식당 앞
-            if(currentPosition.x > 147 && currentPosition.x <= 224) {
-                if(currentPosition.z >= -28 && currentPosition.z < 285) {
-                    handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
-
-                    // 학생식당 키오스크 + 이벤트
-                    if((currentPosition.x >= 179 && currentPosition.x <= 202) &&
-                        (currentPosition.z >= 128  && currentPosition.z <= 168)) {
-                            handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskCafeteria())
-                            }
-                        }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-                }
-            }
-            
-            if(currentPosition.x <= 150 && currentPosition.z > 120) {
-                if(currentPosition.x < -170 && currentPosition.x > -240) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
-                }
-                if(currentPosition.x > -170 && currentPosition.x <= -48) {
-                    // 테라스 입구
-                    handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 0)
-                }
-                if(currentPosition.x > -48 && currentPosition.x <= 0) {
-                    // 테라스 안쪽 우측
-                    handleCamera(currentPosition.x - 60, currentPosition.y + 60, currentPosition.z + 0)
-                }
-                // 창조관 키오스크 + 이벤트
-                if((currentPosition.x >= -175 && currentPosition.x <= -155) &&
-                    (currentPosition.z >= 244  && currentPosition.z <= 284)) {
-                        handleCamera(currentPosition.x - 40, currentPosition.y + 40, currentPosition.z + 0)
-                        if (!kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = true
-                            dispatch(kioskChangjo())
-                        }
-                }
-                else {
-                    if (kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = false
-                        dispatch(initKiosk())
-                    }
-                }
-            }
-
-            // 테라스 안쪽 좌측
-            if(currentPosition.z <= 213 && currentPosition.z >= 143) {
-                if(currentPosition.x <= 0 && currentPosition.x >= -42) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 30, currentPosition.z + 30)
-                }
-            }
-
-            // 공원
-            if(currentPosition.z <= 120 && currentPosition.z > -130) {
-                if(currentPosition.x < -128 && currentPosition.x > -270) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 100)
-                    // 유일한기념관 키오스크 + 이벤트
-                    if((currentPosition.x >= -248 && currentPosition.x <= -228) &&
-                        (currentPosition.z >= 74  && currentPosition.z <= 114)) {
-                            handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskMemorialHall())
-                            }
-                        }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-                }
-                if(currentPosition.x <= -270) {
-                    handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
-                    // 유재라관 키오스크 + 이벤트
-                    if((currentPosition.x <= -279 && currentPosition.x >= -319) &&
-                        (currentPosition.z <= -65 && currentPosition.z >= -85)) {
-                            handleCamera(currentPosition.x + 0, currentPosition.y + 70, currentPosition.z + 40)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskYujaela())
-                            }
-                        }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-                }
-            }
-
-            // 3호관 8호관 사이
-            if(currentPosition.x < -128 && currentPosition.x > -270) {
-                if(currentPosition.z < -60 && currentPosition.z > -270) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z + 180)
-                    // 자유관 키오스크 + 이벤트
-                    if((currentPosition.x >= -191 && currentPosition.x <= -161) &&
-                        (currentPosition.z <= -204 && currentPosition.z >= -244)) {
-                            handleCamera(currentPosition.x -50, currentPosition.y + 50, currentPosition.z + 0)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskJayu())
-                            }
-                        }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-                }
-                if(currentPosition.z <= -270) {
-                    handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
-                }
-            }
-
-            // Welcome 존 앞
-            if(currentPosition.z < -260) {
-                if(currentPosition.x < -230) {
-                    handleCamera(currentPosition.x + 400, currentPosition.y + 200, currentPosition.z + 0)
-                }
-            }
-
-            // 나눔의 숲 큰 입구
-            if(currentPosition.x >= -128 && currentPosition.x < -30) {
-                if(currentPosition.z < -254 && currentPosition.z > -340){
-                    handleCamera(currentPosition.x - 180, currentPosition.y + 250, currentPosition.z - 150)
-                }
-            }
-
-            // 나눔의 숲 1사분면, 2사분면
-            if(currentPosition.z <= -102 && currentPosition.z >= -200) {
-                if(currentPosition.x >= -69 && currentPosition.x <= 58) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 50)
-                    // 평화관 키오스크
-                    if((currentPosition.x <= 45 && currentPosition.x >= 5) &&
-                        (currentPosition.z <= -126 && currentPosition.z >= -146)) {
-                            handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z -50)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskPyeonghwaOne())
-                            }
-                    }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-
-                }
-                if(currentPosition.x > 58 && currentPosition.x <= 190) {
-                    handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z - 50)
-                    if((currentPosition.x <= 189 && currentPosition.x >= 159) &&
-                        (currentPosition.z <= -170 && currentPosition.z >= -210)) {
-                            handleCamera(currentPosition.x - 50, currentPosition.y + 70, currentPosition.z + 0)
-                        if (!kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = true
-                            dispatch(kioskBongSa())
-                        }
-                    }
-                    else {
-                        if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false
-                            dispatch(initKiosk())
-                        }
-                    }
-                }
-            }
-            
-            // 나눔의 숲 3사분면, 4사분면(4-1, 4-2)
-            if(currentPosition.z < -200 && currentPosition.z >= -320) {
-                if(currentPosition.x > 58 && currentPosition.x <= 190) {
-                    handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 50)
-                }
-                if(currentPosition.x >= -69 && currentPosition.x < -30) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
-                }
-                if(currentPosition.x >= -30 && currentPosition.x <= 58) {
-                    // 흡연구역 이벤트 발생 지역
-                    handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 120)
-                    if((currentPosition.x <= 61 && currentPosition.x >= 21) &&
-                        currentPosition.z <= -255 && currentPosition.z >= -301) {
-                            handleCamera(currentPosition.x + 10, currentPosition.y + 50, currentPosition.z + 50)     
-                    }
-                }
-            }
-
-            // 학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이
-            if(currentPosition.z <= -340) {
-                if(currentPosition.x >= -128 && currentPosition.x <= -30) {
-                    handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
-                    
-                }
-            }
-            // 유한TV Zone
-            if(currentPosition.x > -225 && currentPosition.x < -30) {
-                if(currentPosition.z < -400) {
-                    handleCamera(currentPosition.x + 0, currentPosition.y + 5, currentPosition.z + 150)
-                }
-            }
-
-            // 학교입구
-            if(currentPosition.x > -30 && currentPosition.x <= 245) {
-                if(currentPosition.z < -337) {
-                    handleCamera(currentPosition.x + 180, currentPosition.y + 230, currentPosition.z + 0)
-                }
-                // 동상 Zone
-                if(currentPosition.x <= 69 && currentPosition.x >= 9) {
-                    if(currentPosition.z <= -487 && currentPosition.z >= -537) {
-                        handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110)
-                    }
-                }
-            }
-
-            camera.lookAt(currentPosition)
-        
-            if (distance > 0.4) {
-                // 방향을 구하고 스칼라를 곱하여 이동량을 설정
-                const direction = new Vector3().subVectors(targetPosition, currentPosition).normalize().multiplyScalar(0.5)
-        
-                // 현재 위치에 방향을 더해 새로운 위치를 설정
-                currentPosition.add(direction)
-
-                // 물리 엔진에서 캐릭터의 위치를 업데이트
-                currentPosition.copy(currentPosition)
-        
-                // 캐릭터가 이동 방향을 바라보도록 설정
-                charRef.current.lookAt(targetPosition)
-
-                if(point) {
-                    point.style.transform = `
-                        translate(${calculateMinimapPosition(currentPosition).x}px,
-                        ${(calculateMinimapPosition(currentPosition).y)}px)
-                    `
-                }
-        
-                setAnimation('WalkSpeed24')
-            } else {
-                setAnimation('Stand')
-            }
-            mixer.update(0.01)
+        // 카메라 설정 부분
+        const handleCamera = (x, y, z) => {
+            camera.position.set(x, y, z)
         }
+        handleCamera(currentPosition.x + 130, currentPosition.y + 400, currentPosition.z - 150)
+
+        // Start Zone
+        if(currentPosition.x <= 285 && currentPosition.x >= 275) {
+            if(currentPosition.z >= -360 && currentPosition.z <= -350) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
+            }
+        }
+
+        // Bus Zone
+        if(currentPosition.x <= 322 && currentPosition.x >= 262) {
+            if(currentPosition.z >= -188 && currentPosition.z <= -138) {
+                handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
+            }
+        }
+        if(currentPosition.x <= 522 && currentPosition.x >= 482) {
+            if(currentPosition.z >= -257 && currentPosition.z <= -217) {
+                handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
+            }
+        }
+
+        // 학생식당 가는 길목
+        if((currentPosition.x >= -128 && currentPosition.x <= 147) && (currentPosition.z >= -28  && currentPosition.z <= 80)) {
+            handleCamera(currentPosition.x - 180, currentPosition.y + 100, currentPosition.z + 0)
+            // 평화관 키오스크 + 이벤트
+            if ((currentPosition.x >= 25 && currentPosition.x <= 45) && (currentPosition.z >= 11 && currentPosition.z <= 33)) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 50)
+                if (!kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = true
+                    dispatch(kioskPyeonghwaTwo())
+                }
+            } 
+            // 나눔관 키오스크 + 이벤트
+            else if ((currentPosition.x >= 12 && currentPosition.x <= 54) && (currentPosition.z >= 57 && currentPosition.z <= 77)) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z - 50)
+                if (!kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = true
+                    dispatch(kioskNanum())
+                }
+            } 
+            
+            else {
+                if (kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = false
+                    dispatch(initKiosk())
+                }
+            }
+        }
+        
+        
+        // 9호관 & 학생식당 앞
+        if(currentPosition.x > 147 && currentPosition.x <= 224) {
+            if(currentPosition.z >= -28 && currentPosition.z < 285) {
+                handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
+
+                // 학생식당 키오스크 + 이벤트
+                if((currentPosition.x >= 179 && currentPosition.x <= 202) &&
+                    (currentPosition.z >= 128  && currentPosition.z <= 168)) {
+                        handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskCafeteria())
+                        }
+                    }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+        }
+        
+        if(currentPosition.x <= 150 && currentPosition.z > 120) {
+            if(currentPosition.x < -170 && currentPosition.x > -240) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
+            }
+            if(currentPosition.x > -170 && currentPosition.x <= -48) {
+                // 테라스 입구
+                handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 0)
+            }
+            if(currentPosition.x > -48 && currentPosition.x <= 0) {
+                // 테라스 안쪽 우측
+                handleCamera(currentPosition.x - 60, currentPosition.y + 60, currentPosition.z + 0)
+            }
+            // 창조관 키오스크 + 이벤트
+            if((currentPosition.x >= -175 && currentPosition.x <= -155) &&
+                (currentPosition.z >= 244  && currentPosition.z <= 284)) {
+                    handleCamera(currentPosition.x - 40, currentPosition.y + 40, currentPosition.z + 0)
+                    if (!kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = true
+                        dispatch(kioskChangjo())
+                    }
+            }
+            else {
+                if (kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = false
+                    dispatch(initKiosk())
+                }
+            }
+        }
+
+        // 테라스 안쪽 좌측
+        if(currentPosition.z <= 213 && currentPosition.z >= 143) {
+            if(currentPosition.x <= 0 && currentPosition.x >= -42) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 30, currentPosition.z + 30)
+            }
+        }
+
+        // 공원
+        if(currentPosition.z <= 120 && currentPosition.z > -130) {
+            if(currentPosition.x < -128 && currentPosition.x > -270) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 100)
+                // 유일한기념관 키오스크 + 이벤트
+                if((currentPosition.x >= -248 && currentPosition.x <= -228) &&
+                    (currentPosition.z >= 74  && currentPosition.z <= 114)) {
+                        handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskMemorialHall())
+                        }
+                    }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+            if(currentPosition.x <= -270) {
+                handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
+                // 유재라관 키오스크 + 이벤트
+                if((currentPosition.x <= -279 && currentPosition.x >= -319) &&
+                    (currentPosition.z <= -65 && currentPosition.z >= -85)) {
+                        handleCamera(currentPosition.x + 0, currentPosition.y + 70, currentPosition.z + 40)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskYujaela())
+                        }
+                    }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+        }
+
+        // 3호관 8호관 사이
+        if(currentPosition.x < -128 && currentPosition.x > -270) {
+            if(currentPosition.z < -60 && currentPosition.z > -270) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z + 180)
+                // 자유관 키오스크 + 이벤트
+                if((currentPosition.x >= -191 && currentPosition.x <= -161) &&
+                    (currentPosition.z <= -204 && currentPosition.z >= -244)) {
+                        handleCamera(currentPosition.x -50, currentPosition.y + 50, currentPosition.z + 0)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskJayu())
+                        }
+                    }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+            if(currentPosition.z <= -270) {
+                handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
+            }
+        }
+
+        // Welcome 존 앞
+        if(currentPosition.z < -260) {
+            if(currentPosition.x < -230) {
+                handleCamera(currentPosition.x + 400, currentPosition.y + 200, currentPosition.z + 0)
+            }
+        }
+
+        // 나눔의 숲 큰 입구
+        if(currentPosition.x >= -128 && currentPosition.x < -30) {
+            if(currentPosition.z < -254 && currentPosition.z > -340){
+                handleCamera(currentPosition.x - 180, currentPosition.y + 250, currentPosition.z - 150)
+            }
+        }
+
+        // 나눔의 숲 1사분면, 2사분면
+        if(currentPosition.z <= -102 && currentPosition.z >= -200) {
+            if(currentPosition.x >= -69 && currentPosition.x <= 58) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 50)
+                // 평화관 키오스크
+                if((currentPosition.x <= 45 && currentPosition.x >= 5) &&
+                    (currentPosition.z <= -126 && currentPosition.z >= -146)) {
+                        handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z -50)
+                        if (!kioskDispatchFlag.current) {
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskPyeonghwaOne())
+                        }
+                }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+
+            }
+            if(currentPosition.x > 58 && currentPosition.x <= 190) {
+                handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z - 50)
+                if((currentPosition.x <= 189 && currentPosition.x >= 159) &&
+                    (currentPosition.z <= -170 && currentPosition.z >= -210)) {
+                        handleCamera(currentPosition.x - 50, currentPosition.y + 70, currentPosition.z + 0)
+                    if (!kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = true
+                        dispatch(kioskBongSa())
+                    }
+                }
+                else {
+                    if (kioskDispatchFlag.current) {
+                        kioskDispatchFlag.current = false
+                        dispatch(initKiosk())
+                    }
+                }
+            }
+        }
+        
+        // 나눔의 숲 3사분면, 4사분면(4-1, 4-2)
+        if(currentPosition.z < -200 && currentPosition.z >= -320) {
+            if(currentPosition.x > 58 && currentPosition.x <= 190) {
+                handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 50)
+            }
+            if(currentPosition.x >= -69 && currentPosition.x < -30) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
+            }
+            if(currentPosition.x >= -30 && currentPosition.x <= 58) {
+                // 흡연구역 이벤트 발생 지역
+                handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 120)
+                if((currentPosition.x <= 61 && currentPosition.x >= 21) &&
+                    currentPosition.z <= -255 && currentPosition.z >= -301) {
+                        handleCamera(currentPosition.x + 10, currentPosition.y + 50, currentPosition.z + 50)     
+                }
+            }
+        }
+
+        // 학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이
+        if(currentPosition.z <= -340) {
+            if(currentPosition.x >= -128 && currentPosition.x <= -30) {
+                handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
+                
+            }
+        }
+        // 유한TV Zone
+        if(currentPosition.x > -225 && currentPosition.x < -30) {
+            if(currentPosition.z < -400) {
+                handleCamera(currentPosition.x + 0, currentPosition.y + 5, currentPosition.z + 150)
+            }
+        }
+
+        // 학교입구
+        if(currentPosition.x > -30 && currentPosition.x <= 245) {
+            if(currentPosition.z < -337) {
+                handleCamera(currentPosition.x + 180, currentPosition.y + 230, currentPosition.z + 0)
+            }
+            // 동상 Zone
+            if(currentPosition.x <= 69 && currentPosition.x >= 9) {
+                if(currentPosition.z <= -487 && currentPosition.z >= -537) {
+                    handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110)
+                }
+            }
+        }
+
+        camera.lookAt(currentPosition)
+    
+        if (distance > 0.4) {
+            // 방향을 구하고 스칼라를 곱하여 이동량을 설정
+            const direction = new Vector3().subVectors(targetPosition, currentPosition).normalize().multiplyScalar(0.5)
+    
+            // 현재 위치에 방향을 더해 새로운 위치를 설정
+            currentPosition.add(direction)
+
+            // 물리 엔진에서 캐릭터의 위치를 업데이트
+            currentPosition.copy(currentPosition)
+    
+            // 캐릭터가 이동 방향을 바라보도록 설정
+            charRef.current.lookAt(targetPosition)
+
+            if(point) {
+                point.style.transform = `
+                    translate(${calculateMinimapPosition(currentPosition).x}px,
+                    ${(calculateMinimapPosition(currentPosition).y)}px)
+                `
+            }
+    
+            setAnimation('WalkSpeed24')
+        } else {
+            setAnimation('Stand')
+        }
+        mixer.update(0.01)
+        }
+        
     })
     return { nodes, materials, charRef }
 }

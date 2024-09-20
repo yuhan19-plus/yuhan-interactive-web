@@ -30,7 +30,7 @@ const EtcGroup = () => {
             <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]}/>
 
             {/* 바리게이트 */}
-            <NoEntry position={[-460, -9, -97]} rotation={[0, Math.PI / 2, 0]} scale={1.7} />
+            {/* <NoEntry position={[-460, -9, -97]} rotation={[0, Math.PI / 2, 0]} scale={1.7} /> */}
         </>
     )
 }

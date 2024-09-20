@@ -4,17 +4,20 @@
  */
 
 import { MAIN_CHARACTER } from "../actions/actions";
-
+// 280, 0, -355
 const initialState = {
-    name: ''
+    name: '',
+    currentPosition: [280, 0, -355]
 }
 
 export function mainCharReducer(state = initialState, action) {
     switch(action.type) {
         case MAIN_CHARACTER:
+            console.log('action.payload', action.payload)
             return {
                 ...state,
-                name: 'SJ'
+                name: 'SJ',
+                currentPosition: action.payload
             }
         default:
             return state

@@ -11,15 +11,13 @@ import KioskGroup from './structures/yuhan_map/elements/KioskGroup'
 const RootMap = () => {
     const myChar = useSelector((state) => state.mChar)
     const dispatch = useDispatch()
-    // console.log('myChar.name', myChar.name)
 
-    const initialPosition = [280, 0, -355] // 초기 위치
-    const [targetPosition, setTargetPosition] = useState(initialPosition)
+    const [targetPosition, setTargetPosition] = useState(myChar.currentPosition)
     // console.log(targetPosition)
 
     useEffect(() => {
-        dispatch(mainChar())
-    }, [])
+        dispatch(mainChar(targetPosition))
+    }, [targetPosition])
 
     const handleMove = (newPosition) => {
         // console.log('newPosition', newPosition)
