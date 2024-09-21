@@ -13,7 +13,7 @@ const initialState = {
 export function mainCharReducer(state = initialState, action) {
     switch(action.type) {
         case MAIN_CHARACTER:
-            console.log('action.payload', action.payload)
+            // console.log('action.payload', action.payload)
             return {
                 ...state,
                 name: 'SJ',

@@ -5,6 +5,7 @@
 // 캐릭터 - 성준
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
 
+export const INIT_MINI_MAP_TELEPORT = 'INIT_MINI_MAP_TELEPORT'
 export const MINI_MAP_TELEPORT = 'MINI_MAP_TELEPORT'
 
 // 애니메이션
@@ -51,6 +52,10 @@ export const AERIAL_VIEW = 'AERIAL_VIEW'
 export const mainChar = (newPosition) => ({
     type: MAIN_CHARACTER,
     payload: newPosition
+})
+
+export const initMiniMapTeleport = () => ({
+    type: INIT_MINI_MAP_TELEPORT
 })
 
 export const miniMapTeleport = (teleportPosition) => ({

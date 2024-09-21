@@ -1,4 +1,4 @@
-import { MINI_MAP_TELEPORT } from "../actions/actions";
+import { INIT_MINI_MAP_TELEPORT, MINI_MAP_TELEPORT } from "../actions/actions";
 
 const initialState = {
     value: false,
@@ -7,10 +7,17 @@ const initialState = {
 
 export function miniMapReducer(state = initialState, action) {
     switch(action.type) {
-        case MINI_MAP_TELEPORT:
+        case INIT_MINI_MAP_TELEPORT:
             return {
                 ...state,
-                value: !state.value,
+                value: false,
+                position: state.position
+            }
+        case MINI_MAP_TELEPORT:
+            // console.log('텔레포트 이동 값', state.value)
+            return {
+                ...state,
+                value: true,
                 position: action.payload
             }
 

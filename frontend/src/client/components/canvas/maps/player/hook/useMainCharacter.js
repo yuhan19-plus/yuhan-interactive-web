@@ -11,7 +11,7 @@ import { SkeletonUtils } from "three-stdlib"
 import { AnimationMixer, Vector3 } from "three"
 import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
-import { initKiosk, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar } from "../../../../../../redux/actions/actions"
+import { initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({position, myChar}) => {
@@ -88,7 +88,6 @@ export const useMainCharacter = ({position, myChar}) => {
 
     // 목표 위치가 변경되면 캐릭터 이동 시작
     useEffect(() => {
-        console.log('useMainPosition', position)
         if (position) {
             setTargetPosition(new Vector3(...position))
             dispatch(mainChar(position))
@@ -106,6 +105,7 @@ export const useMainCharacter = ({position, myChar}) => {
                 teleportPosition[2]
             )
         }
+        dispatch(initMiniMapTeleport())
     }, [teleportValue, teleportPosition])
 
     // 항공뷰

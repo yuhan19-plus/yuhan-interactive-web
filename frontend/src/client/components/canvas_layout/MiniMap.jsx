@@ -2,12 +2,13 @@
  * 임성준 : 프론트엔드 개발
  */
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BtnMenuGroup from './BtnMenuGroup'
 import { useDispatch, useSelector } from 'react-redux'
 import MiniMapContent from './mini_map/MiniMapContent'
-import { initKiosk, kioskPyeonghwaOne, kioskPyeonghwaTwo, mainChar, miniMapTeleport } from '../../../redux/actions/actions'
+import { miniMapTeleport } from '../../../redux/actions/actions'
+import Swal from 'sweetalert2'
 
 const MiniMap = () => {
     const myChar = useSelector((state) => state.mChar)
@@ -15,7 +16,9 @@ const MiniMap = () => {
     const dispatch = useDispatch()
     const player = myChar.name
     const cameraPosition = [0, 1300, 0]
+
     const handleTeleport = (teleportPosition) => {
+        console.log("Teleporting to:", teleportPosition)
         dispatch(miniMapTeleport(teleportPosition))
     }
 
@@ -25,47 +28,173 @@ const MiniMap = () => {
             <MiniMapContentWrapper>
                 <MiniMapContent cameraPosition={cameraPosition} />
                 <Teleport top="40%" right="40%" onClick={() => {
-                    handleTeleport([50, 0.3, -134])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "평화관 정문",
+                        text: `평화관 정문으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([50, 0.3, -134])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     평화관 정문
                 </Teleport>
                 <Teleport top="55%" right="45%" onClick={() => {
-                    handleTeleport([59, 0.3, 21])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "평화관 후문",
+                        text: `평화관 후문으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([59, 0.3, 21])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     평화관 후문
                 </Teleport>
                 <Teleport top="35%" right="30%" onClick={() => {
-                    handleTeleport([156, 0.3, -188])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "봉사관",
+                        text: `봉사관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([156, 0.3, -188])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     봉사관
                 </Teleport>
                 <Teleport top="35%" left="30%" onClick={() => {
-                    handleTeleport([-193, 0.3, -235])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "자유관",
+                        text: `자유관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([-193, 0.3, -235])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     자유관
                 </Teleport>
                 <Teleport top="65%" right="25%" onClick={() => {
-                    handleTeleport([182, 0.3, 126])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "학생회관",
+                        text: `학생회관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([182, 0.3, 126])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     학생회관
                 </Teleport>
                 <Teleport top="63%" right="45%" onClick={() => {
-                    handleTeleport([37, 0.3, 55])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "나눔관",
+                        text: `나눔관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([37, 0.3, 55])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     나눔관
                 </Teleport>
                 <Teleport top="80%" left="30%" onClick={() => {
-                    handleTeleport([-178, 0.3, 263])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "창조관",
+                        text: `창조관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([-178, 0.3, 263])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     창조관
                 </Teleport>
                 <Teleport top="65%" left="25%" onClick={() => {
-                    handleTeleport([-225, 0.3, 95])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "유일한기념관",
+                        text: `유일한기념관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([-225, 0.3, 95])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     유일한기념관
                 </Teleport>
                 <Teleport top="50%" left="15%" onClick={() => {
-                    handleTeleport([-298, 0.3, -63])}
+                    Swal.fire({
+                        icon: "question",
+                        title: "유재라관",
+                        text: `유재라관으로 이동하시겠습니까?`,
+                        showCancelButton: true,
+                        confirmButtonText: "이동",
+                        cancelButtonText: "취소",
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            handleTeleport([-298, 0.3, -63])
+                        }
+                        else{
+                            return
+                        }
+                    })}
                 }>
                     유재라관
                 </Teleport>
