@@ -143,10 +143,11 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                 <List>
                     <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: 'center' }}>
                         <Box sx={{ width: '5%' }}>번호</Box>
-                        <Box sx={{ width: '30%' }}>이름</Box>
+                        <Box sx={{ width: '20%' }}>이름</Box>
                         <Box sx={{ width: '10%' }}>타입</Box>
                         <Box sx={{ width: '10%' }}>가격</Box>
                         <Box sx={{ width: '15%' }}>평점</Box>
+                        <Box sx={{ width: '10%' }}>요일</Box>
                         <Box sx={{ width: '30%' }}>관리</Box>
                     </Box>
 
@@ -156,7 +157,7 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                                 <Box sx={{ width: '5%', textAlign: 'center' }}>
                                     <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography>
                                 </Box>
-                                <Box sx={{ width: '30%' ,textAlign:"center"}}>
+                                <Box sx={{ width: '20%' ,textAlign:"center"}}>
                                     <ListItemText
                                         primary={isWideScreen ? food.foodName.substring(0, 25) : food.foodName.substring(0, 15)}
                                         onPointerOver={(e) => e.target.style.cursor = 'pointer'}
@@ -172,9 +173,12 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                                 <Box sx={{ width: '15%', textAlign: 'center' }}>
                                     <ListItemText primary={food.foodRating?.toFixed(1) || '없음'} />
                                 </Box>
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <ListItemText primary={food.day} />
+                                </Box>
                                 <Box sx={{ width: '30%', display: 'flex', justifyContent: 'flex-end' }}>
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         size="small"
                                         color="primary"
                                         sx={{marginRight:"5px" }}
@@ -183,7 +187,7 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                                         수정
                                     </Button>
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         size="small"
                                         color="error"
                                         sx={{ marginRight: '45px'}}

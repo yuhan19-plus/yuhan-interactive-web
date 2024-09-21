@@ -1,48 +1,36 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 
 const AdminFoodUpdate = ({ foodID, onCancel }) => {
-
-    const food_id = foodID.foodID
-    const food_img = foodID.foodImg
-    const food_name = foodID.foodName
-    console.log("아이디",food_id);
-    console.log("이름",food_name);
-    console.log("이미지",food_img);
+    const food_id = foodID.foodID;
 
     const [foodData, setFoodData] = useState({
-        
         foodType: "",
         foodName: "",
         foodPrice: "",
         foodImg: "", // base64 image data
+        day: ""
     });
-    const [files, setFiles] = useState([]); // 파일을 별도로 관리
+    const [files, setFiles] = useState([]);
 
-    // 데이터 가져오기 함수
     const fetchFoodData = async () => {
         try {
             const response = await fetch(`/api/food/${food_id}`);
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }
+
             const data = await response.json();
             setFoodData({
                 foodType: data.foodType,
                 foodName: data.foodName,
                 foodPrice: data.foodPrice,
                 foodImg: data.foodImg,
+                day: data.day
             });
-            setFiles([
-                {
-                    file_name: "image.png",
-                    file_data: data.foodImg,
-                    file_size: 0,
-                    file_type: "image/png",
-                },
-            ]);
+            setFiles([{ file_name: "현재 이미지", file_data: data.foodImg }]);
         } catch (error) {
             console.error("데이터 불러오는 중 에러 발생", error);
         }
@@ -53,19 +41,14 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
     }, [food_id]);
 
     const onDrop = useCallback((acceptedFiles) => {
-        const file = acceptedFiles[0];
         const reader = new FileReader();
-
         reader.onloadend = () => {
             setFiles([{
-                file_name: file.name,
-                file_data: reader.result.split(',')[1], // base64 이미지 데이터만 추출
-                file_size: file.size,
-                file_type: file.type,
+                file_name: acceptedFiles[0].name,
+                file_data: reader.result,
             }]);
         };
-
-        reader.readAsDataURL(file); // 파일을 base64로 변환
+        reader.readAsDataURL(acceptedFiles[0]);
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -83,7 +66,8 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
             foodType: foodData.foodType,
             foodName: foodData.foodName,
             foodPrice: foodData.foodPrice,
-            foodImg: files[0]?.file_data || foodData.foodImg, // base64 이미지 데이터
+            foodImg: files[0]?.file_data || foodData.foodImg,
+            day: foodData.day
         };
 
         try {
@@ -110,19 +94,25 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
             <BoardMainLayout>
                 <Box sx={{ p: 3 }}>
                     <Typography variant="h4" gutterBottom>
-                        음식 항목 업데이트
+                        음식 항목 수정
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="음식 종류"
-                                name="foodType"
-                                variant="outlined"
-                                value={foodData.foodType}
-                                onChange={handleInputChange}
-                                required
-                            />
+                            <FormControl fullWidth variant="outlined">
+                                <InputLabel>음식 종류</InputLabel>
+                                <Select
+                                    label="음식 종류"
+                                    name="foodType"
+                                    value={foodData.foodType}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    <MenuItem value="양식">양식</MenuItem>
+                                    <MenuItem value="한식">한식</MenuItem>
+                                    <MenuItem value="일품1">일품1</MenuItem>
+                                    <MenuItem value="일품2">일품2</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -147,6 +137,25 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
+                            <FormControl fullWidth variant="outlined">
+                                <InputLabel>요일</InputLabel>
+                                <Select
+                                    label="요일"
+                                    name="day"
+                                    value={foodData.day}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    <MenuItem value="월">월</MenuItem>
+                                    <MenuItem value="화">화</MenuItem>
+                                    <MenuItem value="수">수</MenuItem>
+                                    <MenuItem value="목">목</MenuItem>
+                                    <MenuItem value="금">금</MenuItem>
+                                    <MenuItem value="매일">매일</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
                             <div {...getRootProps()} style={{
                                 border: "2px dashed #cccccc",
                                 borderRadius: "8px",
@@ -164,17 +173,11 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                                     )
                                 ) : (
                                     <Box mt={2}>
-                                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                                            {files.map((file, index) => (
-                                                <li key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <img
-                                                        src={`data:${file.file_type};base64,${file.file_data}`}
-                                                        alt={file.file_name}
-                                                        style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                                                    />
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <img
+                                            src={files[0].file_data}
+                                            alt={files[0].file_name}
+                                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                                        />
                                     </Box>
                                 )}
                             </div>
@@ -183,7 +186,7 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                             <Button variant="contained" color="primary" onClick={handleUpdateFood}>
                                 업데이트
                             </Button>
-                            <Button variant="contained" color="secondary" onClick={onCancel}>
+                            <Button variant="contained" color="error" onClick={onCancel} sx={{ marginLeft: "5px" }}>
                                 취소
                             </Button>
                         </Grid>

@@ -4,7 +4,7 @@
  * 관리자가 오늘의 메뉴 등록 하는 페이지
  * 
  */
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
@@ -17,6 +17,7 @@ const AdminFoodInsert = ({ onCancel }) => {
         foodName: '',
         foodPrice: '',
         foodImg: '', // 파일명만 저장
+        day: ''
     });
     const [files, setFiles] = useState([]); // 파일을 별도로 관리
 
@@ -55,6 +56,7 @@ const AdminFoodInsert = ({ onCancel }) => {
             foodName: food.foodName,
             foodPrice: food.foodPrice,
             foodImg: files[0]?.file_data, // base64 이미지 데이터
+            day: food.day
         };
 
         try {
@@ -66,7 +68,7 @@ const AdminFoodInsert = ({ onCancel }) => {
 
             if (response.ok) {
                 alert('음식이 등록되었습니다.');
-                navigate('/admin/food/AdminFoodList'); // AdminFoodList로 이동
+                onCancel(); // 등록 후 취소 기능 호출
             } else {
                 alert('음식 등록 중 오류 발생');
             }
@@ -84,17 +86,25 @@ const AdminFoodInsert = ({ onCancel }) => {
                         음식 등록
                     </Typography>
                     <Grid container spacing={2}>
+                        {/* 음식 타입 드롭다운 */}
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="음식 타입"
-                                name="foodType"
-                                value={food.foodType}
-                                onChange={handleChange}
-                                variant="outlined"
-                                required
-                            />
+                            <FormControl fullWidth variant="outlined" required>
+                                <InputLabel>음식 타입</InputLabel>
+                                <Select
+                                    label="음식 타입"
+                                    name="foodType"
+                                    value={food.foodType}
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value="양식">양식</MenuItem>
+                                    <MenuItem value="한식">한식</MenuItem>
+                                    <MenuItem value="일품1">일품1</MenuItem>
+                                    <MenuItem value="일품2">일품2</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
+
+                        {/* 음식 이름 */}
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -106,6 +116,8 @@ const AdminFoodInsert = ({ onCancel }) => {
                                 required
                             />
                         </Grid>
+
+                        {/* 음식 가격 */}
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -117,6 +129,28 @@ const AdminFoodInsert = ({ onCancel }) => {
                                 required
                             />
                         </Grid>
+
+                        {/* 요일 드롭다운 */}
+                        <Grid item xs={12}>
+                            <FormControl fullWidth variant="outlined" required>
+                                <InputLabel>요일</InputLabel>
+                                <Select
+                                    label="요일"
+                                    name="day"
+                                    value={food.day}
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value="월">월</MenuItem>
+                                    <MenuItem value="화">화</MenuItem>
+                                    <MenuItem value="수">수</MenuItem>
+                                    <MenuItem value="목">목</MenuItem>
+                                    <MenuItem value="금">금</MenuItem>
+                                    <MenuItem value="매일">매일</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        {/* 파일 업로드 */}
                         <Grid item xs={12}>
                             <div {...getRootProps()} style={{
                                 border: "2px dashed #cccccc",
@@ -150,11 +184,13 @@ const AdminFoodInsert = ({ onCancel }) => {
                                 )}
                             </div>
                         </Grid>
+
+                        {/* 버튼 */}
                         <Grid item xs={12} textAlign="right">
                             <Button variant="contained" color="primary" onClick={handleSubmit}>
                                 음식 등록
                             </Button>
-                            <Button variant="contained" color="secondary" onClick={onCancel}>
+                            <Button variant="contained" color="error" onClick={onCancel} sx={{ marginLeft: "5px" }}>
                                 취소
                             </Button>
                         </Grid>
@@ -178,3 +214,6 @@ const BoardMainLayout = styled.div`
     max-width: 700px;
     margin: 0 auto;
 `;
+
+
+
