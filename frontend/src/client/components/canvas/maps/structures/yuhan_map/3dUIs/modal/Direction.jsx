@@ -1,6 +1,8 @@
 import { Html } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 import { kakaoApiKey } from './appkey';
+import { Subway, DirectionsBus, DirectionsCar, LocalParking } from '@mui/icons-material';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const Direction = ({ position }) => {
     const [openSection, setOpenSection] = useState(null); // 열려 있는 섹션을 관리하는 상태
@@ -70,54 +72,69 @@ const Direction = ({ position }) => {
 
                     {/* 지하철 타고 오실 때 (드롭다운) */}
                     <p
-                        style={{ cursor: 'pointer', color: 'blue' }}
+                        style={{ cursor: 'pointer', color: '#0F275C' }}
                         onClick={() => toggleDropdown('subway')}
                     >
+                        <Subway style={{ marginRight: '8px' }} />
                         <strong>지하철 타고 오실 때</strong>
                     </p>
                     {openSection === 'subway' && (
-                        <ul>
-                            <li>1호선, 7호선 (온수역 하차 ①,②번 출구- 도보로 10분거리)</li>
-                            <li>1호선 (역곡역 하차 ①번 출구- 도보로 10분거리)</li>
-                            <li>서해선(소사역 하차 ⑤번 출구 - 83번, 88번 버스환승, 정문하차)</li>
+                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />
+                                1호선, 7호선 (온수역 하차 ①,②번 출구- 도보로 10분거리)
+                            </li>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />1호선 (역곡역 하차 ①번 출구- 도보로 10분거리)</li>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />서해선(소사역 하차 ⑤번 출구 - 83번, 88번 버스환승, 정문하차)</li>
                         </ul>
                     )}
 
                     {/* 버스 타고 오실 때 (드롭다운) */}
                     <p
-                        style={{ cursor: 'pointer', color: 'blue' }}
+                        style={{ cursor: 'pointer', color: '#0F275C' }}
                         onClick={() => toggleDropdown('bus')}
                     >
+                        <DirectionsBus style={{ marginRight: '8px' }} />
                         <strong>버스 타고 오실 때 (유한대학교 하차)</strong>
                     </p>
                     {openSection === 'bus' && (
-                        <ul>
-                            <li>부천시내버스 : 10번, 12번, 52번, 57번, 57-1번, 75번, 83번, 88번</li>
-                            <li>서울시내버스 : 6614번</li>
+                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />부천시내버스 : 10번, 12번, 52번, 57번, 57-1번, 75번, 83번, 88번</li>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />서울시내버스 : 6614번</li>
                         </ul>
                     )}
 
                     {/* 승용차 타고 오실 때 (드롭다운) */}
                     <p
-                        style={{ cursor: 'pointer', color: 'blue' }}
+                        style={{ cursor: 'pointer', color: '#0F275C' }}
                         onClick={() => toggleDropdown('car')}
                     >
+                        <DirectionsCar style={{ marginRight: '8px' }} />
                         <strong>승용차 타고 오실 때</strong>
                     </p>
                     {openSection === 'car' && (
-                        <ul>
-                            <li>남부순환도로 이용 시 : 오류IC에서 부천방향으로 나와서 약 3KM(경인국도변 좌측)</li>
-                            <li>경인국도 이용 시 : 서울방향 - 인천, 부천방향으로 동부제강 지나서 약1.5KM (경인국도변 좌측)</li>
-                            <li>서울외곽고속도로 이용 시 : 시흥IC에서 부천방향으로 빠져 고개넘어 범박동방향으로 우회전 후 직진 온수 사거리우회전 100M</li>
+                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />남부순환도로 이용 시 : 오류IC에서 부천방향으로 나와서 약 3KM(경인국도변 좌측)</li>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />경인국도 이용 시 : 서울방향 - 인천, 부천방향으로 동부제강 지나서 약1.5KM (경인국도변 좌측)</li>
+                            <li style={{ display: 'flex', alignItems: 'center' }}>
+                                <ArrowRightIcon style={{ color: '#0F275C' }} />서울외곽고속도로 이용 시 : 시흥IC에서 부천방향으로 빠져 고개넘어 범박동방향으로 우회전 후 직진 온수 사거리우회전 100M</li>
                         </ul>
                     )}
 
                     {/* 주차 안내 (드롭다운) */}
                     <p
-                        style={{ cursor: 'pointer', color: 'blue' }}
+                        style={{ cursor: 'pointer', color: '#0F275C' }}
                         onClick={() => toggleDropdown('parking')}
                     >
+                        <LocalParking style={{ marginRight: '8px' }} />
                         <strong>주차안내</strong>
+
                     </p>
                     {openSection === 'parking' && (
                         <p>
