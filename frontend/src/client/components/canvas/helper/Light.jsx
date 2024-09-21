@@ -3,7 +3,7 @@
  * 오자현 : 해, 달, 별 적용
  * - 해와 달과 별배치, 각 시간대별 css 적용, 빛의 위치 및 강도 적용 (24/08/29)
  */
-import { Stars, useHelper } from '@react-three/drei'
+import { Sky, Stars, useHelper } from '@react-three/drei'
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 // 해
@@ -116,6 +116,14 @@ const Light = () => {
                     saturation={0}         // 별의 색상 채도 (0에 가까울수록 하얗고 밝게 보임)
                     fade                   // 별이 멀어질수록 페이드 아웃
                 /></>)}
+
+            {/* 이부분 나중에 자현이가 수정바람 - 성준 */}
+            {/* <Sky
+                distance={450000}  // 하늘이 펼쳐지는 거리
+                sunPosition={[0, 100, 0]}  // 태양의 위치
+                inclination={0}  // 태양의 기울기
+                azimuth={0.25}   // 태양의 방위각
+            /> */}
         </>
     )
 }
