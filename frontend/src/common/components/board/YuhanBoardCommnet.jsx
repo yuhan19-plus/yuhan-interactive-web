@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography, List, ListItem, ListItemText, ListItemButton, Button, TextField, Pagination, Box, Divider, Avatar } from "@mui/material";
 import { useCookies } from "react-cookie";
 import { CalendarToday } from '@mui/icons-material';
+import Swal from 'sweetalert2';
 
 export const YuhanBoardComment = ({ boardData }) => {
     const [cookies] = useCookies(["user"]);  // 쿠키에서 user 정보 가져오기
@@ -54,6 +55,15 @@ export const YuhanBoardComment = ({ boardData }) => {
     // 댓글 저장
     const handleSaveComment = async () => {
         // console.log("댓글데이터체크", comment.comment_content)
+        if (!comment.comment_content.trim()) {
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '댓글 내용을 입력해주세요.',
+                confirmButtonColor: '#3085d6',
+            });
+            return;
+        }
         try {
             const response = await fetch("/api/comment/save", {
                 method: "POST",
@@ -73,6 +83,12 @@ export const YuhanBoardComment = ({ boardData }) => {
             // console.log(comment.comment_content)
             fetchComment();
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '댓글 저장 실패',
+                text: '댓글을 저장하는 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error(error.message);
         }
     };
@@ -92,6 +108,12 @@ export const YuhanBoardComment = ({ boardData }) => {
             }
             fetchComment();
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '댓글 삭제 실패',
+                text: '댓글을 삭제하는 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error(error.message);
         }
     };

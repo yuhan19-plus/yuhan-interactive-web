@@ -268,6 +268,7 @@ const BoardLayout = styled.div`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: white;
     
     .header {
         color: white;

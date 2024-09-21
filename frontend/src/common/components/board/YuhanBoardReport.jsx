@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { Grid, Typography, Select, MenuItem, TextField, Box, Button } from '@mui/material';
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 // 신고글을 작성하는 컴포넌트 
 // 신고는 수정불가
@@ -28,7 +29,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
         setReportData({ ...reportData, [name]: value });
     };
 
-    // 신고하기 백으로 잘 보내는 것까지 확인
+    // 신고 함수
     const handleReport = async () => {
         // console.log("수정버튼눌림")
         try {
@@ -42,10 +43,24 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
 
             if (!response.ok) {
                 throw new Error("신고하는 데 실패했습니다.");
-            }
-            onCancel();
+            } // 신고 성공 시 SweetAlert2로 성공 메시지 표시
+            Swal.fire({
+                icon: 'success',
+                title: '신고 완료',
+                text: '신고가 성공적으로 접수되었습니다.',
+                confirmButtonColor: '#3085d6',
+            }).then(() => {
+                // 성공 후 페이지 이동 or 리스트로 돌아가기
+                onCancel();
+            });
             console.log("신고 성공");
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '신고 실패',
+                text: '신고 처리 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error("신고 중 에러 발생", error);
         }
     }
@@ -53,7 +68,11 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     // 게시글 작성내용을 저장하는 함수 저장이 완료되면 다시 리스트로 돌아가도록 onCancle를 호출하기
     return (
         <>
-            <Box sx={{ p: 3 }}>
+            <Box sx={{
+                p: 3,
+                height: '100%',
+                background: 'white'
+            }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
@@ -131,7 +150,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                     </Button>
 
                 </Grid>
-            </Box>
+            </Box >
         </>
     );
 };

@@ -188,20 +188,7 @@ const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        sx={{
-                            "& .Mui-selected": {
-                                background: 'linear-gradient( #56bbb6 30%, #33677f 90%)', // PANTONE 570C와 더 조화로운 중간 파란색
-                                color: '#fff', // 선택된 페이지 텍스트 색상
-                            },
-                            "& .MuiPaginationItem-root": {
-                                backgroundColor: '#56bbb6', // 페이지 넘버 배경 색상 (PANTONE 570C)
-                                color: '#fff', // 페이지 넘버 텍스트 색상
-                            },
-                            "& .MuiPaginationItem-root:hover": {
-                                backgroundColor: '#33677f', // 마우스 오버 시 부드러운 파란색
-                                color: '#fff', // 마우스 오버 시 텍스트 색상 유지
-                            }
-                        }}
+                        color='primary'
                     />
                 </Box>
 

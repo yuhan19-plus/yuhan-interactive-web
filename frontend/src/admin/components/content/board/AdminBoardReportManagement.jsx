@@ -7,6 +7,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 // 신고 처리 순서
 // 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
@@ -46,7 +47,12 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
             const data = await response.json();
             setTotalData(data.reportData);
         } catch (error) {
-            alert("데이터를 불러오는 중 에러가 발생했습니다.");
+            Swal.fire({
+                icon: 'error',
+                title: '데이터 불러오기 실패',
+                text: '데이터를 불러오는 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error("데이터 불러오는 중 에러 발생:", error);
         }
     };
@@ -61,7 +67,12 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
     const handleDelete = async () => {
         // 처리 사유가 없으면 동작하지 않도록 유효성 검사
         if (!totalData.report_resolution) {
-            alert("처리 사유를 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '처리 사유를 입력하세요.',
+                confirmButtonColor: '#3085d6',
+            });
             return;
         }
         try {
@@ -78,10 +89,19 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
             if (!response.ok) {
                 throw new Error("게시글 삭제에 실패했습니다.");
             }
-            alert("게시글이 성공적으로 삭제되었습니다.");
-            onReport();
+            Swal.fire({
+                icon: 'success',
+                title: '삭제 완료',
+                text: '게시글이 성공적으로 삭제되었습니다.',
+                confirmButtonColor: '#3085d6',
+            }).then(() => onReport());
         } catch (error) {
-            alert("게시글 삭제 중 에러가 발생했습니다.");
+            Swal.fire({
+                icon: 'error',
+                title: '삭제 실패',
+                text: '게시글 삭제 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error("삭제하는 중 에러 발생:", error);
         }
     }
@@ -90,7 +110,12 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
     const handleIgnore = async () => {
         // 처리 사유가 없으면 동작하지 않도록 유효성 검사
         if (!totalData.report_resolution) {
-            alert("처리 사유를 입력하세요.");
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '처리 사유를 입력하세요.',
+                confirmButtonColor: '#3085d6',
+            });
             return;
         }
         try {
@@ -107,10 +132,19 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
             if (!response.ok) {
                 throw new Error("신고를 무시하는 데 실패했습니다.");
             }
-            alert("신고가 성공적으로 무시되었습니다.");
-            onReport();
+            Swal.fire({
+                icon: 'success',
+                title: '무시 완료',
+                text: '신고가 성공적으로 무시되었습니다.',
+                confirmButtonColor: '#3085d6',
+            }).then(() => onReport());
         } catch (error) {
-            alert("신고 무시 중 에러가 발생했습니다.");
+            Swal.fire({
+                icon: 'error',
+                title: '무시 실패',
+                text: '신고 무시 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
             console.error("무시하는 중 에러 발생:", error);
         }
     }
@@ -191,7 +225,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                             variant="outlined"
                             placeholder="처리 사유를 입력하세요"
                             name="report_resolution"
-                            value={totalData.report_resolution}
+                            value={totalData.report_resolution || ""}
                             onChange={handleInputChange}
                             sx={{ backgroundColor: '#fff', borderRadius: 1, boxShadow: 1 }}
                         />

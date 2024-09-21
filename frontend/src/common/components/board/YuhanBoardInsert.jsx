@@ -9,6 +9,7 @@ import { useDropzone } from "react-dropzone";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 const YuhanBoardInsert = ({ onCancel }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -65,6 +66,16 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
     // 게시판저장
     const handleAddData = async () => {
+        // 제목과 내용이 비어있는지 확인
+        if (!boardData.board_title.trim() || !boardData.board_content.trim()) {
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '제목과 내용을 모두 입력해주세요!',
+                confirmButtonColor: '#3085d6',
+            });
+            return; // 입력값이 비어있을 경우 저장 절차 중단
+        }
         try {
             const response = await fetch("/api/board", {
                 method: "POST",
@@ -85,10 +96,22 @@ const YuhanBoardInsert = ({ onCancel }) => {
             setBoardData({ board_title: "", board_content: "", board_writer: "", files: [] });
 
             // 상태가 반영된 후에 언마운트 (onCancel 호출)
-            onCancel();  // 목록으로 돌아가거나 페이지 이동
+            // 성공 메시지 표시
+            Swal.fire({
+                icon: 'success',
+                title: '성공',
+                text: '게시물이 성공적으로 저장되었습니다!',
+                confirmButtonColor: '#3085d6',
+            }).then(() => {
+                // 상태가 반영된 후에 언마운트 (onCancel 호출)
+                onCancel();  // 목록으로 돌아가거나 페이지 이동
+            });
         } catch (error) {
             console.error("Error adding data:", error);
-            alert("데이터 추가 중 오류 발생!");
+            Swal.fire({
+                icon: "warning",
+                text: "데이터 추가 중 오류 발생!"
+            })
         }
     };
 
@@ -130,7 +153,10 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 // 응답이 성공하지 않았을 때
                 const message = await response.text();
                 console.log("백엔드에서 온 내용:", message);
-                alert(message);
+                Swal.fire({
+                    icon: "error",
+                    text: message
+                })
             }
         } catch (error) {
             console.error("임시 저장 중 오류 발생:", error);
@@ -151,15 +177,24 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
             if (data.hasTempData) {
                 // 임시 저장 데이터가 있으면 확인 메시지 표시
-                const userChoice = window.confirm("임시 저장된 데이터가 있습니다. 사용하시겠습니까?");
-
-                if (userChoice) {
-                    // "Yes"를 선택하면 임시 저장된 데이터를 불러옴
-                    fetchTempData();
-                } else {
-                    // "No"를 선택하면 데이터를 삭제
-                    deleteTempData();
-                }
+                Swal.fire({
+                    title: '임시 저장된 데이터가 있습니다.',
+                    text: '사용하시겠습니까?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '사용',
+                    cancelButtonText: '삭제'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // "사용"을 선택하면 임시 저장된 데이터를 불러옴
+                        fetchTempData();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // "삭제"를 선택하면 데이터를 삭제
+                        deleteTempData();
+                    }
+                });
             } else {
                 console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
             }
@@ -179,7 +214,11 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 }),
             });
             if (response.ok) {
-                alert("임시 저장된 데이터가 삭제되었습니다.");
+                Swal.fire({
+                    icon: "warning",
+                    title: "임시데이터",
+                    text: "임시 저장된 데이터가 삭제되었습니다."
+                })
             }
         } catch (error) {
             console.error("Error deleting temp data:", error);
@@ -239,10 +278,20 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 return;
             }
             else {
-                const shouldSave = window.confirm('임시 저장하시겠습니까?');
-                if (shouldSave) {
-                    saveTempBoard();
-                }
+                Swal.fire({
+                    title: '임시 저장하시겠습니까?',
+                    text: "임시 저장을 진행하시려면 확인을 눌러주세요.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '저장',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        saveTempBoard(); // 임시 저장 함수 호출
+                    }
+                });
             }
         };
     }, []);
@@ -360,13 +409,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                         />
                     </Grid>
                     <Grid item xs={12} textAlign="right">
-                        <Button variant="contained" color="primary"
-                            sx={{
-                                background: 'linear-gradient( #56bbb6 30%, #33677f 90%)',
-                                '&:hover': {
-                                    backgroundColor: "#9b59b6"  // 호버 시 밝은 보라색
-                                }
-                            }} onClick={() => { handleAddData(); }}>
+                        <Button variant="contained" color="primary" onClick={() => { handleAddData(); }}>
                             게시물 등록
                         </Button>
                     </Grid>
