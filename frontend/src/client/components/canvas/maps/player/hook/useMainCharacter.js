@@ -11,7 +11,7 @@ import { SkeletonUtils } from "three-stdlib"
 import { AnimationMixer, Vector3 } from "three"
 import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
-import { enterBusStationOne, leaveBusStationOne } from "../../../../../../redux/actions/actions"
+import { enterBusStationOne, enterBusStationTwo, leaveBusStationOne, leaveBusStationTwo } from "../../../../../../redux/actions/actions"
 
 export const useMainCharacter = ({position, myChar, onEnterBusZone }) => {
     const btnValue = useSelector((state) => state.btnMenu)
@@ -182,15 +182,16 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone }) => {
             } 
             // Bus Zone 2
             else if (currentPosition.x <= 512 && currentPosition.x >= 492 && currentPosition.z >= -247 && currentPosition.z <= -237) {
-                handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 0)
+                handleCamera(currentPosition.x + 25, currentPosition.y + 20, currentPosition.z - 90)
                 if (!isInBusZone) {
                     setIsInBusZone(true); // 상태 변경
-                    dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
+                    dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
                     console.log("버스존 2에 진입했습니다.");
                 }
             } else if (isInBusZone) {
                 setIsInBusZone(false); // 상태를 false로 변경
                 dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
+                dispatch(leaveBusStationTwo()); // 리덕스 상태를 false로 설정
                 console.log("버스존을 벗어났습니다.");
             }
             

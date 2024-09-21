@@ -11,10 +11,14 @@ import { Bus } from './bus/Bus'
 
 const EtcGroup = () => {
     // Redux 상태에서 버스존 1에 있는지 여부 가져오기
-    const isInBusStationOne = useSelector(state => state.busTest.inBusStationOne);
+    const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
     useEffect(() => {
         console.log(isInBusStationOne)
     }, [isInBusStationOne])
+    const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
+    useEffect(() => {
+        console.log(isInBusStationTwo)
+    }, [isInBusStationTwo])
 
     return (
         <>
@@ -40,8 +44,14 @@ const EtcGroup = () => {
             {/* 찾아오는 길 안내문 */}
             {isInBusStationOne && (
                 <>
-                    <Direction position={[250, 10, -140]} />
+                    <Direction position={[253, 10, -140]} />
                     <Bus position={[350, 17.5, -150]}/>
+                </>
+            )}
+            {isInBusStationTwo && (
+                <>
+                    <Direction position={[553, 0, -220]} />
+                    <Bus position={[450, 17.5, -150]}/>
                 </>
             )}
 

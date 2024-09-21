@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
     // 석재
 
     // 자현
-    busTest: busReducer
+    bus: busReducer
     // 정민
 })
 
