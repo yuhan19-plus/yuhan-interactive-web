@@ -193,39 +193,40 @@ router.post("/ratings/:foodID", (req, res) => {
 
 router.post("/ratings/:foodID", (req, res) => {
     const { foodID } = req.params;
-    const { foodName, user_id, rating } = req.body;
+    const { user_id, rating } = req.body;
 
-    if (!foodName || !user_id || rating === undefined) {
-        return res.status(400).send("foodName, user_id, rating 의 값이 필요합니다.");
+    if (!foodID || !user_id || rating === undefined) {
+        return res.status(400).send("foodID, user_id, rating 값이 필요합니다.");
     }
 
     // 1. 평점 저장: 사용자별로 저장
     const insertFoodQuery = `
-        INSERT INTO food_ratings (foodName, foodID, user_id, rating)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO food_ratings (foodID, user_id, rating)
+        VALUES (?, ?, ?)
         ON DUPLICATE KEY UPDATE rating = ?;
     `;
+    
 
-    mysqlconnection.query(insertFoodQuery, [foodName, foodID, user_id, rating, rating], (err) => {
+    mysqlconnection.query(insertFoodQuery, [foodID, user_id, rating], (err) => {
         if (err) {
-            console.error("음식 등록 중 에러 발생:", err);
-            return res.status(500).json({ message: "음식 등록 중 오류가 발생했습니다." });
+            console.error("평점 저장 중 에러 발생:", err);
+            return res.status(500).json({ message: "평점 저장 중 오류가 발생했습니다." });
         }
 
         // 2. 평균 평점 계산 및 업데이트 호출
-        updateAverageRating(foodName, res);
+        updateAverageRating(foodID, res);
     });
 });
 
 // 평균 평점 계산 및 업데이트 함수
-const updateAverageRating = (foodName, res) => {
+const updateAverageRating = (foodID, res) => {
     const averageRatingQuery = `
         SELECT AVG(rating) AS averageRating
         FROM food_ratings
-        WHERE foodName = ?;
+        WHERE foodID = ?;
     `;
 
-    mysqlconnection.query(averageRatingQuery, [foodName], (err, results) => {
+    mysqlconnection.query(averageRatingQuery, [foodID], (err, results) => {
         if (err) {
             console.error("평균 평점 계산 중 오류 발생:", err);
             return res.status(500).json({ message: "평균 평점 계산 중 오류가 발생했습니다." });
@@ -236,19 +237,22 @@ const updateAverageRating = (foodName, res) => {
         const updateRatingQuery = `
             UPDATE todaymenu
             SET foodRating = ?
-            WHERE foodName = ?;
+            WHERE foodID = ?;
         `;
+        console.log(" 평점 업데이트에 성공 했습니다.".foodRaing);
 
-        mysqlconnection.query(updateRatingQuery, [averageRating, foodName], (err) => {
+        mysqlconnection.query(updateRatingQuery, [averageRating, foodID], (err) => {
             if (err) {
                 console.error("평균 평점 업데이트 중 오류 발생:", err);
                 return res.status(500).json({ message: "평균 평점 업데이트 중 오류가 발생했습니다." });
             }
 
-            res.send("음식 등록 및 평점 업데이트 성공");
+            res.send("평점 저장 및 평균 평점 업데이트 성공");
+            console.log("테이블",averageRating);
         });
     });
 };
+
 
 
 

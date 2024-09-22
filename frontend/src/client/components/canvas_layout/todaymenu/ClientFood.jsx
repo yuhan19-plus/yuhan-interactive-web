@@ -63,7 +63,7 @@ const ClientFood = () => {
         const foodID = foodDetails.foodID; // foodID 가져오기
         const foodName = foodDetails.foodName; // foodName 가져오기
         const user_id = cookies.user;
-    
+        
         // 1. 평점 제출
         fetch(`/api/food/ratings/${foodID}`, {
             method: 'POST',
