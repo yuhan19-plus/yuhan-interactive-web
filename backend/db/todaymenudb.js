@@ -141,6 +141,7 @@ router.get("/search/:foodName", (req, res) => {
     });
 });
 
+//평점 저장 수정
 router.post("/ratings/:foodID", (req, res) => {
     const { foodID } = req.params;
     const { foodName, user_id, rating } = req.body;
@@ -152,7 +153,6 @@ router.post("/ratings/:foodID", (req, res) => {
     const insertFoodQuery = 
         `INSERT INTO food_ratings (foodName, foodID, user_id, rating)
         VALUES (?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE rating = VALUES(rating);
     `;
 
     mysqlconnection.query(insertFoodQuery, [foodName, foodID, user_id, rating], (err) => {
