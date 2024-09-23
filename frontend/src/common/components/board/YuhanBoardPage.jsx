@@ -180,7 +180,7 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                 {/* 첨부파일 영역 */}
                 <div style={{ padding: "1vw", display: "flex", justifyContent: "flex-end" }}>
                     {attachments.length > 0 ? (
-                        <Accordion sx={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none', outline: 'none' }}>
+                        <Accordion sx={{ border: 'none', boxShadow: 'none', outline: 'none' }}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
@@ -190,7 +190,7 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                                 첨부파일
                             </AccordionSummary>
                             <AccordionDetails style={{
-                                display: "flex", flexWrap: "wrap", flexDirection: "column", gap: "5px", position: "absolute", zIndex: 10
+                                background:"#ffffff", display: "flex", flexWrap: "wrap", flexDirection: "column", gap: "5px", position: "absolute", zIndex: 10
                             }}>
                                 {attachments.map((attachment, index) => {
                                     const displayName = attachment.file_name.length > 15
@@ -219,7 +219,7 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                             </AccordionDetails>
                         </Accordion>
                     ) : (
-                        // 없으면 빈어있게 처리
+                        // 없으면 비어있게 처리
                         <></>
                     )}
                 </div>
