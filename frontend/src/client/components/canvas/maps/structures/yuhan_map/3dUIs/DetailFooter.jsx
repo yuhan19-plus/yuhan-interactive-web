@@ -36,7 +36,7 @@ const DetailFooter = () => {
 
 const DetailFooterLayout = styled.div`
     width: 100%;
-    height: 20vh;
+    height: 25%;
     background-color: #0F275C;
     display: flex;
     align-items: center;

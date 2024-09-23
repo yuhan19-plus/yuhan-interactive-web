@@ -15,8 +15,8 @@ import { useCookies } from 'react-cookie'
 const CounselContent = () => {
     // 쿠키(세션 쿠키)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-    console.log(cookies)
-    console.log(cookies.user)
+    // console.log(cookies)
+    // console.log(cookies.user)
     const currentUser = cookies.user
 
     const counsel = useSelector((state) => state.counsel)

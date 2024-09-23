@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarPlus, faCircleXmark, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
@@ -14,8 +14,8 @@ import { useCookies } from 'react-cookie';
 const YuhanCalendar = () => {
     // 쿠키(세션 쿠키)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-    console.log(cookies)
-    console.log(cookies.user)
+    // console.log(cookies)
+    // console.log(cookies.user)
     const currentUser = cookies.user
 
     const navigate = useNavigate()
@@ -45,6 +45,7 @@ const YuhanCalendar = () => {
         navigate('/', { state: { date: clickedDate } })
         dispatch(counselBtn())
     }
+
     return (
         <>
             <CalendarWrapper>

@@ -43,7 +43,7 @@ const DetailHeader = (props) => {
 
 const DetailHeaderLayout = styled.div`
     width: 100%;
-    height: 10vh;
+    height: 15%;
     background-color: #0F275C;
     color: white;
     padding: 15px;
