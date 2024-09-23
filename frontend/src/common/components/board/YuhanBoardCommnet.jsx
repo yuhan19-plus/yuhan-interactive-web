@@ -5,9 +5,9 @@
  * 댓글 저장, 삭제기능
  */
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, List, ListItem, ListItemText, ListItemButton, Button, TextField, Pagination, Box, Divider, Avatar } from "@mui/material";
+import { Grid, Typography, List, ListItem, ListItemText, ListItemButton, Button, TextField, Pagination, Box, Divider } from "@mui/material";
 import { useCookies } from "react-cookie";
-import { CalendarToday } from '@mui/icons-material';
+import { CalendarToday, NoteAlt } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 
 export const YuhanBoardComment = ({ boardData }) => {
@@ -195,7 +195,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                 <ListItem sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                     <Grid container sx={{ marginBottom: "1vh" }}>
                                         <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                                            <Avatar />
+                                            <NoteAlt sx={{ color: '#0F275C' }} />
                                             <ListItemText primary={item.comment_writer} sx={{ marginLeft: "1vh" }} />
                                             <Grid item xs={1}>
                                                 {/* 삭제 버튼 */}
@@ -225,7 +225,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                         </Grid>
 
                                         <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                                            <CalendarToday />
+                                            <CalendarToday sx={{ color: '#0F275C' }} />
                                             <ListItemText
                                                 primary={new Date(item.comment_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', })
                                                     + ' '

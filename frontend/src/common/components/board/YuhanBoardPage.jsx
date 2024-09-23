@@ -4,11 +4,12 @@
  * 게시판상세페이지 ui
  * 좋아요, 수정, 삭제, 신고 기능
  */
-import React, { useState } from "react";
-import { Grid, Button, Typography, Box, TextField, List, ListItem, ListItemText, ListItemButton, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
+import React from "react";
+import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
 import {
     Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon,
-    CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon
+    CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon,
+    NoteAlt
 } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
 import { useBoardData } from "./hooks/useBoardData";
@@ -154,11 +155,13 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                 {/* 추가 정보 영역 */}
                 <Grid container sx={{ padding: "0.25vw" }}>
                     {/* 작성자 이름 */}
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
+                        <NoteAlt sx={{ color: '#0F275C', marginRight: '0.5rem' }} />
                         <Typography variant="h6" sx={{ color: "#7F8C8D", fontSize: "1.25rem" }}>
                             {boardData.board_writer}
                         </Typography>
                     </Grid>
+
                     {/* 작성일과 조회수 */}
                     <Grid item xs={12}>
                         <Typography sx={{ color: "#7F8C8D", fontSize: "0.9rem", display: 'inline-block', marginRight: '10px' }}>
@@ -239,8 +242,6 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                 >
                     {boardData.board_content}
                 </Grid>
-
-
 
                 {/* 좋아요 버튼영역 */}
                 <Grid>
