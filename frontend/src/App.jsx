@@ -13,6 +13,8 @@
  *  - 에러
  * 오자현
  *  - 소캣컨트롤 추가
+ * 이석재
+ *  - 회원정보 수정 라우트 로직 추가
  */
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
@@ -61,6 +63,7 @@ function App() {
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />
           <Route path='/join' element={<MemberIndex value='join' />} />
+          <Route path='/membermodify' element={<MemberIndex value='modify' />} />
 
           {/* client 부분 경로
             학과체험

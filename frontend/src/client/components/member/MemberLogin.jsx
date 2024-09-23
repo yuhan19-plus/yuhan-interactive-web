@@ -3,13 +3,16 @@
  * 
  * 이석재
  *   - 로그인 기능 구현완료
+ *   - 로그인 시 쿠키 정보 추가
  */
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { FormControl, IconButton, InputAdornment, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie';
+import Swal from 'sweetalert2';
 import styled from 'styled-components'
+
 
 const MemberLogin = () => {
 
@@ -80,13 +83,24 @@ const MemberLogin = () => {
                 if (response.ok) {
                     const result = await response.json();
                     setCookie('user', memberID, { path: '/' });
+                    setCookie('userType', result.userType, { path: '/' });
+                    // 로그인 성공 시 바로 리다이렉트
                     window.location.href = '/'; // 로그인 성공 후 루트 경로로 이동
                 } else {
-                    alert('아이디 혹은 비밀번호가 올바르지 않습니다.');
+                    Swal.fire({
+                        title: '로그인 실패!',
+                        text: '아이디 또는 비밀번호가 올바르지 않습니다.',
+                        icon: 'error',
+                        confirmButtonText: '확인'
+                    });
                 }
             } catch (error) {
-                console.error('로그인 중 오류 발생:', error);
-                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                Swal.fire({
+                    title: '서버 오류!',
+                    text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
         }
     };

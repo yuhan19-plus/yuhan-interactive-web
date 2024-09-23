@@ -3,6 +3,8 @@
  * 이석재
  *   - 로그아웃 기능 구현
  *   - 로그인 시 사용자 아이디를 보여줄 수 있도록 수정
+ *   - 로그아웃 시 추가된 쿠키를 삭제하도록 수정
+ *   - 회원정보수정 페이지에 접근 가능하도록 추가
  */
 import { AdminPanelSettings, Close, Login, Logout, Menu } from '@mui/icons-material'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +18,8 @@ import DeptSideBarMenu from './DeptSideBarMenu';
 import { adminEnterModal } from '../../../../redux/actions/actions';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import Swal from 'sweetalert2';
+
 const title = ''
 const SideBar = () => {
 
@@ -44,8 +48,16 @@ const SideBar = () => {
 
     // 로그아웃 메서드
     const handleLogout = () => {
-        removeCookie('user', { path: '/' }); // 쿠키 삭제
-        alert('로그아웃 되었습니다.');
+        // 쿠키 삭제
+        removeCookie('user', { path: '/' });
+        removeCookie('userType', { path: '/' });
+        Swal.fire({
+            title: '로그아웃 완료!',
+            text: '성공적으로 로그아웃 되었습니다.',
+            icon: 'success',
+            confirmButtonText: '확인'
+        });
+    
     };
 
     return (
@@ -80,7 +92,7 @@ const SideBar = () => {
                     </div>
                     {cookies.user && (
                         <div>
-                            <p>{cookies.user}님 안녕하세요!</p>
+                            <Link to={'/membermodify'}><p>{cookies.user}님 안녕하세요!</p></Link>
                         </div>
                     )}
                 </SideBarHeader>
