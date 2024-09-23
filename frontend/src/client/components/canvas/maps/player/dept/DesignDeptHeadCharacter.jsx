@@ -12,16 +12,16 @@ export function DesignDeptHeadCharacter({position, ...props}) {
   // console.log(animations)
 
   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
-  const [animation, setAnimation] = useState('Draw')
+  const [animation, setAnimation] = useState('WindMill')
 
   useEffect(() => {
     if (actions && actions[animation]) {
-      actions[animation].reset().fadeIn(0.3).play()
+      actions[animation].reset().fadeIn(0.7).play()
     }
     
     return () => {
       if (actions && actions[animation]) {
-        actions[animation].fadeOut(0.3)
+        actions[animation].fadeOut(0.7)
       }
     }
   }, [actions, animation])

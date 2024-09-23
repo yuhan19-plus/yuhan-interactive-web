@@ -10,6 +10,8 @@ export function CSDeptHeadCharacter({position, ...props}) {
   const { nodes, materials } = useGraph(clone)
   const { actions } = useAnimations(animations, group)
 
+  // console.log(animations)
+
   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
   const [animation, setAnimation] = useState('Laugh')
 

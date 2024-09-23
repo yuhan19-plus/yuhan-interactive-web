@@ -9,10 +9,9 @@ import * as THREE from 'three'
 import { useThree } from '@react-three/fiber'
 import { LightingObject } from './LightingObject'
 import { BioDeptHeadCharacter } from '../../../../player/dept/BioDeptHeadCharacter'
-import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
 import { DesignDeptHeadCharacter } from '../../../../player/dept/DesignDeptHeadCharacter'
 import { FoodDeptHeadCharacter } from '../../../../player/dept/FoodDeptHeadCharacter'
-import styled from 'styled-components'
+import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
 
 const Welcome = () => {
     const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
