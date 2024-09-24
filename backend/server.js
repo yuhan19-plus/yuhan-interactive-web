@@ -5,6 +5,7 @@
  *
  * 이석재
  *   - nas의 mysql 컨테이너와 연결 설정 및 회원 라우트 연결
+ *   - 회원관리 라우트 연결
  * */
 const express = require("express");
 const http = require("http");
@@ -44,6 +45,7 @@ module.exports = mysqlconnection;
 const testdbRoutes = require('./db/testdb'); 
 const todaymenuRoutes = require('./db/todaymenudb');
 const memberRoutes = require('./db/memberdb');
+const memberAdminRoutes = require('./db/memberAdmindb');
 const boardRoutes = require('./db/boarddb');
 const tempboardRoutes = require('./db/tempBoarddb'); 
 const boardLikeRoutes = require('./db/boardLikeddb'); 
@@ -51,6 +53,7 @@ app.use('/food', todaymenuRoutes);
 app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/member', memberRoutes);
+app.use('/memberAdmin', memberAdminRoutes);
 app.use('/tempboard', tempboardRoutes);
 app.use('/boardlike', boardLikeRoutes);
 

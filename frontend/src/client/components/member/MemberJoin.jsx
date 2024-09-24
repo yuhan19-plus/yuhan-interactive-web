@@ -7,6 +7,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { FilledInput, FormControl, FormControlLabel, FormLabel, FormHelperText, IconButton, InputAdornment, InputLabel, MenuItem, NativeSelect, OutlinedInput, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import Swal from 'sweetalert2';
 import styled from 'styled-components'
 import { MAJORS, PROFESSOR_POSITION } from '../../../data/commonData'
 import { Form, useSubmit } from 'react-router-dom'
@@ -113,17 +114,16 @@ const MemberJoin = () => {
         professorPosition: ''
     });
 
-    // 유효성 검사 메서드
     const validate = () => {
         let tempErrors = {};
-
+    
         if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
         if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
-        if (!memberPhone || !memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = "유효한 전화번호를 입력하세요.";  // 수정된 부분
+        if (!memberPhone || !memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = "유효한 전화번호를 입력하세요.";
         if (!memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
         if (!memberMajor) tempErrors.memberMajor = "전공을 선택하세요.";
-        if (!memberGender) tempErrors.memberGender = "성별을 선택하세요."; // 성별에 대한 유효성 검사 추가
-
+        if (!memberGender) tempErrors.memberGender = "성별을 선택하세요.";
+    
         if (memberType) { // 학생일 경우
             if (!studentNum) tempErrors.studentNum = "학번을 입력하세요.";
             if (!studentGrade) tempErrors.studentGrade = "학년을 선택하세요.";
@@ -131,9 +131,9 @@ const MemberJoin = () => {
         } else { // 교수일 경우
             if (!professorPosition) tempErrors.professorPosition = "직책을 선택하세요.";
         }
-
+    
         setErrors(tempErrors);
-
+        
         return Object.keys(tempErrors).length === 0;
     };
 
@@ -158,30 +158,48 @@ const MemberJoin = () => {
                 memberType
             };
     
-            try {
-                const response = await fetch('/api/member/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
+        try {
+            const response = await fetch('/api/member/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.status === 409) {
+                // ID 중복
+                Swal.fire({
+                    title: '중복된 아이디!',
+                    text: '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.',
+                    icon: 'warning',
+                    confirmButtonText: '확인'
                 });
-    
-                if (response.status === 409) {
-                    // ID 중복
-                    alert('이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.');
-                } else if (response.ok) {
-                    console.log('회원가입이 성공적으로 완료되었습니다.');
-                    alert('회원가입이 성공적으로 완료되었습니다.');
+            } else if (response.ok) {
+                Swal.fire({
+                    title: '회원가입 성공!',
+                    text: '회원가입이 성공적으로 완료되었습니다.',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                }).then(() => {
                     window.location.href = '/'; // 회원가입 후 루트 경로로 이동
-                } else {
-                    console.log('회원가입에 실패했습니다.');
-                    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
-                }
-            } catch (error) {
-                console.error('서버 오류 발생:', error);
-                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                });
+            } else {
+                Swal.fire({
+                    title: '회원가입 실패!',
+                    text: '회원가입에 실패했습니다. 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
+        } catch (error) {
+            Swal.fire({
+                title: '서버 오류!',
+                text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
+        }
 
 
             // 디버깅 코드

@@ -1,9 +1,13 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 
+ * 이석재
+ *   - 회원정보 수정 라우트 로직 추가
  */
 import React from 'react'
 import MemberLogin from './MemberLogin'
 import MemberJoin from './MemberJoin'
+import MemberModify from './MemberModify'
 import styled from 'styled-components'
 import Footer from '../../../common/components/Footer'
 import { Outlet } from 'react-router-dom'
@@ -21,7 +25,9 @@ const MemberIndex = (props) => {
                     <Outlet />
                     <MemberContainer>
                         {
-                            value === 'login' ? <MemberLogin /> : <MemberJoin />
+                            value === 'login' ? <MemberLogin /> : 
+                            value === 'join' ? <MemberJoin /> : 
+                            value === 'modify' ? <MemberModify /> : null
                         }
                     </MemberContainer>
                 </MemberContentWrapper>

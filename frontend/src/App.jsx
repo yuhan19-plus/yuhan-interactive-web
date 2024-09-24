@@ -13,6 +13,8 @@
  *  - 에러
  * 오자현
  *  - 소캣컨트롤 추가
+ * 이석재
+ *  - 회원정보 수정 라우트 로직 추가
  */
 import { useEffect } from 'react'
 import { Provider } from 'react-redux'
@@ -57,6 +59,8 @@ function App() {
           <Route path='/' index element={<ClientIndex />} />
           <Route path='/login' element={<MemberIndex value='login' />} />
           <Route path='/join' element={<MemberIndex value='join' />} />
+          <Route path='/membermodify' element={<MemberIndex value='modify' />} />
+
           {/* client 부분 경로
             오늘의 메뉴
             학과체험
