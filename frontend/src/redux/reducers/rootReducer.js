@@ -6,6 +6,7 @@ import { mapReducer } from "./mapReducer";
 import { modalReducer } from "./modalReducer";
 import { mainCharReducer } from "./mainCharReducer";
 import { menuBtnReducer } from "./menuBtnReducer";
+import { busReducer } from "./busReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -14,12 +15,12 @@ const rootReducer = combineReducers({
     groundMap: mapReducer,
     modal: modalReducer,
     mChar: mainCharReducer,
-    btnMenu: menuBtnReducer
+    btnMenu: menuBtnReducer,
 
     // 석재
 
     // 자현
-
+    bus: busReducer
     // 정민
 })
 

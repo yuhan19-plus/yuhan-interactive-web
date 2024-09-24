@@ -24,8 +24,8 @@ const MainCanvas = () => {
                     // 카메라 설정
                     fov: 50,
                     aspect: aspectRatio,
-                    near: 0.1,
-                    far: 100000,
+                    near: 1.5,
+                    far: 5000,
                     position: cameraPosition
                 }}
             >

@@ -31,6 +31,12 @@ export const INIT_MODAL = 'INIT_MODAL'
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 
 
+// 버스 정류장 - 자현
+export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
+export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
+export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
+export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
+
 /* 액션 생성자 정의영역 - 성준 */
 
 // 캐릭터 - 성준
@@ -87,3 +93,20 @@ export const adminEnterModal = () => ({
 export const aerialView = () => ({
     type: AERIAL_VIEW
 })
+
+// 버스정류장 진입여부
+export const enterBusStationOne = () => ({
+    type: ENTER_BUS_STATION_ONE,
+});
+
+export const leaveBusStationOne = () => ({
+    type: LEAVE_BUS_STATION_ONE,
+});
+
+export const enterBusStationTwo = () => ({
+    type: ENTER_BUS_STATION_TWO,
+});
+
+export const leaveBusStationTwo = () => ({
+    type: LEAVE_BUS_STATION_TWO,
+});
