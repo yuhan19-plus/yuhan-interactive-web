@@ -40,6 +40,7 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
     
         const formData = {
+            userId: userId,
             professorMajor: e.target.professorMajor.value,
             studentMajor: e.target.studentMajor.value,
             studentNum: e.target.studentNum.value,
@@ -54,7 +55,7 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
             counselContent: e.target.counselContent.value,
         }
     
-        axios.post("/api/consultation", formData)
+        axios.post("/api/consultation/req-for-consultation", formData)
             .then((response) => {
                 console.log(response.data)
                 Swal.fire({
@@ -77,7 +78,7 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
     return (
         <ReqForConsultationWrapper>
             {userId &&
-                <form action='/consultation' method='POST' onSubmit={handleSubmit}>
+                <form action='/consultation/req-for-consultation' method='POST' onSubmit={handleSubmit}>
                     <StyledFormControl>
                         <StyledFormLabel><p>상담사</p></StyledFormLabel>
                         <FormContent>
@@ -299,6 +300,7 @@ const StyledFormLabel = styled(MuiFormLabel)`
     p {
         font-size: 16px;
         font-weight: 600;
+        margin: 15px;
     }
     border-right: 2px solid #ccc;
     margin-right: 15px;

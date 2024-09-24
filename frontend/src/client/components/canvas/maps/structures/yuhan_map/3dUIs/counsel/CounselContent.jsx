@@ -15,14 +15,16 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const CounselContent = () => {
+    // 상담신청 관련 상태관리
     const counsel = useSelector((state) => state.counsel)
     const counselName = counsel.name
-
-    // 쿠키(세션 쿠키)
+    
     const [cookies] = useCookies(['user'])
+    // console.log(cookies) // 쿠키체크
     const userId = cookies.user
-    // console.log(userId)
+    const userType = cookies.userType
 
+    // 사용자와 학생 정보의 초기값 설정
     const [userInfo, setUserInfo] = useState({
         user_phone: "",
         user_email: "",
@@ -34,6 +36,7 @@ const CounselContent = () => {
         student_grade: 0
     })
 
+    // 현재 회원정보 데이터 가져오기
     const CurrentMemberData = async () => {
         try {
             const response = await axios.get(`/api/consultation/${userId}`)
@@ -82,7 +85,7 @@ const CounselContent = () => {
                 <CounselBtn>
                     {
                         // 병합 후 userType으로 바꿔야할 부분
-                        userId === 'sjsj' ? (
+                        userType === 'student' ? (
                             <>
                                 <Button
                                     variant="contained"
@@ -129,9 +132,6 @@ const CounselContent = () => {
                 </CounselBtn>
             </ContentHeader>
             <ContentContainer>
-                {/* {counselValue === false && (
-                    <MyCounsel />
-                )} */}
                 {(counselName === '상담이력') && (
                     <MyCounsel userId={userId} />
                 )}
