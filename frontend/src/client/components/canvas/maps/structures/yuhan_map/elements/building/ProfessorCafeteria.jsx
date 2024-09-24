@@ -29,7 +29,7 @@ export function ProfessorCafeteria({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[0,-1,0]} rotation={[0,0,0]} scale={[18.615, 4.051, 38.03]}>
         <mesh geometry={nodes.Cube006.geometry} material={materials['E2EBCA (B1,B4,B5,B6(BodyFrame))']} />

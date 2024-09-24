@@ -1,25 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BasketballHoop } from './etc/BasketballHoop'
 import { YuhanEntrance } from './etc/YuhanEntrance'
 import { Statue } from './etc/Statue'
 import { Wire_Netting } from './etc/Wire_Netting'
-import { BusStationOne } from './etc/BusStationOne'
-import { BusStationTwo } from './etc/BusStationTwo'
-import Direction from '../3dUIs/modal/Direction'
-import { useSelector } from 'react-redux'
-import { Bus } from './bus/Bus'
+import { NoEntry } from './etc/NoEntry'
 
 const EtcGroup = () => {
-    // Redux 상태에서 버스존 1에 있는지 여부 가져오기
-    const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
-    useEffect(() => {
-        console.log(isInBusStationOne)
-    }, [isInBusStationOne])
-    const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
-    useEffect(() => {
-        console.log(isInBusStationTwo)
-    }, [isInBusStationTwo])
-
     return (
         <>
             {/* 농구골대 */}
@@ -37,24 +23,8 @@ const EtcGroup = () => {
             {/* 철조망 */}
             <Wire_Netting position={[50.639, 6.42, 395.918]} rotation={[Math.PI / 2, 0, 0]} />
 
-            {/* 버스정류장 */}
-            <BusStationOne position={[271.453, 6.15, -163.289]} />
-            <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
-
-            {/* 찾아오는 길 안내문 */}
-            {isInBusStationOne && (
-                <>
-                    <Direction position={[253, 10, -140]} />
-                    <Bus position={[350, 17.5, -150]}/>
-                </>
-            )}
-            {isInBusStationTwo && (
-                <>
-                    <Direction position={[553, 0, -220]} />
-                    <Bus position={[450, 17.5, -150]}/>
-                </>
-            )}
-
+            {/* 바리게이트 */}
+            {/* <NoEntry position={[-460, -9, -97]} rotation={[0, Math.PI / 2, 0]} scale={1.7} /> */}
         </>
     )
 }

@@ -30,7 +30,7 @@ export function ChangjogwanPillar({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group scale={[21, 82.5, 15]}>
         <mesh geometry={nodes.Cube005.geometry} material={materials['61544D.005']} />

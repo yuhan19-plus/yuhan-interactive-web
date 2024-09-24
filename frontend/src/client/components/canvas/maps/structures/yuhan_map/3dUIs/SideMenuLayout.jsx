@@ -6,13 +6,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
-<<<<<<< HEAD
 import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
-=======
 import CounselContent from './counsel/CounselContent'
->>>>>>> feature/counsel-jun
 
 
 let title

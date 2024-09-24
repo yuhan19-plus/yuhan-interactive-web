@@ -30,7 +30,7 @@ export function TreeOne({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position-y={-1} scale={[8.474, 10.505, 7.017]}>
         <mesh geometry={nodes.Cylinder018.geometry} material={materials['006400 (Leaf)']} />

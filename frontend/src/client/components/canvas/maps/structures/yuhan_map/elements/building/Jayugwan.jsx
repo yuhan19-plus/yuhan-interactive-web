@@ -30,7 +30,7 @@ export function Jayugwan({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[5,-5, 1]} rotation={[0,0,0]} scale={[8.072, 8.072, 9.321]}>
         <mesh geometry={nodes.텍스트002.geometry} material={materials['DCE759 & Metal (DEVName, Statue).001']} />

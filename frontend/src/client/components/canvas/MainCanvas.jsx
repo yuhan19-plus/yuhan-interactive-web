@@ -50,7 +50,7 @@ const MainCanvas = () => {
                     makeDefault // 카메라의 설정이 계속 변경될 예정일 경우에 튕기거나 끊김없게 해주기 위해 설정
                     minPolarAngle={Math.PI / 6}
                     maxPolarAngle={Math.PI - Math.PI / 2}
-                    minDistance={700} // 카메라 확대 최소 범위
+                    minDistance={1000} // 카메라 확대 최소 범위
                     maxDistance={1000} // 카메라 확대 최대 범위
                 />
 

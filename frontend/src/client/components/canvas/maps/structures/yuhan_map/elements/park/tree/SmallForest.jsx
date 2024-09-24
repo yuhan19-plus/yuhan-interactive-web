@@ -30,7 +30,7 @@ export function SmallForest({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group rotation={[Math.PI / 2, 0, Math.PI / 2]} scale={[2.863, 3.072, 4.264]}>
         <mesh geometry={nodes.Text002.geometry} material={materials['A2A2A2(B9, Park(Rock),B5-6 Plane)']} />

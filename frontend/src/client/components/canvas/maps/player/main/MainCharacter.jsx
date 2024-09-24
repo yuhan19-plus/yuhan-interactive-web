@@ -8,12 +8,14 @@
   export function MainCharacter({ myChar, position }) {
     // 위치와 캐릭터 객체 로그 확인
     // console.log(position)
+    // console.log(myChar.name)
+    const player = myChar.name
 
     // useMainCharacter 훅을 통해 캐릭터 상태와 물리적 몸체 참조 가져오기
     const { nodes, materials, charRef } = useMainCharacter({ position, myChar })
 
     return (
-      <group ref={charRef}>
+      <group ref={charRef} name={player ?? ''}>
         <group name="Scene">
             <group name="MainCharacter" scale={1.2}>
               <primitive object={nodes.Hip} />
@@ -28,7 +30,7 @@
                 <skinnedMesh name="평면001_5" geometry={nodes.평면001_5.geometry} material={materials['colorGreen.001']} skeleton={nodes.평면001_5.skeleton} />
               </group>
               {/* 배경에 별 추가 */}
-              <Stars
+              {/* <Stars
                 radius={1.3}
                 depth={1.5}
                 count={20}
@@ -36,7 +38,7 @@
                 saturation={0} // 채도
                 fade
                 speed={2}
-              />
+              /> */}
             </group>
         </group>
       </group>

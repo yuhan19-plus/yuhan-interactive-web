@@ -30,7 +30,7 @@ export function TreeFive({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[50, 16, -50]} scale={61.994}>
         <mesh geometry={nodes.Plane004.geometry} material={materials['0CFF0F(Leaf,Smoking Booth)']} />

@@ -30,7 +30,7 @@ export function Nanumgwan({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[-2,-1,0]} scale={[5, 2.5, 10]}>
         <mesh geometry={nodes.Cube009.geometry} material={materials['D2D2D2 & Metal (B4,B5,B6,B7).002']} />

@@ -30,7 +30,7 @@ export function Statue({position, rotation, scale, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group rotation={rotation} scale={scale}>
         <mesh geometry={nodes.Cube002.geometry} material={materials['E7E500 & Metal (Statue)']} />

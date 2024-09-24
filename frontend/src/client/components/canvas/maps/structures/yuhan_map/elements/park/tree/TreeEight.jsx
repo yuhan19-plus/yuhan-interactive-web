@@ -30,7 +30,7 @@ export function TreeEight({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[30, 16, -19.5]} scale={61.994}>
         <mesh geometry={nodes.Plane007.geometry} material={materials['006400 (Leaf)']} />

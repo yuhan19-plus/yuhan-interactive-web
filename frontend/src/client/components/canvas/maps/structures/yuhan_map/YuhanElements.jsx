@@ -30,7 +30,6 @@ import SmokingGroup from './elements/SmokingGroup'
 import GrassGroup from './elements/park/grass/GrassGroup'
 import TreeGroup from './elements/park/tree/TreeGroup'
 import TerraceGroup from './elements/TerraceGroup'
-import KioskGroup from './elements/KioskGroup'
 import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
@@ -45,7 +44,6 @@ const YuhanElements = () => {
             <BuildingGroup />
             <TreeGroup />
             <GrassGroup />
-            <KioskGroup />
             <TerraceGroup />
             <SmokingGroup />
             <EtcGroup />
@@ -62,10 +60,10 @@ const YuhanElements = () => {
             <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
 
             {/* 투명벽 셋팅 */}
-            <Wall position={[12, 46, -577.5]} />
+            {/* <Wall position={[12, 46, -577.5]} />
             <Wall position={[12, 46, 412.5]} />
             <Wall position={[-543.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} />
-            <Wall position={[566.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} />
+            <Wall position={[566.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} /> */}
         </>
     )
 }

@@ -30,7 +30,7 @@ export function TreeSeven({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[-28, 16, -36]} scale={61.994}>
         <mesh geometry={nodes.Plane006.geometry} material={materials['0CFF0F(Leaf,Smoking Booth)']} />

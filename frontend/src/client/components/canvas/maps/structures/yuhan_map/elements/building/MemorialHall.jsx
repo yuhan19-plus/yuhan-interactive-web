@@ -30,7 +30,7 @@ export function MemorialHall({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}> 
       <group position={[-3,-10,1]} rotation={[0,0,0]} scale={[3.242, 3.242, 4.501]}>
         <mesh geometry={nodes.Text001.geometry} material={materials['DCE759 & Metal (DEVName, Statue).001']} />

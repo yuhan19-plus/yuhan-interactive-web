@@ -30,7 +30,7 @@ export function TreeThree({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[88, 16, -22]} scale={61.994}>
         <mesh geometry={nodes.Plane002.geometry} material={materials['006400 (Leaf)']} />

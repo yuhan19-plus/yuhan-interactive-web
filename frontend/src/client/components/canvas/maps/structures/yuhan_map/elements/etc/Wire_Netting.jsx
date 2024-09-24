@@ -30,7 +30,7 @@ export function Wire_Netting({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <mesh geometry={nodes.Wire_netting.geometry} material={materials['0CFF0F(Leaf,Smoking Booth).001']} position={[0,0,1.3]} rotation={[0,0,0]} scale={[7.5, 9.082, 9.947]} />
     </group>

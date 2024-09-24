@@ -30,7 +30,7 @@ export function TreeNine({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[0.5,-1.4,-1.5]} scale={[-71.906, -42.936, -48.895]}>
         <mesh geometry={nodes.Plane001.geometry} material={materials['0EA6EF (Leaf, Smoking Booth)']} />

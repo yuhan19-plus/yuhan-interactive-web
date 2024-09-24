@@ -31,7 +31,7 @@ export function NanumgwanLeftPillar({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group scale={[5.5, 80, 0.05]}>
         <mesh geometry={nodes.Cube011.geometry} material={materials['C0E8F6 (B1~9(Window)).001']} />

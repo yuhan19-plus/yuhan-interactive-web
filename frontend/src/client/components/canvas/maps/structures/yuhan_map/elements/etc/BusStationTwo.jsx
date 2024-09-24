@@ -29,7 +29,7 @@ export function BusStationTwo({position, ...props}) {
     <group
       ref={meshRef}
       onPointerUp={(e) => {
-            onMove(null)
+            e.stopPropagation()
     }}>
       <group position={[-3,-1.4,0]} rotation={[0,0,0]} scale={[0.719, 7.5, 3.99]}>
         <mesh geometry={nodes.Cube038.geometry} material={materials['C0E8F6 (B1~9(Window))']} />
