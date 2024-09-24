@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 
-const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
+const AdminBoardList = ({ onCreatePost, onSelectItem, onReport }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -142,6 +142,23 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
         <BoardLayout>
             <Box sx={{ p: 3 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
+                    <Button
+                        sx={{
+                            marginRight: "1vw",
+                            background: 'linear-gradient(45deg, #ff6f61 30%, #d32f2f 90%)', // 부드러운 빨간색에서 더 진한 빨간색으로의 그라데이션
+                            color: '#fff', // 텍스트는 흰색으로 명확하게 표시
+                            "&:hover": {
+                                background: 'linear-gradient(45deg, #d32f2f 30%, #ff6f61 90%)', // 반대 방향 그라데이션으로 변경
+                            },
+                            padding: '0.75vh 1.2vw', // 버튼 크기를 적절히 조정
+                            borderRadius: '0.5vw', // 버튼 모서리 둥글게 처리
+                            fontWeight: 'bold', // 텍스트 강조
+                        }}
+                        onClick={onReport}
+                    >
+                        신고내역
+                    </Button>
+
                     <InputBase
                         placeholder="검색할 제목이나 작성자를 입력하세요"
                         value={searchQuery}
@@ -160,7 +177,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                             </InputAdornment>
                         }
                     />
-                    <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
+                    <Button variant="contained" onClick={handleSearch} color='info' >검색</Button>
 
                     <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
                         <Select
@@ -177,8 +194,8 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                     </FormControl>
                 </div>
 
-                <List>
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: 'center' }}>
+                <List sx={{ textAlign: 'center' }}>
+                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
                         <Box sx={{ width: '10%' }}>번호</Box>
                         <Box sx={{ width: '45%' }}>제목</Box>
                         <Box sx={{ width: '15%' }}>작성자</Box>
@@ -188,10 +205,10 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                     </Box>
 
                     {getCurrentPageData().map((item, index) => (
-                        <ListItem key={item.board_id} divider>
+                        <ListItem key={item.board_id}>
                             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                 {/* 번호 */}
-                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
                                     <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
                                 </Box>
                                 {/* 제목 */}
@@ -222,7 +239,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                                 <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
                                     {item.board_status === 'active' &&
                                         <Button
-                                            variant="outlined"
+                                            variant="contained"
                                             size="small"
                                             color="error"
                                             sx={{ marginLeft: '5px' }}
@@ -243,11 +260,12 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onCancel }) => {
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        color="primary"
+                        color='primary'
                     />
                     {cookies.user &&
                         <Box sx={{ position: 'absolute', right: 5 }}>
-                            <Button variant="contained" color="primary" onClick={onCreatePost}>
+                            <Button variant="contained" color="primary" onClick={onCreatePost}
+                            >
                                 글작성
                             </Button>
                         </Box>

@@ -9,10 +9,12 @@ import SideBoardList from './SideBoardList';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
+import YuhanBoardReport from '../../../../common/components/board/YuhanBoardReport';
 
 const SideBoard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
+    const [selectedBoardTitle, setSelectedBoardTitle] = useState(null)
 
     const handleCreatePost = () => {
         setCurrentView('insert');
@@ -22,8 +24,8 @@ const SideBoard = () => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         // console.log(boardId)
         setCurrentView('page'); // 페이지 보기로 전환
-    }; 
-    
+    };
+
     const handleSelectUpdateItem = (boardId) => {
         setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         // console.log(boardId)
@@ -34,14 +36,22 @@ const SideBoard = () => {
         setCurrentView('list');
     };
 
+    const handleReport = (boardID, boardTitle) => {
+        setSelectedBoardId(boardID); // 선택된 게시글 ID를 상태로 저장
+        setSelectedBoardTitle(boardTitle);
+        setCurrentView('Report');
+    };
+
     return (
         <>
             {currentView === 'insert' ? (
                 <YuhanBoardInsert onCancel={handleBackToList} />
             ) : currentView === 'page' ? (
-                <YuhanBoardPage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} />
+                <YuhanBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} handleReportItem={handleReport} />
             ) : currentView === 'update' ? (
-                <YuhanBoardUpdatePage boardId={selectedBoardId} onBack={handleBackToList} onCancel={handleBackToList} />
+                <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
+            ) : currentView === 'Report' ? (
+                <YuhanBoardReport boardId={selectedBoardId} boardTitle={selectedBoardTitle} onCancel={handleBackToList} />
             ) : (
                 <SideBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}

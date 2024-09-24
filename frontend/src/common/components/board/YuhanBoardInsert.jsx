@@ -9,6 +9,7 @@ import { useDropzone } from "react-dropzone";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 const YuhanBoardInsert = ({ onCancel }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -57,6 +58,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 드래그앤 드랍
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+    // 입력창에서 value가 변경하면 즉시 boardData에 저장하는 함수
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setBoardData({ ...boardData, [name]: value });
@@ -64,6 +66,16 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
     // 게시판저장
     const handleAddData = async () => {
+        // 제목과 내용이 비어있는지 확인
+        if (!boardData.board_title.trim() || !boardData.board_content.trim()) {
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '제목과 내용을 모두 입력해주세요!',
+                confirmButtonColor: '#3085d6',
+            });
+            return; // 입력값이 비어있을 경우 저장 절차 중단
+        }
         try {
             const response = await fetch("/api/board", {
                 method: "POST",
@@ -84,10 +96,22 @@ const YuhanBoardInsert = ({ onCancel }) => {
             setBoardData({ board_title: "", board_content: "", board_writer: "", files: [] });
 
             // 상태가 반영된 후에 언마운트 (onCancel 호출)
-            onCancel();  // 목록으로 돌아가거나 페이지 이동
+            // 성공 메시지 표시
+            Swal.fire({
+                icon: 'success',
+                title: '성공',
+                text: '게시물이 성공적으로 저장되었습니다!',
+                confirmButtonColor: '#3085d6',
+            }).then(() => {
+                // 상태가 반영된 후에 언마운트 (onCancel 호출)
+                onCancel();  // 목록으로 돌아가거나 페이지 이동
+            });
         } catch (error) {
             console.error("Error adding data:", error);
-            alert("데이터 추가 중 오류 발생!");
+            Swal.fire({
+                icon: "warning",
+                text: "데이터 추가 중 오류 발생!"
+            })
         }
     };
 
@@ -129,13 +153,15 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 // 응답이 성공하지 않았을 때
                 const message = await response.text();
                 console.log("백엔드에서 온 내용:", message);
-                alert(message);
+                Swal.fire({
+                    icon: "error",
+                    text: message
+                })
             }
         } catch (error) {
             console.error("임시 저장 중 오류 발생:", error);
         }
     };
-
 
     // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
     const checkTempData = async () => {
@@ -151,15 +177,24 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
             if (data.hasTempData) {
                 // 임시 저장 데이터가 있으면 확인 메시지 표시
-                const userChoice = window.confirm("임시 저장된 데이터가 있습니다. 사용하시겠습니까?");
-
-                if (userChoice) {
-                    // "Yes"를 선택하면 임시 저장된 데이터를 불러옴
-                    fetchTempData();
-                } else {
-                    // "No"를 선택하면 데이터를 삭제
-                    deleteTempData();
-                }
+                Swal.fire({
+                    title: '임시 저장된 데이터가 있습니다.',
+                    text: '사용하시겠습니까?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '사용',
+                    cancelButtonText: '삭제'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // "사용"을 선택하면 임시 저장된 데이터를 불러옴
+                        fetchTempData();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // "삭제"를 선택하면 데이터를 삭제
+                        deleteTempData();
+                    }
+                });
             } else {
                 console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
             }
@@ -179,7 +214,11 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 }),
             });
             if (response.ok) {
-                alert("임시 저장된 데이터가 삭제되었습니다.");
+                Swal.fire({
+                    icon: "warning",
+                    title: "임시데이터",
+                    text: "임시 저장된 데이터가 삭제되었습니다."
+                })
             }
         } catch (error) {
             console.error("Error deleting temp data:", error);
@@ -239,10 +278,20 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 return;
             }
             else {
-                const shouldSave = window.confirm('임시 저장하시겠습니까?');
-                if (shouldSave) {
-                    saveTempBoard();
-                }
+                Swal.fire({
+                    title: '임시 저장하시겠습니까?',
+                    text: "임시 저장을 진행하시려면 확인을 눌러주세요.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '저장',
+                    cancelButtonText: '취소'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        saveTempBoard(); // 임시 저장 함수 호출
+                    }
+                });
             }
         };
     }, []);
@@ -256,98 +305,116 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
     return (
         <BoardLayout>
-            <BoardMainLayout>
-                <Box sx={{ p: 3 }}>
-                    <Typography variant="h4" gutterBottom>
+            <Box sx={{ p: 3 }}>
+                {/* 버튼구역 */}
+                <Grid container alignItems="center" justifyContent="space-between">
+                    {/* 돌아가기 버튼 */}
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            color="primary"
+                            sx={{
+                                backgroundColor: "#2ecc71",
+                                '&:hover': {
+                                    backgroundColor: "#27ae60"
+                                },
+                                padding: "0.5vh 2vw"
+                            }}
+                            onClick={onCancel}
+                        >
+                            돌아가기
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
+                    <Typography variant="h2" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2.5rem" }}>
                         게시물 작성
                     </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="제목"
-                                name="board_title"
-                                variant="outlined"
-                                required
-                                value={boardData.board_title}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <div {...getRootProps()} style={{
-                                border: "2px dashed #cccccc",
-                                borderRadius: "8px",
-                                padding: "5px",
-                                textAlign: "center",
-                                cursor: "pointer",
-                                transition: "border-color 0.3s ease-in-out",
-                                "&:hover": {
-                                    borderColor: "#3f51b5",
-                                },
-                                backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
-                            }}>
-                                <input {...getInputProps()} />
-
-                                {boardData.files.length === 0 ? (
-                                    // 파일이 없을 때만 안내 메시지 표시
-                                    isDragActive ? (
-                                        <p>파일을 이곳에 드롭하세요...</p>
-                                    ) : (
-                                        <p>파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
-                                    )
-                                ) : (
-                                    // 파일이 있을 때만 파일 목록 표시
-                                    <div style={{ textAlign: "left" }}>
-                                        <Box mt={2}>
-                                            {/* <Typography>첨부파일</Typography> */}
-                                            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                                                {boardData.files.map((file, index) => (
-                                                    <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                        <span>{file.file_name} ({(file.file_size / 1024).toFixed(2)} KB) <Button
-                                                            variant="outlined"
-                                                            color="secondary"
-                                                            size="small"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation(); // 이벤트 전파 중단
-                                                                handleDeleteFile(index); // 파일 삭제
-                                                            }}
-                                                        >
-                                                            제거
-                                                        </Button></span>
-
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </Box>
-                                    </div>
-                                )}
-                            </div>
-
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="내용"
-                                name="board_content"
-                                variant="outlined"
-                                required
-                                multiline
-                                rows={8}
-                                value={boardData.board_content}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} textAlign="right">
-                            <Button variant="contained" color="primary" onClick={() => { handleAddData(); }}>
-                                게시물 등록
-                            </Button>
-                            <Button variant="contained" color="primary" onClick={onCancel}>
-                                돌아가기
-                            </Button>
-                        </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="제목"
+                            name="board_title"
+                            variant="outlined"
+                            required
+                            value={boardData.board_title}
+                            onChange={handleInputChange}
+                        />
                     </Grid>
-                </Box>
-            </BoardMainLayout>
+                    <Grid item xs={12}>
+                        <div {...getRootProps()} style={{
+                            border: "2px dashed #cccccc",
+                            borderRadius: "8px",
+                            padding: "5px",
+                            textAlign: "center",
+                            cursor: "pointer",
+                            transition: "border-color 0.3s ease-in-out",
+                            "&:hover": {
+                                borderColor: "#3f51b5",
+                            },
+                            backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
+                        }}>
+                            <input {...getInputProps()} />
+
+                            {boardData.files.length === 0 ? (
+                                // 파일이 없을 때만 안내 메시지 표시
+                                isDragActive ? (
+                                    <p>파일을 이곳에 드롭하세요...</p>
+                                ) : (
+                                    <p>파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
+                                )
+                            ) : (
+                                // 파일이 있을 때만 파일 목록 표시
+                                <div style={{ textAlign: "left" }}>
+                                    <Box mt={2}>
+                                        {/* <Typography>첨부파일</Typography> */}
+                                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                                            {boardData.files.map((file, index) => (
+                                                <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                    <span>{file.file_name} ({(file.file_size / 1024).toFixed(2)} KB) <Button
+                                                        variant="outlined"
+                                                        color="secondary"
+                                                        size="small"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation(); // 이벤트 전파 중단
+                                                            handleDeleteFile(index); // 파일 삭제
+                                                        }}
+                                                    >
+                                                        제거
+                                                    </Button></span>
+
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Box>
+                                </div>
+                            )}
+                        </div>
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="내용"
+                            name="board_content"
+                            variant="outlined"
+                            required
+                            multiline
+                            rows={8}
+                            value={boardData.board_content}
+                            onChange={handleInputChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12} textAlign="right">
+                        <Button variant="contained" color="primary" onClick={() => { handleAddData(); }}>
+                            게시물 등록
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
         </BoardLayout>
     );
 };
@@ -367,8 +434,4 @@ const BoardLayout = styled.div`
         max-width: 1200px;
         margin: 0 auto;
     }`
-    ;
-
-const BoardMainLayout = styled.div`
-`
     ;

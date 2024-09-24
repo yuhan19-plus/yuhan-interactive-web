@@ -6,6 +6,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     const board_id = boardId;
@@ -84,6 +85,16 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
     // 게시판업데이트
     const handleUpdateData = async () => {
+        if (!boardData.board_title.trim() || !boardData.board_content.trim()) {
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 오류',
+                text: '제목과 내용을 모두 입력해주세요.',
+                confirmButtonColor: '#3085d6',
+            });
+            return;
+        }
+
         // console.log("수정버튼눌림")
         try {
             const response = await fetch(`/api/board/update/${board_id}`, {
@@ -97,9 +108,20 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
             if (!response.ok) {
                 throw new Error("데이터를 수정하는 데 실패했습니다.");
             }
-            onCancel();
-            console.log("수정 성공");
+            Swal.fire({
+                icon: 'success',
+                title: '수정 완료',
+                text: '게시물이 성공적으로 수정되었습니다.',
+            }).then(() => {
+                onCancel(); // 성공 후 페이지 이동
+            });
+            // console.log("수정 성공");
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '수정 실패',
+                text: '데이터 수정 중 오류가 발생했습니다.',
+            });
             console.error("데이터 수정 중 에러 발생", error);
         }
 
@@ -158,7 +180,11 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
             if (isDuplicate) {
                 // 중복된 파일이 있으면 업로드를 막음
-                alert("이미 동일한 파일이 존재합니다. 업로드할 수 없습니다.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: '중복 파일',
+                    text: '이미 동일한 파일이 존재합니다. 업로드할 수 없습니다.'
+                });
                 return;
             }
             // files 배열의 해당 인덱스를 새 파일로 교체
@@ -197,7 +223,28 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                     <Typography variant="h4" gutterBottom>
                         게시물
                     </Typography>
-                    <Grid container spacing={2}>
+                    {/* 버튼구역 */}
+                    <Grid container alignItems="center" justifyContent="space-between">
+                        {/* 돌아가기 버튼 */}
+                        <Grid item sx={{ marginBottom: "2vh" }}>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                color="primary"
+                                sx={{
+                                    backgroundColor: "#2ecc71",
+                                    '&:hover': {
+                                        backgroundColor: "#27ae60"
+                                    },
+                                    padding: "0.5vh 2vw"
+                                }}
+                                onClick={onCancel}
+                            >
+                                돌아가기
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={2} >
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -262,9 +309,6 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                             <Button variant="contained" color="primary" onClick={handleUpdateData}>
                                 수정하기
                             </Button>
-                            <Button variant="contained" color="primary" onClick={onCancel}>
-                                돌아가기
-                            </Button>
                         </Grid>
                     </Grid>
                 </Box>
@@ -278,6 +322,8 @@ export default YuhanBoardUpdatePage;
 const BoardLayout = styled.div`
     display: flex;
     flex-direction: column;
+    height: 100%;
+    background-color: white;
     
     .header {
     color: white;
