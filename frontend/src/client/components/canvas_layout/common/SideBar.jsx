@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSchool } from '@fortawesome/free-solid-svg-icons';
 import MainSideBarMenu from './MainSideBarMenu';
 import DeptSideBarMenu from './DeptSideBarMenu';
-import { adminEnterModal } from '../../../../redux/actions/actions';
+import { adminEnterModal, consultation, initSideMenu } from '../../../../redux/actions/actions';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
@@ -45,6 +45,10 @@ const SideBar = () => {
 
     // 쿠키(세션 쿠키)
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+    const handleSideMenuInit = () => {
+        dispatch(initSideMenu())
+    }
 
     // 로그아웃 메서드
     const handleLogout = () => {

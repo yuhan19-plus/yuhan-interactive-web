@@ -7,6 +7,7 @@ import { modalReducer } from "./modalReducer";
 import { mainCharReducer } from "./mainCharReducer";
 import { menuBtnReducer } from "./menuBtnReducer";
 import { busReducer } from "./busReducer";
+import { consultationReducer } from "./consultationReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     modal: modalReducer,
     mChar: mainCharReducer,
     btnMenu: menuBtnReducer,
+    counsel: consultationReducer,
 
     // 석재
 

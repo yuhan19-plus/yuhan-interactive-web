@@ -3,9 +3,9 @@
  * 이석재
  *   - 상담신청 메뉴가 로그인 시에만 표시되도록 수정
  */
-import { faBowlFood, faCode, faDna, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { RestaurantMenu, Send } from '@mui/icons-material';
+import { faBowlFood, faCode, faDna, faEnvelopeOpenText, faLightbulb, faPenRuler } from '@fortawesome/free-solid-svg-icons';
+import { RestaurantMenu } from '@mui/icons-material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -90,7 +90,7 @@ const MainSideBarMenu = () => {
             {/* 쿠키가 있을 때만 상담신청 메뉴를 표시 */}
             {cookies.user && (
                 <div>
-                    <Send />
+                    <FontAwesomeIcon icon={faEnvelopeOpenText} />
                     <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
                 </div>
             )}

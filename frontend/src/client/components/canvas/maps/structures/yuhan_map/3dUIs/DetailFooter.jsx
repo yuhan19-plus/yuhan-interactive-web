@@ -36,12 +36,12 @@ const DetailFooter = () => {
 
 const DetailFooterLayout = styled.div`
     width: 100%;
-    height: 20vh;
+    height: 25%;
     background-color: #0F275C;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 7px 20px 7px;
+    padding: 45px 7px;
 `
 
 const DetailFooterLogo = styled.div`

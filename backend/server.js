@@ -53,6 +53,7 @@ const boardLikeRoutes = require('./db/boardLikeddb');
 const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학과 추천 관리 라우터
 const commentRoutes = require('./db/commentdb'); 
 const reportRoutes = require('./db/reportdb'); 
+const consultationRoutes = require('./db/consultationDB')
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
 app.use('/member', memberRoutes);
@@ -63,6 +64,7 @@ app.use('/deptrecadmin', deptRecAdminRoutes);  // 학과 추천 관리 라우트
 app.use('/comment', commentRoutes);
 app.use('/report', reportRoutes);
 app.use('/food', todaymenuRoutes);
+app.use('/consultation', consultationRoutes)
 
 
 // 서버 시작
