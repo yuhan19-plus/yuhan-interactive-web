@@ -1,19 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
 import { counselListTestData } from '../../../../../../../../../data/commonData'
 const PAGE_COUNT = 5
+let myCounselData
 
-const ReqForConsultationList = () => {
+const ReqForConsultationList = ({userId, userType}) => {
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
 
     // 현재 페이지에 해당하는 데이터를 추출
     const paginatedData = counselListTestData.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT)
+    // const paginatedData = myCounselData?.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT)
+    // console.log('paginatedData', paginatedData)
 
     // 페이지 변경 처리
     const handleChangePage = (event, value) => {
         setCurrentPage(value)
     }
+
+    // 상담이력 불러오기
+    const GetReqForConsultationData = async () => {
+        try {
+            const response = await axios.get(`/api/consultation/req-for-consultation-list/${userType}/${userId}`)
+            const data = response.data
+            myCounselData = data.myCounsel
+            // console.log(myCounselData)
+            Swal.fire({
+                icon: 'success',
+                title: '데이터 로드 성공.',
+                text: '사용자 데이터를 가져왔습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `사용자 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
+            })
+        }
+    }
+
+    useEffect(() => {
+        if(userId) {
+            GetReqForConsultationData()
+        }
+    }, [])
+
     return (
         <>
             <Table>

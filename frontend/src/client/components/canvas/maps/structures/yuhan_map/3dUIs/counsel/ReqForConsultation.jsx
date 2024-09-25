@@ -10,18 +10,21 @@ import { faArrowRight, faBriefcase, faClock, faCompass, faFileAlt, faGlobe, faHo
 import axios from 'axios'
 
 
-const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
+const ReqForConsultation = ({userId, studentInfo, userInfo, studentInfo}) => {
     console.log(userInfo, studentInfo)
     
     const userData = {
         userPhone: userInfo[0].user_phone,
         userEmail: userInfo[0].user_email,
-        userMajor: userInfo[0].user_major
+        userMajor: userInfo[0].user_major,
+        userType: userInfo[0].user_type
     }
+    
     const studentData = {
         studentNumber: studentInfo[0].student_number,
         studentGrade: studentInfo[0].student_grade
     }
+
     const location = useLocation()
     const dispatch = useDispatch()
     const { date = "날짜를 선택하세요" } = location.state || {}
@@ -40,13 +43,13 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
     
         const formData = {
-            professorMajor: e.target.professorMajor.value,
+            userId: userId,
+            professorName: e.target.professorName.value,
             studentMajor: e.target.studentMajor.value,
             studentNum: e.target.studentNum.value,
             studentGrade: e.target.studentGrade.value,
             counselDate: e.target.counselDate.value,
             counselTime: e.target.counselTime.value,
-            counselFile: files,
             consultationCategory: e.target.consultationCategory.value,
             employmentClassification: e.target.employmentClassification.value,
             studentPhone: e.target.studentPhone.value,
@@ -54,7 +57,7 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
             counselContent: e.target.counselContent.value,
         }
     
-        axios.post("/api/consultation", formData)
+        axios.post("/api/consultation/req-for-consultation", formData)
             .then((response) => {
                 console.log(response.data)
                 Swal.fire({
@@ -77,12 +80,15 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
     return (
         <ReqForConsultationWrapper>
             {userId &&
-                <form action='/consultation' method='POST' onSubmit={handleSubmit}>
+                <form action='/consultation/req-for-consultation' method='POST' onSubmit={handleSubmit}>
                     <StyledFormControl>
                         <StyledFormLabel><p>상담사</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='professorMajor' value={userData.userMajor} />
-                            <p name='professorMajor'>{userData.userMajor}학과장</p>
+                            <input type="hidden" name='professorName' value={userData.userMajor} />
+                            <p name='professorName'>
+                                {userData.userMajor}학과장
+                                
+                            </p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
@@ -134,21 +140,6 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                                     />
                                 ))}
                             </RadioGroup>
-                        </FormContent>
-                    </StyledFormControl>
-                    <StyledFormControl>
-                        <StyledFormLabel id='counselFile'><p>첨부파일</p></StyledFormLabel>
-                        <FormContent>
-                            <TextField
-                                inputProps={{
-                                    multiple: true
-                                }}
-                                type='file'
-                                aria-labelledby='counselFile'
-                                name='counselFile'
-                                multiple
-                                onChange={handleFileChange}
-                            />
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
@@ -299,6 +290,7 @@ const StyledFormLabel = styled(MuiFormLabel)`
     p {
         font-size: 16px;
         font-weight: 600;
+        margin: 15px;
     }
     border-right: 2px solid #ccc;
     margin-right: 15px;
