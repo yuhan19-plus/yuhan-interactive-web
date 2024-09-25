@@ -32,7 +32,7 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
     return (
         <BoardLayout>
             {/* background 맨뒤 cc는 투명도 */}
-            <Box sx={{ p: 3, background: "#ffffffcc", }}>
+            <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
@@ -266,20 +266,25 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 
             {/* 처리 사유 영역 */}
             {reportData && (
-                <Box sx={{ mt: 3 }}>
-                    <Typography variant="h6" gutterBottom>
+                <StyledBox>
+                    <StyledTitle variant="h6" >
                         처리 사유
-                    </Typography>
-                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: '#f0f0f0' }}>
+                    </StyledTitle>
+                    <StyledContent variant="body1" gutterBottom>
                         {reportData.report_resolution || '처리 사유가 없습니다.'}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
+                    </StyledContent>
+                    <StyledTitle variant="h6" >
                         처리 시간
-                    </Typography>
-                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: '#f0f0f0' }}>
-                        {reportData.resolved_at}
-                    </Typography>
-                </Box>
+                    </StyledTitle>
+                    <StyledContent variant="body1" gutterBottom>
+                        {reportData.resolved_at
+                            ? new Intl.DateTimeFormat('ko-KR', {
+                                year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false,
+                            }).format(new Date(reportData.resolved_at))
+                            : '처리 시간이 없습니다.'}
+                    </StyledContent>
+
+                </StyledBox>
             )}
         </BoardLayout >
     );
@@ -288,10 +293,11 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 export default AdminBoardPage;
 
 const BoardLayout = styled.div`
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     background-color: white;
+    border-radius: 2vh;
     
     .header {
         color: white;
@@ -301,4 +307,20 @@ const BoardLayout = styled.div`
         max-width: 1200px;
         margin: 0 auto;
     }
+`;
+const StyledBox = styled(Box)`
+  margin-top: 24px;
+  margin: 2vh 2vw;
+`;
+
+const StyledTitle = styled(Typography)`
+  font-size: 1.25rem;
+`;
+
+const StyledContent = styled(Typography)`
+  white-space: pre-wrap;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
 `;

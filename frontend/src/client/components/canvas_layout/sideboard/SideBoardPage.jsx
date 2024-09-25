@@ -29,7 +29,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
     return (
         <BoardLayout>
             {/* background 맨뒤 cc는 투명도 */}
-            <Box sx={{ p: 3, background: "#ffffffcc", }}>
+            <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
@@ -266,10 +266,11 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
 export default SideBoardPage;
 
 const BoardLayout = styled.div`
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     background-color: white;
+    border-radius: 2vh;
     
     .header {
         color: white;

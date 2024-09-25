@@ -137,8 +137,8 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                 <Grid item xs={12} textAlign="right">
                     <Button
                         variant="contained"
-                        color="primary"
                         sx={{
+                            marginTop:"1vh",
                             background: 'linear-gradient(45deg, #e74c3c 30%, #f1c40f 90%)', // 빨간색(#e74c3c)과 노란색(#f1c40f)의 그라데이션
                             '&:hover': {
                                 backgroundColor: "#c0392b",  // 호버 시 어두운 빨간색
