@@ -42,7 +42,7 @@ const AdminMember = () => {
     }, []);
 
 
-    const deleteMember = async (userId) => {
+    const deleteMember = async (userId, memberType) => {
         Swal.fire({
             title: '이 회원을 탈퇴처리 하시겠습니까?',
             text: '이 작업은 되돌릴 수 없습니다!',
@@ -61,8 +61,15 @@ const AdminMember = () => {
                         Swal.fire('회원탈퇴 완료!', '회원탈퇴 처리가 완료되었습니다!', 'success');
     
                         // 학생/교수 목록에서 해당 회원을 제거
-                        setStudents(students.filter(student => student.user_id !== userId));
-                        setProfessors(professors.filter(professor => professor.user_id !== userId));
+                        if (memberType === 'student') {
+                            const deletedStudent = students.find(student => student.user_id === userId);
+                            setStudents(students.filter(student => student.user_id !== userId));
+                            setDeletedStudents([...deletedStudents, deletedStudent]);  // 탈퇴된 목록에 추가
+                        } else if (memberType === 'professor') {
+                            const deletedProfessor = professors.find(professor => professor.user_id === userId);
+                            setProfessors(professors.filter(professor => professor.user_id !== userId));
+                            setDeletedProfessors([...deletedProfessors, deletedProfessor]);  // 탈퇴된 목록에 추가
+                        }
                     } else {
                         throw new Error('회원탈퇴에 실패했습니다.');
                     }
@@ -103,13 +110,13 @@ const AdminMember = () => {
                                 <TableCell>{student.student_grade}</TableCell>
                                 <TableCell>{student.student_class}</TableCell>
                                 <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => deleteMember(student.user_id)}
-                                    >
-                                        탈퇴
-                                    </Button>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => deleteMember(student.user_id, 'student')}
+                                >
+                                    탈퇴
+                                </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -138,13 +145,13 @@ const AdminMember = () => {
                                 <TableCell>{professor.user_major}</TableCell>
                                 <TableCell>{professor.professor_position}</TableCell>
                                 <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => deleteMember(professor.user_id)}
-                                    >
-                                        탈퇴
-                                    </Button>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => deleteMember(professor.user_id, 'professor')}
+                                >
+                                    탈퇴
+                                </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
