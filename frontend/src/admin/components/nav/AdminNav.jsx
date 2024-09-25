@@ -2,12 +2,38 @@
  * 임성준 : 프론트엔드 개발
  */
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AdminPanelSettings, Logout, ViewInAr } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
+import { Badge } from '@mui/material'
 
 const AdminNav = () => {
+    const [reportCount, setReportCount] = useState(0);
+    // 뱃지에 적용할 숫자를 불러오는 함수
+    const fetchBadge = async () => {
+        try {
+            const response = await fetch(`/api/report/fetchBadge`);
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            setReportCount(data.badge)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '데이터 불러오기 실패',
+                text: '데이터를 불러오는 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBadge();
+    }, []);
+
     return (
         <>
             <AdminNavList>
@@ -58,8 +84,20 @@ const AdminNav = () => {
                     state={{
                         title: '신고내역'
                     }}>
-                        <AdminButton>신고내역</AdminButton>
-                    </Link>
+                    <AdminButton> 
+                        <Badge
+                            badgeContent={reportCount}
+                            color="error"
+                            sx={{"& .MuiBadge-badge": {
+                                    top: -7, // 상단으로 5px 이동
+                                    right: -7, // 오른쪽으로 5px 이동
+                                }
+                            }}
+                        >
+                            신고내역
+                        </Badge>
+                    </AdminButton>
+                </Link>
             </AdminButtonList>
         </>
     )

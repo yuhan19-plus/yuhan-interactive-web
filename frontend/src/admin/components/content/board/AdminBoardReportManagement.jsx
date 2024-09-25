@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 // 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
 // 2. 처리 내역 작성 후 처리 완료
 
-const AdminBoardReportManagement = ({ reportID, onReport }) => {
+const AdminBoardReportManagement = ({ reportID, onCancel }) => {
     const [cookies] = useCookies(["user"]);
     const [totalData, setTotalData] = useState({
         board_content: "",       // 게시판 글 내용
@@ -94,7 +94,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                 title: '삭제 완료',
                 text: '게시글이 성공적으로 삭제되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onReport());
+            }).then(() => onCancel());
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -137,7 +137,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                 title: '무시 완료',
                 text: '신고가 성공적으로 무시되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onReport());
+            }).then(() => onCancel());
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -170,7 +170,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                                 },
                                 padding: "0.5vh 2vw"
                             }}
-                            onClick={onReport}
+                            onClick={onCancel}
                         >
                             돌아가기
                         </Button>

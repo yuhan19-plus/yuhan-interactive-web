@@ -9,20 +9,7 @@ import AdminReportManagement from './AdminBoardReportManagement';
 
 const AdminReport = () => {
     const [currentView, setCurrentView] = useState('list');
-    const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
     const [selectReportID, setselectReportID] = useState(null);
-
-    const handleSelectItem = (boardId) => {
-        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        // console.log(boardId)
-        setCurrentView('page'); // 페이지 보기로 전환
-    };
-
-    const handleSelectUpdateItem = (boardId) => {
-        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
-        // console.log(boardId)
-        setCurrentView('update'); // 업데이트 페이지 보기로 전환
-    };
 
     // 신고목록으로 진입
     const handleBackToList = () => {
@@ -39,12 +26,10 @@ const AdminReport = () => {
     return (
         <>
             {currentView === 'list' ? (
-                <AdminBoardReportList onSelectItem={handleSelectItem}  onReportManagement={handleReportManagement} />
+                <AdminBoardReportList onReportManagement={handleReportManagement} />
             ) : currentView === 'reportManagement' ? (
-                <AdminReportManagement reportID={selectReportID} onCancel={handleBackToList} onReport={handleReport} />
-            ) : currentView === 'page'  (
-                <AdminBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} />
-            )}
+                <AdminReportManagement reportID={selectReportID} onCancel={handleBackToList} />
+            ) : null}
         </>
     );
 }

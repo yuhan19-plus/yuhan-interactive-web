@@ -52,8 +52,6 @@ router.get("/fetch/:reportID", (req, res) => {
 });
 
 // 신고삭제 
-// 해야할 것 게시판을 삭제된 상태로 만들기
-// report테이블의 resolved_at을 현시간으로 report_status는 완료로 변경하고 report_resolution에 사유적을것
 router.post("/delete", (req, res) => {
     console.log("삭제요청진입성공")
     const { board_id, report_id, report_resolution } = req.body;
@@ -80,7 +78,6 @@ router.post("/delete", (req, res) => {
 })
 
 // 신고무시
-// 해야할 것 report테이블의 resolved_at을 현시간으로 report_status는 완료로 변경하고 report_resolution에 사유적을것
 router.post("/ignore", (req, res) => {
     console.log("무시요청진입성공")
     const { report_id, report_resolution } = req.body;
@@ -98,8 +95,6 @@ router.post("/ignore", (req, res) => {
     });
 })
 
-// 게시판id를 받아서 먼저 테이블이 삭제여부를 확인 -> 신고테이블에 삭제처리되었는지 확인 -> 삭제처리인 경우 그 데이터를 하단에 출력 
-// 삭제랑 관련된 것이니까 삭제쪽으로 보내기
 // 삭제여부체크
 router.post("/check/:boardId", (req, res) => {
     const { boardId } = req.params;  // URL에서 boardID를 추출
@@ -132,5 +127,31 @@ router.post("/check/:boardId", (req, res) => {
     })
 })
 
+
+router.get("/fetchBadge", (req, res) => {
+    console.log("패치뱃지요청 접수");
+    const badgeNumQuery = "SELECT COUNT(*) AS badge_count FROM report WHERE report_status = 'Waiting'";
+
+
+    mysqlconnection.query(badgeNumQuery, (err, result) => {
+        if (err) {
+            console.error("게시판 신고 후 삭제 확인 중 에러 발생:", err);
+            return res.status(500).json({ message: "게시판 신고 후 삭제 확인 중 오류가 발생했습니다." }); // 500 상태 코드와 함께 오류 메시지 반환
+        }
+        // 결과가 정상적으로 존재하는지 확인
+        if (result && result.length > 0) {
+            res.status(200).json({
+                badge: result[0].badge_count // badge_count 값 반환
+            });
+        } else {
+            res.status(200).json({
+                badge: 0 // 결과가 없으면 0 반환
+            });
+        }
+
+        console.log("뱃지 개수:", result[0].badge_count);
+    })
+
+})
 
 module.exports = router; // 라우터 객체 내보내기

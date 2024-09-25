@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 
-const AdminBoardList = ({ onCreatePost, onSelectItem, onReport }) => {
+const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -142,23 +142,6 @@ const AdminBoardList = ({ onCreatePost, onSelectItem, onReport }) => {
         <BoardLayout>
             <Box sx={{ p: 3 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
-                    <Button
-                        sx={{
-                            marginRight: "1vw",
-                            background: 'linear-gradient(45deg, #ff6f61 30%, #d32f2f 90%)', // 부드러운 빨간색에서 더 진한 빨간색으로의 그라데이션
-                            color: '#fff', // 텍스트는 흰색으로 명확하게 표시
-                            "&:hover": {
-                                background: 'linear-gradient(45deg, #d32f2f 30%, #ff6f61 90%)', // 반대 방향 그라데이션으로 변경
-                            },
-                            padding: '0.75vh 1.2vw', // 버튼 크기를 적절히 조정
-                            borderRadius: '0.5vw', // 버튼 모서리 둥글게 처리
-                            fontWeight: 'bold', // 텍스트 강조
-                        }}
-                        onClick={onReport}
-                    >
-                        신고내역
-                    </Button>
-
                     <InputBase
                         placeholder="검색할 제목이나 작성자를 입력하세요"
                         value={searchQuery}
