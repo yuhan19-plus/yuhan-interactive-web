@@ -61,16 +61,15 @@ const MemberLogin = () => {
         return Object.keys(tempErrors).length === 0;
     };
 
-    // 폼 제출 처리 메서드
     const handleLogin = async (event) => {
         event.preventDefault();
-
+    
         if (validate()) {
             const loginData = {
                 memberID,
                 memberPW,
             };
-
+    
             try {
                 const response = await fetch('/api/member/login', {
                     method: 'POST',
@@ -79,13 +78,21 @@ const MemberLogin = () => {
                     },
                     body: JSON.stringify(loginData),
                 });
-
+    
                 if (response.ok) {
                     const result = await response.json();
                     setCookie('user', memberID, { path: '/' });
                     setCookie('userType', result.userType, { path: '/' });
+                    setCookie('userName', result.userName, { path: '/' });
                     // 로그인 성공 시 바로 리다이렉트
                     window.location.href = '/'; // 로그인 성공 후 루트 경로로 이동
+                } else if (response.status === 403) {
+                    Swal.fire({
+                        title: '로그인 실패!',
+                        text: '해당 계정은 탈퇴(비활성화) 상태입니다. 관리자에게 문의하십시오.',
+                        icon: 'error',
+                        confirmButtonText: '확인'
+                    });
                 } else {
                     Swal.fire({
                         title: '로그인 실패!',

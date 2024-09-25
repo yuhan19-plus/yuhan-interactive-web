@@ -20,6 +20,8 @@ const MemberModify = () => {
     const [memberType, setMemberType] = useState(cookies.userType === 'student') // 쿠키에서 회원 유형 결정
     const [formData, setFormData] = useState({
         memberID: '',
+        memberPW: '',
+        memberName: '',
         memberPhone: '',
         memberEmail: '',
         memberMajor: '',
@@ -27,8 +29,7 @@ const MemberModify = () => {
         studentNum: '',
         studentGrade: '',
         studentClass: '',
-        professorPosition: '',
-        memberPW: '' // 비밀번호 추가
+        professorPosition: ''
     })
     const [errors, setErrors] = useState({})
 
@@ -40,6 +41,8 @@ const MemberModify = () => {
 
                 setFormData({
                     memberID: data.user_id,
+                    memberPW: '',
+                    memberName: data.user_name,
                     memberPhone: data.user_phone,
                     memberEmail: data.user_email,
                     memberMajor: data.user_major,
@@ -47,8 +50,7 @@ const MemberModify = () => {
                     studentNum: memberType ? data.student_number : '',
                     studentGrade: memberType ? data.student_grade : '',
                     studentClass: memberType ? data.student_class : '',
-                    professorPosition: !memberType ? data.professor_position : '',
-                    memberPW: '' // 비밀번호는 기본값으로 빈칸
+                    professorPosition: !memberType ? data.professor_position : ''
                 })
             } catch (error) {
                 console.error('데이터 로드 실패:', error)
@@ -70,6 +72,7 @@ const MemberModify = () => {
 
     const validate = () => {
         let tempErrors = {}
+        if (!formData.memberName) tempErrors.memberName = '이름을 입력하세요.'
         if (!formData.memberPhone || !formData.memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = '유효한 전화번호를 입력하세요.'
         if (!formData.memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = '유효한 이메일을 입력하세요.'
         if (!formData.memberMajor) tempErrors.memberMajor = '전공을 선택하세요.'
@@ -146,12 +149,6 @@ const MemberModify = () => {
                     <div>
                         <TextField className='form-item' variant="filled" id="memberID" name="memberID" label="ID" value={formData.memberID} InputProps={{ readOnly: true }} fullWidth />
                     </div>
-                    <div>
-                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" label='Phone' value={formData.memberPhone} onChange={handleChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
-                    </div>
-                    <div>
-                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
-                    </div>
 
                     {/* 비밀번호 입력칸 추가 */}
                     <div>
@@ -178,6 +175,16 @@ const MemberModify = () => {
                                     </InputAdornment>
                             }}
                         />
+                    </div>
+
+                    <div>
+                        <TextField className='form-item' variant="filled" id="memberName" name="memberName" label='이름' value={formData.memberName} onChange={handleChange} error={!!errors.memberName} helperText={errors.memberName} />
+                    </div>
+                    <div>
+                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={formData.memberPhone} onChange={handleChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
+                    </div>
+                    <div>
+                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
                     </div>
 
                     <FormControl error={!!errors.memberMajor}>

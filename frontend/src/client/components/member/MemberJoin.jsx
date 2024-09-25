@@ -27,7 +27,7 @@ const MemberJoin = () => {
     // 학생 혹은 교수 선택 상태 및 관련 메서드
     // true - 학생, false - 교수
     const [memberType, setMemberType] = useState(true)
-    const handleChange = (event) => {
+    const handleType = (event) => {
         setMemberType(event.target.checked)
     };
 
@@ -36,6 +36,7 @@ const MemberJoin = () => {
     const [studentGrade, setStudentGrade] = useState('')
     const [studentClass, setStudentClass] = useState('')
     const [professorPosition, setProfessorPosition] = useState('')
+
     const handleMajor = (event) => {
         // console.log(event)
         const { target: { value } } = event // event에서 전공명만 가져오기
@@ -70,30 +71,38 @@ const MemberJoin = () => {
     // 텍스트필드 상태 및 관련 메서드
     const [memberID, setMemberID] = useState('');
     const [memberPW, setMemberPW] = useState('');
+    const [memberName, setMemberName] = useState('');
     const [memberPhone, setMemberPhone] = useState('');
     const [memberEmail, setMemberEmail] = useState('');
     const [studentNum, setStudentNum] = useState('');
 
-    const handleIDChange = (event) => {
-        setMemberID(event.target.value);
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        switch (name) {
+            case 'memberID':
+                setMemberID(value);
+                break;
+            case 'memberPW':
+                setMemberPW(value);
+                break;
+            case 'memberName':
+                setMemberName(value);
+                break;
+            case 'memberPhone':
+                setMemberPhone(value);
+                break;
+            case 'memberEmail':
+                setMemberEmail(value);
+                break;
+            case 'studentNum':
+                setStudentNum(value);
+                break;
+            default:
+                break;
+        }
     };
 
-    const handlePWChange = (event) => {
-        setMemberPW(event.target.value);
-    };
-
-    const handlePhoneChange = (event) => {
-        setMemberPhone(event.target.value);
-    };
-
-    const handleEmailChange = (event) => {
-        setMemberEmail(event.target.value);
-    };
-
-    const handleStudentNumChange = (event) => {
-        setStudentNum(event.target.value);
-    };
-    
     // 라디오 버튼 상태 및 관련 메서드
     const [memberGender, setMemberGender] = useState(''); // 기본값을 선택하지 않음으로 설정
 
@@ -105,6 +114,7 @@ const MemberJoin = () => {
     const [errors, setErrors] = useState({
         memberID: '',
         memberPW: '',
+        memberName: '',
         memberPhone: '',
         memberEmail: '',
         memberMajor: '',
@@ -119,6 +129,7 @@ const MemberJoin = () => {
     
         if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
         if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
+        if (!memberName) tempErrors.memberName = "이름을 입력하세요.";
         if (!memberPhone || !memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = "유효한 전화번호를 입력하세요.";
         if (!memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
         if (!memberMajor) tempErrors.memberMajor = "전공을 선택하세요.";
@@ -147,6 +158,7 @@ const MemberJoin = () => {
             const formData = {
                 memberID,
                 memberPW,
+                memberName,
                 memberPhone,
                 memberEmail,
                 memberMajor,
@@ -247,7 +259,7 @@ const MemberJoin = () => {
             <MemberJoinContent>
                 <FormControl>
                     <div>
-                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' value={memberID} onChange={handleIDChange} error={!!errors.memberID} helperText={errors.memberID}/>
+                        <TextField className='form-item' variant="filled" id="memberID" name="memberID" placeholder='아이디를 입력하세요' label='ID' value={memberID} onChange={handleChange} error={!!errors.memberID} helperText={errors.memberID}/>
                     </div>
                     <div>
                         <TextField
@@ -258,7 +270,7 @@ const MemberJoin = () => {
                             name="memberPW"
                             placeholder='비밀번호를 입력하세요'
                             value={memberPW}
-                            onChange={handlePWChange}
+                            onChange={handleChange}
                             error={!!errors.memberPW}
                             helperText={errors.memberPW}
                             InputProps={{
@@ -280,13 +292,16 @@ const MemberJoin = () => {
                         />
                     </div>
                     <div>
-                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={memberPhone} onChange={handlePhoneChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
+                        <TextField className='form-item' variant="filled" id="memberName" name="memberName" label='이름' value={memberName} onChange={handleChange} error={!!errors.memberName} helperText={errors.memberName} />
+                    </div>
+                    <div>
+                        <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={memberPhone} onChange={handleChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
                     </div>
 
                     {/* 본인인증 휴대폰 혹은 이메일 선택 후 나머지는 주석처리 (둘 다 가능) */}
                     <FormControl>
                         <JoinAuthArea>
-                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' value={memberEmail} onChange={handleEmailChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
+                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' value={memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
                             <JoinAuthButton>인증하기</JoinAuthButton>
                         </JoinAuthArea>
                     </FormControl>
@@ -334,13 +349,13 @@ const MemberJoin = () => {
                     {/* 학생일 경우 혹은 교수일 경우 선택 */}
                     <FormControl>
                         <Stack direction="row" spacing={1} alignItems="center" justifyContent="end">
-                            <Typography>학생</Typography>
+                            <Typography>교수</Typography>
                             <FormControlLabel
                                 control={
-                                    <Switch checked={memberType} onChange={handleChange} name="memberType" />
+                                    <Switch checked={memberType} onChange={handleType} name="memberType" />
                                 }
                             />
-                            <Typography>교수</Typography>
+                            <Typography>학생</Typography>
                         </Stack>
                     </FormControl>
                     {
@@ -356,7 +371,7 @@ const MemberJoin = () => {
                                         placeholder='학번을 입력하세요'
                                         label='학번'
                                         value={studentNum}
-                                        onChange={handleStudentNumChange}
+                                        onChange={handleChange}
                                         error={!!errors.studentNum}
                                         helperText={errors.studentNum}
                                     />

@@ -12,6 +12,8 @@ const AdminMember = () => {
 
     const [students, setStudents] = useState([]);
     const [professors, setProfessors] = useState([]);
+    const [deletedStudents, setDeletedStudents] = useState([]);
+    const [deletedProfessors, setDeletedProfessors] = useState([]);
 
     useEffect(() => {
         // 학생 정보 가져오기
@@ -21,11 +23,24 @@ const AdminMember = () => {
             .catch(error => console.error('학생 정보 불러오기 중 에러:', error));
 
         // 교수 정보 가져오기
-        fetch('/api/memberAdmin/fetchmember')
+        fetch('/api/memberAdmin/fetchprofessor')
             .then(response => response.json())
             .then(data => setProfessors(data))
             .catch(error => console.error('교수 정보 불러오기 중 에러:', error));
+
+        // 탈퇴된 학생 정보 가져오기
+        fetch('/api/memberAdmin/fetchdeletedstudent')
+            .then(response => response.json())
+            .then(data => setDeletedStudents(data))
+            .catch(error => console.error('탈퇴된 학생 정보 불러오기 중 에러:', error));
+
+        // 탈퇴된 교수 정보 가져오기
+        fetch('/api/memberAdmin/fetchdeletedprofessor')
+            .then(response => response.json())
+            .then(data => setDeletedProfessors(data))
+            .catch(error => console.error('탈퇴된 교수 정보 불러오기 중 에러:', error));
     }, []);
+
 
     const deleteMember = async (userId) => {
         Swal.fire({
@@ -40,7 +55,7 @@ const AdminMember = () => {
             if (result.isConfirmed) {
                 try {
                     const response = await fetch(`/api/memberAdmin/deleteMember/${userId}`, {
-                        method: 'DELETE',
+                        method: 'PUT',
                     });
                     if (response.ok) {
                         Swal.fire('회원탈퇴 완료!', '회원탈퇴 처리가 완료되었습니다!', 'success');
@@ -59,9 +74,11 @@ const AdminMember = () => {
             }
         });
     };
+    
     return (
         <>
         <Box sx={{ p: 3 }}>
+            {/* 활성 학생 목록 */}
             <Typography variant="h5" gutterBottom>
                 학생 목록
             </Typography>
@@ -100,6 +117,7 @@ const AdminMember = () => {
                 </Table>
             </TableContainer>
 
+            {/* 활성 교수 목록 */}
             <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
                 교수 목록
             </Typography>
@@ -128,6 +146,60 @@ const AdminMember = () => {
                                         탈퇴
                                     </Button>
                                 </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* 탈퇴된 학생 목록 */}
+            <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+                탈퇴된 학생 목록
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>아이디</TableCell>
+                            <TableCell>전공</TableCell>
+                            <TableCell>학번</TableCell>
+                            <TableCell>학년</TableCell>
+                            <TableCell>반</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {deletedStudents.map((student) => (
+                            <TableRow key={student.user_id}>
+                                <TableCell>{student.user_id}</TableCell>
+                                <TableCell>{student.user_major}</TableCell>
+                                <TableCell>{student.student_number}</TableCell>
+                                <TableCell>{student.student_grade}</TableCell>
+                                <TableCell>{student.student_class}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* 탈퇴된 교수 목록 */}
+            <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+                탈퇴된 교수 목록
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>아이디</TableCell>
+                            <TableCell>전공</TableCell>
+                            <TableCell>직책</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {deletedProfessors.map((professor) => (
+                            <TableRow key={professor.user_id}>
+                                <TableCell>{professor.user_id}</TableCell>
+                                <TableCell>{professor.user_major}</TableCell>
+                                <TableCell>{professor.professor_position}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
