@@ -66,6 +66,7 @@ const SideBar = () => {
         // 쿠키 삭제
         removeCookie('user', { path: '/' });
         removeCookie('userType', { path: '/' });
+        removeCookie('userName', { path: '/' });
         Swal.fire({
             title: '로그아웃 완료!',
             text: '성공적으로 로그아웃 되었습니다.',
@@ -107,7 +108,7 @@ const SideBar = () => {
                     </div>
                     {cookies.user && (
                         <div>
-                            <Link to={'/membermodify'}><p>{cookies.user}님 안녕하세요!</p></Link>
+                            <Link to={'/membermodify'}><p>{cookies.userName}님 안녕하세요!</p></Link>
                         </div>
                     )}
                 </SideBarHeader>
