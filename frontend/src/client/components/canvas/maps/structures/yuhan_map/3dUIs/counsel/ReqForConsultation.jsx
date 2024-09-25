@@ -10,7 +10,7 @@ import { faArrowRight, faBriefcase, faClock, faCompass, faFileAlt, faGlobe, faHo
 import axios from 'axios'
 
 
-const ReqForConsultation = ({userId, studentInfo, userInfo, studentInfo}) => {
+const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
     console.log(userInfo, studentInfo)
     
     const userData = {
