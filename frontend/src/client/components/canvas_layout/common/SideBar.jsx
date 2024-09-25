@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSchool } from '@fortawesome/free-solid-svg-icons';
 import MainSideBarMenu from './MainSideBarMenu';
 import DeptSideBarMenu from './DeptSideBarMenu';
-import { adminEnterModal, consultation, initSideMenu } from '../../../../redux/actions/actions';
+import { adminEnterModal, consultation, initConsultation, initSideMenu } from '../../../../redux/actions/actions';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
@@ -47,11 +47,22 @@ const SideBar = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const handleSideMenuInit = () => {
+        // 사이드 메뉴 초기화
         dispatch(initSideMenu())
+    }
+    const handleConsultationInit = () => {
+        // 상담신청 메뉴 초기화
+        dispatch(initConsultation())
     }
 
     // 로그아웃 메서드
     const handleLogout = () => {
+
+        // 사이드 메뉴 상태관리 초기화 - 성준
+        handleSideMenuInit()
+
+        handleConsultationInit()
+
         // 쿠키 삭제
         removeCookie('user', { path: '/' });
         removeCookie('userType', { path: '/' });

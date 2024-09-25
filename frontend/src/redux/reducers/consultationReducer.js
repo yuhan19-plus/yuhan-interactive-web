@@ -1,4 +1,4 @@
-import { COUNSEL_DATE, COUNSEL_DATE_REGISTER, MY_COUNSEL, REQ_FOR_CONSULTATION, REQ_FOR_CONSULTATION_LIST } from "../actions/actions"
+import { COUNSEL_DATE, COUNSEL_DATE_REGISTER, INIT_CONSULTATION_MENU, MY_COUNSEL, REQ_FOR_CONSULTATION, REQ_FOR_CONSULTATION_LIST } from "../actions/actions"
 
 const initialState = {
     name: '상담이력'
@@ -6,6 +6,11 @@ const initialState = {
 
 export function consultationReducer(state = initialState, action) {
     switch(action.type) {
+        // case INIT_CONSULTATION_MENU:
+        //     return {
+        //         ...state,
+        //         name: ''
+        //     }
         case MY_COUNSEL:
             return {
                 ...state,

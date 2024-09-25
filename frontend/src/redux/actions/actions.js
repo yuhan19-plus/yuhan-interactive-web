@@ -18,6 +18,7 @@ export const SIDE_MENU_FOOD = 'SIDE_MENU_FOOD'
 export const SIDE_MENU_DEPT_REC = 'SIDE_MENU_DEPT_REC'
 
 // 상담신청 - 성준
+export const INIT_CONSULTATION_MENU = 'INIT_CONSULTATION_MENU'
 export const REQ_FOR_CONSULTATION = 'REQ_FOR_CONSULTATION'
 export const MY_COUNSEL = 'MY_COUNSEL'
 export const COUNSEL_DATE = 'COUNSEL_DATE'
@@ -114,6 +115,9 @@ export const deptRec = () => ({
 })
 
 // 상담신청 - 성준
+export const initConsultation = () => ({
+    type: INIT_CONSULTATION_MENU
+})
 export const myCounsel = () => ({
     type: MY_COUNSEL
 })

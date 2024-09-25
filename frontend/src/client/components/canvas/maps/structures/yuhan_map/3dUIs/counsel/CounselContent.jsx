@@ -13,58 +13,21 @@ import CounselDateRegister from './professor/CounselDateRegister'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
-const CounselContent = () => {
-    // 상담신청 관련 상태관리
+const CounselContent = ({userInfo, userId, userType}) => {
     const counsel = useSelector((state) => state.counsel)
     const counselName = counsel.name
-    
-    const [cookies] = useCookies(['user'])
-    // console.log(cookies) // 쿠키체크
-    const userId = cookies.user
-    const userType = cookies.userType
-
-    // 사용자와 학생 정보의 초기값 설정
-    const [userInfo, setUserInfo] = useState({
-        user_phone: "",
-        user_email: "",
-        user_major: ""
-    })
-
-    const [studentInfo, setStudentInfo] = useState({
-        student_number: 0,
-        student_grade: 0
-    })
-
-    // 현재 회원정보 데이터 가져오기
-    const CurrentMemberData = async () => {
-        try {
-            const response = await axios.get(`/api/consultation/${userId}`)
-            const data = response.data
-            // console.log("data", data)
-            setUserInfo(data.user)
-            setStudentInfo(data.student)
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '사용자 데이터를 가져왔습니다.',
-            })
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: '오류 발생',
-                text: `사용자 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
-            })
-        }
-    }    
-
-    useEffect(() => {
-        if (userId) {
-            CurrentMemberData()
-        }
-    }, [])
-
     const dispatch = useDispatch()
+
+    console.log(userInfo)
+
+    // useEffect(() => {
+    //     console.log(userInfo.user_major)
+    //     console.log(userInfo.user_type)
+    //     const major = userInfo[0].user_major
+    //     const type = userInfo[0].user_type
+
+    //     GetProfessorName(type, major)
+    // }, [setUserInfo])
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
@@ -84,7 +47,6 @@ const CounselContent = () => {
             <ContentHeader>
                 <CounselBtn>
                     {
-                        // 병합 후 userType으로 바꿔야할 부분
                         userType === 'student' ? (
                             <>
                                 <Button
@@ -107,46 +69,55 @@ const CounselContent = () => {
                                 </Button>
                             </>
                         ) : (
-                            <>
-                                <Button
-                                    variant="contained"
-                                    style={{marginRight: '5px'}}
-                                    onClick={() => {
-                                        handleReqForConsultation()
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faListCheck} />&nbsp;상담신청목록
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    style={{marginRight: '5px'}}
-                                    onClick={() => {
-                                        handleCounselDateRegister()
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faCalendarPlus} />&nbsp;상담날짜등록
-                                </Button>
-                            </>
+                                <>
+                                    <Button
+                                        variant="contained"
+                                        style={{marginRight: '5px'}}
+                                        onClick={() => {
+                                            handleReqForConsultation()
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faListCheck} />&nbsp;상담신청목록
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        style={{marginRight: '5px'}}
+                                        onClick={() => {
+                                            handleCounselDateRegister()
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faCalendarPlus} />&nbsp;상담날짜등록
+                                    </Button>
+                                </>
                         )
                     }
                 </CounselBtn>
             </ContentHeader>
             <ContentContainer>
-                {(counselName === '상담이력') && (
-                    <MyCounsel userId={userId} />
-                )}
-                {(counselName === '상담날짜') && (
-                    <CounselCalendar />
-                )}
-                {(counselName === '상담신청') && (
-                    <ReqForConsultation userId={userId} userInfo={userInfo} studentInfo={studentInfo} />
-                )}
-                {counselName === '상담신청목록' && (
-                    <ReqForConsultationList />
-                )}
-                {counselName === '상담날짜등록' && (
-                    <CounselDateRegister />
-                )}
+                {
+                    (userType === 'student') ? (
+                        <>
+                            {(counselName === '상담이력') && (
+                                <MyCounsel userId={userId} userType={userType} />
+                            )}
+                            {(counselName === '상담날짜') && (
+                                <CounselCalendar />
+                            )}
+                            {(counselName === '상담신청') && (
+                                <ReqForConsultation userId={userId} userInfo={userInfo} studentInfo={studentInfo} />
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            {counselName === '상담신청목록' && (
+                                <ReqForConsultationList userId={userId} userType={userType} />
+                            )}
+                            {counselName === '상담날짜등록' && (
+                                <CounselDateRegister />
+                            )}
+                        </>
+                    )
+                }
             </ContentContainer>
         </CounselContentMain>
     )

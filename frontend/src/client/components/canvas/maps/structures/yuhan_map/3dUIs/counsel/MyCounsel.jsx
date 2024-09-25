@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 const PAGE_COUNT = 5
 let myCounselData
 
-const MyCounsel = ({userId}) => {
+const MyCounsel = ({userId, userType}) => {
 
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
 
@@ -22,23 +22,23 @@ const MyCounsel = ({userId}) => {
         setCurrentPage(value)
     }
 
-    // // 상담이력 불러오기
+    // 상담이력 불러오기
     const GetMyCounselData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/my-counsel/${userId}`)
+            const response = await axios.get(`/api/consultation/my-counsel/${userType}/${userId}`)
             const data = response.data
             myCounselData = data.myCounsel
             // console.log(myCounselData)
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
-                text: '사용자 데이터를 가져왔습니다.',
+                text: '상담이력 데이터를 가져왔습니다.',
             })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: '오류 발생',
-                text: `사용자 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
+                text: `상담이력 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
             })
         }
     }
@@ -131,7 +131,7 @@ const MyCounsel = ({userId}) => {
                                             backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff', // 홀수/짝수 행 배경색
                                         }}
                                     >
-                                        <TableCell align='center'>{idx + 1}</TableCell>
+                                        <TableCell align='center'>{(currentPage - 1) * PAGE_COUNT + (idx + 1)}</TableCell>
                                         <TableCell align='center' sx={{fontSize: '28px', fontWeight: 900}}>{data.counsel_content}</TableCell>
                                         <TableCell align='center'>
                                             <b>{data.counsel_date}</b>

@@ -2,15 +2,41 @@ const express = require("express")
 const router = express.Router()
 const mysqlConnection = require("../server")
 
-// 학생정보 가져오기
-router.get("/:userId", (req, res) => {
+// 교수데이터 가져오기 (학생일 때)
+router.get("/getProfessorData/:userType/:userMajor", (req, res) => {
+    const userType = req.params.userType
+    const userMajor = req.params.userMajor
+    console.log("userType : ", userType)
+    console.log("userMajor : ", userMajor)
+})
+
+// 사용자 정보 가져오기
+router.get("/current-user/:userType/:userId", (req, res) => {
     const userId = req.params.userId
+    const userType = req.params.userType
     console.log("사용자아이디 : ", userId)
+    console.log("사용자타입 : ", userType)
 
-    const selectUserQuery = "SELECT user_phone, user_email, user_major FROM user WHERE user_id = ?"
-    const selectStudentQuery = "SELECT student_number, student_grade FROM student WHERE student_id = ?"
-    let userData, studentData
+    const selectUserQuery = `
+        SELECT user_name, user_phone, user_email, user_major, user_type
+        FROM user
+        WHERE user_id = ?
+    `
+    
+    const selectStudentQuery = `
+        SELECT student_number, student_grade
+        FROM student
+        WHERE student_id = ?
+    `
 
+    const selectProfessorQuery = `
+        SELECT professor_position
+        FROM professor
+        WHERE professor_id = ?
+    `
+    
+    let userData, studentData, professorData
+    
     // 응답이 2개일 경우 먼저 처리하는 것을 저장한 후 한번에 전송해야 함
     mysqlConnection.query(selectUserQuery, [userId], (err, results) => {
         if(err) {
@@ -18,28 +44,47 @@ router.get("/:userId", (req, res) => {
             return res.status(500).json({ message: "상담신청 - user테이블 검색 중 에러가 발생했습니다."})
         } else {
             userData = results
-            mysqlConnection.query(selectStudentQuery, [userId], (err, results) => {
-                if(err) {
-                    console.log("상담신청 - student테이블 검색 중 에러 발생 : ", err)
-                    return res.status(500).json({ message: "상담신청 - student테이블 검색 중 에러가 발생했습니다."})
-                } else {
-                    studentData = results
-                    res.json({
-                        user: userData,
-                        student: studentData
-                    })
-                }
-            })
+            if(userType === 'student') {
+                mysqlConnection.query(selectStudentQuery, [userId], (err, results) => {
+                    if(err) {
+                        console.log("상담신청 - student테이블 검색 중 에러 발생 : ", err)
+                        return res.status(500).json({ message: "상담신청 - student테이블 검색 중 에러가 발생했습니다."})
+                    } else {
+                        studentData = results
+                        res.json({
+                            user: userData,
+                            student: studentData
+                        })
+                    }
+                })
+            } else if(userType === 'professor') {
+                mysqlConnection.query(selectProfessorQuery, [userId], (err, results) => {
+                    if(err) {
+                        console.log("상담신청 - professor테이블 검색 중 에러 발생 : ", err)
+                        return res.status(500).json({ message: "상담신청 - professor테이블 검색 중 에러가 발생했습니다."})
+                    } else {
+                        professorData = results
+                        res.json({
+                            user: userData,
+                            professor: professorData
+                        })
+                    }
+                })
+            } else {
+                return res.status(500).json({ message: "상담신청 - 에러가 발생했습니다."})
+            }
         }
     })
 })
 
 // 상담이력 데이터 불러오기 (학생)
-router.get("/my-counsel/:userId", (req, res) => {
+router.get("/my-counsel/:userType/:userId", (req, res) => {
     const userId = req.params.userId
-    console.log("상담이력 : ", userId)
+    const userType = req.params.userType
+    console.log("상담이력ID : ", userId)
+    console.log("상담이력UserType : ", userType)
 
-    const selectMyConsultationQuery = `
+    const selectMyConsultationStudentQuery = `
         SELECT 
         consultation_id,
         user_id,
@@ -50,8 +95,8 @@ router.get("/my-counsel/:userId", (req, res) => {
         counsel_content,
         counsel_state
         FROM consultation WHERE user_id = ?`
-        
-    mysqlConnection.query(selectMyConsultationQuery, [userId], (err, results) => {
+    
+    mysqlConnection.query(selectMyConsultationStudentQuery, [userId], (err, results) => {
         if(err) {
             console.log("상담이력 - consultation테이블 검색 중 에러 발생 : ", err)
             return res.status(500).json({ message: "상담이력 - consultation테이블 검색 중 에러가 발생했습니다."})
@@ -64,6 +109,36 @@ router.get("/my-counsel/:userId", (req, res) => {
 })
 
 // 상담신청목록 데이터 불러오기 (교수)
+router.get("/req-for-consultation-list/:userType/:userId", (req, res) => {
+    const userId = req.params.userId
+    const userType = req.params.userType
+    console.log("상담신청목록(사용자아이디) : ", userId)
+    console.log("상담신청목록(사용자타입) : ", userType)
+
+    const selectMyConsultationProfessorQuery = `
+        SELECT 
+        consultation_id,
+        user_id,
+        user_name,
+        counsel_date,
+        counsel_time,
+        consultation_category,
+        employment_classification,
+        counsel_content,
+        counsel_state
+        FROM consultation WHERE student_major = ?`
+    
+    mysqlConnection.query(selectMyConsultationProfessorQuery, [userId], (err, results) => {
+        if(err) {
+            console.log("상담신청목록 - consultation테이블 검색 중 에러 발생 : ", err)
+            return res.status(500).json({ message: "상담신청목록 - consultation테이블 검색 중 에러가 발생했습니다."})
+        } else {
+            res.json({
+                myCounsel: results,
+            })
+        }
+    })
+})
 
 // 상담날짜등록 (교수)
 
@@ -98,7 +173,6 @@ router.post("/req-for-consultation", (req, res) => {
         userId,
         counselDate,
         counselTime,
-        counselFile,
         consultationCategory,
         employmentClassification,
         counselContent,
