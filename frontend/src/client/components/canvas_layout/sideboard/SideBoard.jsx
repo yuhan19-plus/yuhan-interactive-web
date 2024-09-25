@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import SideBoardList from './SideBoardList';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
-import YuhanBoardPage from '../../../../common/components/board/YuhanBoardPage';
+import SideBoardPage from './SideBoardPage';
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardReport from '../../../../common/components/board/YuhanBoardReport';
 
@@ -47,7 +47,7 @@ const SideBoard = () => {
             {currentView === 'insert' ? (
                 <YuhanBoardInsert onCancel={handleBackToList} />
             ) : currentView === 'page' ? (
-                <YuhanBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} handleReportItem={handleReport} />
+                <SideBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} handleReportItem={handleReport} />
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : currentView === 'Report' ? (

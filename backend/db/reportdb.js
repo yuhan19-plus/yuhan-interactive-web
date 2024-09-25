@@ -98,5 +98,39 @@ router.post("/ignore", (req, res) => {
     });
 })
 
+// 게시판id를 받아서 먼저 테이블이 삭제여부를 확인 -> 신고테이블에 삭제처리되었는지 확인 -> 삭제처리인 경우 그 데이터를 하단에 출력 
+// 삭제랑 관련된 것이니까 삭제쪽으로 보내기
+// 삭제여부체크
+router.post("/check/:boardId", (req, res) => {
+    const { boardId } = req.params;  // URL에서 boardID를 추출
+    // console.log("삭제여부확인 요청 진입, boardId", boardId)
+    const checkBoardDeleteQuery = "select board_status from board where board_id = ?"
+    const checkReportQuery = "select * from report where board_id = ? AND report_status = 'delete'"
+
+    mysqlconnection.query(checkBoardDeleteQuery, [boardId], (err, result) => {
+        if (err) {
+            console.error("게시판 상태 확인 중 에러 발생:", err);
+            return res.status(500).json({ message: "게시판 상태 확인 중 오류가 발생했습니다." }); // 500 상태 코드와 함께 오류 메시지 반환
+        }
+        if (result[0].board_status === 'delete') {
+            // console.log("게시글이 삭제된 상태")
+            mysqlconnection.query(checkReportQuery, [boardId], (err, results) => {
+                if (err) {
+                    console.error("게시판 신고 후 삭제 확인 중 에러 발생:", err);
+                    return res.status(500).json({ message: "게시판 신고 후 삭제 확인 중 오류가 발생했습니다." }); // 500 상태 코드와 함께 오류 메시지 반환
+                }
+                res.status(200).json({
+                    reportData: results[0], // 결과를 JSON으로 응답
+                });
+
+                // console.log(results)
+            })
+        }
+        else {
+            res.status(200).json({ message: "게시판이 삭제상태가 아닙니다." })
+        }
+    })
+})
+
 
 module.exports = router; // 라우터 객체 내보내기

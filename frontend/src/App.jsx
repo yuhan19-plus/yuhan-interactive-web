@@ -89,6 +89,9 @@ function App() {
             <Route path='/admin/deptRec' element={<AdminMain />}>
               {/* 경로설정 */}
             </Route>
+            <Route path='/admin/report' element={<AdminMain />}>
+              {/* 경로설정 */}
+            </Route>            
           </Route>
           <Route path='/error' element={<ErrorPage />} />
           <Route path="/boardtest" element={<BoardTest />} />

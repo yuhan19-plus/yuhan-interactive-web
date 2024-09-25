@@ -3,6 +3,10 @@
  * 기능 구현- 오자현
  * 게시판상세페이지 ui
  * 좋아요, 수정, 삭제, 신고 기능
+ * 
+ * 추가사항
+ * - 신고로 삭제된 경우 삭제사유를 보여지게 
+ * 
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
@@ -12,15 +16,14 @@ import {
     NoteAlt
 } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
-import { useBoardData } from "./hooks/useBoardData";
 import styled from "styled-components";
-import { YuhanBoardComment } from "./YuhanBoardCommnet";
+import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
+import { useBoardDataAdmin } from "./hooks/useBoardDataAdmin";
 
 // 코드가 너무 길어져서 훅과 ui로 분리
-const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
+const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
-    const { boardData, attachments, loading, error, liked, comment, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardData(boardId);
-
+    const { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardDataAdmin(boardId);
 
     // 로딩 또는 에러 상태 처리
     if (loading) return <Typography>로딩 중...</Typography>;
@@ -190,7 +193,7 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                                 첨부파일
                             </AccordionSummary>
                             <AccordionDetails style={{
-                                background:"#ffffff", display: "flex", flexWrap: "wrap", flexDirection: "column", gap: "5px", position: "absolute", zIndex: 10
+                                background: "#ffffff", display: "flex", flexWrap: "wrap", flexDirection: "column", gap: "5px", position: "absolute", zIndex: 10
                             }}>
                                 {attachments.map((attachment, index) => {
                                     const displayName = attachment.file_name.length > 15
@@ -259,11 +262,30 @@ const YuhanBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                 {/* 댓글 컴포넌츠로 추출 */}
                 <YuhanBoardComment boardData={boardData} />
             </Box>
+
+
+            {/* 처리 사유 영역 */}
+            {reportData && (
+                <Box sx={{ mt: 3 }}>
+                    <Typography variant="h6" gutterBottom>
+                        처리 사유
+                    </Typography>
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: '#f0f0f0' }}>
+                        {reportData.report_resolution || '처리 사유가 없습니다.'}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                        처리 시간
+                    </Typography>
+                    <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', backgroundColor: '#f0f0f0' }}>
+                        {reportData.resolved_at}
+                    </Typography>
+                </Box>
+            )}
         </BoardLayout >
     );
 };
 
-export default YuhanBoardPage;
+export default AdminBoardPage;
 
 const BoardLayout = styled.div`
     min-height: 100vh;

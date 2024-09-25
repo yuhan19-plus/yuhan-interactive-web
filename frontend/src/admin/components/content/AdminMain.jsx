@@ -9,6 +9,7 @@ import AdminBoard from './board/AdminBoard'
 import AdminDeptRec from './dept_rec/AdminDeptRec'
 import AdminFood from './foodMenu/AdminFood'
 import AdminMember from './member/AdminMember'
+import AdminReport from './board/AdminReport'
 
 const AdminMain = () => {
     const title = useLocation()
@@ -32,6 +33,9 @@ const AdminMain = () => {
                 }
                 {
                     titleValue === '전공추천' && <AdminDeptRec />
+                }
+                {
+                    titleValue === '신고내역' && <AdminReport />
                 }
             </div>
         </>

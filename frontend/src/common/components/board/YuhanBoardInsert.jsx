@@ -56,7 +56,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     }, []);
 
     // 드래그앤 드랍
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     // 입력창에서 value가 변경하면 즉시 boardData에 저장하는 함수
     const handleInputChange = (e) => {
@@ -344,33 +344,30 @@ const YuhanBoardInsert = ({ onCancel }) => {
                             onChange={handleInputChange}
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <div {...getRootProps()} style={{
                             border: "2px dashed #cccccc",
                             borderRadius: "8px",
-                            padding: "5px",
+                            padding: "30px",
                             textAlign: "center",
                             cursor: "pointer",
                             transition: "border-color 0.3s ease-in-out",
                             "&:hover": {
                                 borderColor: "#3f51b5",
                             },
-                            backgroundColor: isDragActive ? "#f0f0f0" : "#fafafa",
+                            backgroundColor: "#fafafa",
                         }}>
+
                             <input {...getInputProps()} />
 
                             {boardData.files.length === 0 ? (
                                 // 파일이 없을 때만 안내 메시지 표시
-                                isDragActive ? (
-                                    <p>파일을 이곳에 드롭하세요...</p>
-                                ) : (
-                                    <p>파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
-                                )
+                                <p>파일은 15mb를 넘으면 안됩니다.<br/> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
                             ) : (
                                 // 파일이 있을 때만 파일 목록 표시
                                 <div style={{ textAlign: "left" }}>
                                     <Box mt={2}>
-                                        {/* <Typography>첨부파일</Typography> */}
                                         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
                                             {boardData.files.map((file, index) => (
                                                 <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

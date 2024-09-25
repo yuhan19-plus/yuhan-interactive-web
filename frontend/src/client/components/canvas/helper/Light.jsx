@@ -94,7 +94,7 @@ const Light = () => {
 
     // console.log("objectPosition", objectPosition)
 
-    useHelper(lightRef, THREE.DirectionalLightHelper, 300, 0xff0000)
+    // useHelper(lightRef, THREE.DirectionalLightHelper, 300, 0xff0000)
 
     return (
         <>

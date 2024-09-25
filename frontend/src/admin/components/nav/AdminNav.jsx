@@ -52,6 +52,14 @@ const AdminNav = () => {
                     }}>
                         <AdminButton>전공추천</AdminButton>
                     </Link>
+                    
+                <Link 
+                    to={'/admin/report'}
+                    state={{
+                        title: '신고내역'
+                    }}>
+                        <AdminButton>신고내역</AdminButton>
+                    </Link>
             </AdminButtonList>
         </>
     )
@@ -102,7 +110,7 @@ const AdminButtonList = styled.div`
 
 const AdminButton = styled.div`
     padding: 15px 30px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: black;
     cursor: pointer;

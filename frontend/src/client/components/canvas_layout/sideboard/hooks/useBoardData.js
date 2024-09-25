@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 export const useBoardData = (boardId) => {
     const [cookies] = useCookies(["user"]);
@@ -30,6 +31,15 @@ export const useBoardData = (boardId) => {
 
     // 게시판에 좋아요를 클릭하면 동작
     const handleLikeToggle = async () => {
+        if (!cookies.user) {
+            Swal.fire({
+                icon: 'warning',
+                title: '로그인X',
+                text: '로그인 후 좋아요를 눌러주세요!',
+                confirmButtonColor: '#3085d6',
+            });
+            return; // 입력값이 비어있을 경우 저장 절차 중단
+        }
         try {
             const response = await fetch("/api/boardlike", {
                 method: "POST",
@@ -56,7 +66,7 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 현재 게시물에 대한 사용자의 좋아요 여부
+    // 현재 게시물에 대한 사용자의 좋아요 여부 
     const checkLiked = async () => {
         try {
             const response = await fetch(`/api/boardlike/${boardId}/${cookies.user}`, {
