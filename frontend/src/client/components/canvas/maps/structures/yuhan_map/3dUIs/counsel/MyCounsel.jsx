@@ -36,7 +36,7 @@ const MyCounsel = ({ currentUserState }) => {
     // 상담 취소 처리
     const ClickCancel = async (userId, consultationId) => {
         try {
-            await axios.put(`/api/consultation/my-counsel/${userId}/${consultationId}`)
+            await axios.put(`/api/consultation/my-counsel/counsel-cancel/${userId}/${consultationId}`)
             Swal.fire({
                 icon: 'success',
                 title: '상담취소',

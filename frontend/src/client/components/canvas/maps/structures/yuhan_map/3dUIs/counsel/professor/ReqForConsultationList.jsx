@@ -34,10 +34,30 @@ const ReqForConsultationList = ({currentUserState}) => {
         }
     }
 
+    // 상담 승인 처리
+    const ClickApprove = async (userId, consultationId) => {
+        try {
+            await axios.put(`/api/consultation/req-for-consultation-list/counsel-approve/${userId}/${consultationId}`)
+            Swal.fire({
+                icon: 'success',
+                title: '상담거절',
+                text: '상담을 거절하였습니다.',
+            })
+            // 데이터 갱신
+            GetReqForConsultationData()
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `상담거절 중 오류가 발생했습니다: ${error}`,
+            })
+        }
+    }
+
     // 상담 거절 처리
     const ClickRefusal = async (userId, consultationId) => {
         try {
-            await axios.put(`/api/consultation/req-for-consultation-list/${userId}/${consultationId}`)
+            await axios.put(`/api/consultation/req-for-consultation-list/counsel-refusal/${userId}/${consultationId}`)
             Swal.fire({
                 icon: 'success',
                 title: '상담거절',
@@ -156,7 +176,29 @@ const ReqForConsultationList = ({currentUserState}) => {
                                 {data.counsel_state === '승인대기중' && (
                                     <>
                                         <TableCell align='center'>
-                                            <Button variant="contained" color="success">수락</Button>
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                onClick={() => {
+                                                    Swal.fire({
+                                                        icon: 'question',
+                                                        title: '상담승인',
+                                                        text: '상담을 승인하시겠습니까?',
+                                                        showCancelButton: true,
+                                                        confirmButtonText: "승인",
+                                                        cancelButtonText: "닫기",
+                                                    }).then((res) => {
+                                                        if (res.isConfirmed) {
+                                                            ClickApprove(userId, data.consultation_id)
+                                                        }
+                                                        else {
+                                                            return
+                                                        }
+                                                    })
+                                                }}
+                                            >
+                                                승인
+                                            </Button>
                                         </TableCell>
                                         <TableCell align='center'>
                                             <Button

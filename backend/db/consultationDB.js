@@ -152,11 +152,51 @@ router.get("/req-for-consultation-list/:userId", (req, res) => {
 })
 
 // 상담날짜등록 (교수)
+router.put("/counsel-date-register/register-date/:userId/:userName/:counselDate", (req, res) => {
+    const {userId, counselDate, userName} = req.params
+    console.log("상담날짜등록 : ", userId)
+    console.log("상담날짜등록 : ", counselDate)
+    console.log("상담날짜등록 : ", userName)
+
+    const timeData = [
+        "09시~10시",
+        "10시~11시",
+        "11시~12시",
+        "13시~14시",
+        "14시~15시",
+        "16시~17시"
+    ]
+
+    timeData.forEach((data) => {
+        const insertCounselScheduleQuery = `
+            INSERT INTO counsel_schedule (
+                professor_id,
+                professor_name,
+                counsel_date,
+                counsel_time,
+                createdAt
+            ) VALUES (?, ?, ?, ?, now())
+        `
+
+        mysqlConnection.query(insertCounselScheduleQuery, [userId, userName, counselDate, data], (err, results) => {
+            if(err) {
+                console.error('DB Insert Error: ', err)
+                return res.status(500).send('INSERT 중 오류가 발생했습니다.')
+            }
+        })
+    })
+
+    // 응답 전송
+    res.status(200).json({ message: "상담가능날짜가 성공적으로 등록되었습니다." })
+})
 
 // 상담날짜 데이터 불러오기
 
 // 상담 상태 업데이트 (상담취소, 승인거절, 승인대기중, 상담승인, 상담완료)
-router.put("/my-counsel/:userId/:consultationId", (req, res) => {
+// 상담완료
+
+// 상담취소
+router.put("/my-counsel/counsel-cancel/:userId/:consultationId", (req, res) => {
     const {userId, consultationId} = req.params
     console.log("상담이력(상담취소) : ", userId)
     console.log("상담이력(상담취소) : ", consultationId)
@@ -168,18 +208,38 @@ router.put("/my-counsel/:userId/:consultationId", (req, res) => {
 
     mysqlConnection.query(updateMyCounselCancelQuery, [userId, consultationId], (err, results) => {
         if(err) {
-            console.log("상담이력 - consultation테이블 검색 중 에러 발생 : ", err)
-            return res.status(500).json({ message: "상담이력 - consultation테이블 검색 중 에러가 발생했습니다."})
+            console.log("상담취소 - consultation테이블 검색 중 에러 발생 : ", err)
+            return res.status(500).json({ message: "상담취소 - consultation테이블 검색 중 에러가 발생했습니다."})
         } else {
             return res.status(200).json({ message: "상담취소 - 상담취소가 정상적으로 완료되었습니다."})
         }
     })
 })
-
-router.put("/req-for-consultation-list/:userId/:consultationId", (req, res) => {
+// 상담승인
+router.put("/req-for-consultation-list/counsel-approve/:userId/:consultationId", (req, res) => {
     const {userId, consultationId} = req.params
-    console.log("상담신청목록(상담거절) : ", userId)
-    console.log("상담신청목록(상담거절) : ", consultationId)
+    console.log("상담신청목록(상담승인) : ", userId)
+    console.log("상담신청목록(상담승인) : ", consultationId)
+
+    const updateMyCounselApproveQuery = `
+        UPDATE consultation SET counsel_state = '상담승인'
+        WHERE professor_id = ? AND consultation_id = ?
+    `
+
+    mysqlConnection.query(updateMyCounselApproveQuery, [userId, consultationId], (err, results) => {
+        if(err) {
+            console.log("상담승인 - consultation테이블 검색 중 에러 발생 : ", err)
+            return res.status(500).json({ message: "상담승인 - consultation테이블 검색 중 에러가 발생했습니다."})
+        } else {
+            return res.status(200).json({ message: "상담승인 - 상담승인이 정상적으로 완료되었습니다."})
+        }
+    })
+})
+// 상담거절
+router.put("/req-for-consultation-list/counsel-refusal/:userId/:consultationId", (req, res) => {
+    const {userId, consultationId} = req.params
+    console.log("상담신청목록(승인거절) : ", userId)
+    console.log("상담신청목록(승인거절) : ", consultationId)
 
     const updateMyCounselCancelQuery = `
         UPDATE consultation SET counsel_state = '승인거절'
@@ -188,10 +248,10 @@ router.put("/req-for-consultation-list/:userId/:consultationId", (req, res) => {
 
     mysqlConnection.query(updateMyCounselCancelQuery, [userId, consultationId], (err, results) => {
         if(err) {
-            console.log("상담이력 - consultation테이블 검색 중 에러 발생 : ", err)
-            return res.status(500).json({ message: "상담이력 - consultation테이블 검색 중 에러가 발생했습니다."})
+            console.log("승인거절 - consultation테이블 검색 중 에러 발생 : ", err)
+            return res.status(500).json({ message: "승인거절 - consultation테이블 검색 중 에러가 발생했습니다."})
         } else {
-            return res.status(200).json({ message: "상담취소 - 상담취소가 정상적으로 완료되었습니다."})
+            return res.status(200).json({ message: "승인거절 - 승인거절이 정상적으로 완료되었습니다."})
         }
     })
 })

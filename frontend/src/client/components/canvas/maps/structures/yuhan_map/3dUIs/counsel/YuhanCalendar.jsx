@@ -10,26 +10,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { counselBtn } from '../../../../../../../../redux/actions/actions';
 import moment from 'moment';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 const YuhanCalendar = () => {
-    // 쿠키(세션 쿠키)
-    const [cookies, setCookie, removeCookie] = useCookies(['user'])
-    // console.log(cookies)
-    // console.log(cookies.user)
-    const currentUser = cookies.user
-
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const currentUserInfoState = useSelector((state) => state.currentUser)
+    const userId = currentUserInfoState.user_id
+    const userName = currentUserInfoState.user_name
     const counsel = useSelector((state) => state.counsel)
     const counselValue = counsel.value
     const counselName = counsel.name
 
-    const dispatch = useDispatch()
     const today = new Date()
     const [date, setDate] = useState(today)
-    // console.log(moment(date).format("MM"))
+    
     const currentMonth = moment(date).format("M")
+    
+    // 상담 가능 날짜
+    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
+
     const handleDateChange = (newDate) => {
-        setDate(newDate);
+        setDate(newDate)
     }
 
     const handleTodayClick = () => {
@@ -37,13 +39,46 @@ const YuhanCalendar = () => {
         setDate(today)
     }
 
-    // 상담 가능 날짜
-    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
-
     const handleReqForCounsel = (clickedDate) => {
         // navigate 함수의 state를 사용해 날짜를 루트 경로로 전달
         navigate('/', { state: { date: clickedDate } })
         dispatch(counselBtn())
+    }
+
+    // 날짜 등록 처리
+    const ClickRegisterDate = async (userId, counselDate) => {
+        try {
+            await axios.put(`/api/consultation/counsel-date-register/register-date/${userId}/${userName}/${counselDate}`)
+            Swal.fire({
+                icon: 'success',
+                title: '날짜등록',
+                text: '상담가능 날짜를 등록하였습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `해당 날짜를 등록할 수 없습니다: ${error}`,
+            })
+        }
+    }
+
+    // 등록된 날짜 취소 처리
+    const ClickCancelDate = async (userId, counselDate) => {
+        try {
+            await axios.put(`/api/consultation/counsel-date-register/cancel-date/${userId}/${counselDate}`)
+            Swal.fire({
+                icon: 'success',
+                title: '날짜등록취소',
+                text: '등록된 날짜를 취소하였습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `등록된 날짜를 취소할 수 없습니다: ${error}`,
+            })
+        }
     }
 
     return (
@@ -84,8 +119,7 @@ const YuhanCalendar = () => {
                         if (okDay.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
                             html.push(
                                 <React.Fragment key={moment(date).format("okDay")}>
-                                    {
-                                        currentUser === 'sjsj' ? (
+                                    {currentUserInfoState.user_type === 'student' ? (
                                             <>
                                                 <CounselBtn
                                                     variant="contained"
@@ -116,32 +150,6 @@ const YuhanCalendar = () => {
                                             </>
                                         ) : (
                                             <>
-                                                {/* <CounselBtn
-                                                    variant="contained"
-                                                    className='font-color-green'
-                                                    onClick={() => {
-                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
-                                                        Swal.fire({
-                                                            icon: "success",
-                                                            title: "날짜등록",
-                                                            text: `${clickedDate}에 신청하시겠습니까?`,
-                                                            showCancelButton: true,
-                                                            confirmButtonText: "신청",
-                                                            cancelButtonText: "닫기",
-                                                        }).then((res) => {
-                                                            if (res.isConfirmed) {
-                                                                handleReqForCounsel(clickedDate)
-                                                            }
-                                                            else{
-                                                            //취소
-                                                            return
-                                                            }
-                                                        })
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faCalendarPlus} />
-                                                    <p>날짜등록</p>
-                                                </CounselBtn> */}
                                                 <CounselBtn
                                                     variant="contained"
                                                     className='font-color-red'
@@ -157,6 +165,7 @@ const YuhanCalendar = () => {
                                                         }).then((res) => {
                                                             if (res.isConfirmed) {
                                                                 // 등록취소 메서드 호출
+                                                                ClickCancelDate(userId, clickedDate)
                                                             }
                                                             else{
                                                                 return
@@ -175,8 +184,7 @@ const YuhanCalendar = () => {
                         } else {
                             html.push(
                                 <React.Fragment key={moment(date).format("noDay")}>
-                                    {
-                                        currentUser === 'sjsj' ? (
+                                    {currentUserInfoState.user_type === 'student' ? (
                                             <>
                                                 <CounselBtn
                                                     variant="contained"
@@ -199,6 +207,7 @@ const YuhanCalendar = () => {
                                                     variant="contained"
                                                     className='font-color-green'
                                                     onClick={() => {
+                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
                                                         Swal.fire({
                                                             icon: "success",
                                                             title: "날짜등록",
@@ -209,6 +218,7 @@ const YuhanCalendar = () => {
                                                         }).then((res) => {
                                                             if (res.isConfirmed) {
                                                                 // 상담등록 메서드 호출
+                                                                ClickRegisterDate(userId, clickedDate)
                                                             }
                                                             else{
                                                                 return
@@ -220,8 +230,7 @@ const YuhanCalendar = () => {
                                                     <p>날짜등록</p>
                                                 </CounselBtn>
                                             </>
-                                        )
-                                    }
+                                    )}
                                 </React.Fragment>
                             )
                         }

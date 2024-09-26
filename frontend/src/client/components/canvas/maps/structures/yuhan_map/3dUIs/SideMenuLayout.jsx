@@ -14,7 +14,7 @@ import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { currentProfessorUserInfo, currentStudentUserInfo } from '../../../../../../../redux/actions/actions'
+import { currentProfessorUserInfo, currentStudentUserInfo, myCounsel, reqForConsultation } from '../../../../../../../redux/actions/actions'
 
 let title, counselName
 
@@ -84,9 +84,11 @@ const SideMenuLayout = (props) => {
         if (userId) {
             if(userType === 'student') {
                 CurrentStudentData()
+                dispatch(myCounsel())
             }
             if(userType === 'professor') {
                 CurrentProfessorData()
+                dispatch(reqForConsultation())
             }
         }
     }, [])
