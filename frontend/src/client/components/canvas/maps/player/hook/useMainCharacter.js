@@ -25,6 +25,7 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
 
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
+    const directionsState = btnValue.value && btnValue.btnMenuName === 'directionsView'
 
     // 텔레포트
     const teleportState = useSelector((state) => state.teleport)
@@ -125,12 +126,28 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
         }
     }, [aerialViewState, camera])
 
+    // 찾아오는 길 뷰
+    useEffect(() => {
+        if (directionsState) {
+            gsap.to(camera.position, {
+                x: 1800,
+                y: 700,
+                z: -250,
+                duration: 1.5,
+                ease: 'power2.inOut',
+            });
+        }
+    }, [directionsState, camera]);
+
     useFrame(({ camera }) => {
         if (!player || !charRef.current || !targetPosition) return
 
         if(aerialViewState) {
             return
-        } else {
+        } else if (directionsState){
+            return
+        }
+        else {
             const currentPosition = charRef.current.position // 현재 위치
 
         const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리

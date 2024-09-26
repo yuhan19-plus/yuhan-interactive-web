@@ -52,6 +52,8 @@ export const KIOSK_YUJAELA = 'KIOSK_YUJAELA'
 
 // 미니맵 상단 버튼 그룹 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
+// 찾아오는 길버튼 - 자현
+export const DIRECTIONS_VIEW = 'DIRECTIONS_VIEW'
 
 
 // 버스 정류장 - 자현
@@ -146,6 +148,11 @@ export const adminEnterModal = () => ({
 export const aerialView = () => ({
     type: AERIAL_VIEW
 })
+// 미니맵 상단 찾아오는 길 버튼
+export const directionsView = () => ({
+    type: DIRECTIONS_VIEW
+})
+
 
 // 버스정류장 진입여부
 export const enterBusStationOne = () => ({
