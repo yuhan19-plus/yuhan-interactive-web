@@ -2,48 +2,78 @@ import React, { useEffect, useState } from 'react'
 import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
 import { counselListTestData } from '../../../../../../../../../data/commonData'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import moment from 'moment'
 const PAGE_COUNT = 5
-let myCounselData
 
-const ReqForConsultationList = ({userId, userType}) => {
+const ReqForConsultationList = ({currentUserState}) => {
+    const userId = currentUserState.user_id
+
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
-
-    // 현재 페이지에 해당하는 데이터를 추출
-    const paginatedData = counselListTestData.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT)
-    // const paginatedData = myCounselData?.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT)
-    // console.log('paginatedData', paginatedData)
-
-    // 페이지 변경 처리
-    const handleChangePage = (event, value) => {
-        setCurrentPage(value)
-    }
+    const [myCounselData, setMyCounselData] = useState([]) // 상담 데이터 상태관리
+    const [paginatedData, setPaginatedData] = useState([]) // 페이지네이션된 데이터 상태관리
 
     // 상담이력 불러오기
     const GetReqForConsultationData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/req-for-consultation-list/${userType}/${userId}`)
-            const data = response.data
-            myCounselData = data.myCounsel
-            // console.log(myCounselData)
+            const response = await axios.get(`/api/consultation/req-for-consultation-list/${userId}`)
+            const data = response.data.myCounsel
+            setMyCounselData(data)
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
-                text: '사용자 데이터를 가져왔습니다.',
+                text: '상담신청목록 데이터를 가져왔습니다.',
             })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: '오류 발생',
-                text: `사용자 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
+                text: `상담신청목록 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
             })
         }
     }
 
+    // 상담 거절 처리
+    const ClickRefusal = async (userId, consultationId) => {
+        try {
+            await axios.put(`/api/consultation/req-for-consultation-list/${userId}/${consultationId}`)
+            Swal.fire({
+                icon: 'success',
+                title: '상담거절',
+                text: '상담을 거절하였습니다.',
+            })
+            // 데이터 갱신
+            GetReqForConsultationData()
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `상담거절 중 오류가 발생했습니다: ${error}`,
+            })
+        }
+    }
+
+    // 페이지네이션 처리
+    const handleChangePage = (event, value) => {
+        setCurrentPage(value)
+    }
+
+    // paginatedData 갱신
+    useEffect(() => {
+        if (myCounselData.length > 0) {
+            const startIdx = (currentPage - 1) * PAGE_COUNT
+            const paginated = myCounselData.slice(startIdx, startIdx + PAGE_COUNT)
+            setPaginatedData(paginated)
+        }
+    }, [myCounselData, currentPage])
+
+    // 상담신청목록 데이터 로드
     useEffect(() => {
         if(userId) {
             GetReqForConsultationData()
         }
-    }, [])
+    }, [userId])
 
     return (
         <>
@@ -60,7 +90,7 @@ const ReqForConsultationList = ({userId, userType}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {
+                    {/* {
                         paginatedData.map((data) => (
                             <TableRow
                                 key={data.id}
@@ -105,16 +135,102 @@ const ReqForConsultationList = ({userId, userType}) => {
                                 )}
                             </TableRow>
                         ))
-                    }
+                    } */}
+                    {paginatedData.length > 0 ? (
+                        paginatedData.map((data, idx) => (
+                            <TableRow
+                                key={data.consultation_id}
+                                sx={{
+                                    backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff', // 홀수/짝수 행 배경색
+                                }}
+                            >
+                                <TableCell align='center'>{(currentPage - 1) * PAGE_COUNT + (idx + 1)}</TableCell>
+                                <TableCell align='center' sx={{ fontSize: '28px', fontWeight: 900 }}>{data.counsel_content}</TableCell>
+                                <TableCell align='center'>
+                                    <b>{data.counsel_date}</b>
+                                    <p>{data.counsel_time}</p>
+                                    <p>{data.consultation_category}</p>
+                                </TableCell>
+                                <TableCell align='center' sx={{ fontWeight: 900 }}>{data.student_name}</TableCell>
+                                <TableCell align='center'>{moment(data.createdAt).format("YYYY-MM-DD")}</TableCell>
+                                {data.counsel_state === '승인대기중' && (
+                                    <>
+                                        <TableCell align='center'>
+                                            <Button variant="contained" color="success">수락</Button>
+                                        </TableCell>
+                                        <TableCell align='center'>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={() => {
+                                                    Swal.fire({
+                                                        icon: 'question',
+                                                        title: '상담거절',
+                                                        text: '상담을 거절하시겠습니까?',
+                                                        showCancelButton: true,
+                                                        confirmButtonText: "거절",
+                                                        cancelButtonText: "닫기",
+                                                    }).then((res) => {
+                                                        if (res.isConfirmed) {
+                                                            ClickRefusal(userId, data.consultation_id)
+                                                        }
+                                                        else {
+                                                            return
+                                                        }
+                                                    })
+                                                }}
+                                            >
+                                                거절
+                                            </Button>
+                                        </TableCell>
+                                    </>
+                                )}
+                                {(data.counsel_state === '상담취소' || data.counsel_state === '승인거절') && (
+                                    <>
+                                        <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>
+                                            수락불가
+                                        </TableCell>
+                                        <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>
+                                            {data.counsel_state}
+                                        </TableCell>
+                                    </>
+                                )}
+                                {(data.counsel_state === '상담완료' || data.counsel_state === '상담승인') && (
+                                    <>
+                                        <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>
+                                            {data.counsel_state}
+                                        </TableCell>
+                                        <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>
+                                            취소불가
+                                        </TableCell>
+                                    </>
+                                )}
+                            </TableRow>
+                        ))
+                     ) : (
+                        <TableRow>
+                            <TableCell colSpan={7} style={{ textAlign: 'center' }}>
+                                상담이력이 없습니다.
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
             <PaginationContainer>
-                <Pagination
+                {/* <Pagination
                     count={Math.ceil(counselListTestData.length / PAGE_COUNT)}
                     page={currentPage}
                     onChange={handleChangePage}
                     color="info"
-                />
+                /> */}
+                {myCounselData.length > 0 && (
+                    <Pagination
+                        count={Math.ceil(myCounselData.length / PAGE_COUNT)}
+                        page={currentPage}
+                        onChange={handleChangePage}
+                        color="info"
+                    />
+                )}
             </PaginationContainer>
         </>
     )

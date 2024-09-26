@@ -1,5 +1,5 @@
 import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,30 +10,63 @@ import { faArrowRight, faBriefcase, faClock, faCompass, faFileAlt, faGlobe, faHo
 import axios from 'axios'
 
 
-const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
-    console.log(userInfo, studentInfo)
-    
-    const userData = {
-        userPhone: userInfo[0].user_phone,
-        userEmail: userInfo[0].user_email,
-        userMajor: userInfo[0].user_major,
-        userType: userInfo[0].user_type
-    }
-    
-    const studentData = {
-        studentNumber: studentInfo[0].student_number,
-        studentGrade: studentInfo[0].student_grade
-    }
-
+const ReqForConsultation = ({currentUserState}) => {
     const location = useLocation()
     const dispatch = useDispatch()
     const { date = "날짜를 선택하세요" } = location.state || {}
 
-    const [files, setFiles] = useState([])
+    const studentId = currentUserState.user_id
+    const studentMajor = currentUserState.user_major
 
-    const handleFileChange = (e) => {
-        setFiles(Array.from(e.target.files))
+    const [myProfessorInfo, setMyProfessorInfo] = useState({
+        user_name: "",
+        user_major: "",
+        user_phone: "",
+        user_email: "",
+        professor_position: ""
+    })
+
+    const MyProfessorData = async () => {
+        try {
+            const response = await axios.get(`/api/consultation/get-my-professor-info/${studentMajor}`)
+            const data = response.data
+            console.log("data", data)
+            setMyProfessorInfo(data.professor)
+            Swal.fire({
+                icon: 'success',
+                title: '데이터 로드 성공.',
+                text: '교수 데이터를 가져왔습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `교수정보를 가져오는 도중 오류가 발생했습니다: ${error}`,
+            })
+        }
     }
+    
+    console.log(myProfessorInfo)
+
+    const studentData = {
+        studentId: studentId,
+        userName: currentUserState.user_name,
+        userPhone: currentUserState.user_phone,
+        userEmail: currentUserState.user_email,
+        userMajor: currentUserState.user_major,
+        studentNumber: currentUserState.student_number,
+        studentGrade: currentUserState.student_grade
+    }
+
+    const professorData = {
+        professorId: myProfessorInfo[0]?.user_id,
+        professorName: myProfessorInfo[0]?.user_name,
+        professorPhone: myProfessorInfo[0]?.user_phone,
+        professorEmail: myProfessorInfo[0]?.user_email,
+        professorMajor: myProfessorInfo[0]?.user_major,
+        professorPosition: myProfessorInfo[0]?.professor_position,
+    }
+    console.log(professorData)
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
@@ -43,10 +76,13 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
     
         const formData = {
-            userId: userId,
+            studentId: studentId,
+            studentName: studentData.userName,
+            professorId: professorData.professorId,
             professorName: e.target.professorName.value,
+            professorMajor: professorData.professorMajor,
             studentMajor: e.target.studentMajor.value,
-            studentNum: e.target.studentNum.value,
+            studentNumber: e.target.studentNumber.value,
             studentGrade: e.target.studentGrade.value,
             counselDate: e.target.counselDate.value,
             counselTime: e.target.counselTime.value,
@@ -75,34 +111,39 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                     text: `${error} 상담 신청 중 오류가 발생했습니다.`,
                 })
             })
-    }  
+    }
+
+    useEffect(() => {
+        if(studentId) {
+            MyProfessorData()
+        }
+    }, [])
     
     return (
         <ReqForConsultationWrapper>
-            {userId &&
+            {studentId &&
                 <form action='/consultation/req-for-consultation' method='POST' onSubmit={handleSubmit}>
                     <StyledFormControl>
                         <StyledFormLabel><p>상담사</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='professorName' value={userData.userMajor} />
+                            <input type="hidden" name='professorName' defaultValue={professorData.professorName} />
                             <p name='professorName'>
-                                {userData.userMajor}학과장
-                                
+                                {professorData.professorName}학과장
                             </p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel><p>학과</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentMajor' value={userData.userMajor} />
-                            <p name='studentMajor'>{userData.userMajor}</p>
+                            <input type="hidden" name='studentMajor' value={studentData.userMajor} />
+                            <p name='studentMajor'>{studentData.userMajor}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel><p>학번</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentNum' value={studentData.studentNumber} />
-                            <p name='studentNum'>{studentData.studentNumber}</p>
+                            <input type="hidden" name='studentNumber' value={studentData.studentNumber} />
+                            <p name='studentNumber'>{studentData.studentNumber}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
@@ -214,15 +255,15 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                     <StyledFormControl>
                         <StyledFormLabel id='studentPhone'><p>연락처</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentPhone' value={userData.userPhone} />
-                            <p name='studentPhone'>{userData.userPhone}</p>
+                            <input type="hidden" name='studentPhone' value={studentData.userPhone} />
+                            <p name='studentPhone'>{studentData.userPhone}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel id='studentEmail'><p>이메일</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentEmail' value={userData.userEmail} />
-                            <p name='studentEmail'>{userData.userEmail}</p>
+                            <input type="hidden" name='studentEmail' value={studentData.userEmail} />
+                            <p name='studentEmail'>{studentData.userEmail}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>

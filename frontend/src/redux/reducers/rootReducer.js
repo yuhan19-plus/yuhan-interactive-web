@@ -10,10 +10,12 @@ import { busReducer } from "./busReducer";
 import { consultationReducer } from "./consultationReducer";
 import { kioskReducer } from "./kioskReducer";
 import { miniMapReducer } from "./miniMapReducer";
+import { currentUserInfoReducer } from "./currentUserInfoReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
     // 성준
+    currentUser: currentUserInfoReducer,
     sideMenu: sideMenuReducer,
     groundMap: mapReducer,
     modal: modalReducer,

@@ -1,34 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
-import { counselTestData } from '../../../../../../../../data/commonData'
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
 const PAGE_COUNT = 5
-let myCounselData
 
-const MyCounsel = ({userId, userType}) => {
+const MyCounsel = ({ currentUserState }) => {
+    const userId = currentUserState.user_id
 
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
-
-    // 현재 페이지에 해당하는 데이터를 추출
-    // const paginatedData = counselTestData.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT) // 테스트 코드
-    const paginatedData = myCounselData?.slice((currentPage - 1) * PAGE_COUNT, currentPage * PAGE_COUNT)
-    console.log('paginatedData', paginatedData)
-
-    // 페이지 변경 처리
-    const handleChangePage = (event, value) => {
-        setCurrentPage(value)
-    }
+    const [myCounselData, setMyCounselData] = useState([]) // 상담 데이터 상태관리
+    const [paginatedData, setPaginatedData] = useState([]) // 페이지네이션된 데이터 상태관리
 
     // 상담이력 불러오기
     const GetMyCounselData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/my-counsel/${userType}/${userId}`)
-            const data = response.data
-            myCounselData = data.myCounsel
-            // console.log(myCounselData)
+            const response = await axios.get(`/api/consultation/my-counsel/${userId}`)
+            const data = response.data.myCounsel
+            setMyCounselData(data)
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -43,16 +33,17 @@ const MyCounsel = ({userId, userType}) => {
         }
     }
 
+    // 상담 취소 처리
     const ClickCancel = async (userId, consultationId) => {
         try {
-            const response = await axios.put(`/api/consultation/my-counsel/${userId}/${consultationId}`)
-            const data = response.data
-            console.log(data)
+            await axios.put(`/api/consultation/my-counsel/${userId}/${consultationId}`)
             Swal.fire({
                 icon: 'success',
                 title: '상담취소',
-                text: '신청하신 상담을 취소하였습니다.',
+                text: '상담을 취소하였습니다.',
             })
+            // 데이터 갱신
+            GetMyCounselData()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -62,29 +53,45 @@ const MyCounsel = ({userId, userType}) => {
         }
     }
 
+    // 페이지네이션 처리
+    const handleChangePage = (event, value) => {
+        setCurrentPage(value)
+    }
+
+    // paginatedData 갱신
     useEffect(() => {
-        if(userId) {
+        if (myCounselData.length > 0) {
+            const startIdx = (currentPage - 1) * PAGE_COUNT
+            const paginated = myCounselData.slice(startIdx, startIdx + PAGE_COUNT)
+            setPaginatedData(paginated)
+        }
+    }, [myCounselData, currentPage])
+
+    // 상담 데이터 로드
+    useEffect(() => {
+        if (userId) {
             GetMyCounselData()
         }
-    }, [])
-    
+    }, [userId])
+
     return (
         <>
-            {userId &&
+            {userId && (
                 <>
                     <Table>
                         <TableHead>
-                            <TableRow sx={{backgroundColor: '#0F275C'}}>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>NUM</TableCell>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>상담내용</TableCell>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>상담일시</TableCell>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>취업구분</TableCell>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>상태</TableCell>
-                                <TableCell align='center' sx={{color: '#FFFFFF', fontWeight: 900}}>취소</TableCell>
+                            <TableRow sx={{ backgroundColor: '#0F275C' }}>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>NUM</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담내용</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담사</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담일시</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>취업구분</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상태</TableCell>
+                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>취소</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {/* 테스트 코드 */}
+                            {/* 테스트코드 */}
                             {/* {
                                 paginatedData.map((data) => (
                                     <TableRow
@@ -123,78 +130,100 @@ const MyCounsel = ({userId, userType}) => {
                                     </TableRow>
                                 ))
                             } */}
-                            {
-                                paginatedData?.map((data, idx) => (
+                            {paginatedData.length > 0 ? (
+                                paginatedData.map((data, idx) => (
                                     <TableRow
                                         key={data.consultation_id}
-                                        sx={{
-                                            backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff', // 홀수/짝수 행 배경색
-                                        }}
+                                        sx={{ backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff' }}
                                     >
                                         <TableCell align='center'>{(currentPage - 1) * PAGE_COUNT + (idx + 1)}</TableCell>
-                                        <TableCell align='center' sx={{fontSize: '28px', fontWeight: 900}}>{data.counsel_content}</TableCell>
+                                        <TableCell align='center' sx={{ fontSize: '28px', fontWeight: 900 }}>{data.counsel_content}</TableCell>
+                                        <TableCell align='center' sx={{ fontWeight: 900 }}>{data.professor_name}학과장</TableCell>
                                         <TableCell align='center'>
                                             <b>{data.counsel_date}</b>
                                             <p>{data.counsel_time}</p>
+                                            <p>{data.consultation_category}</p>
                                         </TableCell>
                                         <TableCell align='center'>
-                                            { data.employment_classification === 'careerGuidance' && '진로지도' }
-                                            { data.employment_classification === 'ResumeAndCoverLetterConsulting' && '이력서' }
-                                            { data.employment_classification === 'interviewConsulting' && '면접 컨설팅' }
-                                            { data.employment_classification === 'EmploymentGuidance' && '취업지도' }
-                                            { data.employment_classification === 'CriminalRecordMap' && '전과지도' }
-                                            { data.employment_classification === 'OtherConsultation' && '기타상담' }
+                                            {data.employment_classification === 'careerGuidance' && '진로지도'}
+                                            {data.employment_classification === 'ResumeAndCoverLetterConsulting' && '이력서'}
+                                            {data.employment_classification === 'interviewConsulting' && '면접 컨설팅'}
+                                            {data.employment_classification === 'EmploymentGuidance' && '취업지도'}
+                                            {data.employment_classification === 'CriminalRecordMap' && '전과지도'}
+                                            {data.employment_classification === 'OtherConsultation' && '기타상담'}
                                         </TableCell>
-                                        {(data.counsel_state === '상담완료' || data.counsel_state === '상담승인') &&
+                                        {(data.counsel_state === '상담완료' || data.counsel_state === '상담승인') && (
                                             <>
-                                                <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>{data.counsel_state}</TableCell>
-                                                <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>취소불가</TableCell>
+                                                <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>{data.counsel_state}</TableCell>
+                                                <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>취소불가</TableCell>
                                             </>
-                                        }
-                                        {data.counsel_state === '승인대기중' &&
+                                        )}
+                                        {data.counsel_state === '승인대기중' && (
                                             <>
-                                                <TableCell align='center' sx={{color: 'orange', fontWeight: 900}}>{data.counsel_state}</TableCell>
+                                                <TableCell align='center' sx={{ color: 'orange', fontWeight: 900 }}>{data.counsel_state}</TableCell>
                                                 <TableCell align='center'>
                                                     <Button
                                                         variant="contained"
                                                         color="error"
                                                         onClick={() => {
-                                                            ClickCancel(userId, data.consultation_id)
+                                                            Swal.fire({
+                                                                icon: 'question',
+                                                                title: '상담취소',
+                                                                text: '상담을 취소하시겠습니까?',
+                                                                showCancelButton: true,
+                                                                confirmButtonText: "취소",
+                                                                cancelButtonText: "닫기",
+                                                            }).then((res) => {
+                                                                if (res.isConfirmed) {
+                                                                    ClickCancel(userId, data.consultation_id)
+                                                                }
+                                                                else {
+                                                                    return
+                                                                }
+                                                            })
                                                         }}
                                                     >
                                                         취소
                                                     </Button>
                                                 </TableCell>
                                             </>
-                                        }
-                                        {(data.counsel_state === '승인거절' || data.counsel_state === '상담취소') &&
+                                        )}
+                                        {(data.counsel_state === '승인거절' || data.counsel_state === '상담취소') && (
                                             <>
-                                                <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>{data.counsel_state}</TableCell>
-                                                <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>취소불가</TableCell>
+                                                <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>{data.counsel_state}</TableCell>
+                                                <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>취소불가</TableCell>
                                             </>
-                                        }
+                                        )}
                                     </TableRow>
                                 ))
-                            }
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={7} style={{ textAlign: 'center' }}>
+                                        상담이력이 없습니다.
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                     <PaginationContainer>
-                        {/* 테스트 코드 */}
+                        {/* 테스트코드 */}
                         {/* <Pagination
                             count={Math.ceil(counselTestData.length / PAGE_COUNT)}
                             page={currentPage}
                             onChange={handleChangePage}
                             color="info"
                         /> */}
-                        <Pagination
-                            count={myCounselData ? Math.ceil(Object.keys(myCounselData).length / PAGE_COUNT) : 0}
-                            page={currentPage}
-                            onChange={handleChangePage}
-                            color="info"
-                        />
+                        {myCounselData.length > 0 && (
+                            <Pagination
+                                count={Math.ceil(myCounselData.length / PAGE_COUNT)}
+                                page={currentPage}
+                                onChange={handleChangePage}
+                                color="info"
+                            />
+                        )}
                     </PaginationContainer>
                 </>
-            }
+            )}
         </>
     )
 }

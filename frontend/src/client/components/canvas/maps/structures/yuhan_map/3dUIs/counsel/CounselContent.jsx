@@ -10,24 +10,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { counselDate, counselDateRegister, myCounsel, reqForConsultation } from '../../../../../../../../redux/actions/actions'
 import ReqForConsultationList from './professor/ReqForConsultationList'
 import CounselDateRegister from './professor/CounselDateRegister'
-import { useCookies } from 'react-cookie'
-import axios from 'axios'
-import Swal from 'sweetalert2'
-const CounselContent = ({userInfo, userId, userType}) => {
+
+const CounselContent = () => {
     const counsel = useSelector((state) => state.counsel)
+    const currentUserState = useSelector((state) => state.currentUser)
     const counselName = counsel.name
     const dispatch = useDispatch()
 
-    console.log(userInfo)
+    console.log(currentUserState)
 
-    // useEffect(() => {
-    //     console.log(userInfo.user_major)
-    //     console.log(userInfo.user_type)
-    //     const major = userInfo[0].user_major
-    //     const type = userInfo[0].user_type
-
-    //     GetProfessorName(type, major)
-    // }, [setUserInfo])
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
@@ -47,7 +38,7 @@ const CounselContent = ({userInfo, userId, userType}) => {
             <ContentHeader>
                 <CounselBtn>
                     {
-                        userType === 'student' ? (
+                        currentUserState.user_type === 'student' ? (
                             <>
                                 <Button
                                     variant="contained"
@@ -95,22 +86,22 @@ const CounselContent = ({userInfo, userId, userType}) => {
             </ContentHeader>
             <ContentContainer>
                 {
-                    (userType === 'student') ? (
+                    (currentUserState.user_type === 'student') ? (
                         <>
                             {(counselName === '상담이력') && (
-                                <MyCounsel userId={userId} userType={userType} />
+                                <MyCounsel currentUserState={currentUserState} />
                             )}
                             {(counselName === '상담날짜') && (
                                 <CounselCalendar />
                             )}
                             {(counselName === '상담신청') && (
-                                <ReqForConsultation userId={userId} userInfo={userInfo} studentInfo={studentInfo} />
+                                <ReqForConsultation currentUserState={currentUserState} />
                             )}
                         </>
                     ) : (
                         <>
                             {counselName === '상담신청목록' && (
-                                <ReqForConsultationList userId={userId} userType={userType} />
+                                <ReqForConsultationList currentUserState={currentUserState} />
                             )}
                             {counselName === '상담날짜등록' && (
                                 <CounselDateRegister />
