@@ -10,6 +10,7 @@ import AdminDeptRec from './dept_rec/AdminDeptRec'
 import AdminFood from './foodMenu/AdminFood'
 import AdminMember from './member/AdminMember'
 import AdminReport from './board/AdminReport'
+import AdminMenuPreview from './AdminMenuPreview'
 
 const AdminMain = () => {
     const title = useLocation()
@@ -20,7 +21,7 @@ const AdminMain = () => {
             <div className='content-title'>{titleValue}</div>
             <div className='admin-content'>
                 {
-                    titleValue === '관리자' && <>관리자 메인</>
+                    titleValue === '관리자' && <AdminMenuPreview/>
                 }
                 {
                     titleValue === '회원관리' && <AdminMember />
