@@ -9,7 +9,7 @@ import AdminBoard from './board/AdminBoard'
 import AdminDeptRec from './dept_rec/AdminDeptRec'
 import AdminFood from './foodMenu/AdminFood'
 import AdminMember from './member/AdminMember'
-import AdminReport from './board/AdminReport'
+import AdminReport from './report/AdminReport'
 
 const AdminMain = () => {
     const title = useLocation()

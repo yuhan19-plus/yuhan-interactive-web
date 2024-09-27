@@ -10,7 +10,7 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 router.post("/save", (req, res) => {
     // console.log(req)
     const { board_id, report_writer, report_content, report_type } = req.body;  // URL에서 boardID와 userId를 추출
-    console.log("신고저장요청", board_id, "회원id", report_writer, "신고내용", report_content, "신고종류", report_type)
+    // console.log("신고저장요청", board_id, "회원id", report_writer, "신고내용", report_content, "신고종류", report_type)
     const reportSaveQuery = "INSERT INTO report (report_writer, board_id, report_type, report_content, report_date) VALUES (?, ?, ?, ?, NOW())"
 
     mysqlconnection.query(reportSaveQuery, [report_writer, board_id, report_type, report_content], (err, result) => {
@@ -53,9 +53,9 @@ router.get("/fetch/:reportID", (req, res) => {
 
 // 신고삭제 
 router.post("/delete", (req, res) => {
-    console.log("삭제요청진입성공")
+    // console.log("삭제요청진입성공")
     const { board_id, report_id, report_resolution } = req.body;
-    console.log("게시판id", board_id, "신고id", report_id, "신고내용", report_resolution);
+    // console.log("게시판id", board_id, "신고id", report_id, "신고내용", report_resolution);
     const boardDeleteQuery = "UPDATE board SET board_status = 'delete' WHERE board_id = ?"
     const reportDeleteQuery = "UPDATE report SET report_resolution = ?, report_status = 'delete', resolved_at = NOW()  WHERE report_id= ?"
 
@@ -79,9 +79,9 @@ router.post("/delete", (req, res) => {
 
 // 신고무시
 router.post("/ignore", (req, res) => {
-    console.log("무시요청진입성공")
+    // console.log("무시요청진입성공")
     const { report_id, report_resolution } = req.body;
-    console.log("신고id", report_id, "신고내용", report_resolution);
+    // console.log("신고id", report_id, "신고내용", report_resolution);
     const reportIgnoreQuery = "UPDATE report SET report_resolution = ?, report_status = 'ignore', resolved_at = NOW()  WHERE report_id= ?"
 
     // MySQL 쿼리 실행
@@ -129,9 +129,8 @@ router.post("/check/:boardId", (req, res) => {
 
 
 router.get("/fetchBadge", (req, res) => {
-    console.log("패치뱃지요청 접수");
+    // console.log("패치뱃지요청 접수");
     const badgeNumQuery = "SELECT COUNT(*) AS badge_count FROM report WHERE report_status = 'Waiting'";
-
 
     mysqlconnection.query(badgeNumQuery, (err, result) => {
         if (err) {
@@ -148,8 +147,7 @@ router.get("/fetchBadge", (req, res) => {
                 badge: 0 // 결과가 없으면 0 반환
             });
         }
-
-        console.log("뱃지 개수:", result[0].badge_count);
+        // console.log("뱃지 개수:", result[0].badge_count);
     })
 
 })

@@ -8,8 +8,8 @@ import styled from 'styled-components'
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import AdminBoardList from './AdminBoardList';
-import AdminBoardReportList from './AdminBoardReportList';
-import AdminReportManagement from './AdminBoardReportManagement';
+import AdminBoardReportList from '../report/AdminBoardReportList';
+import AdminReportManagement from '../report/AdminBoardReportManagement';
 import AdminBoardPage from './AdminBoardPage';
 
 const AdminBoard = () => {
