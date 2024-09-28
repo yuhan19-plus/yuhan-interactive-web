@@ -1,6 +1,6 @@
 import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { counselDate, myCounsel } from '../../../../../../../../redux/actions/actions'
@@ -13,40 +13,15 @@ import axios from 'axios'
 const ReqForConsultation = ({currentUserState}) => {
     const location = useLocation()
     const dispatch = useDispatch()
-    const { date = "날짜를 선택하세요" } = location.state || {}
-
+    const { checkedDateAndTime } = location.state || {}
     const studentId = currentUserState.user_id
-    const studentMajor = currentUserState.user_major
+    const date = checkedDateAndTime[0]?.counsel_date
 
-    const [myProfessorInfo, setMyProfessorInfo] = useState({
-        user_name: "",
-        user_major: "",
-        user_phone: "",
-        user_email: "",
-        professor_position: ""
-    })
+    const counselTimes = checkedDateAndTime.map(item => item.counsel_time)
+    console.log("counselTimes", counselTimes)
 
-    const MyProfessorData = async () => {
-        try {
-            const response = await axios.get(`/api/consultation/get-my-professor-info/${studentMajor}`)
-            const data = response.data
-            console.log("data", data)
-            setMyProfessorInfo(data.professor)
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '교수 데이터를 가져왔습니다.',
-            })
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: '오류 발생',
-                text: `교수정보를 가져오는 도중 오류가 발생했습니다: ${error}`,
-            })
-        }
-    }
-    
-    console.log(myProfessorInfo)
+    const myProfessorInfoState = useSelector((state) => state.myProfessor)
+    console.log(myProfessorInfoState)
 
     const studentData = {
         studentId: studentId,
@@ -59,17 +34,57 @@ const ReqForConsultation = ({currentUserState}) => {
     }
 
     const professorData = {
-        professorId: myProfessorInfo[0]?.user_id,
-        professorName: myProfessorInfo[0]?.user_name,
-        professorPhone: myProfessorInfo[0]?.user_phone,
-        professorEmail: myProfessorInfo[0]?.user_email,
-        professorMajor: myProfessorInfo[0]?.user_major,
-        professorPosition: myProfessorInfo[0]?.professor_position,
+        professorId: myProfessorInfoState.myProfessorId,
+        professorName: myProfessorInfoState.myProfessorName,
+        professorPhone: myProfessorInfoState.myProfessorPhone,
+        professorEmail: myProfessorInfoState.myProfessorEmail,
+        professorMajor: myProfessorInfoState.myProfessorMajor,
+        professorPosition: myProfessorInfoState.professorPosition,
     }
     console.log(professorData)
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
+    }
+
+    const handleCheckCounselState = async (professorId, counselDate, counselTime) => {
+        try {
+            const response = await axios.get('/api/consultation/check-counsel-state', {
+                professorId: professorId,
+                counselDate: counselDate,
+                counselTime: counselTime
+            })
+            console.log("상담상태 : ", response.data.counselState)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `${error.message} 상담신청 중 오류가 발생했습니다.`,
+            })
+        }
+    }
+
+    const handleUpdateCounselState = async (professorId, reqForCounselDate, reqForCounselTime) => {
+        try {
+            console.log(professorId)
+            console.log(reqForCounselDate)
+            console.log(reqForCounselTime)
+
+            // 상담신청이 정상적으로 완료된 후 counsel_schedule의 counsel_state UPDATE
+            const response = await axios.put('/api/consultation/update-counsel-state', {
+                professorId: professorId,
+                counselDate: reqForCounselDate,
+                counselTime: reqForCounselTime,
+                counselState: 1
+            })
+            // console.log(response.data)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `${error.message} 상담신청 중 오류가 발생했습니다.`,
+            })
+        }
     }
 
     const handleSubmit = (e) => {
@@ -93,14 +108,18 @@ const ReqForConsultation = ({currentUserState}) => {
             counselContent: e.target.counselContent.value,
         }
     
-        axios.post("/api/consultation/req-for-consultation", formData)
+        axios.post('/api/consultation/req-for-consultation', formData)
             .then((response) => {
                 console.log(response.data)
+
                 Swal.fire({
                     icon: 'success',
                     title: '신청 완료',
                     text: '상담 신청이 성공적으로 접수되었습니다.',
                 }).then(() => {
+                    console.log()
+                    handleCheckCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
+                    handleUpdateCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
                     handleMyCounsel()
                 })
             })
@@ -112,12 +131,6 @@ const ReqForConsultation = ({currentUserState}) => {
                 })
             })
     }
-
-    useEffect(() => {
-        if(studentId) {
-            MyProfessorData()
-        }
-    }, [])
     
     return (
         <ReqForConsultationWrapper>
@@ -166,7 +179,7 @@ const ReqForConsultation = ({currentUserState}) => {
                                 name="counselTime"
                                 style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
                             >
-                                {["09시~10시", "10시~11시", "11시~12시", "13시~14시", "14시~15시", "16시~17시"].map(time => (
+                                {counselTimes.map(time => (
                                     <FormControlLabel
                                         key={time}
                                         value={time}

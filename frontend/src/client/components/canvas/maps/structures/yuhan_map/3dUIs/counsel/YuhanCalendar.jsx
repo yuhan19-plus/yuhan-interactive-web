@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Button, debounce } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarPlus, faCircleXmark, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar'
@@ -9,56 +9,175 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { counselBtn } from '../../../../../../../../redux/actions/actions';
 import moment from 'moment';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 const YuhanCalendar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    
     const currentUserInfoState = useSelector((state) => state.currentUser)
+    const myProfessorInfoState = useSelector((state) => state.myProfessor)
+
     const userId = currentUserInfoState.user_id
+    const userType = currentUserInfoState.user_type
+    const userMajor = currentUserInfoState.user_major
     const userName = currentUserInfoState.user_name
-    const counsel = useSelector((state) => state.counsel)
-    const counselValue = counsel.value
-    const counselName = counsel.name
 
     const today = new Date()
     const [date, setDate] = useState(today)
     
     const currentMonth = moment(date).format("M")
-    
-    // 상담 가능 날짜
-    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
-
-    const handleDateChange = (newDate) => {
-        setDate(newDate)
-    }
 
     const handleTodayClick = () => {
         const today = new Date()
         setDate(today)
     }
+    const handleDateChange = (date) => {
+        setDate(date)
+    }
 
-    const handleReqForCounsel = (clickedDate) => {
-        // navigate 함수의 state를 사용해 날짜를 루트 경로로 전달
-        navigate('/', { state: { date: clickedDate } })
+    // navigate 함수의 state를 사용해 날짜를 루트 경로로 전달
+    const handleReqForCounsel = (clickedDate, checkedDateAndTime) => {
+        navigate('/', { state: {
+            date: clickedDate,
+            checkedDateAndTime: checkedDateAndTime
+        } })
         dispatch(counselBtn())
     }
 
-    // 날짜 등록 처리
-    const ClickRegisterDate = async (userId, counselDate) => {
+    // 날짜 확인
+    const checkCounselDate = async (userId, userType, date) => {
+        if(!myProfessorInfoState || myProfessorInfoState.length === 0) return
         try {
-            await axios.put(`/api/consultation/counsel-date-register/register-date/${userId}/${userName}/${counselDate}`)
+            const today = moment(new Date()).format("YYYY-MM-DD")
+            date = moment(date).format("YYYY-MM-DD")
+            const response = await axios.get('/api/consultation/counsel-date', {
+                params: {
+                    professorId: userId,
+                    professorName: myProfessorInfoState.myProfessorName,
+                    professorMajor: myProfessorInfoState.myProfessorMajor,
+                    counselDate: date,
+                    userType: userType
+                }
+            })
+            const isCheckedDate = response.data.checkedDate
+            const clickedDate = response.data.checkedDate[0]?.counsel_date
+            const checkedDateAndTime = response.data.checkedDateAndTime
+
+            // console.log(isCheckedDate.length)
+            // console.log(clickedDate)
+            // console.log(checkedDateAndTime)
+
+            if(date > today) {
+                // 학생일 경우 교수일 경우 나누기
+                if(userType === 'student') {
+                    if(isCheckedDate.length > 0 && checkedDateAndTime.length > 0) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "상담신청",
+                            text: `${clickedDate}에 신청하시겠습니까?`,
+                            showCancelButton: true,
+                            confirmButtonText: "신청",
+                            cancelButtonText: "닫기",
+                        }).then((res) => {
+                            if (res.isConfirmed) {
+                                handleReqForCounsel(clickedDate, checkedDateAndTime)
+                            } else{
+                                return
+                            }
+                        })
+                    } else if(checkedDateAndTime.length <= 0) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "상담불가",
+                            text: "상담신청이 전부 찼습니다."
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "상담불가",
+                            text: "상담신청 날짜를 선택해주세요"
+                        })
+                    }
+                } else {
+                    if(isCheckedDate.length) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "등록불가",
+                            text: `${clickedDate}은 이미 등록된 날짜입니다. 등록을 취소하시겠습니까?`,
+                            showCancelButton: true,
+                            confirmButtonText: "등록취소",
+                            cancelButtonText: "닫기",
+                        }).then((res) => {
+                            if (res.isConfirmed) {
+                                // 등록취소 메서드 호출
+                                ClickCancelDate(userId, clickedDate)
+                            } else{
+                                return
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'question',
+                            title: '날짜등록',
+                            text: `${date}를 상담가능날짜로 등록하시겠습니까?`,
+                            showCancelButton: true,
+                            confirmButtonText: "등록",
+                            cancelButtonText: "닫기",
+                        }).then((res) => {
+                            if (res.isConfirmed) {
+                                ClickRegisterDate(userId, userMajor, userName, date)
+                            } else{
+                                return
+                            }
+                        })
+                    }
+                }
+            } else {
+                if(userType === 'student') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '경고',
+                        text: '지난 날짜 혹은 당일은 상담신청할 수 없습니다.',
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '경고',
+                        text: '지난 날짜 혹은 당일은 상담가능날짜로 등록할 수 없습니다.',
+                    })
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `데이터를 불러올 수 없습니다: ${error.message}`,
+            })
+        }
+    }
+
+    // 날짜 등록 처리
+    const ClickRegisterDate = async (userId, userMajor, userName, counselDate) => {
+        try {
+            // put일 때 params를 사용할 경우 직접 전송해야함
+            const response = await axios.put('/api/consultation/counsel-date-register/register-date', {
+                professorId: userId,
+                counselDate: counselDate,
+                professorName: userName,
+                professorMajor: userMajor
+            })
+            console.log(response.data)
             Swal.fire({
                 icon: 'success',
                 title: '날짜등록',
-                text: '상담가능 날짜를 등록하였습니다.',
+                text: `${counselDate}상담가능 날짜를 등록하였습니다.`,
             })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: '오류 발생',
-                text: `해당 날짜를 등록할 수 없습니다: ${error}`,
+                text: `${counselDate}를 상담 가능 날짜로 등록할 수 없습니다: ${error}`,
             })
         }
     }
@@ -66,7 +185,12 @@ const YuhanCalendar = () => {
     // 등록된 날짜 취소 처리
     const ClickCancelDate = async (userId, counselDate) => {
         try {
-            await axios.put(`/api/consultation/counsel-date-register/cancel-date/${userId}/${counselDate}`)
+            await axios.delete('/api/consultation/counsel-date-delete', {
+                data: {
+                    userId: userId,
+                    counselDate: counselDate
+                }
+            })
             Swal.fire({
                 icon: 'success',
                 title: '날짜등록취소',
@@ -80,6 +204,10 @@ const YuhanCalendar = () => {
             })
         }
     }
+
+    const debounceCheckCounselDate = useCallback(debounce((date) => {
+        checkCounselDate(userId, userType, date)
+    }, 300), [myProfessorInfoState])
 
     return (
         <>
@@ -95,6 +223,7 @@ const YuhanCalendar = () => {
                     locale="ko-KR" // 한국어 기준으로 표시
                     value={date}
                     onChange={handleDateChange}
+                    onClickDay={debounceCheckCounselDate(date)}
                     formatDay={(locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게
                     formatYear={(locale, date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
                     formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
@@ -116,121 +245,53 @@ const YuhanCalendar = () => {
                             && date.getDate() === today.getDate()) {
                                 html.push(<TodayDate key={"today"}>오늘</TodayDate>)
                         }
-                        if (okDay.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
+                        if(date < today) {
                             html.push(
-                                <React.Fragment key={moment(date).format("okDay")}>
-                                    {currentUserInfoState.user_type === 'student' ? (
-                                            <>
-                                                <CounselBtn
-                                                    variant="contained"
-                                                    className='font-color-green'
-                                                    onClick={() => {
-                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
-                                                        Swal.fire({
-                                                            icon: "success",
-                                                            title: "상담신청",
-                                                            text: `${clickedDate}에 신청하시겠습니까?`,
-                                                            showCancelButton: true,
-                                                            confirmButtonText: "신청",
-                                                            cancelButtonText: "닫기",
-                                                        }).then((res) => {
-                                                            if (res.isConfirmed) {
-                                                                handleReqForCounsel(clickedDate)
-                                                            }
-                                                            else{
-                                                                return
-                                                            }
-                                                        })
-                                                    }}
-                                                >
-                                                    {/* <FontAwesomeIcon icon={faCircleCheck} color='green' /> */}
-                                                    <FontAwesomeIcon icon={faEnvelopeOpenText} />
-                                                    <p>상담신청</p>
-                                                </CounselBtn>
-                                            </>
+                                <React.Fragment key={moment(date).format("YYYY-MM-DD")}>
+                                    {
+                                        userType === 'student' ? (
+                                            <CounselBtn
+                                                variant="contained"
+                                                className='font-color-red'
+                                            >
+                                                <FontAwesomeIcon icon={faCircleXmark} color='red' />
+                                                <p>상담불가</p>
+                                            </CounselBtn>
                                         ) : (
-                                            <>
-                                                <CounselBtn
-                                                    variant="contained"
-                                                    className='font-color-red'
-                                                    onClick={() => {
-                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
-                                                        Swal.fire({
-                                                            icon: "warning",
-                                                            title: "등록불가",
-                                                            text: `${clickedDate}은 이미 등록된 날짜입니다. 등록을 취소하시겠습니까?`,
-                                                            showCancelButton: true,
-                                                            confirmButtonText: "등록취소",
-                                                            cancelButtonText: "닫기",
-                                                        }).then((res) => {
-                                                            if (res.isConfirmed) {
-                                                                // 등록취소 메서드 호출
-                                                                ClickCancelDate(userId, clickedDate)
-                                                            }
-                                                            else{
-                                                                return
-                                                            }
-                                                        })
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faCircleXmark} />
-                                                    <p>등록불가</p>
-                                                </CounselBtn>
-                                            </>
+                                            <CounselBtn
+                                                variant="contained"
+                                                className='font-color-red'
+                                            >
+                                                <FontAwesomeIcon icon={faCircleXmark} />
+                                                <p>등록불가</p>
+                                            </CounselBtn>
                                         )
                                     }
                                 </React.Fragment>
                             )
                         } else {
                             html.push(
-                                <React.Fragment key={moment(date).format("noDay")}>
-                                    {currentUserInfoState.user_type === 'student' ? (
-                                            <>
-                                                <CounselBtn
-                                                    variant="contained"
-                                                    className='font-color-red'
-                                                    onClick={() => {
-                                                        Swal.fire({
-                                                            icon: "warning",
-                                                            title: "상담불가",
-                                                            text: "상담신청 날짜를 선택해주세요"
-                                                        })
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faCircleXmark} color='red' />
-                                                    <p>상담불가</p>
-                                                </CounselBtn>
-                                            </>
+                                <React.Fragment key={moment(date).format("YYYY-MM-DD")}>
+                                    {
+                                        userType === 'student' ? (
+                                            <CounselBtn
+                                                variant="contained"
+                                                className='font-color-green'
+                                            >
+                                                {/* <FontAwesomeIcon icon={faCircleCheck} color='green' /> */}
+                                                <FontAwesomeIcon icon={faEnvelopeOpenText} />
+                                                <p>상담신청</p>
+                                            </CounselBtn>
                                         ) : (
-                                            <>
-                                                <CounselBtn
-                                                    variant="contained"
-                                                    className='font-color-green'
-                                                    onClick={() => {
-                                                        const clickedDate = moment(date).format("YYYY-MM-DD")
-                                                        Swal.fire({
-                                                            icon: "success",
-                                                            title: "날짜등록",
-                                                            text: "상담가능 날짜로 등록하시겠습니까?",
-                                                            showCancelButton: true,
-                                                            confirmButtonText: "등록",
-                                                            cancelButtonText: "닫기",
-                                                        }).then((res) => {
-                                                            if (res.isConfirmed) {
-                                                                // 상담등록 메서드 호출
-                                                                ClickRegisterDate(userId, clickedDate)
-                                                            }
-                                                            else{
-                                                                return
-                                                            }
-                                                        })
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faCalendarPlus} color='green' />
-                                                    <p>날짜등록</p>
-                                                </CounselBtn>
-                                            </>
-                                    )}
+                                            <CounselBtn
+                                                variant="contained"
+                                                className='font-color-green'
+                                            >
+                                                <FontAwesomeIcon icon={faCalendarPlus} color='green' />
+                                                <p>날짜등록</p>
+                                            </CounselBtn>
+                                        )
+                                    }
                                 </React.Fragment>
                             )
                         }

@@ -3,20 +3,47 @@ import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } 
 import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux'
 
 const PAGE_COUNT = 5
 
 const MyCounsel = ({ currentUserState }) => {
+    const myProfessorInfoState = useSelector((state) => state.myProfessor)
     const userId = currentUserState.user_id
+
+    console.log(myProfessorInfoState)
 
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
     const [myCounselData, setMyCounselData] = useState([]) // 상담 데이터 상태관리
     const [paginatedData, setPaginatedData] = useState([]) // 페이지네이션된 데이터 상태관리
 
+    const handleUpdateCounselState = async (professorId, counselDate, counselTime) => {
+        try {
+            console.log(professorId)
+            const response = await axios.put('/api/consultation/update-counsel-state', {
+                professorId: professorId,
+                counselDate: counselDate,
+                counselTime: counselTime,
+                counselState: 0
+            })
+            console.log("상담상태 : ", response.data.counselState)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `${error.message} 상담신청 중 오류가 발생했습니다.`,
+            })
+        }
+    }
+
     // 상담이력 불러오기
     const GetMyCounselData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/my-counsel/${userId}`)
+            const response = await axios.get('/api/consultation/my-counsel', {
+                params: {
+                    userId: userId
+                }
+            })
             const data = response.data.myCounsel
             setMyCounselData(data)
             Swal.fire({
@@ -34,14 +61,19 @@ const MyCounsel = ({ currentUserState }) => {
     }
 
     // 상담 취소 처리
-    const ClickCancel = async (userId, consultationId) => {
+    const ClickCancel = async (userId, consultationId, counselDate, counselTime) => {
         try {
-            await axios.put(`/api/consultation/my-counsel/counsel-cancel/${userId}/${consultationId}`)
+            const response = await axios.put('/api/consultation/my-counsel/counsel-cancel', {
+                userId: userId,
+                consultationId: consultationId
+            })
             Swal.fire({
                 icon: 'success',
                 title: '상담취소',
                 text: '상담을 취소하였습니다.',
             })
+            console.log("상담취소 후 상태업데이트 : ", response.data)
+            handleUpdateCounselState(myProfessorInfoState.myProfessorId, counselDate, counselTime)
             // 데이터 갱신
             GetMyCounselData()
         } catch (error) {
@@ -175,7 +207,7 @@ const MyCounsel = ({ currentUserState }) => {
                                                                 cancelButtonText: "닫기",
                                                             }).then((res) => {
                                                                 if (res.isConfirmed) {
-                                                                    ClickCancel(userId, data.consultation_id)
+                                                                    ClickCancel(userId, data.consultation_id, data.counsel_date, data.counsel_time)
                                                                 }
                                                                 else {
                                                                     return
