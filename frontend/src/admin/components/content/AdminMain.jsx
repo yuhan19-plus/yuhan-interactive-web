@@ -18,7 +18,6 @@ const AdminMain = () => {
     console.log(title.state.title)
     return (
         <>
-            <div className='content-title'>{titleValue}</div>
             <div className='admin-content'>
                 {
                     titleValue === '관리자' && <AdminMenuPreview/>
