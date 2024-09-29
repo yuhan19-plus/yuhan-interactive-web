@@ -15,7 +15,7 @@ const ReqForConsultation = ({currentUserState}) => {
     const dispatch = useDispatch()
     const { checkedDateAndTime } = location.state || {}
     const studentId = currentUserState.user_id
-    const date = checkedDateAndTime[0]?.counsel_date
+    const date = checkedDateAndTime[0].counsel_date
 
     const counselTimes = checkedDateAndTime.map(item => item.counsel_time)
     console.log("counselTimes", counselTimes)

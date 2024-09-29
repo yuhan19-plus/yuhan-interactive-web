@@ -3,7 +3,8 @@ import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField } f
 import styled from 'styled-components'
 import YuhanCalendar from '../YuhanCalendar'
 
-const CounselDateRegister = () => {
+const CounselDateRegister = ({registeredDates}) => {
+    console.log(registeredDates)
     return (
         <CounselDateRegisterWrapper>
             <YuhanCalendar />

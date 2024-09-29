@@ -123,45 +123,6 @@ const MyCounsel = ({ currentUserState }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {/* 테스트코드 */}
-                            {/* {
-                                paginatedData.map((data) => (
-                                    <TableRow
-                                        key={data.id}
-                                        sx={{
-                                            backgroundColor: data.id % 2 === 0 ? '#cad5e0' : '#ffffff', // 홀수/짝수 행 배경색
-                                        }}
-                                    >
-                                        <TableCell align='center'>{data.id}</TableCell>
-                                        <TableCell align='center' sx={{fontSize: '28px', fontWeight: 900}}>{data.title}</TableCell>
-                                        <TableCell align='center'>{data.date}</TableCell>
-                                        <TableCell align='center'>{data.date}</TableCell>
-                                        <TableCell align='center'>{data.submitDate}</TableCell>
-                                        {(data.status === '상담완료' || data.status === '상담승인') &&
-                                            <>
-                                                <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>{data.status}</TableCell>
-                                                <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>취소불가</TableCell>
-                                            </>
-                                        }
-                                        {data.status === '승인대기중' &&
-                                            <>
-                                                <TableCell align='center' sx={{color: 'orange', fontWeight: 900}}>{data.status}</TableCell>
-                                                <TableCell align='center'>
-                                                    <Button variant="contained" color="error">
-                                                        취소
-                                                    </Button>
-                                                </TableCell>
-                                            </>
-                                        }
-                                        {(data.status === '승인거절' || data.status === '상담취소') &&
-                                            <>
-                                                <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>{data.status}</TableCell>
-                                                <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>취소불가</TableCell>
-                                            </>
-                                        }
-                                    </TableRow>
-                                ))
-                            } */}
                             {paginatedData.length > 0 ? (
                                 paginatedData.map((data, idx) => (
                                     <TableRow
@@ -238,13 +199,6 @@ const MyCounsel = ({ currentUserState }) => {
                         </TableBody>
                     </Table>
                     <PaginationContainer>
-                        {/* 테스트코드 */}
-                        {/* <Pagination
-                            count={Math.ceil(counselTestData.length / PAGE_COUNT)}
-                            page={currentPage}
-                            onChange={handleChangePage}
-                            color="info"
-                        /> */}
                         {myCounselData.length > 0 && (
                             <Pagination
                                 count={Math.ceil(myCounselData.length / PAGE_COUNT)}

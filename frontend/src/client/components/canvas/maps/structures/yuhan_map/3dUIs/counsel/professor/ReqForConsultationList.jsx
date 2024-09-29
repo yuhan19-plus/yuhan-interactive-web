@@ -40,8 +40,8 @@ const ReqForConsultationList = ({currentUserState}) => {
             await axios.put(`/api/consultation/req-for-consultation-list/counsel-approve/${userId}/${consultationId}`)
             Swal.fire({
                 icon: 'success',
-                title: '상담거절',
-                text: '상담을 거절하였습니다.',
+                title: '상담승인',
+                text: '상담을 승인하였습니다.',
             })
             // 데이터 갱신
             GetReqForConsultationData()
@@ -49,20 +49,26 @@ const ReqForConsultationList = ({currentUserState}) => {
             Swal.fire({
                 icon: 'error',
                 title: '오류 발생',
-                text: `상담거절 중 오류가 발생했습니다: ${error}`,
+                text: `상담승인 중 오류가 발생했습니다: ${error}`,
             })
         }
     }
 
     // 상담 거절 처리
-    const ClickRefusal = async (userId, consultationId) => {
+    const ClickRefusal = async (userId, consultationId, counselDate, counselTime) => {
         try {
-            await axios.put(`/api/consultation/req-for-consultation-list/counsel-refusal/${userId}/${consultationId}`)
+            await axios.put('/api/consultation/req-for-consultation-list/counsel-refusal', {
+                professorId: userId,
+                consultationId: consultationId,
+                counselDate: counselDate,
+                counselTime: counselTime
+            })
             Swal.fire({
                 icon: 'success',
                 title: '상담거절',
                 text: '상담을 거절하였습니다.',
             })
+            
             // 데이터 갱신
             GetReqForConsultationData()
         } catch (error) {
@@ -110,52 +116,6 @@ const ReqForConsultationList = ({currentUserState}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {
-                        paginatedData.map((data) => (
-                            <TableRow
-                                key={data.id}
-                                sx={{
-                                    backgroundColor: data.id % 2 === 0 ? '#cad5e0' : '#ffffff', // 홀수/짝수 행 배경색
-                                }}
-                            >
-                                <TableCell align='center'>{data.id}</TableCell>
-                                <TableCell align='center' sx={{fontSize: '28px', fontWeight: 900}}>{data.title}</TableCell>
-                                <TableCell align='center'>{data.date}</TableCell>
-                                <TableCell align='center'>{data.name}</TableCell>
-                                <TableCell align='center'>{data.submitDate}</TableCell>
-                                {data.status === '승인대기중' && (
-                                    <>
-                                        <TableCell align='center'>
-                                            <Button variant="contained" color="success">수락</Button>
-                                        </TableCell>
-                                        <TableCell align='center'>
-                                            <Button variant="contained" color="error">거절</Button>
-                                        </TableCell>
-                                    </>
-                                )}
-                                {(data.status === '상담취소' || data.status === '승인거절') && (
-                                    <>
-                                        <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>
-                                            수락불가
-                                        </TableCell>
-                                        <TableCell align='center' sx={{color: 'red', fontWeight: 900}}>
-                                            {data.status}
-                                        </TableCell>
-                                    </>
-                                )}
-                                {(data.status === '상담완료' || data.status === '상담승인') && (
-                                    <>
-                                        <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>
-                                            {data.status}
-                                        </TableCell>
-                                        <TableCell align='center' sx={{color: 'green', fontWeight: 900}}>
-                                            취소불가
-                                        </TableCell>
-                                    </>
-                                )}
-                            </TableRow>
-                        ))
-                    } */}
                     {paginatedData.length > 0 ? (
                         paginatedData.map((data, idx) => (
                             <TableRow
@@ -214,7 +174,7 @@ const ReqForConsultationList = ({currentUserState}) => {
                                                         cancelButtonText: "닫기",
                                                     }).then((res) => {
                                                         if (res.isConfirmed) {
-                                                            ClickRefusal(userId, data.consultation_id)
+                                                            ClickRefusal(userId, data.consultation_id, data.counsel_date, data.counsel_time)
                                                         }
                                                         else {
                                                             return

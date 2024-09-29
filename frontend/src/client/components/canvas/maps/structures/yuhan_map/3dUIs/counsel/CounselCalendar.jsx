@@ -6,8 +6,6 @@ import YuhanCalendar from './YuhanCalendar';
 import axios from 'axios';
 
 const CounselCalendar = () => {
-    // 상담 가능 날짜
-    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
 
     return (
         <CounselCalendarWrapper>
@@ -26,9 +24,9 @@ const CounselCalendar = () => {
                         이번달 상담 가능 날짜는?
                     </CalendarContentTitle>
                     <CalendarContent>
-                        {okDay.map((i) => (
+                        {/* {okDay.map((i) => (
                             <p key={i}>{moment(i).format("MM월DD일")}</p>
-                        ))}
+                        ))} */}
                     </CalendarContent>
                 </CalendarContentItem>
             </CalendarContentWrapper>

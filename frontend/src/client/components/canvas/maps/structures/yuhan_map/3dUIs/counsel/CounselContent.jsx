@@ -16,8 +16,10 @@ import axios from 'axios'
 const CounselContent = () => {
     const counsel = useSelector((state) => state.counsel)
     const currentUserState = useSelector((state) => state.currentUser)
-    const studentId = currentUserState.user_id
+    const myProfessorInfoState = useSelector((state) => state.myProfessor)
+    const userId = currentUserState.user_id
     const studentMajor = currentUserState.user_major
+    const userType = currentUserState.user_type
     const counselName = counsel.name
     const dispatch = useDispatch()
 
@@ -64,7 +66,7 @@ const CounselContent = () => {
 
     useEffect(() => {
         // 학생일 경우에만 교수정보 가져오기
-        if(studentId) {
+        if(userType === 'student') {
             MyProfessorData()
         }
     }, [])
@@ -74,7 +76,7 @@ const CounselContent = () => {
             <ContentHeader>
                 <CounselBtn>
                     {
-                        currentUserState.user_type === 'student' ? (
+                        userType === 'student' ? (
                             <>
                                 <Button
                                     variant="contained"
@@ -122,12 +124,13 @@ const CounselContent = () => {
             </ContentHeader>
             <ContentContainer>
                 {
-                    (currentUserState.user_type === 'student') ? (
+                    (userType === 'student') ? (
                         <>
                             {(counselName === '상담이력') && (
                                 <MyCounsel currentUserState={currentUserState} />
                             )}
                             {(counselName === '상담날짜') && (
+                                // <CounselCalendar registeredDates={registeredDates} />
                                 <CounselCalendar />
                             )}
                             {(counselName === '상담신청') && (
@@ -140,6 +143,7 @@ const CounselContent = () => {
                                 <ReqForConsultationList currentUserState={currentUserState} />
                             )}
                             {counselName === '상담날짜등록' && (
+                                // <CounselDateRegister registeredDates={registeredDates} />
                                 <CounselDateRegister />
                             )}
                         </>

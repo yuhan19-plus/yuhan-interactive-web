@@ -60,6 +60,7 @@ router.get("/current-student-info/:userId", (req, res) => {
         }
     })
 })
+
 // 나의 교수정보 가져오기
 router.get("/get-my-professor-info", (req, res) => {
     const {studentMajor} = req.query
@@ -107,6 +108,7 @@ router.get("/my-counsel", (req, res) => {
             counsel_state
         FROM consultation
         WHERE student_id = ?
+        ORDER BY counsel_date, counsel_time ASC
     `
     
     mysqlConnection.query(selectMyConsultationStudentQuery, [userId], (err, results) => {
@@ -138,7 +140,9 @@ router.get("/req-for-consultation-list/:userId", (req, res) => {
             counsel_state,
             createdAt
         FROM consultation
-        WHERE professor_id = ?`
+        WHERE professor_id = ?
+        ORDER BY counsel_date, counsel_time ASC
+    `
     
     mysqlConnection.query(selectMyConsultationProfessorQuery, [userId], (err, results) => {
         if(err) {
@@ -147,6 +151,45 @@ router.get("/req-for-consultation-list/:userId", (req, res) => {
         } else {
             res.json({
                 myCounsel: results,
+            })
+        }
+    })
+})
+
+// counsel_schedule의 등록된 날짜 전부 가져오기
+router.get("/counsel-dates", (req, res) => {
+    const {professorId} = req.query
+    console.log("counsel_schedule의 등록된 날짜 전부 가져오기 : ", professorId)
+
+    let allCounselDates, allCounselDatesAndTimes
+
+    const selectCounselDatesQuery = `
+        SELECT DISTINCT counsel_date, counsel_state FROM counsel_schedule
+        WHERE professor_id = ? AND counsel_date >= now()
+    `
+
+    const selectAllCounselDatesQuery = `
+        SELECT counsel_date, counsel_time, counsel_state FROM counsel_schedule
+        WHERE professor_id = ? AND counsel_date >= now()
+    `
+
+    mysqlConnection.query(selectCounselDatesQuery, [professorId], (err, results) => {
+        if (err) {
+            console.error('DB SELECT Error: ', err)
+            return res.status(500).send('SELECT 중 오류가 발생했습니다.')
+        } else {
+            allCounselDates = results
+            mysqlConnection.query(selectAllCounselDatesQuery, [professorId], (err, results) => {
+                if (err) {
+                    console.error('DB SELECT Error: ', err)
+                    return res.status(500).send('SELECT 중 오류가 발생했습니다.')
+                } else {
+                    allCounselDatesAndTimes = results
+                    res.json({
+                        allCounselDates,
+                        allCounselDatesAndTimes
+                    })
+                }
             })
         }
     })
@@ -333,9 +376,9 @@ router.put("/req-for-consultation-list/counsel-approve/:userId/:consultationId",
 })
 
 // 상담거절
-router.put("/req-for-consultation-list/counsel-refusal/:userId/:consultationId", (req, res) => {
-    const {userId, consultationId} = req.params
-    console.log("상담신청목록(승인거절) : ", userId)
+router.put("/req-for-consultation-list/counsel-refusal", (req, res) => {
+    const {professorId, consultationId, counselDate, counselTime} = req.body
+    console.log("상담신청목록(승인거절) : ", professorId)
     console.log("상담신청목록(승인거절) : ", consultationId)
 
     const updateMyCounselCancelQuery = `
@@ -343,12 +386,22 @@ router.put("/req-for-consultation-list/counsel-refusal/:userId/:consultationId",
         WHERE professor_id = ? AND consultation_id = ?
     `
 
-    mysqlConnection.query(updateMyCounselCancelQuery, [userId, consultationId], (err, results) => {
+    const updateReqForConsultationListQuery = `
+        UPDATE counsel_schedule SET counsel_state = 0
+        WHERE professor_id = ? AND counsel_date = ? AND counsel_time = ?
+    `
+    mysqlConnection.query(updateMyCounselCancelQuery, [professorId, consultationId], (err, results) => {
         if(err) {
             console.log("승인거절 - consultation테이블 검색 중 에러 발생 : ", err)
-            return res.status(500).json({ message: "승인거절 - consultation테이블 검색 중 에러가 발생했습니다."})
         } else {
-            return res.status(200).json({ message: "승인거절 - 승인거절이 정상적으로 완료되었습니다."})
+            mysqlConnection.query(updateReqForConsultationListQuery, [professorId, counselDate, counselTime], (err, results) => {
+                if(err) {
+                    console.log("승인거절 - consultation테이블 검색 중 에러 발생 : ", err)
+                    return res.status(500).json({ message: "승인거절 - consultation테이블 검색 중 에러가 발생했습니다."})
+                } else {
+                    return res.status(200).json({ message: "승인거절 - 승인거절이 정상적으로 완료되었습니다."})
+                }
+            })
         }
     })
 })
