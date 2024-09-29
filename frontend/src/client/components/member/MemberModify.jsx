@@ -16,7 +16,7 @@ import { useCookies } from 'react-cookie'
 
 const MemberModify = () => {
     const [showPassword, setShowPassword] = useState(false)
-    const [cookies] = useCookies(['user', 'userType'])
+    const [cookies, setCookie] = useCookies(['user', 'userType', 'userName'])
     const [memberType, setMemberType] = useState(cookies.userType === 'student') // 쿠키에서 회원 유형 결정
     const [formData, setFormData] = useState({
         memberID: '',
@@ -120,6 +120,7 @@ const MemberModify = () => {
                         icon: 'success',
                         confirmButtonText: '확인'
                     }).then(() => {
+                        setCookie('userName', formData.memberName, { path: '/' }); // 쿠키 업데이트
                         window.location.href = '/' // 확인을 누르면 '/'로 리다이렉트
                     });
                 } else {
