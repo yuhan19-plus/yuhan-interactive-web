@@ -87,7 +87,10 @@ export function Bus({ position }) {
         >
           <group name="Scene">
             <group name="Cube" scale={[2, 2, 5]}>
-              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} material={materials.main} />
+              {/* <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} color={'#ff0000'} /> */}
+              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry}>
+                <meshStandardMaterial color={'#006961'}/>
+              </mesh>
               <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
               <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
               <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
