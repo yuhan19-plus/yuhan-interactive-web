@@ -1,13 +1,38 @@
 /** 파일생성자 : 임성준
  * 임성준 : 프론트엔드 개발
+ * 이석재
+ *   - 관리자 로그아웃 기능 구현 완료
  */
 
 import React from 'react'
 import styled from 'styled-components'
 import { AdminPanelSettings, Logout, ViewInAr } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import { useCookies } from 'react-cookie';
 
 const AdminNav = () => {
+
+    const [, ,removeCookie] = useCookies(['adminMode']); // adminMode 쿠키 삭제 함수 사용
+
+
+    const handleLogout = () => {
+        Swal.fire({
+            icon: 'success',
+            title: '로그아웃 완료',
+            text: '관리자 메뉴에서 로그아웃합니다.',
+            showCancelButton: false,
+            confirmButtonText: '확인'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                removeCookie('adminMode', { path: '/' }); // adminMode 쿠키 삭제
+                // 페이지 리다이렉트
+                window.location.href = '/'; // 루트 페이지로 리다이렉트
+                
+            }
+        });
+    };
+
     return (
         <>
             <AdminNavList>
@@ -20,7 +45,7 @@ const AdminNav = () => {
                 </Link>
                 <div>
                     {/* 로그아웃 기능구현할 때 태그 변경할 것 */}
-                    <p><Logout />&nbsp;로그아웃</p>
+                    <Link to="#" onClick={handleLogout}><p><Logout />&nbsp;로그아웃</p></Link>
                     <Link to={'/'}><p><ViewInAr />&nbsp;3D맵으로</p></Link>
                 </div>
             </AdminNavList>

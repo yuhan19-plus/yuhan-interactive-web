@@ -13,8 +13,8 @@ import AdminReport from './board/AdminReport'
 
 const AdminMain = () => {
     const title = useLocation()
-    const titleValue = title.state.title
-    console.log(title.state.title)
+    const titleValue = title.state?.title || '관리자';
+    console.log(titleValue)
     return (
         <>
             <div className='content-title'>{titleValue}</div>

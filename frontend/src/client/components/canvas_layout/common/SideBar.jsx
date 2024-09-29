@@ -5,6 +5,7 @@
  *   - 로그인 시 사용자 아이디를 보여줄 수 있도록 수정
  *   - 로그아웃 시 추가된 쿠키를 삭제하도록 수정
  *   - 회원정보수정 페이지에 접근 가능하도록 추가
+ *   - 관리자 로그인 구현완료
  */
 import { AdminPanelSettings, Close, Login, Logout, Menu } from '@mui/icons-material'
 import React, { useEffect, useState } from 'react'
@@ -44,7 +45,7 @@ const SideBar = () => {
     // console.log('sideMenuValue', sideMenuValue)
 
     // 쿠키(세션 쿠키)
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     const handleSideMenuInit = () => {
         // 사이드 메뉴 초기화
@@ -94,18 +95,27 @@ const SideBar = () => {
                         </div>
                         </>
                     )}
-                    <div>
-                        <a onClick={handleShowAdminEnterModal}><AdminPanelSettings /><p>관리자</p></a>
-                    </div>
-                    <div>
-                        <Link 
-                            to={'/admin'}
-                            state={{
-                                title: '관리자'
-                            }}>
-                                <AdminPanelSettings /><p>TEST</p>
-                        </Link>
-                    </div>
+                        {/* 쿠키의 userType이 admin일 때만 보여주기 */}
+                        {cookies.userType === 'admin' && (
+                            <>
+                                <div>
+                                    <a onClick={handleShowAdminEnterModal}>
+                                        <AdminPanelSettings />
+                                        <p>관리자</p>
+                                    </a>
+                                </div>
+                                {/* <div>
+                                    <Link 
+                                        to={'/admin'}
+                                        state={{
+                                            title: '관리자'
+                                        }}>
+                                        <AdminPanelSettings />
+                                        <p>TEST</p>
+                                    </Link>
+                                </div> */}
+                            </>
+                        )}
                     {cookies.user && (
                         <div>
                             <Link to={'/membermodify'}><p>{cookies.userName}님 안녕하세요!</p></Link>

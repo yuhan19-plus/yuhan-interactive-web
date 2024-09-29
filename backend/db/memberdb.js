@@ -125,9 +125,10 @@ router.post('/register', async (req, res) => {
 router.post('/login', (req, res) => {
     const { memberID, memberPW } = req.body;
 
-    // 1. 학생 테이블에서 사용자 검색
+    // 1. 학생, 교수, 관리자 테이블에서 사용자 검색
     const studentQuery = 'SELECT * FROM student WHERE user_id = ?';
     const professorQuery = 'SELECT * FROM professor WHERE user_id = ?';
+    const adminQuery = 'SELECT * FROM admin WHERE user_id = ?'; // 관리자 테이블 추가
 
     // 학생 여부 확인
     mysqlconnection.query(studentQuery, [memberID], (err, studentResults) => {
@@ -199,13 +200,51 @@ router.post('/login', (req, res) => {
                         }
                     });
                 } else {
-                    // 학생도 교수도 아닌 경우
-                    return res.status(401).send('아이디 또는 비밀번호를 확인하세요.');
+                    // 7. 관리자 여부 확인
+                    mysqlconnection.query(adminQuery, [memberID], (err, adminResults) => {
+                        if (err) {
+                            console.error('로그인 중 오류 발생 (관리자 테이블 조회):', err);
+                            return res.status(500).send('서버 오류가 발생했습니다.');
+                        }
+
+                        if (adminResults.length > 0) {
+                            const admin = adminResults[0];
+
+                            // 8. 탈퇴한 상태인지 확인 (user_status가 1이어야 로그인 가능)
+                            if (admin.user_status !== 1) {
+                                return res.status(403).send('탈퇴한 계정입니다. 로그인이 불가능합니다.');
+                            }
+
+                            // 9. 비밀번호 비교
+                            bcrypt.compare(memberPW, admin.user_password, (err, isMatch) => {
+                                if (err) {
+                                    console.error('비밀번호 비교 중 오류 발생:', err);
+                                    return res.status(500).send('서버 오류가 발생했습니다.');
+                                }
+
+                                if (isMatch) {
+                                    // 로그인 성공 - 관리자
+                                    return res.status(200).json({
+                                        message: '로그인 성공',
+                                        userID: admin.user_id,
+                                        userType: 'admin', // 관리자
+                                        userName: admin.user_name // 쿠키에 사용할 이름도 전달
+                                    });
+                                } else {
+                                    return res.status(401).send('아이디 또는 비밀번호를 확인하세요.');
+                                }
+                            });
+                        } else {
+                            // 학생도 교수도 관리자도 아닌 경우
+                            return res.status(401).send('아이디 또는 비밀번호를 확인하세요.');
+                        }
+                    });
                 }
             });
         }
     });
 });
+
 
 
 // POST 요청 처리 - 사용자 정보 수정
@@ -313,6 +352,41 @@ router.post('/modify', async (req, res) => {
                     });
                 });
             }
+
+            // 4. 관리자인 경우 admin 테이블 업데이트
+            if (memberType === 'admin') {
+                const adminQuery = `
+                    UPDATE admin 
+                    SET 
+                        ${memberPW ? 'user_password = ?, ' : ''}
+                        user_name = ?, 
+                        user_phone = ?, 
+                        user_email = ?, 
+                        user_gender = ?
+                    WHERE user_id = ?
+                `;
+                const adminValues = memberPW
+                    ? [hashedPassword, memberName, memberPhone, memberEmail, memberGender, memberID]
+                    : [memberName, memberPhone, memberEmail, memberGender, memberID];
+
+                mysqlconnection.query(adminQuery, adminValues, (err, results) => {
+                    if (err) {
+                        return mysqlconnection.rollback(() => {
+                            throw err;
+                        });
+                    }
+
+                    // 트랜잭션 커밋
+                    mysqlconnection.commit((err) => {
+                        if (err) {
+                            return mysqlconnection.rollback(() => {
+                                throw err;
+                            });
+                        }
+                        res.status(200).send('관리자 정보 수정 성공');
+                    });
+                });
+            }
         });
     } catch (err) {
         console.error('데이터 수정 실패:', err);
@@ -336,14 +410,13 @@ router.get('/:userID', (req, res) => {
         // 2. 학생인 경우
         if (studentResults.length > 0) {
             const student = studentResults[0];
-            // 가져온 데이터에 userType 추가
             return res.status(200).json({
                 ...student,
                 userType: 'student'
             });
         }
 
-        // 3. 학생이 아닌 경우, 교수 테이블에서 사용자 정보 조회
+        // 3. 교수 테이블에서 사용자 정보 조회
         const professorQuery = 'SELECT * FROM professor WHERE user_id = ?';
         mysqlconnection.query(professorQuery, [userID], (err, professorResults) => {
             if (err) {
@@ -354,15 +427,32 @@ router.get('/:userID', (req, res) => {
             // 4. 교수인 경우
             if (professorResults.length > 0) {
                 const professor = professorResults[0];
-                // 가져온 데이터에 userType 추가
                 return res.status(200).json({
                     ...professor,
                     userType: 'professor'
                 });
             }
 
-            // 5. 학생도 교수도 아닌 경우
-            return res.status(404).send('사용자를 찾을 수 없습니다.');
+            // 5. admin 테이블에서 사용자 정보 조회
+            const adminQuery = 'SELECT * FROM admin WHERE user_id = ?';
+            mysqlconnection.query(adminQuery, [userID], (err, adminResults) => {
+                if (err) {
+                    console.error('관리자 정보 조회 중 오류 발생:', err);
+                    return res.status(500).send('서버 오류가 발생했습니다.');
+                }
+
+                // 6. 관리자일 경우
+                if (adminResults.length > 0) {
+                    const admin = adminResults[0];
+                    return res.status(200).json({
+                        ...admin,
+                        userType: 'admin'
+                    });
+                }
+
+                // 7. 학생도 교수도 관리자도 아닌 경우
+                return res.status(404).send('사용자를 찾을 수 없습니다.');
+            });
         });
     });
 });
