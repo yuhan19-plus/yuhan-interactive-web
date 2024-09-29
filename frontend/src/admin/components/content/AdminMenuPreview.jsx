@@ -66,7 +66,7 @@ const AdminMenuPreview = () => {
 
     // testadmin이 작성한 글을 우선으로 최대 5개의 게시글을 가져오는 함수
     const getAdminAndRecentPosts = () => {
-        const adminPosts = boardData.filter(item => item.board_writer === 'testadmin');
+        const adminPosts = boardData.filter(item => item.writer_type === 'admin');
 
         // testadmin이 작성한 글이 5개 미만으로 보이도록
         const combinedPosts = adminPosts.slice(0, 5);
