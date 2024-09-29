@@ -9,17 +9,17 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 
 // 데이터저장
 router.post("/", (req, res) => {
-    const { board_title, board_content, board_writer, files } = req.body;
+    const { board_title, board_content, board_writer, writer_type, files } = req.body;
 
     // 필수 필드 체크
     if (!board_title || !board_content || !board_writer) {
         return res.status(400).send("board_title, board_content, board_writer 값이 필요합니다.");
     }
 
-    const insertBoardQuery = `INSERT INTO board (board_title, board_content, board_writer, board_date) VALUES (?, ?, ?, NOW())`;
+    const insertBoardQuery = `INSERT INTO board (board_title, board_content, board_writer, writer_type, board_date) VALUES (?, ?, ?, ?, NOW())`;
     const insertAttachmentQuery = `INSERT INTO attachment (board_id, file_name, file_data, upload_date, file_size, file_type) VALUES (?, ?, ?, NOW(), ?, ?)`;
 
-    mysqlconnection.query(insertBoardQuery, [board_title, board_content, board_writer], (err, results) => {
+    mysqlconnection.query(insertBoardQuery, [board_title, board_content, board_writer, writer_type], (err, results) => {
         if (err) {
             console.error("게시물 삽입 중 에러 발생:", err);
             return res.status(500).json({ message: "게시물 삽입 중 오류가 발생했습니다." });

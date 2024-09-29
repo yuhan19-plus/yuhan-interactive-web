@@ -97,7 +97,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                         )}
 
                         {/* 관리자는 삭제에만 접근 가능 */}
-                        {(cookies.user === 'testadmin') && cookies.user !== boardData.board_writer && (
+                        {(cookies.userType === 'admin') && cookies.user !== boardData.board_writer && (
                             <Button
                                 variant="outlined"
                                 size="medium"
@@ -123,7 +123,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                     </Grid>
 
                     {/* 신고버튼 관리자는 신고할 필요없이 그냥 삭제 */}
-                    {(cookies.user !== 'testadmin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
+                    {(cookies.userType !== 'admin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
                         <Grid item>
                             <Button
                                 variant="outlined"

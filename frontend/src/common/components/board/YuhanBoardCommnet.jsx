@@ -200,7 +200,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                             <Grid item xs={1}>
                                                 {/* 삭제 버튼 */}
                                                 {cookies.user &&
-                                                    (cookies.user === item.comment_writer || cookies.user === "testadmin") &&
+                                                    (cookies.user === item.comment_writer || cookies.userType === "admin") &&
                                                     (
                                                         <Grid item xs={12} sx={{ textAlign: "right" }}>
                                                             <ListItemButton onClick={() => handleDeleteComment(item.comment_id)}>

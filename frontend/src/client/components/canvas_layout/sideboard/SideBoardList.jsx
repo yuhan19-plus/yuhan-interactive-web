@@ -72,17 +72,17 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
-        const targetWriter = 'testadmin'; // testadmin을 관리자로 가정하고 진행
+        const targetWriter = 'admin'; 
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
         const sortedData = [...activeData].sort((a, b) => {
             let compareA = a[sortCriteria];
             let compareB = b[sortCriteria];
 
             // 관리자가 작성한 글 우선순위 부여
-            if (a.board_writer === targetWriter && b.board_writer !== targetWriter) {
+            if (a.writer_type === targetWriter && b.writer_type !== targetWriter) {
                 return -1; // a를 더 앞에 배치
             }
-            if (a.board_writer !== targetWriter && b.board_writer === targetWriter) {
+            if (a.writer_type !== targetWriter && b.writer_type === targetWriter) {
                 return 1;  // b를 더 앞에 배치
             }
 

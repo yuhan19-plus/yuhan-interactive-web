@@ -17,6 +17,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         board_title: "",
         board_content: "",
         board_writer: cookies.user, // 세션쿠키에서 user를 받아서 작성자로 입력
+        writer_type: cookies.userType,
         files: []  // 파일 데이터를 저장하는 배열
     });
     // shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
