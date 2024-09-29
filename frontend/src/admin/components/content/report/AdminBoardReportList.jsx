@@ -83,15 +83,8 @@ const AdminBoardReportList = ({ onReportManagement }) => {
     return (
         <>
             <Box sx={{ p: 3 }}>
-                <Grid container alignItems="center" justifyContent="center" sx={{ position: 'relative' }} >
-                    <Grid item>
-                        <Typography variant="h2"
-                            sx={{ textAlign: "center", color: "#ee2e2e", fontWeight: "bold", fontSize: "2.5rem" }}
-                        >
-                            신고내역
-                        </Typography>
-                    </Grid>
-                    <FormControl sx={{ position: 'absolute', right: '2vw', minWidth: 80 }}>
+                <Grid container alignItems="center" justifyContent="flex-end" sx={{ position: 'relative' }} >
+                    <FormControl sx={{ minWidth: 80 }}>
                         <Select
                             labelId="sort-label"
                             value={sortCriteria}

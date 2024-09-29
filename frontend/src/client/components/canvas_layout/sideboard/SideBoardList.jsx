@@ -72,7 +72,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
-        const targetWriter = 'admin'; 
+        const targetWriter = 'admin';
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
         const sortedData = [...activeData].sort((a, b) => {
             let compareA = a[sortCriteria];
@@ -182,36 +182,69 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
 
                         {/* 리스트 아이템 부분 */}
                         {getCurrentPageData().map((item, index) => (
-                            (item.board_status === 'active') && (
+                            (item.board_status === 'active') && (item.writer_type === 'admin') ? (
                                 <ListItem key={item.board_id} divider>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height:'3.5vh' }}>
                                         {/* 번호 */}
-                                        <Box sx={{ width: '5%', textAlign: 'left', pl:1 }}>
+                                        <Box sx={{ width: '5%', textAlign: 'left', pl: 1 }}>
+                                            <Admincontent>{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
+                                        </Box>
+                                        {/* 제목 */}
+                                        <Box sx={{ width: '60%' }}>
+                                            <Admincontent
+                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                                onClick={() => handleSelectItem(item.board_id)}
+                                            >
+                                                {isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
+                                            </Admincontent>
+                                        </Box>
+                                        {/* 작성자 */}
+                                        <Box sx={{ width: '15%', textAlign: 'center' }}>
+                                            <Admincontent
+                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                                onClick={() => handleSelectItem(item.board_id)}
+                                            >
+                                                {isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
+                                            </Admincontent>
+                                        </Box>
+                                        {/* 좋아요 */}
+                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                            <Admincontent>{item.board_like}</Admincontent>
+                                        </Box>
+                                        {/* 조회수 */}
+                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                            <Admincontent>{item.board_view}</Admincontent>
+                                        </Box>
+                                    </Box>
+                                </ListItem>
+                            ) : (
+                                <ListItem key={item.board_id} divider>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height:'3.5vh'}}>
+                                        {/* 번호 */}
+                                        <Box sx={{ width: '5%', textAlign: 'left', pl: 1 }}>
                                             <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
                                         </Box>
                                         {/* 제목 */}
                                         <Box sx={{ width: '60%' }}>
-                                            <ListItemText
-                                                primary={isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}
+                                            <Typography
                                                 onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                                 onClick={() => handleSelectItem(item.board_id)}
-                                            />
+                                            >{isWideScreen ? item.board_title.substring(0, 18) : item.board_title.substring(0, 8)}</Typography>
                                         </Box>
                                         {/* 작성자 */}
                                         <Box sx={{ width: '15%', textAlign: 'center' }}>
-                                            <ListItemText
-                                                primary={isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}
+                                            <Typography
                                                 onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                                 onClick={() => handleSelectItem(item.board_id)}
-                                            />
+                                            >{isWideScreen ? item.board_writer : item.board_writer.substring(0, 10)}</Typography>
                                         </Box>
                                         {/* 좋아요 */}
                                         <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <ListItemText primary={`${item.board_like}`} />
+                                            <Typography>{item.board_like}</Typography>
                                         </Box>
                                         {/* 조회수 */}
                                         <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <ListItemText primary={`${item.board_view}`} />
+                                            <Typography>{item.board_view}</Typography>
                                         </Box>
                                     </Box>
                                 </ListItem>
@@ -226,7 +259,6 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                             onChange={handlePageChange}
                             color='primary'
                         />
-
 
                         {cookies.user &&
                             <Box sx={{ position: 'absolute', right: 5 }}>
@@ -249,3 +281,10 @@ const BoardLayout = styled.div`
     width: 100%;
     box-sizing: border-box;
 `;
+
+const Admincontent = styled.div`
+    font-weight: 900;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #0F275C;
+`
