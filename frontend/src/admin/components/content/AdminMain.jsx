@@ -32,7 +32,7 @@ const AdminMain = () => {
                     titleValue === '유한게시판' && <AdminBoard />
                 }
                 {
-                    titleValue === '전공추천' && <AdminDeptRec />
+                    titleValue === '학부추천' && <AdminDeptRec />
                 }
                 {
                     titleValue === '신고내역' && <AdminReport />

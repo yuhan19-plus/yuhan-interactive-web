@@ -1,13 +1,13 @@
 /** 파일 생성자 : 이석재
  *  deptRecAdmindb 모듈화
- * 질문 조회, 질문 수정, 학과 점수 및 순위 조회 기능
+ * 질문 조회, 질문 수정, 학부 점수 및 순위 조회 기능
  * */
 
 const express = require('express');
 const router = express.Router();
 const mysqlconnection = require('../server'); // DB 연결
 
-// 학과별 질문 조회 API
+// 학부별 질문 조회 API
 router.get('/questions/:deptName', (req, res) => {
     const { deptName } = req.params;
     
@@ -40,7 +40,7 @@ router.put('/questions/:questionId', (req, res) => {
     });
 });
 
-// 학과 점수 및 순위 조회 API
+// 학부 점수 및 순위 조회 API
 router.get('/rankings', (req, res) => {
     const query = `SELECT dept_name, score FROM dept_rank ORDER BY score DESC`;
 
@@ -51,7 +51,7 @@ router.get('/rankings', (req, res) => {
         }
 
         let rank = 1;           // 현재 순위
-        let prevScore = null;   // 이전 학과의 점수
+        let prevScore = null;   // 이전 학부의 점수
         let actualRank = 1;     // 실제로 표시할 순위 (공동 순위를 포함)
 
         const rankings = results.map((row, index) => {

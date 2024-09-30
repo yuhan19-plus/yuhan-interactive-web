@@ -100,7 +100,7 @@ const MainSideBarMenu = () => {
             </div>
             <div>
                 <FontAwesomeIcon icon={faLightbulb} />
-                <span><a onClick={handleDeptRec}>전공추천</a></span>
+                <span><a onClick={handleDeptRec}>학부추천</a></span>
             </div>
             <div>
                 <FestivalIcon />

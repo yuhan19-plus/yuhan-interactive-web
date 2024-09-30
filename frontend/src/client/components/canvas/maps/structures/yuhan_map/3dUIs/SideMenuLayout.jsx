@@ -32,7 +32,7 @@ const SideMenuLayout = (props) => {
     if (title === 'consultation') title = '상담신청'
     else if (title === 'board') title = '유한게시판'
     else if (title === 'food') title = '오늘의 메뉴'
-    else if (title === 'deptRec') title = '전공추천'
+    else if (title === 'deptRec') title = '학부추천'
 
     // 사용자와 학생 정보의 초기값 설정
     const [userInfo, setUserInfo] = useState({

@@ -77,9 +77,9 @@ const AdminNav = () => {
                 <Link 
                     to={'/admin/deptRec'}
                     state={{
-                        title: '전공추천'
+                        title: '학부추천'
                     }}>
-                        <AdminButton>전공추천</AdminButton>
+                        <AdminButton>학부추천</AdminButton>
                     </Link>
                     
                 <Link 

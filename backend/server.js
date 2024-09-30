@@ -6,7 +6,7 @@
  * 이석재
  *   - nas의 mysql 컨테이너와 연결 설정 및 회원 라우트 연결
  *   - 회원관리 라우트 연결
- *   - 전공 추천 관리 라우트 연결
+ *   - 학부 추천 관리 라우트 연결
  * */
 const express = require("express");
 const http = require("http");
@@ -50,7 +50,7 @@ const memberAdminRoutes = require('./db/memberAdmindb');
 const boardRoutes = require('./db/boarddb');
 const tempboardRoutes = require('./db/tempBoarddb'); 
 const boardLikeRoutes = require('./db/boardLikeddb'); 
-const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학과 추천 관리 라우터
+const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학부 추천 관리 라우터
 const commentRoutes = require('./db/commentdb'); 
 const reportRoutes = require('./db/reportdb'); 
 const consultationRoutes = require('./db/consultationDB')
@@ -60,7 +60,7 @@ app.use('/member', memberRoutes);
 app.use('/memberAdmin', memberAdminRoutes);
 app.use('/tempboard', tempboardRoutes);
 app.use('/boardlike', boardLikeRoutes);
-app.use('/deptrecadmin', deptRecAdminRoutes);  // 학과 추천 관리 라우트를 '/deptrec' 경로로 사용
+app.use('/deptrecadmin', deptRecAdminRoutes);  // 학부 추천 관리 라우트를 '/deptrec' 경로로 사용
 app.use('/comment', commentRoutes);
 app.use('/report', reportRoutes);
 app.use('/food', todaymenuRoutes);
