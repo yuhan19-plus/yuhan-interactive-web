@@ -27,7 +27,7 @@ const MiniMap = () => {
             <BtnMenuGroup />
             <MiniMapContentWrapper>
                 <MiniMapContent cameraPosition={cameraPosition} />
-                <Teleport top="40%" right="40%" tooltipContent="평화관 정문" onClick={() => {
+                <Teleport style={{top: "40%", right: "40%"}} $tooltipcontent="평화관 정문" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "평화관 정문",
@@ -44,7 +44,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="55%" right="45%" tooltipContent="평화관 후문" onClick={() => {
+                <Teleport style={{top: "55%", right: "45%"}} $tooltipcontent="평화관 후문" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "평화관 후문",
@@ -61,7 +61,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="35%" right="30%" tooltipContent="봉사관" onClick={() => {
+                <Teleport style={{top: "35%", right: "30%"}} $tooltipcontent="봉사관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "봉사관",
@@ -78,7 +78,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="35%" left="33%" tooltipContent="자유관" onClick={() => {
+                <Teleport style={{top: "35%", left: "33%"}} $tooltipcontent="자유관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "자유관",
@@ -95,7 +95,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="65%" right="30%" tooltipContent="학생회관" onClick={() => {
+                <Teleport style={{top: "65%", left: "30%"}} $tooltipcontent="학생회관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "학생회관",
@@ -112,7 +112,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="60%" right="45%" tooltipContent="나눔관" onClick={() => {
+                <Teleport style={{top: "60%", right: "45%"}} $tooltipcontent="나눔관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "나눔관",
@@ -129,7 +129,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="79%" left="33%" tooltipContent="창조관" onClick={() => {
+                <Teleport style={{top: "79%", left: "33%"}} $tooltipcontent="창조관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "창조관",
@@ -146,7 +146,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="65%" left="30%" tooltipContent="유일한기념관" onClick={() => {
+                <Teleport style={{top: "65%", left: "30%"}} $tooltipcontent="유일한기념관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "유일한기념관",
@@ -163,7 +163,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport top="48%" left="17.5%" tooltipContent="유재라관" onClick={() => {
+                <Teleport style={{top: "48%", left: "17.5%"}} $tooltipcontent="유재라관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "유재라관",
@@ -201,9 +201,6 @@ const Teleport = styled.div`
     justify-content : center;
     align-items : center;
     cursor: pointer;
-    ${(props) => props.top && `top: ${props.top};`}
-    ${(props) => props.right && `right: ${props.right};`}
-    ${(props) => props.left && `left: ${props.left};`}
     transition: all 0.2s ease-in-out;
     &:hover {
         width: 6%;
