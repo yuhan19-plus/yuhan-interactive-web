@@ -2,10 +2,10 @@ const express = require("express")
 const router = express.Router()
 const mysqlConnection = require("../server")
 
-// 교수정보 가져오기
-router.get("/current-professor-info/:userId", (req, res) => {
-    const professorId = req.params.userId
-    console.log("교수 아이디 : ", professorId)
+// 현재 사용자 정보 가져오기 (교수)
+router.get("/current-professor-info", (req, res) => {
+    const {professorId} = req.query
+    // console.log("교수 아이디 : ", professorId)
 
     const selectProfessorQuery = `
         SELECT
@@ -31,10 +31,10 @@ router.get("/current-professor-info/:userId", (req, res) => {
     })
 })
 
-// 학생정보 가져오기
-router.get("/current-student-info/:userId", (req, res) => {
-    const studentId = req.params.userId
-    console.log("학생 아이디 : ", studentId)
+// 현재 사용자 정보 가져오기 (학생)
+router.get("/current-student-info", (req, res) => {
+    const {studentId} = req.query
+    // console.log("학생 아이디 : ", studentId)
 
     const selectStudentQuery = `
         SELECT
@@ -51,7 +51,7 @@ router.get("/current-student-info/:userId", (req, res) => {
 
     mysqlConnection.query(selectStudentQuery, [studentId], (err, results) => {
         if(err) {
-            console.log("상담신청 - student테이블 검색 중 에러 발생 : ", err)
+            // console.log("상담신청 - student테이블 검색 중 에러 발생 : ", err)
             return res.status(500).json({ message: "상담신청 - student테이블 검색 중 에러가 발생했습니다."})
         } else {
             res.json({
@@ -124,9 +124,9 @@ router.get("/my-counsel", (req, res) => {
 })
 
 // 상담신청목록 데이터 불러오기 (교수)
-router.get("/req-for-consultation-list/:userId", (req, res) => {
-    const userId = req.params.userId
-    console.log("상담신청목록(사용자아이디) : ", userId)
+router.get("/req-for-consultation-list", (req, res) => {
+    const {professorId} = req.query
+    console.log("상담신청목록(사용자아이디) : ", professorId)
 
     const selectMyConsultationProfessorQuery = `
         SELECT 
@@ -144,13 +144,13 @@ router.get("/req-for-consultation-list/:userId", (req, res) => {
         ORDER BY counsel_date, counsel_time ASC
     `
     
-    mysqlConnection.query(selectMyConsultationProfessorQuery, [userId], (err, results) => {
+    mysqlConnection.query(selectMyConsultationProfessorQuery, [professorId], (err, results) => {
         if(err) {
             console.log("상담신청목록 - consultation테이블 검색 중 에러 발생 : ", err)
             return res.status(500).json({ message: "상담신청목록 - consultation테이블 검색 중 에러가 발생했습니다."})
         } else {
             res.json({
-                myCounsel: results,
+                reqForConsultationList: results,
             })
         }
     })
@@ -311,6 +311,11 @@ router.delete("/counsel-date-delete", (req, res) => {
     const professorId = req.body.userId
     const counselDate = req.body.counselDate
 
+    const updateMyCounselCancelQuery = `
+        UPDATE consultation SET counsel_state = '승인거절'
+        WHERE professor_id = ? AND counsel_date = ?
+    `
+
     const deleteQuery = `
         DELETE FROM counsel_schedule
         WHERE professor_id = ? AND counsel_date = ?
@@ -321,7 +326,14 @@ router.delete("/counsel-date-delete", (req, res) => {
             console.log("날짜등록취소 - counsel_schedule 테이블 검색 중 에러 발생 : ", err)
             return res.status(500).json({ message: "날짜등록취소 - counsel_schedule 테이블 검색 중 에러가 발생했습니다."})
         } else {
-            return res.status(200).json({ message: "날짜등록취소 - 날짜등록취소가 정상적으로 완료되었습니다."})
+            mysqlConnection.query(updateMyCounselCancelQuery, [professorId, counselDate], (err, results) => {
+                if(err) {
+                    console.log("날짜등록취소 - counsel_schedule 테이블 검색 중 에러 발생 : ", err)
+                    return res.status(500).json({ message: "날짜등록취소 - counsel_schedule 테이블 검색 중 에러가 발생했습니다."})
+                } else {
+                    return res.status(200).json({ message: "날짜등록취소 - 승인거절이 정상적으로 완료되었습니다."})
+                }
+            })
         }
     })
 })
@@ -355,9 +367,9 @@ router.put("/my-counsel/counsel-cancel", (req, res) => {
     })
 })
 // 상담승인
-router.put("/req-for-consultation-list/counsel-approve/:userId/:consultationId", (req, res) => {
-    const {userId, consultationId} = req.params
-    console.log("상담신청목록(상담승인) : ", userId)
+router.put("/req-for-consultation-list/counsel-approve", (req, res) => {
+    const {professorId, consultationId} = req.body
+    console.log("상담신청목록(상담승인) : ", professorId)
     console.log("상담신청목록(상담승인) : ", consultationId)
 
     const updateMyCounselApproveQuery = `
@@ -365,7 +377,7 @@ router.put("/req-for-consultation-list/counsel-approve/:userId/:consultationId",
         WHERE professor_id = ? AND consultation_id = ?
     `
 
-    mysqlConnection.query(updateMyCounselApproveQuery, [userId, consultationId], (err, results) => {
+    mysqlConnection.query(updateMyCounselApproveQuery, [professorId, consultationId], (err, results) => {
         if(err) {
             console.log("상담승인 - consultation테이블 검색 중 에러 발생 : ", err)
             return res.status(500).json({ message: "상담승인 - consultation테이블 검색 중 에러가 발생했습니다."})

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,8 +16,6 @@ import axios from 'axios'
 const CounselContent = () => {
     const counsel = useSelector((state) => state.counsel)
     const currentUserState = useSelector((state) => state.currentUser)
-    const myProfessorInfoState = useSelector((state) => state.myProfessor)
-    const userId = currentUserState.user_id
     const studentMajor = currentUserState.user_major
     const userType = currentUserState.user_type
     const counselName = counsel.name
@@ -35,7 +33,7 @@ const CounselContent = () => {
                 }
             })
             const data = response.data
-            console.log("data", data)
+            // console.log("data", data)
             dispatch(myProfessorInfo(data.professor))
             Swal.fire({
                 icon: 'success',
@@ -130,7 +128,6 @@ const CounselContent = () => {
                                 <MyCounsel currentUserState={currentUserState} />
                             )}
                             {(counselName === '상담날짜') && (
-                                // <CounselCalendar registeredDates={registeredDates} />
                                 <CounselCalendar />
                             )}
                             {(counselName === '상담신청') && (
@@ -143,7 +140,6 @@ const CounselContent = () => {
                                 <ReqForConsultationList currentUserState={currentUserState} />
                             )}
                             {counselName === '상담날짜등록' && (
-                                // <CounselDateRegister registeredDates={registeredDates} />
                                 <CounselDateRegister />
                             )}
                         </>

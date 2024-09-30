@@ -3,7 +3,7 @@
  * 오자현 : sideboard 추가
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
 import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
@@ -11,22 +11,20 @@ import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import CounselContent from './counsel/CounselContent'
 import { useCookies } from 'react-cookie'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { currentProfessorUserInfo, currentStudentUserInfo, myCounsel, reqForConsultation } from '../../../../../../../redux/actions/actions'
 
-let title, counselName
+let title
 
 const SideMenuLayout = (props) => {
     const dispatch = useDispatch()
     const [cookies] = useCookies(['user'])
     const userId = cookies.user
     const userType = cookies.userType
-    const userName = cookies.userName
-    console.log(userId)
-    console.log(userType)
-    console.log(userName)
+    // console.log(userId)
+    // console.log(userType)
 
     const { pageName, value } = props
     // console.log(pageName)
@@ -41,9 +39,13 @@ const SideMenuLayout = (props) => {
     // 현재 학생정보 가져오기
     const CurrentStudentData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/current-student-info/${userId}`)
+            const response = await axios.get('/api/consultation/current-student-info', {
+                params: {
+                    studentId: userId
+                }
+            })
             const data = response.data
-            console.log("data", data)
+            // console.log("data", data)
             dispatch(currentStudentUserInfo(data.student))
             Swal.fire({
                 icon: 'success',
@@ -62,9 +64,13 @@ const SideMenuLayout = (props) => {
     // 현재 교수정보 가져오기
     const CurrentProfessorData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/current-professor-info/${userId}`)
+            const response = await axios.get('/api/consultation/current-professor-info', {
+                params: {
+                    professorId: userId
+                }
+            })
             const data = response.data
-            console.log("data", data)
+            // console.log("data", data)
             dispatch(currentProfessorUserInfo(data.professor))
             Swal.fire({
                 icon: 'success',

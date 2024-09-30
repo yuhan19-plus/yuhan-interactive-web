@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Button, debounce } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarPlus, faCircleCheck, faCircleXmark, faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react'
+import { Button } from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCalendarPlus, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import Calendar from 'react-calendar'
-import Swal from 'sweetalert2';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { counselBtn } from '../../../../../../../../redux/actions/actions';
-import moment from 'moment';
-import axios from 'axios';
+import Swal from 'sweetalert2'
+import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { counselBtn } from '../../../../../../../../redux/actions/actions'
+import moment from 'moment'
+import axios from 'axios'
 
 const YuhanCalendar = () => {
     const navigate = useNavigate()
@@ -25,8 +25,6 @@ const YuhanCalendar = () => {
 
     const today = new Date()
     const [date, setDate] = useState(today)
-    
-    const currentMonth = moment(date).format("M")
 
     const handleTodayClick = () => {
         const today = new Date()
@@ -77,7 +75,6 @@ const YuhanCalendar = () => {
     const checkCounselDate = async (userId, userType, date) => {
         if(!myProfessorInfoState || myProfessorInfoState.length === 0) return
         try {
-            const today = moment(new Date()).format("YYYY-MM-DD")
             date = moment(date).format("YYYY-MM-DD")
             const response = await axios.get('/api/consultation/counsel-date', {
                 params: {
@@ -88,98 +85,17 @@ const YuhanCalendar = () => {
                     userType: userType
                 }
             })
-            const isCheckedDate = response.data.checkedDate
+            // const isCheckedDate = response.data.checkedDate
             const clickedDate = response.data.checkedDate[0]?.counsel_date
             const checkedDateAndTime = response.data.checkedDateAndTime
 
-            console.log(isCheckedDate.length)
-            console.log(clickedDate)
-            console.log(checkedDateAndTime)
+            // console.log(isCheckedDate.length)
+            // console.log(clickedDate)
+            // console.log(checkedDateAndTime)
 
             if(userType === 'student') {
                 handleReqForCounsel(clickedDate, checkedDateAndTime)
             }
-
-            // if(date > today) {
-            //     // 학생일 경우 교수일 경우 나누기
-            //     if(userType === 'student') {
-            //         if(isCheckedDate.length > 0 && checkedDateAndTime.length > 0) {
-            //             Swal.fire({
-            //                 icon: "success",
-            //                 title: "상담신청",
-            //                 text: `${clickedDate}에 신청하시겠습니까?`,
-            //                 showCancelButton: true,
-            //                 confirmButtonText: "신청",
-            //                 cancelButtonText: "닫기",
-            //             }).then((res) => {
-            //                 if (res.isConfirmed) {
-            //                     handleReqForCounsel(clickedDate, checkedDateAndTime)
-            //                 } else{
-            //                     return
-            //                 }
-            //             })
-            //         } else if(response.data.checkedDate = []) {
-            //             Swal.fire({
-            //                 icon: "warning",
-            //                 title: "상담마감",
-            //                 text: "상담신청이 마감되었습니다."
-            //             })
-            //         } else {
-            //             Swal.fire({
-            //                 icon: "warning",
-            //                 title: "상담불가",
-            //                 text: "상담신청 날짜를 선택해주세요."
-            //             })
-            //         }
-            //     } else {
-            //         if(isCheckedDate.length) {
-            //             Swal.fire({
-            //                 icon: "warning",
-            //                 title: "등록불가",
-            //                 text: `${clickedDate}은 이미 등록된 날짜입니다. 등록을 취소하시겠습니까?`,
-            //                 showCancelButton: true,
-            //                 confirmButtonText: "등록취소",
-            //                 cancelButtonText: "닫기",
-            //             }).then((res) => {
-            //                 if (res.isConfirmed) {
-            //                     // 등록취소 메서드 호출
-            //                     ClickCancelDate(userId, clickedDate)
-            //                 } else{
-            //                     return
-            //                 }
-            //             })
-            //         } else {
-            //             Swal.fire({
-            //                 icon: 'question',
-            //                 title: '날짜등록',
-            //                 text: `${date}를 상담가능날짜로 등록하시겠습니까?`,
-            //                 showCancelButton: true,
-            //                 confirmButtonText: "등록",
-            //                 cancelButtonText: "닫기",
-            //             }).then((res) => {
-            //                 if (res.isConfirmed) {
-            //                     ClickRegisterDate(userId, userMajor, userName, date)
-            //                 } else{
-            //                     return
-            //                 }
-            //             })
-            //         }
-            //     }
-            // } else {
-            //     if(userType === 'student') {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: '경고',
-            //             text: '지난 날짜 혹은 당일은 상담신청할 수 없습니다.',
-            //         })
-            //     } else {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: '경고',
-            //             text: '지난 날짜 혹은 당일은 상담가능날짜로 등록할 수 없습니다.',
-            //         })
-            //     }
-            // }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -239,10 +155,6 @@ const YuhanCalendar = () => {
         }
     }
 
-    // const debounceCheckCounselDate = useCallback(debounce((date) => {
-    //     checkCounselDate(userId, userType, date)
-    // }, 300), [myProfessorInfoState])
-
     useEffect(() => {
         if(userId) {
             GetCounselDates()
@@ -263,10 +175,9 @@ const YuhanCalendar = () => {
                     locale="ko-KR" // 한국어 기준으로 표시
                     value={date}
                     onChange={handleDateChange}
-                    // onClickDay={debounceCheckCounselDate(date)}
-                    formatDay={(locale, date) => moment(date).format("D")} // 일 제거 숫자만 보이게
-                    formatYear={(locale, date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
-                    formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
+                    formatDay={(date) => moment(date).format("D")} // 일 제거 숫자만 보이게
+                    formatYear={(date) => moment(date).format("YYYY")} // 네비게이션 눌렀을때 숫자 년도만 보이게
+                    formatMonthYear={(date) => moment(date).format("YYYY. MM")} // 네비게이션에서 2023. 12 이렇게 보이도록 설정
                     calendarType="gregory" // 일요일 부터 시작
                     showNeighboringMonth={false} // 전달, 다음달 날짜 숨기기
                     next2Label={null} // +1년 & +10년 이동 버튼 숨기기
@@ -325,173 +236,6 @@ const YuhanCalendar = () => {
                             )
                         } else {
                             html.push(
-                                // <React.Fragment key={moment(date).format("YYYY-MM-DD")}>
-                                //     {
-                                //         userType === 'student' ? (
-                                //             // 현재 날짜와 일치하는 등록된 날짜를 찾음
-                                //             registeredDates.some((registeredDate) => moment(date).format("YYYY-MM-DD") === registeredDate.counsel_date) ? (
-                                //                 registeredDates.map((registeredDate, index) => {
-                                //                     if (moment(date).format("YYYY-MM-DD") === registeredDate.counsel_date) {
-                                //                         if (registeredDate.counsel_state === 0) {
-                                //                             return (
-                                //                                 <CounselBtn
-                                //                                     key={`req-for-consultation-${index}`}  // 고유한 key 추가
-                                //                                     variant="contained"
-                                //                                     className='font-color-green'
-                                //                                     onClick={() => {
-                                //                                         Swal.fire({
-                                //                                             icon: "success",
-                                //                                             title: "상담신청",
-                                //                                             text: `${moment(date).format("YYYY-MM-DD")}에 신청하시겠습니까?`,
-                                //                                             showCancelButton: true,
-                                //                                             confirmButtonText: "신청",
-                                //                                             cancelButtonText: "닫기",
-                                //                                         }).then((res) => {
-                                //                                             if (res.isConfirmed) {
-                                //                                                 checkCounselDate(userId, userType, date)
-                                //                                                 // handleReqForCounsel(moment(date).format("YYYY-MM-DD"), checkedDateAndTime)
-                                //                                             } else{
-                                //                                                 return
-                                //                                             }
-                                //                                         })
-                                //                                     }}
-                                //                                 >
-                                //                                     <FontAwesomeIcon icon={faCircleCheck} color='green' />
-                                //                                     <p>상담신청</p>
-                                //                                 </CounselBtn>
-                                //                             )
-                                //                         } else if (registeredDate.counsel_state === 1) {
-                                //                             const tempDate = registeredDate.counsel_date
-                                //                             let cnt = 0
-                                //                             console.log('tempDate', tempDate)
-                                //                             allCounselDatesAndTimes.map((allCounselDatesAndTime) => (
-                                //                                 ((tempDate === allCounselDatesAndTime.counsel_date) && (allCounselDatesAndTime.counsel_state === 1)) && cnt++
-                                //                             ))
-                                //                             if(cnt === 6) {
-                                //                                 return (
-                                //                                     <CounselBtn
-                                //                                         key={`req-for-consultation-close-${index}`}  // 고유한 key 추가
-                                //                                         variant="contained"
-                                //                                         className='font-color-orange'
-                                //                                         onClick={() => {
-                                //                                             Swal.fire({
-                                //                                                 icon: "warning",
-                                //                                                 title: "상담마감",
-                                //                                                 text: "상담신청이 마감되었습니다."
-                                //                                             })
-                                //                                         }}
-                                //                                     >
-                                //                                         <FontAwesomeIcon icon={faCircleXmark} color='orange' />
-                                //                                         <p>상담마감</p>
-                                //                                     </CounselBtn>
-                                //                                 )
-                                //                             } else {
-                                //                                 return <></>
-                                //                             }
-                                //                         }
-                                //                     }
-                                //                     return null
-                                //                 })
-                                //             ) : (
-                                //                     <CounselBtn
-                                //                         key="no-req-for-consultation"
-                                //                         variant="contained"
-                                //                         className='font-color-red'
-                                //                         onClick={() => {
-                                //                             Swal.fire({
-                                //                                 icon: "warning",
-                                //                                 title: "상담불가",
-                                //                                 text: "상담신청 날짜를 선택해주세요."
-                                //                             })
-                                //                         }}
-                                //                     >
-                                //                         <FontAwesomeIcon icon={faCircleXmark} color='red' />
-                                //                         <p>상담불가</p>
-                                //                     </CounselBtn>
-                                //                 )) : (
-                                //                         // 교수일 경우
-                                //                         registeredDates.some((registeredDate) => moment(date).format("YYYY-MM-DD") === registeredDate.counsel_date) ? (
-                                //                             registeredDates.map((registeredDate, index) => {
-                                //                                 if (moment(date).format("YYYY-MM-DD") === registeredDate.counsel_date) {
-                                //                                     if (registeredDate.counsel_state === 0) {
-                                //                                         return (
-                                //                                             <CounselBtn
-                                //                                                 key={`register-counsel-date-${index}`}  // 고유한 key 추가
-                                //                                                 variant="contained"
-                                //                                                 className='font-color-orange'
-                                //                                                 onClick={() => {
-                                //                                                     Swal.fire({
-                                //                                                         icon: "warning",
-                                //                                                         title: "등록불가",
-                                //                                                         text: `${moment(date).format("YYYY-MM-DD")}은 이미 등록된 날짜입니다. 등록을 취소하시겠습니까?`,
-                                //                                                         showCancelButton: true,
-                                //                                                         confirmButtonText: "등록취소",
-                                //                                                         cancelButtonText: "닫기",
-                                //                                                     }).then((res) => {
-                                //                                                         if (res.isConfirmed) {
-                                //                                                             // 등록취소 메서드 호출
-                                //                                                             ClickCancelDate(userId, moment(date).format("YYYY-MM-DD"))
-                                //                                                         } else{
-                                //                                                             return
-                                //                                                         }
-                                //                                                     })
-                                //                                                 }}
-                                //                                             >
-                                //                                                 <FontAwesomeIcon icon={faCircleCheck} color='orange' />
-                                //                                                 <p>이미등록된날짜</p>
-                                //                                             </CounselBtn>
-                                //                                         )
-                                //                                     } else if (registeredDate.counsel_state === 1) {
-                                //                                         return (
-                                //                                             <CounselBtn
-                                //                                                 key={`counsel-close-${index}`}  // 고유한 key 추가
-                                //                                                 variant="contained"
-                                //                                                 className='font-color-orange'
-                                //                                                 onClick={() => {
-                                //                                                     Swal.fire({
-                                //                                                         icon: "warning",
-                                //                                                         title: "상담마감",
-                                //                                                         text: "상담신청이 마감되었습니다."
-                                //                                                     })
-                                //                                                 }}
-                                //                                             >
-                                //                                                 <FontAwesomeIcon icon={faCircleXmark} color='orange' />
-                                //                                                 <p>상담마감</p>
-                                //                                             </CounselBtn>
-                                //                                         )
-                                //                                     }
-                                //                                 }
-                                //                                 return null
-                                //                             })
-                                //                         ) : (
-                                //                                 <CounselBtn
-                                //                                     key="register-counsel-date"
-                                //                                     variant="contained"
-                                //                                     className='font-color-green'
-                                //                                     onClick={() => {
-                                //                                         Swal.fire({
-                                //                                             icon: 'question',
-                                //                                             title: '날짜등록',
-                                //                                             text: `${moment(date).format("YYYY-MM-DD")}를 상담가능날짜로 등록하시겠습니까?`,
-                                //                                             showCancelButton: true,
-                                //                                             confirmButtonText: "등록",
-                                //                                             cancelButtonText: "닫기",
-                                //                                         }).then((res) => {
-                                //                                             if (res.isConfirmed) {
-                                //                                                 ClickRegisterDate(userId, userMajor, userName, moment(date).format("YYYY-MM-DD"))
-                                //                                             } else{
-                                //                                                 return
-                                //                                             }
-                                //                                         })
-                                //                                     }}
-                                //                                 >
-                                //                                     <FontAwesomeIcon icon={faCalendarPlus} color='green' />
-                                //                                     <p>날짜등록</p>
-                                //                                 </CounselBtn>
-                                //                         )
-                                //             )
-                                //     }
-                                // </React.Fragment>
                                 <React.Fragment key={moment(date).format("YYYY-MM-DD")}>
                                     {userType === 'student' ? (
                                         // 현재 날짜와 일치하는 등록된 날짜를 찾음
@@ -514,23 +258,24 @@ const YuhanCalendar = () => {
                                                                         cancelButtonText: "닫기",
                                                                     }).then((res) => {
                                                                         if (res.isConfirmed) {
-                                                                            checkCounselDate(userId, userType, date);
+                                                                            checkCounselDate(userId, userType, date)
                                                                         } else {
-                                                                            return;
+                                                                            return
                                                                         }
-                                                                    });
+                                                                    })
                                                                 }}
                                                             >
                                                                 <FontAwesomeIcon icon={faCircleCheck} color='green' />
                                                                 <p>상담신청</p>
                                                             </CounselBtn>
-                                                        );
+                                                        )
                                                     } else if (registeredDate.counsel_state === 1) {
-                                                        const tempDate = registeredDate.counsel_date;
-                                                        let cnt = 0;
+                                                        const tempDate = registeredDate.counsel_date
+                                                        let cnt = 0
                                                         allCounselDatesAndTimes.forEach((allCounselDatesAndTime) => {
-                                                            if (tempDate === allCounselDatesAndTime.counsel_date && allCounselDatesAndTime.counsel_state === 1) cnt++;
-                                                        });
+                                                            if (tempDate === allCounselDatesAndTime.counsel_date && allCounselDatesAndTime.counsel_state === 1) cnt++
+                                                            console.log('cnt', cnt)
+                                                        })
                                                         if (cnt === 6) {
                                                             return (
                                                                 <CounselBtn
@@ -542,36 +287,21 @@ const YuhanCalendar = () => {
                                                                             icon: "warning",
                                                                             title: "상담마감",
                                                                             text: "상담신청이 마감되었습니다."
-                                                                        });
+                                                                        })
                                                                     }}
                                                                 >
                                                                     <FontAwesomeIcon icon={faCircleXmark} color='orange' />
                                                                     <p>상담마감</p>
                                                                 </CounselBtn>
-                                                            );
+                                                            )
                                                         } else {
-                                                            return null;
+                                                            return <></>
                                                         }
                                                     }
                                                 }
-                                                return null;
+                                                return null
                                             })
                                         ) : (
-                                            // <CounselBtn
-                                            //     key="no-req-for-consultation"
-                                            //     variant="contained"
-                                            //     className='font-color-red'
-                                            //     onClick={() => {
-                                            //         Swal.fire({
-                                            //             icon: "warning",
-                                            //             title: "상담불가",
-                                            //             text: "상담신청 날짜를 선택해주세요."
-                                            //         });
-                                            //     }}
-                                            // >
-                                            //     <FontAwesomeIcon icon={faCircleXmark} color='red' />
-                                            //     <p>상담불가</p>
-                                            // </CounselBtn>
                                             <></>
                                         )
                                     ) : (
@@ -595,38 +325,48 @@ const YuhanCalendar = () => {
                                                                         cancelButtonText: "닫기",
                                                                     }).then((res) => {
                                                                         if (res.isConfirmed) {
-                                                                            ClickCancelDate(userId, moment(date).format("YYYY-MM-DD"));
+                                                                            ClickCancelDate(userId, moment(date).format("YYYY-MM-DD"))
                                                                         } else {
-                                                                            return;
+                                                                            return
                                                                         }
-                                                                    });
+                                                                    })
                                                                 }}
                                                             >
                                                                 <FontAwesomeIcon icon={faCircleCheck} color='orange' />
                                                                 <p>이미등록된날짜</p>
                                                             </CounselBtn>
-                                                        );
+                                                        )
                                                     } else if (registeredDate.counsel_state === 1) {
-                                                        return (
-                                                            <CounselBtn
-                                                                key={`counsel-close-${registeredDate.counsel_date}`}  // 고유한 key 추가
-                                                                variant="contained"
-                                                                className='font-color-orange'
-                                                                onClick={() => {
-                                                                    Swal.fire({
-                                                                        icon: "warning",
-                                                                        title: "상담마감",
-                                                                        text: "상담신청이 마감되었습니다."
-                                                                    });
-                                                                }}
-                                                            >
-                                                                <FontAwesomeIcon icon={faCircleXmark} color='orange' />
-                                                                <p>상담마감</p>
-                                                            </CounselBtn>
-                                                        );
+                                                        const tempDate = registeredDate.counsel_date
+                                                        let cnt = 0
+                                                        allCounselDatesAndTimes.forEach((allCounselDatesAndTime) => {
+                                                            if (tempDate === allCounselDatesAndTime.counsel_date && allCounselDatesAndTime.counsel_state === 1) cnt++
+                                                            console.log('cnt', cnt)
+                                                        })
+                                                        if (cnt === 6) {
+                                                            return (
+                                                                <CounselBtn
+                                                                    key={`req-for-consultation-close-${registeredDate.counsel_date}`}  // 고유한 key 추가
+                                                                    variant="contained"
+                                                                    className='font-color-orange'
+                                                                    onClick={() => {
+                                                                        Swal.fire({
+                                                                            icon: "warning",
+                                                                            title: "상담마감",
+                                                                            text: "상담신청이 마감되었습니다."
+                                                                        })
+                                                                    }}
+                                                                >
+                                                                    <FontAwesomeIcon icon={faCircleXmark} color='orange' />
+                                                                    <p>상담마감</p>
+                                                                </CounselBtn>
+                                                            )
+                                                        } else {
+                                                            return <></>
+                                                        }
                                                     }
                                                 }
-                                                return null;
+                                                return null
                                             })
                                         ) : (
                                             <CounselBtn
@@ -643,11 +383,11 @@ const YuhanCalendar = () => {
                                                         cancelButtonText: "닫기",
                                                     }).then((res) => {
                                                         if (res.isConfirmed) {
-                                                            ClickRegisterDate(userId, userMajor, userName, moment(date).format("YYYY-MM-DD"));
+                                                            ClickRegisterDate(userId, userMajor, userName, moment(date).format("YYYY-MM-DD"))
                                                         } else {
-                                                            return;
+                                                            return
                                                         }
-                                                    });
+                                                    })
                                                 }}
                                             >
                                                 <FontAwesomeIcon icon={faCalendarPlus} color='green' />

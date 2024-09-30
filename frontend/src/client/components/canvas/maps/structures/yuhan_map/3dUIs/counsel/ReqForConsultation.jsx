@@ -18,10 +18,10 @@ const ReqForConsultation = ({currentUserState}) => {
     const date = checkedDateAndTime[0].counsel_date
 
     const counselTimes = checkedDateAndTime.map(item => item.counsel_time)
-    console.log("counselTimes", counselTimes)
+    // console.log("counselTimes", counselTimes)
 
     const myProfessorInfoState = useSelector((state) => state.myProfessor)
-    console.log(myProfessorInfoState)
+    // console.log(myProfessorInfoState)
 
     const studentData = {
         studentId: studentId,
@@ -41,7 +41,7 @@ const ReqForConsultation = ({currentUserState}) => {
         professorMajor: myProfessorInfoState.myProfessorMajor,
         professorPosition: myProfessorInfoState.professorPosition,
     }
-    console.log(professorData)
+    // console.log(professorData)
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
@@ -54,7 +54,7 @@ const ReqForConsultation = ({currentUserState}) => {
                 counselDate: counselDate,
                 counselTime: counselTime
             })
-            console.log("상담상태 : ", response.data.counselState)
+            // console.log("상담상태 : ", response.data.counselState)
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -66,9 +66,9 @@ const ReqForConsultation = ({currentUserState}) => {
 
     const handleUpdateCounselState = async (professorId, reqForCounselDate, reqForCounselTime) => {
         try {
-            console.log(professorId)
-            console.log(reqForCounselDate)
-            console.log(reqForCounselTime)
+            // console.log(professorId)
+            // console.log(reqForCounselDate)
+            // console.log(reqForCounselTime)
 
             // 상담신청이 정상적으로 완료된 후 counsel_schedule의 counsel_state UPDATE
             const response = await axios.put('/api/consultation/update-counsel-state', {
@@ -110,7 +110,7 @@ const ReqForConsultation = ({currentUserState}) => {
     
         axios.post('/api/consultation/req-for-consultation', formData)
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
 
                 Swal.fire({
                     icon: 'success',

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
-import { counselListTestData } from '../../../../../../../../../data/commonData'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import moment from 'moment'
@@ -11,15 +10,19 @@ const ReqForConsultationList = ({currentUserState}) => {
     const userId = currentUserState.user_id
 
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
-    const [myCounselData, setMyCounselData] = useState([]) // 상담 데이터 상태관리
+    const [reqForConsultationListData, setReqForConsultationListData] = useState([]) // 상담 데이터 상태관리
     const [paginatedData, setPaginatedData] = useState([]) // 페이지네이션된 데이터 상태관리
 
     // 상담이력 불러오기
     const GetReqForConsultationData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/req-for-consultation-list/${userId}`)
-            const data = response.data.myCounsel
-            setMyCounselData(data)
+            const response = await axios.get('/api/consultation/req-for-consultation-list', {
+                params: {
+                    professorId: userId
+                }
+            })
+            const data = response.data.reqForConsultationList
+            setReqForConsultationListData(data)
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -37,7 +40,10 @@ const ReqForConsultationList = ({currentUserState}) => {
     // 상담 승인 처리
     const ClickApprove = async (userId, consultationId) => {
         try {
-            await axios.put(`/api/consultation/req-for-consultation-list/counsel-approve/${userId}/${consultationId}`)
+            await axios.put('/api/consultation/req-for-consultation-list/counsel-approve', {
+                professorId: userId,
+                consultationId: consultationId
+            })
             Swal.fire({
                 icon: 'success',
                 title: '상담승인',
@@ -87,12 +93,12 @@ const ReqForConsultationList = ({currentUserState}) => {
 
     // paginatedData 갱신
     useEffect(() => {
-        if (myCounselData.length > 0) {
+        if (reqForConsultationListData.length > 0) {
             const startIdx = (currentPage - 1) * PAGE_COUNT
-            const paginated = myCounselData.slice(startIdx, startIdx + PAGE_COUNT)
+            const paginated = reqForConsultationListData.slice(startIdx, startIdx + PAGE_COUNT)
             setPaginatedData(paginated)
         }
-    }, [myCounselData, currentPage])
+    }, [reqForConsultationListData, currentPage])
 
     // 상담신청목록 데이터 로드
     useEffect(() => {
@@ -219,15 +225,9 @@ const ReqForConsultationList = ({currentUserState}) => {
                 </TableBody>
             </Table>
             <PaginationContainer>
-                {/* <Pagination
-                    count={Math.ceil(counselListTestData.length / PAGE_COUNT)}
-                    page={currentPage}
-                    onChange={handleChangePage}
-                    color="info"
-                /> */}
-                {myCounselData.length > 0 && (
+                {reqForConsultationListData.length > 0 && (
                     <Pagination
-                        count={Math.ceil(myCounselData.length / PAGE_COUNT)}
+                        count={Math.ceil(reqForConsultationListData.length / PAGE_COUNT)}
                         page={currentPage}
                         onChange={handleChangePage}
                         color="info"

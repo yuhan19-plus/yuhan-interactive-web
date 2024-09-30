@@ -11,7 +11,7 @@ const MyCounsel = ({ currentUserState }) => {
     const myProfessorInfoState = useSelector((state) => state.myProfessor)
     const userId = currentUserState.user_id
 
-    console.log(myProfessorInfoState)
+    // console.log(myProfessorInfoState)
 
     const [currentPage, setCurrentPage] = useState(1) // 페이지 번호는 1부터 시작
     const [myCounselData, setMyCounselData] = useState([]) // 상담 데이터 상태관리
@@ -19,14 +19,14 @@ const MyCounsel = ({ currentUserState }) => {
 
     const handleUpdateCounselState = async (professorId, counselDate, counselTime) => {
         try {
-            console.log(professorId)
+            // console.log(professorId)
             const response = await axios.put('/api/consultation/update-counsel-state', {
                 professorId: professorId,
                 counselDate: counselDate,
                 counselTime: counselTime,
                 counselState: 0
             })
-            console.log("상담상태 : ", response.data.counselState)
+            // console.log("상담상태 : ", response.data.counselState)
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -72,7 +72,7 @@ const MyCounsel = ({ currentUserState }) => {
                 title: '상담취소',
                 text: '상담을 취소하였습니다.',
             })
-            console.log("상담취소 후 상태업데이트 : ", response.data)
+            // console.log("상담취소 후 상태업데이트 : ", response.data)
             handleUpdateCounselState(myProfessorInfoState.myProfessorId, counselDate, counselTime)
             // 데이터 갱신
             GetMyCounselData()
