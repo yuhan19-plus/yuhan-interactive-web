@@ -144,18 +144,18 @@ router.get("/search/:foodName", (req, res) => {
 //평점 저장 수정
 router.post("/ratings/:foodID", (req, res) => {
     const { foodID } = req.params;
-    const { foodName, user_id, rating } = req.body;
+    const { user_id, ratings } = req.body;
 
-    if (!foodName || !user_id || !rating) {
-        return res.status(400).send("foodName, user_id, rating 의 값이 필요합니다.");
+    if (!foodID || !user_id || !ratings) {
+        return res.status(400).send("foodID, user_id, ratings 의 값이 필요합니다.");
     }
 
     const insertFoodQuery = 
-        `INSERT INTO food_ratings (foodName, foodID, user_id, rating)
-        VALUES (?, ?, ?, ?)
+        `INSERT INTO food_ratings (foodID, user_id, ratings)
+        VALUES (?, ?, ?)
     `;
 
-    mysqlconnection.query(insertFoodQuery, [foodName, foodID, user_id, rating], (err) => {
+    mysqlconnection.query(insertFoodQuery, [foodID, user_id, ratings], (err) => {
         if (err) {
             console.error("평점 처리 중 에러 발생:", err);
             return res.status(500).json({ message: "평점 처리 중 오류가 발생했습니다." });
@@ -193,21 +193,20 @@ router.post("/ratings/:foodID", (req, res) => {
 
 router.post("/ratings/:foodID", (req, res) => {
     const { foodID } = req.params;
-    const { user_id, rating } = req.body;
+    const { user_id, ratings } = req.body;
 
-    if (!foodID || !user_id || rating === undefined) {
-        return res.status(400).send("foodID, user_id, rating 값이 필요합니다.");
+    if (!foodID || !user_id || ratings === undefined) {
+        return res.status(400).send("foodID, user_id, ratings 값이 필요합니다.");
     }
 
     // 1. 평점 저장: 사용자별로 저장
     const insertFoodQuery = `
-        INSERT INTO food_ratings (foodID, user_id, rating)
+        INSERT INTO food_ratings (foodID, user_id, ratings)
         VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE rating = ?;
     `;
     
 
-    mysqlconnection.query(insertFoodQuery, [foodID, user_id, rating], (err) => {
+    mysqlconnection.query(insertFoodQuery, [foodID, user_id, ratings], (err) => {
         if (err) {
             console.error("평점 저장 중 에러 발생:", err);
             return res.status(500).json({ message: "평점 저장 중 오류가 발생했습니다." });
@@ -239,7 +238,7 @@ const updateAverageRating = (foodID, res) => {
             SET foodRating = ?
             WHERE foodID = ?;
         `;
-        console.log(" 평점 업데이트에 성공 했습니다.".foodRaing);
+        console.log(" 평점 업데이트에 성공 했습니다.".foodRating);
 
         mysqlconnection.query(updateRatingQuery, [averageRating, foodID], (err) => {
             if (err) {

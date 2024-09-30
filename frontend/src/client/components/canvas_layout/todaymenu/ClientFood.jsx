@@ -15,13 +15,13 @@ const ClientFood = () => {
     const [selectedFood, setSelectedFood] = useState(null);
     const [rating, setRating] = useState(0);
     const [isRating, setIsRating] = useState(false);
-    const [cookies] = useCookies(['user']); // 쿠키에서 user 정보 가져오기
+    const [cookies] = useCookies(['user']); 
     const defaultImage = "/public/assets/images/yuhan.png";
     const days = ['월', '화', '수', '목', '금'];
 
     const fetchMenuData = async () => {
         try {
-            const response = await fetch('/api/food'); // 요일 필드도 가져오는 API
+            const response = await fetch('/api/food');
             const data = await response.json();
             setMenuData(data);
         } catch (error) {
@@ -252,10 +252,3 @@ const BoardLayout = styled.div`
 const BoardMainLayout = styled.div`
   width: 96%;
 `;
-
-
-
-
-
-
-
