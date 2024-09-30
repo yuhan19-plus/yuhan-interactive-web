@@ -189,7 +189,7 @@ const MemberModify = () => {
                         <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={formData.memberPhone} onChange={handleChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
                     </div>
                     <div>
-                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
+                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} InputProps={{ readOnly: true }} />
                     </div>
 
                     {(memberType === 'student' || memberType === 'professor') && (
