@@ -4,8 +4,112 @@
  * */
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 const mysqlconnection = require('../server'); // 서버에서 내보낸 MySQL 연결 객체
+const { emailconfig } = require('../config');
 const bcrypt = require('bcrypt');
+
+
+// 이메일 인증 코드 생성 함수
+const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 인증 코드
+};
+
+
+// 이메일 전송 함수
+const sendVerificationEmail = async (toEmail, verificationCode) => {
+    const transporter = nodemailer.createTransport({
+        service: emailconfig.service, // config.js에서 가져온 서비스
+        auth: {
+            user: emailconfig.user,    // config.js에서 가져온 이메일
+            pass: emailconfig.password // config.js에서 가져온 비밀번호
+        }
+    });
+
+    const mailOptions = {
+        from: emailconfig.user,       // 발신자 이메일
+        to: toEmail,                  // 수신자 이메일
+        subject: '이메일 인증',
+        text: `인증 코드는 ${verificationCode}입니다. 10분 이내에 입력하세요.`
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
+// 이메일 인증 코드 전송 라우트
+router.post('/sendVerification', async (req, res) => {
+    const { email } = req.body;
+    const verificationCode = generateVerificationCode();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10분 유효 기간 설정
+
+    // 데이터베이스에 인증 코드와 유효 시간 저장
+    const insertQuery = `
+        INSERT INTO email_verifications (user_id, verification_code, expires_at)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE verification_code = VALUES(verification_code), expires_at = VALUES(expires_at)
+    `;
+
+    try {
+        // Promise 기반의 query 실행 (콜백 없이 사용)
+        const [result] = await mysqlconnection.promise().query(insertQuery, [email, verificationCode, expiresAt]);
+
+        // 이메일 전송
+        await sendVerificationEmail(email, verificationCode);
+        res.status(200).json({ message: '인증 코드가 전송되었습니다. 이메일을 확인하세요.' });
+    } catch (error) {
+        console.error('인증 코드 저장 또는 이메일 전송 실패:', error);
+        res.status(500).json({ message: '이메일 전송에 실패했습니다.' });
+    }
+});
+
+// 인증 코드 확인 라우트
+router.post('/verifyCode', async (req, res) => {
+    const { email, code } = req.body;
+
+    // 데이터베이스에서 인증 코드 확인
+    const selectQuery = `SELECT * FROM email_verifications WHERE user_id = ? AND verification_code = ?`;
+
+    try {
+        mysqlconnection.query(selectQuery, [email, code], (err, results) => {
+            if (err) {
+                console.error('인증 코드 확인 중 오류:', err);
+                return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+            }
+
+            if (results.length === 0) {
+                return res.status(400).json({ message: '인증 코드가 일치하지 않습니다.' });
+            }
+
+            const verification = results[0];
+            const currentTime = new Date();
+
+            // 인증 코드 유효 시간 확인
+            if (currentTime > new Date(verification.expires_at)) {
+                // 인증 시간이 만료되었을 때 인증 코드를 삭제
+                const deleteExpiredQuery = `DELETE FROM email_verifications WHERE user_id = ?`;
+                mysqlconnection.query(deleteExpiredQuery, [email], (err) => {
+                    if (err) {
+                        console.error('만료된 인증 코드 삭제 중 오류:', err);
+                    }
+                });
+                return res.status(400).json({ message: '인증 시간이 지났습니다. 재인증해주세요.' });
+            }
+
+            // 인증 완료 처리
+            const deleteQuery = `DELETE FROM email_verifications WHERE user_id = ?`;
+            mysqlconnection.query(deleteQuery, [email], (err) => {
+                if (err) {
+                    console.error('인증 코드 삭제 중 오류:', err);
+                }
+            });
+
+            res.status(200).json({ message: '인증이 완료되었습니다.' });
+        });
+    } catch (error) {
+        console.error('인증 코드 확인 중 오류:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+});  
 
 // POST 요청 처리 - 사용자 등록
 router.post('/register', async (req, res) => {
@@ -25,12 +129,12 @@ router.post('/register', async (req, res) => {
     } = req.body;
 
     try {
-        // 1. 아이디 중복 확인 (memberType에 따라 테이블 구분)
+        // 1. 아이디 중복 확인 (student, professor, admin 테이블 모두 확인)
         const checkIDQuery = memberType === true 
-            ? 'SELECT * FROM student WHERE user_id = ?' 
-            : 'SELECT * FROM professor WHERE user_id = ?';
+            ? 'SELECT user_id FROM student WHERE user_id = ? UNION SELECT user_id FROM admin WHERE user_id = ?' 
+            : 'SELECT user_id FROM professor WHERE user_id = ? UNION SELECT user_id FROM admin WHERE user_id = ?';
 
-        mysqlconnection.query(checkIDQuery, [memberID], (err, results) => {
+        mysqlconnection.query(checkIDQuery, [memberID, memberID], (err, results) => {
             if (err) {
                 console.error('아이디 중복 확인 실패:', err);
                 return res.status(500).send('서버 오류가 발생했습니다.');

@@ -12,7 +12,7 @@ const express = require("express");
 const http = require("http");
 const mysql = require("mysql2");
 const cors = require("cors");
-const dbconfig = require('./config');
+const { dbconfig } = require('./config');
 
 const app = express();
 const server = http.createServer(app);
