@@ -37,21 +37,14 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
 
                     {/* 수정 및 삭제 버튼 */}
@@ -337,4 +330,13 @@ const StyledGridItem = styled(Grid)`
   white-space: pre-line;
   color: #2C3E50;
   word-wrap: break-word;
+`;
+
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
 `;

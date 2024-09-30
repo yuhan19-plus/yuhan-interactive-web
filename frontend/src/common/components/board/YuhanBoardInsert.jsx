@@ -149,7 +149,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             });
 
             if (response.ok) {
-                console.log("임시저장성공");
+                // console.log("임시저장성공");
             } else {
                 // 응답이 성공하지 않았을 때
                 const message = await response.text();
@@ -311,27 +311,20 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
                 </Grid>
                 <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <Typography variant="h2" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2.5rem" }}>
+                    <StyledTitleTypography variant="h3">
                         게시물 작성
-                    </Typography>
+                    </StyledTitleTypography>
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -442,4 +435,19 @@ const FileItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
+`;
+
+const StyledTitleTypography = styled(Typography)`
+  color: #34495e;
+  font-weight: bold;
+  font-size: 2.5rem;
 `;

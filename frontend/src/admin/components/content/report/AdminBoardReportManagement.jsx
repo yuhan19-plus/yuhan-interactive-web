@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import styled from "styled-components";
 
 // 신고 처리 순서
 // 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
@@ -159,21 +160,14 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 {/* 돌아가기 버튼 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
                 </Grid>
 
@@ -265,3 +259,11 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
 };
 
 export default AdminBoardReportManagement;
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
+`;
