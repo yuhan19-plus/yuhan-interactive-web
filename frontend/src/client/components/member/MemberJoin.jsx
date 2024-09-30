@@ -93,6 +93,12 @@ const MemberJoin = () => {
                 setMemberPhone(value);
                 break;
             case 'memberEmail':
+                // 이메일이 변경되면 인증 상태 초기화
+                setMemberEmail(value);
+                setIsEmailVerified(false); // 인증 여부 초기화
+                setIsCodeSent(false); // 인증 코드 전송 상태 초기화
+                setVerificationCode(''); // 입력된 인증 코드 초기화
+                break;
                 setMemberEmail(value);
                 break;
             case 'studentNum':
