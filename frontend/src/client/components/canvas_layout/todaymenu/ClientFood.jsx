@@ -8,6 +8,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 const ClientFood = () => {
     const [selectedDay, setSelectedDay] = useState(0);
@@ -73,12 +74,20 @@ const ClientFood = () => {
         })
         .then((response) => {
             if (!response.ok) {
-                throw new Error('평점 제출 실패');
+                Swal.fire({
+                    icon: "warning",
+                    title: "에러",
+                    text:"평점을 저장 할 수 없습니다."
+                })
             }
             return response.text();
         })
         .then((result) => {
-            console.log(result); // 성공 메시지 출력
+            Swal.fire({
+                icon:"success",
+                title:"성공!",
+                text:"저장에 성공했습니다!"
+            }) // 성공 메시지 출력
     
             // 평점 제출 후 상태 초기화
             setRating(0);
