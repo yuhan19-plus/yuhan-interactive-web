@@ -99,6 +99,7 @@ router.get("/my-counsel", (req, res) => {
     const selectMyConsultationStudentQuery = `
         SELECT 
             consultation_id,
+            student_name,
             professor_name,
             counsel_date,
             counsel_time,

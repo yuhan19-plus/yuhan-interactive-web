@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useSelector } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment, faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons'
 
 const PAGE_COUNT = 5
 
@@ -114,8 +116,8 @@ const MyCounsel = ({ currentUserState }) => {
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#0F275C' }}>
                                 <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>NUM</TableCell>
-                                <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담내용</TableCell>
                                 <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담사</TableCell>
+                                {/* <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담내용</TableCell> */}
                                 <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상담일시</TableCell>
                                 <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>취업구분</TableCell>
                                 <TableCell align='center' sx={{ color: '#FFFFFF', fontWeight: 900 }}>상태</TableCell>
@@ -125,73 +127,89 @@ const MyCounsel = ({ currentUserState }) => {
                         <TableBody>
                             {paginatedData.length > 0 ? (
                                 paginatedData.map((data, idx) => (
-                                    <TableRow
-                                        key={data.consultation_id}
-                                        sx={{ backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff' }}
-                                    >
-                                        <TableCell align='center'>{(currentPage - 1) * PAGE_COUNT + (idx + 1)}</TableCell>
-                                        <TableCell align='center' sx={{ fontSize: '28px', fontWeight: 900 }}>{data.counsel_content}</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: 900 }}>{data.professor_name}학과장</TableCell>
-                                        <TableCell align='center'>
-                                            <b>{data.counsel_date}</b>
-                                            <p>{data.counsel_time}</p>
-                                            <p>{data.consultation_category}</p>
-                                        </TableCell>
-                                        <TableCell align='center'>
-                                            {data.employment_classification === 'careerGuidance' && '진로지도'}
-                                            {data.employment_classification === 'ResumeAndCoverLetterConsulting' && '이력서'}
-                                            {data.employment_classification === 'interviewConsulting' && '면접 컨설팅'}
-                                            {data.employment_classification === 'EmploymentGuidance' && '취업지도'}
-                                            {data.employment_classification === 'CriminalRecordMap' && '전과지도'}
-                                            {data.employment_classification === 'OtherConsultation' && '기타상담'}
-                                        </TableCell>
-                                        {(data.counsel_state === '상담완료' || data.counsel_state === '상담승인') && (
-                                            <>
-                                                <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>{data.counsel_state}</TableCell>
-                                                <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>취소불가</TableCell>
-                                            </>
-                                        )}
-                                        {data.counsel_state === '승인대기중' && (
-                                            <>
-                                                <TableCell align='center' sx={{ color: 'orange', fontWeight: 900 }}>{data.counsel_state}</TableCell>
-                                                <TableCell align='center'>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="error"
-                                                        onClick={() => {
-                                                            Swal.fire({
-                                                                icon: 'question',
-                                                                title: '상담취소',
-                                                                text: '상담을 취소하시겠습니까?',
-                                                                showCancelButton: true,
-                                                                confirmButtonText: "취소",
-                                                                cancelButtonText: "닫기",
-                                                            }).then((res) => {
-                                                                if (res.isConfirmed) {
-                                                                    ClickCancel(userId, data.consultation_id, data.counsel_date, data.counsel_time)
-                                                                }
-                                                                else {
-                                                                    return
-                                                                }
-                                                            })
-                                                        }}
-                                                    >
-                                                        취소
-                                                    </Button>
+                                    <>
+                                        <TableRow
+                                            key={data.consultation_id}
+                                            sx={{ backgroundColor: (idx + 1) % 2 === 0 ? '#cad5e0' : '#ffffff' }}
+                                        >
+                                            <TableCell align='center'>
+                                                {(currentPage - 1) * PAGE_COUNT + (idx + 1)}
+                                            </TableCell>
+                                            <TableCell align='center' sx={{ fontWeight: 900 }}>{data.professor_name}학과장</TableCell>
+                                            <TableCell align='center'>
+                                                <b>{data.counsel_date}</b>
+                                                <p>{data.counsel_time}</p>
+                                                <p>{data.consultation_category}</p>
+                                            </TableCell>
+                                            <TableCell align='center'>
+                                                {data.employment_classification === 'careerGuidance' && '진로지도'}
+                                                {data.employment_classification === 'ResumeAndCoverLetterConsulting' && '이력서'}
+                                                {data.employment_classification === 'interviewConsulting' && '면접 컨설팅'}
+                                                {data.employment_classification === 'EmploymentGuidance' && '취업지도'}
+                                                {data.employment_classification === 'CriminalRecordMap' && '전과지도'}
+                                                {data.employment_classification === 'OtherConsultation' && '기타상담'}
+                                            </TableCell>
+                                            {(data.counsel_state === '상담완료' || data.counsel_state === '상담승인') && (
+                                                <>
+                                                    <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>{data.counsel_state}</TableCell>
+                                                    <TableCell align='center' sx={{ color: 'green', fontWeight: 900 }}>취소불가</TableCell>
+                                                </>
+                                            )}
+                                            {data.counsel_state === '승인대기중' && (
+                                                <>
+                                                    <TableCell align='center' sx={{ color: 'orange', fontWeight: 900 }}>{data.counsel_state}</TableCell>
+                                                    <TableCell align='center'>
+                                                        <Button
+                                                            variant="contained"
+                                                            color="error"
+                                                            onClick={() => {
+                                                                Swal.fire({
+                                                                    icon: 'question',
+                                                                    title: '상담취소',
+                                                                    text: '상담을 취소하시겠습니까?',
+                                                                    showCancelButton: true,
+                                                                    confirmButtonText: "취소",
+                                                                    cancelButtonText: "닫기",
+                                                                }).then((res) => {
+                                                                    if (res.isConfirmed) {
+                                                                        ClickCancel(userId, data.consultation_id, data.counsel_date, data.counsel_time)
+                                                                    }
+                                                                    else {
+                                                                        return
+                                                                    }
+                                                                })
+                                                            }}
+                                                        >
+                                                            취소
+                                                        </Button>
+                                                    </TableCell>
+                                                </>
+                                            )}
+                                            {(data.counsel_state === '승인거절' || data.counsel_state === '상담취소') && (
+                                                <>
+                                                    <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>{data.counsel_state}</TableCell>
+                                                    <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>취소불가</TableCell>
+                                                </>
+                                            )}
+                                        </TableRow>
+                                        {data.counsel_content && (
+                                            <TableRow sx={{ background: '#0F275C' }}>
+                                                <TableCell colSpan={6} align='center' sx={{ fontWeight: 900, color: 'white' }}>
+                                                    <ContentWrapper>
+                                                        <FontAwesomeIcon icon={faComment} style={{marginRight: '1%'}} />
+                                                        <p style={{marginRight: '1%'}}>{data.student_name}학생</p>
+                                                        <FontAwesomeIcon icon={faQuoteLeft} style={{marginRight: '0.3%'}} />
+                                                            <p>{data.counsel_content}</p>
+                                                        <FontAwesomeIcon icon={faQuoteRight} style={{marginLeft: '0.3%'}} />
+                                                    </ContentWrapper>
                                                 </TableCell>
-                                            </>
+                                            </TableRow>
                                         )}
-                                        {(data.counsel_state === '승인거절' || data.counsel_state === '상담취소') && (
-                                            <>
-                                                <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>{data.counsel_state}</TableCell>
-                                                <TableCell align='center' sx={{ color: 'red', fontWeight: 900 }}>취소불가</TableCell>
-                                            </>
-                                        )}
-                                    </TableRow>
+                                    </>
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={7} style={{ textAlign: 'center' }}>
+                                    <TableCell colSpan={6} style={{ textAlign: 'center' }}>
                                         상담이력이 없습니다.
                                     </TableCell>
                                 </TableRow>
@@ -213,6 +231,12 @@ const MyCounsel = ({ currentUserState }) => {
         </>
     )
 }
+
+const ContentWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 
 const PaginationContainer = styled.div`
     display: flex;
