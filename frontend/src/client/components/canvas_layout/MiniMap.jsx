@@ -208,7 +208,7 @@ const Teleport = styled.div`
 
         /* 버튼 위에 말풍선 표시 */
         &::after {
-            content: '${(props) => props.tooltipContent || ''}';
+            content: '${(props) => props.$tooltipcontent || ''}';
             position: absolute;
             bottom: 200%; 
             left: 50%;
