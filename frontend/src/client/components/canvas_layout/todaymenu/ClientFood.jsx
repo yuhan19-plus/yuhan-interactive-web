@@ -13,9 +13,9 @@ const ClientFood = () => {
     const [selectedDay, setSelectedDay] = useState(0);
     const [menuData, setMenuData] = useState([]);
     const [selectedFood, setSelectedFood] = useState(null);
-    const [rating, setRating] = useState(0);
+    const [ratings, setRating] = useState(0);
     const [isRating, setIsRating] = useState(false);
-    const [cookies] = useCookies(['user']); 
+    const [cookies] = useCookies(['student']); 
     const defaultImage = "/public/assets/images/yuhan.png";
     const days = ['월', '화', '수', '목', '금'];
 
@@ -61,7 +61,6 @@ const ClientFood = () => {
     const submitRating = () => {
         const foodDetails = getFoodDetails(selectedFood);
         const foodID = foodDetails.foodID; // foodID 가져오기
-        const foodName = foodDetails.foodName; // foodName 가져오기
         const user_id = cookies.user;
         
         // 1. 평점 제출
@@ -70,7 +69,7 @@ const ClientFood = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ foodID, foodName, user_id, rating }),
+            body: JSON.stringify({ foodID, user_id, ratings }),
         })
         .then((response) => {
             if (!response.ok) {
@@ -216,7 +215,7 @@ const ClientFood = () => {
                                                     <span 
                                                     key={index} 
                                                     onClick={() => handleRating(index + 1)} 
-                                                    style={{ cursor: 'pointer', color: index < rating ? 'gold' : 'gray' }}
+                                                    style={{ cursor: 'pointer', color: index < ratings ? 'gold' : 'gray' }}
                                                 >
                                                     ★
                                                 </span>

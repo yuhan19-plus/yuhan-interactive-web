@@ -162,7 +162,7 @@ router.post("/ratings/:foodID", (req, res) => {
         }
 
         const avgQuery = `
-            SELECT AVG(rating) AS averageRating
+            SELECT AVG(ratings) AS averageRating
             FROM food_ratings
             WHERE foodID = ?
         `;
@@ -190,69 +190,5 @@ router.post("/ratings/:foodID", (req, res) => {
         });
     });
 });
-
-router.post("/ratings/:foodID", (req, res) => {
-    const { foodID } = req.params;
-    const { user_id, ratings } = req.body;
-
-    if (!foodID || !user_id || ratings === undefined) {
-        return res.status(400).send("foodID, user_id, ratings 값이 필요합니다.");
-    }
-
-    // 1. 평점 저장: 사용자별로 저장
-    const insertFoodQuery = `
-        INSERT INTO food_ratings (foodID, user_id, ratings)
-        VALUES (?, ?, ?)
-    `;
-    
-
-    mysqlconnection.query(insertFoodQuery, [foodID, user_id, ratings], (err) => {
-        if (err) {
-            console.error("평점 저장 중 에러 발생:", err);
-            return res.status(500).json({ message: "평점 저장 중 오류가 발생했습니다." });
-        }
-
-        // 2. 평균 평점 계산 및 업데이트 호출
-        updateAverageRating(foodID, res);
-    });
-});
-
-// 평균 평점 계산 및 업데이트 함수
-const updateAverageRating = (foodID, res) => {
-    const averageRatingQuery = `
-        SELECT AVG(rating) AS averageRating
-        FROM food_ratings
-        WHERE foodID = ?;
-    `;
-
-    mysqlconnection.query(averageRatingQuery, [foodID], (err, results) => {
-        if (err) {
-            console.error("평균 평점 계산 중 오류 발생:", err);
-            return res.status(500).json({ message: "평균 평점 계산 중 오류가 발생했습니다." });
-        }
-
-        const averageRating = results[0].averageRating;
-
-        const updateRatingQuery = `
-            UPDATE todaymenu
-            SET foodRating = ?
-            WHERE foodID = ?;
-        `;
-        console.log(" 평점 업데이트에 성공 했습니다.".foodRating);
-
-        mysqlconnection.query(updateRatingQuery, [averageRating, foodID], (err) => {
-            if (err) {
-                console.error("평균 평점 업데이트 중 오류 발생:", err);
-                return res.status(500).json({ message: "평균 평점 업데이트 중 오류가 발생했습니다." });
-            }
-
-            res.send("평점 저장 및 평균 평점 업데이트 성공");
-            console.log("테이블",averageRating);
-        });
-    });
-};
-
-
-
 
 module.exports = router;
