@@ -9,7 +9,6 @@ import CounselCalendar from './CounselCalendar'
 import { useDispatch, useSelector } from 'react-redux';
 import { counselDate, counselDateRegister, myCounsel, myProfessorInfo, reqForConsultation } from '../../../../../../../../redux/actions/actions'
 import ReqForConsultationList from './professor/ReqForConsultationList'
-import CounselDateRegister from './professor/CounselDateRegister'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 
@@ -78,7 +77,7 @@ const CounselContent = () => {
                             <>
                                 <Button
                                     variant="contained"
-                                    style={{marginRight: '5px'}}
+                                    // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleMyCounsel()
                                     }}
@@ -87,7 +86,7 @@ const CounselContent = () => {
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    style={{marginRight: '5px'}}
+                                    // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleCounselDate()
                                     }}
@@ -99,7 +98,7 @@ const CounselContent = () => {
                                 <>
                                     <Button
                                         variant="contained"
-                                        style={{marginRight: '5px'}}
+                                        // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleReqForConsultation()
                                         }}
@@ -108,7 +107,7 @@ const CounselContent = () => {
                                     </Button>
                                     <Button
                                         variant="contained"
-                                        style={{marginRight: '5px'}}
+                                        // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleCounselDateRegister()
                                         }}
@@ -140,7 +139,7 @@ const CounselContent = () => {
                                 <ReqForConsultationList currentUserState={currentUserState} />
                             )}
                             {counselName === '상담날짜등록' && (
-                                <CounselDateRegister />
+                                <CounselCalendar />
                             )}
                         </>
                     )
@@ -171,6 +170,9 @@ const CounselBtn = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
+    button {
+        margin-right: 5px;
+    }
 `
 
 const ContentContainer = styled.div`
@@ -180,7 +182,5 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
 `
-
-
 
 export default CounselContent
