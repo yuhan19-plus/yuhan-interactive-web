@@ -1,16 +1,22 @@
 /** 파일 생성자 : 임성준
  * 임성준 : 프론트엔드 개발
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import SideBar from './common/SideBar'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import SideMenuLayout from '../canvas/maps/structures/yuhan_map/3dUIs/SideMenuLayout'
 import MiniMap from './MiniMap'
 import AdminEnterModal from '../canvas/maps/structures/yuhan_map/3dUIs/modal/AdminEnterModal'
 import BtnMenuGroup from './BtnMenuGroup'
+import { useLocation } from 'react-router-dom'
+import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, yhMap, yuhanBioMap } from '../../../redux/actions/actions'
+import { BIO_PATH, CSW_PATH, FN_PATH, ID_PATH } from '../../../data/commonData'
 
 const CanvasLayout = ({ children }) => {
+    const location = useLocation()
+    const dispatch = useDispatch()
+
     // children : 학교맵
     // console.log(children)
     const currentSideMenu = useSelector((state) => state.sideMenu)
@@ -20,6 +26,9 @@ const CanvasLayout = ({ children }) => {
     const currentModal = useSelector((state) => state.modal)
     const currentModalName = currentModal.name
     const currentModalValue = currentModal.value
+
+    const groundMapState = useSelector((state) => state.groundMap)
+    console.log(groundMapState)
 
     // const currentMap = useSelector((state) => state.groundMap)
     // const currentMapName = currentMap.mapName
@@ -31,6 +40,12 @@ const CanvasLayout = ({ children }) => {
     
     // console.log('currentModalValue', currentModalValue)
     // console.log('currentModalName', currentModalName)
+
+    useEffect(() => {
+        if(location.pathname === '/') {
+            dispatch(yhMap())
+        }
+    }, [location.pathname])
 
     return (
         <>

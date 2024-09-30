@@ -8,7 +8,6 @@ import SideBar from './common/SideBar'
 import DepartmentCanvas from '../canvas/maps/structures/department_map/DepartmentCanvas'
 
 const DeptCanvasLayout = () => {
-    
     return (
         <>
             <Container>

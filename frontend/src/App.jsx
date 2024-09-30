@@ -54,49 +54,49 @@ function App() {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' index element={<ClientIndex />} />
-          <Route path='/login' element={<MemberIndex value='login' />} />
-          <Route path='/join' element={<MemberIndex value='join' />} />
-          <Route path='/membermodify' element={<MemberIndex value='modify' />} />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' index element={<ClientIndex />} />
+            <Route path='/login' element={<MemberIndex value='login' />} />
+            <Route path='/join' element={<MemberIndex value='join' />} />
+            <Route path='/membermodify' element={<MemberIndex value='modify' />} />
 
-          {/* client 부분 경로
-            오늘의 메뉴
-            학과체험
-            상담신청
-            유한게시판
-          */}
-          <Route path='/department/*' element={<DeptCanvasLayout />} />
-          {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
-            <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
-            <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
-          </Route> */}
-          {/* <Route path='/client-yuhanBoard' element={<YuhanBoard />} /> */}
-          {/* <Route path='/client-food' element={<FoodBoard />} /> */}
+            {/* client 부분 경로
+              오늘의 메뉴
+              학과체험
+              상담신청
+              유한게시판
+            */}
+            <Route path='/department/*' element={<DeptCanvasLayout />} />
+            {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
+              <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
+              <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
+            </Route> */}
+            {/* <Route path='/client-yuhanBoard' element={<YuhanBoard />} /> */}
+            {/* <Route path='/client-food' element={<FoodBoard />} /> */}
 
-          <Route path='/admin' element={<AdminIndex />}>
-            <Route path='/admin' element={<AdminMain />} />
-            <Route path='/admin/member' element={<AdminMain />}>
-              {/* 경로설정 */}
+            <Route path='/admin' element={<AdminIndex />}>
+              <Route path='/admin' element={<AdminMain />} />
+              <Route path='/admin/member' element={<AdminMain />}>
+                {/* 경로설정 */}
+              </Route>
+              <Route path='/admin/foodMenu' element={<AdminMain />}>
+                {/* 경로설정 */}
+              </Route>
+              <Route path='/admin/board' element={<AdminMain />}>
+                {/* 경로설정 */}
+              </Route>
+              <Route path='/admin/deptRec' element={<AdminMain />}>
+                {/* 경로설정 */}
+              </Route>
+              <Route path='/admin/report' element={<AdminMain />}>
+                {/* 경로설정 */}
+              </Route>            
             </Route>
-            <Route path='/admin/foodMenu' element={<AdminMain />}>
-              {/* 경로설정 */}
-            </Route>
-            <Route path='/admin/board' element={<AdminMain />}>
-              {/* 경로설정 */}
-            </Route>
-            <Route path='/admin/deptRec' element={<AdminMain />}>
-              {/* 경로설정 */}
-            </Route>
-            <Route path='/admin/report' element={<AdminMain />}>
-              {/* 경로설정 */}
-            </Route>            
-          </Route>
-          <Route path='/error' element={<ErrorPage />} />
-          <Route path="/boardtest" element={<BoardTest />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path='/error' element={<ErrorPage />} />
+            <Route path="/boardtest" element={<BoardTest />} />
+          </Routes>
+        </BrowserRouter> 
     </Provider>
   )
 }

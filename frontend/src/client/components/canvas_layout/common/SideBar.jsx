@@ -32,7 +32,7 @@ const SideBar = () => {
     const currentMap = useSelector((state) => state.groundMap)
     const currentMapName = currentMap.mapName
 
-    // console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
+    console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
     
     const dispatch = useDispatch()
     const handleShowAdminEnterModal = () => {
@@ -118,7 +118,7 @@ const SideBar = () => {
                         <span><a href='/'>유한대학교</a></span>
                     </div>
                     {
-                        (currentMapName === 'yh_map' &&  currentPath === '/') ? <MainSideBarMenu /> : <DeptSideBarMenu mapName={currentMapName} />
+                        (currentMapName === 'yh_map' &&  currentPath === '/') ? <MainSideBarMenu /> : <DeptSideBarMenu currentMapName={currentMapName} />
                     }
                 </SideBarList>
             </SideBarContainer>
