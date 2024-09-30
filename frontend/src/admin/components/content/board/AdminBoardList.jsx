@@ -10,6 +10,7 @@ import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, Li
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
+import Swal from "sweetalert2";
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -18,7 +19,6 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
-    const [checkAdmin, setChectAdmin] = useState([]);
     const pageNum = 8;
     // 전체화면이 화면크기에 따라 제목의 내용 글자수 제한 -> 못생김방지
     const fullScreenWinth = window.screen.width;
@@ -42,21 +42,33 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         fetchData();
     }
 
-
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
-        try {
-            const response = await fetch(`/api/board/search/${searchQuery}`);
-            const data = await response.json();
+        if (searchQuery === '') {
+            fetchData();
+        } else {
+            try {
+                const response = await fetch(`/api/board/search/${searchQuery}`);
+                const data = await response.json();
+                // 데이터가 존재하는지 확인
+                if (data.board && data.board.length > 0) {
+                    setDataList(data.board);
+                    // 페이지의 총 수를 계산하여 저장
+                    setTotalPages(Math.ceil(data.board.length / pageNum));
+                } else {
+                    // 검색 결과가 없을 때 SweetAlert로 경고 메시지 표시
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '검색 결과 없음',
+                        text: '해당 단어로 검색된 결과가 없습니다.',
+                        confirmButtonColor: '#3085d6',
+                    });
+                }
 
-            setDataList(data.board);
-            // 페이지의 총 수를 계산하여 저장
-            setTotalPages(Math.ceil(data.length / pageNum));
-
-        } catch (error) {
-            console.error("단어를 검색하는 중 에러 발생:", error);
+            } catch (error) {
+                console.error("단어를 검색하는 중 에러 발생:", error);
+            }
         }
-
     };
 
     const fetchData = async () => {
@@ -142,19 +154,11 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     return (
         <BoardLayout>
             <Box sx={{ p: 3 }}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
-                    <InputBase
+                <CenteredContainer>
+                    <SearchInput
                         placeholder="검색할 제목이나 작성자를 입력하세요"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        sx={{
-                            width: '50%',
-                            marginRight: '10px',
-                            padding: '6px 12px',
-                            border: '1px solid #ced4da',
-                            borderRadius: '4px',
-                            fontSize: '1rem',
-                        }}
                         startAdornment={
                             <InputAdornment position="start">
                                 <SearchIcon />
@@ -176,17 +180,17 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                             <MenuItem value="board_status">상태순</MenuItem>
                         </Select>
                     </FormControl>
-                </div>
+                </CenteredContainer>
 
                 <List sx={{ textAlign: 'center' }}>
-                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
+                    <TableHeader>
                         <Box sx={{ width: '10%' }}>번호</Box>
                         <Box sx={{ width: '45%' }}>제목</Box>
                         <Box sx={{ width: '15%' }}>작성자</Box>
                         <Box sx={{ width: '10%' }}>View</Box>
                         <Box sx={{ width: '10%' }}>Like</Box>
                         <Box sx={{ width: '10%' }}>관리</Box>
-                    </Box>
+                    </TableHeader>
 
                     {getCurrentPageData().map((item, index) => (
                         <>
@@ -243,7 +247,6 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                     </Box>
                                 </ListItem>
                             ) : (
-
                                 <ListItem key={item.board_id}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                         {/* 번호 */}
@@ -301,7 +304,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                 </List>
 
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, position: 'relative' }}>
+                <FooterContainer >
                     <Pagination
                         count={totalPages}
                         page={currentPage}
@@ -316,7 +319,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                             </Button>
                         </Box>
                     }
-                </Box>
+                </FooterContainer>
             </Box>
         </BoardLayout>
     );
@@ -335,3 +338,36 @@ const Admincontent = styled.div`
     font-style: italic;
     color: #0F275C;
 `
+
+const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  align-items: center;
+`
+
+const TableHeader = styled.div`
+  background: #0F275C;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  padding: 0.75rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  position: relative;
+`;
+const SearchInput = styled(InputBase)`
+  width: 50%;
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+`;

@@ -9,6 +9,7 @@ import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, Inpu
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
+import Swal from 'sweetalert2';
 
 const SideBoardList = ({ onCreatePost, onSelectItem }) => {
     // console.log("사이드게시판리스트 진입")
@@ -25,8 +26,6 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
     const fullScreenWinth = window.screen.width;
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
 
-
-
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
         if (searchQuery === '') {
@@ -39,12 +38,31 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                 // console.log("데이터여부", data);
                 if (data.board) {
                     const activeData = data.board.filter(item => item.board_status === 'active');
-                    // 게시판목록에 데이터 저장
-                    setDataList(data.board);
-                    // 활성화된 게시물만 모아서 저장
-                    setFilteredData(activeData);
-                    // 페이지의 총 수를 계산하여 저장
-                    setTotalPages(Math.ceil(activeData.length / pageNum));
+
+                    if (activeData.length > 0) {
+                        // 게시판 목록에 데이터 저장
+                        setDataList(data.board);
+                        // 활성화된 게시물만 모아서 저장
+                        setFilteredData(activeData);
+                        // 페이지의 총 수를 계산하여 저장
+                        setTotalPages(Math.ceil(activeData.length / pageNum));
+                    } else {
+                        // 활성화된 게시물이 없을 경우 경고 표시
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '검색 결과 없음',
+                            text: '활성화된 게시물이 없습니다.',
+                            confirmButtonColor: '#3085d6',
+                        });
+                    }
+                } else {
+                    // 검색 결과 자체가 없을 경우 경고 표시
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '검색 결과 없음',
+                        text: '해당 단어로 검색된 결과가 없습니다.',
+                        confirmButtonColor: '#3085d6',
+                    });
                 }
             } catch (error) {
                 console.error("단어를 검색하는 중 에러 발생:", error);
@@ -130,7 +148,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                 <p>데이터를 불러오는 중입니다...</p> // 로딩 중일 때 표시할 내용
             ) : (
                 <Box sx={{ p: 3 }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', alignItems: 'center' }}>
+                    <BtnContainer>
                         <InputBase
                             placeholder="검색할 제목이나 작성자를 입력하세요"
                             value={searchQuery}
@@ -167,24 +185,23 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                 <MenuItem value="board_view">조회순</MenuItem>
                             </Select>
                         </FormControl>
-
-                    </div>
+                    </BtnContainer>
 
                     <List sx={{ textAlign: 'center' }}>
                         {/* 헤더 부분 */}
-                        <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
+                        <TableHeader>
                             <Box sx={{ width: '5%', borderRight: '1px solid ' }}>번호</Box>
                             <Box sx={{ width: '60%', borderRight: '1px solid ' }}>제목</Box>
                             <Box sx={{ width: '15%', borderRight: '1px solid' }}>작성자</Box>
                             <Box sx={{ width: '10%', borderRight: '1px solid ' }}>좋아요</Box>
                             <Box sx={{ width: '10%', textAlign: 'center' }}>조회수</Box>
-                        </Box>
+                        </TableHeader>
 
                         {/* 리스트 아이템 부분 */}
                         {getCurrentPageData().map((item, index) => (
                             (item.board_status === 'active') && (item.writer_type === 'admin') ? (
                                 <ListItem key={item.board_id} divider>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height:'3.5vh' }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '3.5vh' }}>
                                         {/* 번호 */}
                                         <Box sx={{ width: '5%', textAlign: 'left', pl: 1 }}>
                                             <Admincontent>{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
@@ -219,7 +236,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                 </ListItem>
                             ) : (
                                 <ListItem key={item.board_id} divider>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height:'3.5vh'}}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', height: '3.5vh' }}>
                                         {/* 번호 */}
                                         <Box sx={{ width: '5%', textAlign: 'left', pl: 1 }}>
                                             <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
@@ -252,7 +269,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                         ))}
                     </List>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                    <FooterContainer>
                         <Pagination
                             count={totalPages}
                             page={currentPage}
@@ -267,7 +284,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                                 </Button>
                             </Box>
                         }
-                    </Box>
+                    </FooterContainer>
                 </Box>
             )}
         </BoardLayout>
@@ -288,3 +305,26 @@ const Admincontent = styled.div`
     font-style: italic;
     color: #0F275C;
 `
+const BtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1vh;
+  align-items: center;
+`;
+
+const TableHeader = styled(Box)`
+  background: #0F275C;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  padding: 0.7rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);  /* MUI의 boxShadow 값을 대체 */
+  border-radius: 0.25rem;
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;

@@ -4,18 +4,14 @@
  */
 
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import AdminBoardList from './AdminBoardList';
-import AdminBoardReportList from '../report/AdminBoardReportList';
-import AdminReportManagement from '../report/AdminBoardReportManagement';
 import AdminBoardPage from './AdminBoardPage';
 
 const AdminBoard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
-    const [selectReportID, setselectReportID] = useState(null);
 
     const handleCreatePost = () => {
         setCurrentView('insert');
