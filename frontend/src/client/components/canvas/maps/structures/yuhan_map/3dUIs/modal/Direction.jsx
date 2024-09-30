@@ -6,7 +6,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const Direction = ({ position }) => {
     const [openSection, setOpenSection] = useState(null); // 열려 있는 섹션을 관리하는 상태
-    const [mapSize, setMapSize] = useState({ width: "450px", height: "450px" }); // 동적으로 변경될 지도 크기
+    const [mapSize, setMapSize] = useState({ width: "450px", height: "450px" });
 
     // 카카오 API 호출
     useEffect(() => {
@@ -55,7 +55,12 @@ const Direction = ({ position }) => {
     };
 
     return (
-        <Html position={position} center >
+        <Html position={position} center
+            // 모든 마우스 이벤트에서 전파 차단
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerMove={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+        >
             <div style={{ borderRadius: '20px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', overflow: 'hidden' }}>
                 <div id="map" style={{ width: mapSize.width, height: mapSize.height }}
                     onPointerUp={(e) => {
@@ -65,6 +70,8 @@ const Direction = ({ position }) => {
                             e.stopPropagation();  // 이벤트 전파 중단
                         }
                     }}
+                    onPointerDown={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
+                    onPointerMove={(e) => e.stopPropagation()}  // 드래그 이벤트 전파 차단
                 ></div>
                 <div style={{ backgroundColor: 'white', padding: '10px' }}>
                     <h3>찾아오시는 길</h3>

@@ -82,7 +82,7 @@ export function Bus({ position }) {
     <>
       {(isInBusStationOne || directionsState) && (
         <motion.group ref={groupOne} position={[x, y + 17.5, z]} scale={8}
-          animate={{ x: [x, x, x], y: [y, y, y], z: [z - 250, z - 50, z + 150] }}
+          animate={{ x: [x, x, x], y: [y, y, y], z: [z - 370, z - 50, z + 500] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">
@@ -108,7 +108,7 @@ export function Bus({ position }) {
       )}
       {(isInBusStationTwo || directionsState) && (
         <motion.group ref={groupTwo} position={[x, y + 17.5, z]} scale={8} rotation={[0, Math.PI, 0]}
-          animate={{ x: [x + 100, x + 100, x + 100], y: [y, y, y], z: [z + 140, z - 60, z - 260] }}
+          animate={{ x: [x + 100, x + 100, x + 100], y: [y, y, y], z: [z + 500, z - 60, z - 370] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">
