@@ -46,7 +46,11 @@ const AdminNav = () => {
                 <div>
                     {/* 로그아웃 기능구현할 때 태그 변경할 것 */}
                     <Link to="#" onClick={handleLogout}><p><Logout />&nbsp;로그아웃</p></Link>
-                    <Link to={'/'}><p><ViewInAr />&nbsp;3D맵으로</p></Link>
+                    <Link to="#" onClick={() => {
+                        window.location.href = '/'; // 단순히 경로만 이동
+                    }}>
+                        <p><ViewInAr />&nbsp;3D맵으로</p>
+                    </Link>
                 </div>
             </AdminNavList>
             <AdminButtonList>
