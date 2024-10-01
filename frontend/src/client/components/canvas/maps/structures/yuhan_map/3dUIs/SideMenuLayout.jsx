@@ -2,9 +2,7 @@
  * 임성준 : 프론트엔드 개발
  * 오자현 : sideboard 추가
  */
-
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import styled from 'styled-components'
 import Swal from 'sweetalert2'
@@ -14,14 +12,19 @@ import DeptRecommand from '../../../../../canvas_layout/deptrecommand/deptrecomm
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import CounselContent from './counsel/CounselContent'
+import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import { currentProfessorUserInfo, currentStudentUserInfo, myCounsel, reqForConsultation } from '../../../../../../../redux/actions/actions'
 
-let title, counselName
+let title
 
 const SideMenuLayout = (props) => {
+    const dispatch = useDispatch()
     const [cookies] = useCookies(['user'])
     const userId = cookies.user
     const userType = cookies.userType
-    console.log(userType)
+    // console.log(userId)
+    // console.log(userType)
 
     const { pageName, value } = props
     // console.log(pageName)
@@ -33,74 +36,68 @@ const SideMenuLayout = (props) => {
     else if (title === 'food') title = '오늘의 메뉴'
     else if (title === 'deptRec') title = '학부추천'
 
-    // 사용자와 학생 정보의 초기값 설정
-    const [userInfo, setUserInfo] = useState({
-        user_name: "",
-        user_phone: "",
-        user_email: "",
-        user_major: "",
-        user_type: ""
-    })
-
-    const [studentInfo, setStudentInfo] = useState({
-        student_number: 0,
-        student_grade: 0
-    })
-
-    // const [professorInfo, setProfessorInfo] = useState({
-    //     professor_position: ""
-    // })
-
-    // 현재 회원정보 데이터 가져오기
-    const CurrentMemberData = async () => {
+    // 현재 학생정보 가져오기
+    const CurrentStudentData = async () => {
         try {
-            const response = await axios.get(`/api/consultation/current-user/${userType}/${userId}`)
+            const response = await axios.get('/api/consultation/current-student-info', {
+                params: {
+                    studentId: userId
+                }
+            })
             const data = response.data
-            console.log("data", data)
-            setUserInfo(data.user)
-            if(userType === 'student') setStudentInfo(data.student)
-            if(userType === 'professor') setProfessorInfo(data.professor)
+            // console.log("data", data)
+            dispatch(currentStudentUserInfo(data.student))
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
-                text: '사용자 데이터를 가져왔습니다.',
+                text: '학생 데이터를 가져왔습니다.',
             })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: '오류 발생',
-                text: `사용자 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
+                text: `학생 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
             })
         }
     }
 
-    // const GetProfessorName = async (userInfoType, userInfoMajor) => {
-    //     try {
-    //         console.log(userInfoType)
-    //         console.log(userInfoMajor)
-    //         const response = await axios.get(`/api/consultation/getProfessorData/${userInfoType}/${userInfoMajor}`)
-    //         const data = response.data
-    //         console.log("data", data)
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: '데이터 로드 성공.',
-    //             text: '사용자 데이터를 가져왔습니다.',
-    //         })
-    //     } catch (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: '오류 발생',
-    //             text: `교수정보 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
-    //         })
-    //     }
-    // }
+    // 현재 교수정보 가져오기
+    const CurrentProfessorData = async () => {
+        try {
+            const response = await axios.get('/api/consultation/current-professor-info', {
+                params: {
+                    professorId: userId
+                }
+            })
+            const data = response.data
+            // console.log("data", data)
+            dispatch(currentProfessorUserInfo(data.professor))
+            Swal.fire({
+                icon: 'success',
+                title: '데이터 로드 성공.',
+                text: '교수 데이터를 가져왔습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `교수 데이터를 가져오는 도중 오류가 발생했습니다: ${error}`,
+            })
+        }
+    }
 
     useEffect(() => {
         if (userId) {
-            CurrentMemberData()
+            if(userType === 'student') {
+                CurrentStudentData()
+                dispatch(myCounsel())
+            }
+            if(userType === 'professor') {
+                CurrentProfessorData()
+                dispatch(reqForConsultation())
+            }
         }
     }, [])
-
 
     return (
         <SideMenuLayoutWrapper>
@@ -112,12 +109,11 @@ const SideMenuLayout = (props) => {
                         {title === '유한게시판' &&
                             <SideBoard />
                         }
-
                         {title === '오늘의 메뉴' &&
-                        <ClientFood /> }
-
+                            <ClientFood />
+                        }
                         {title === '상담신청' &&
-                            <CounselContent userInfo={userInfo} studentInfo={studentInfo} userId={userId} userType={userType} />
+                            <CounselContent />
                         }
                         {title === '학부추천' &&
                             <DeptRecommand />

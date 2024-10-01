@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,27 +7,46 @@ import MyCounsel from './MyCounsel'
 import ReqForConsultation from './ReqForConsultation'
 import CounselCalendar from './CounselCalendar'
 import { useDispatch, useSelector } from 'react-redux';
-import { counselDate, counselDateRegister, myCounsel, reqForConsultation } from '../../../../../../../../redux/actions/actions'
+import { counselDate, counselDateRegister, myCounsel, myProfessorInfo, reqForConsultation } from '../../../../../../../../redux/actions/actions'
 import ReqForConsultationList from './professor/ReqForConsultationList'
-import CounselDateRegister from './professor/CounselDateRegister'
-import { useCookies } from 'react-cookie'
-import axios from 'axios'
 import Swal from 'sweetalert2'
-const CounselContent = ({userInfo, userId, userType}) => {
+import axios from 'axios'
+
+const CounselContent = () => {
     const counsel = useSelector((state) => state.counsel)
+    const currentUserState = useSelector((state) => state.currentUser)
+    const studentMajor = currentUserState.user_major
+    const userType = currentUserState.user_type
     const counselName = counsel.name
     const dispatch = useDispatch()
 
-    console.log(userInfo)
+    // console.log(currentUserState)
+    // console.log('asd', studentMajor)
 
-    // useEffect(() => {
-    //     console.log(userInfo.user_major)
-    //     console.log(userInfo.user_type)
-    //     const major = userInfo[0].user_major
-    //     const type = userInfo[0].user_type
-
-    //     GetProfessorName(type, major)
-    // }, [setUserInfo])
+    // 나의 교수정보 가져오기 (학생일경우)
+    const MyProfessorData = async () => {
+        try {
+            const response = await axios.get('/api/consultation/get-my-professor-info', {
+                params: {
+                    studentMajor: studentMajor
+                }
+            })
+            const data = response.data
+            // console.log("data", data)
+            dispatch(myProfessorInfo(data.professor))
+            Swal.fire({
+                icon: 'success',
+                title: '데이터 로드 성공.',
+                text: '교수 데이터를 가져왔습니다.',
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `교수정보를 가져오는 도중 오류가 발생했습니다: ${error}`,
+            })
+        }
+    }
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
@@ -42,6 +61,13 @@ const CounselContent = ({userInfo, userId, userType}) => {
         dispatch(counselDateRegister())
     }
 
+    useEffect(() => {
+        // 학생일 경우에만 교수정보 가져오기
+        if(userType === 'student') {
+            MyProfessorData()
+        }
+    }, [])
+
     return (
         <CounselContentMain>
             <ContentHeader>
@@ -51,7 +77,7 @@ const CounselContent = ({userInfo, userId, userType}) => {
                             <>
                                 <Button
                                     variant="contained"
-                                    style={{marginRight: '5px'}}
+                                    // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleMyCounsel()
                                     }}
@@ -60,7 +86,7 @@ const CounselContent = ({userInfo, userId, userType}) => {
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    style={{marginRight: '5px'}}
+                                    // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleCounselDate()
                                     }}
@@ -72,7 +98,7 @@ const CounselContent = ({userInfo, userId, userType}) => {
                                 <>
                                     <Button
                                         variant="contained"
-                                        style={{marginRight: '5px'}}
+                                        // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleReqForConsultation()
                                         }}
@@ -81,7 +107,7 @@ const CounselContent = ({userInfo, userId, userType}) => {
                                     </Button>
                                     <Button
                                         variant="contained"
-                                        style={{marginRight: '5px'}}
+                                        // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleCounselDateRegister()
                                         }}
@@ -98,22 +124,22 @@ const CounselContent = ({userInfo, userId, userType}) => {
                     (userType === 'student') ? (
                         <>
                             {(counselName === '상담이력') && (
-                                <MyCounsel userId={userId} userType={userType} />
+                                <MyCounsel currentUserState={currentUserState} />
                             )}
                             {(counselName === '상담날짜') && (
                                 <CounselCalendar />
                             )}
                             {(counselName === '상담신청') && (
-                                <ReqForConsultation userId={userId} userInfo={userInfo} studentInfo={studentInfo} />
+                                <ReqForConsultation currentUserState={currentUserState} />
                             )}
                         </>
                     ) : (
                         <>
                             {counselName === '상담신청목록' && (
-                                <ReqForConsultationList userId={userId} userType={userType} />
+                                <ReqForConsultationList currentUserState={currentUserState} />
                             )}
                             {counselName === '상담날짜등록' && (
-                                <CounselDateRegister />
+                                <CounselCalendar />
                             )}
                         </>
                     )
@@ -144,6 +170,9 @@ const CounselBtn = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
+    button {
+        margin-right: 5px;
+    }
 `
 
 const ContentContainer = styled.div`
@@ -153,7 +182,5 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
 `
-
-
 
 export default CounselContent

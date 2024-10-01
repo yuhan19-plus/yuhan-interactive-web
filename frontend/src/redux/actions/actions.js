@@ -1,6 +1,12 @@
 // 파일 생성자 : 임성준
 
 /* 액션타입 정의영역 - 성준 */
+// 현재 사용자 정보 - 성준
+export const CURRENT_STUDENT_USER = 'CURRENT_STUDENT_USER'
+export const CURRENT_PROFESSOR_USER = 'CURRENT_PROFESSOR_USER'
+
+// 교수정보 저장 - 성준
+export const MY_PROFESSOR_INFO = 'MY_PROFESSOR_INFO'
 
 // 캐릭터 - 성준
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
@@ -70,6 +76,21 @@ export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
 export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 
 /* 액션 생성자 정의영역 - 성준 */
+// 현재 사용자 정보 - 성준
+export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
+    type: CURRENT_STUDENT_USER,
+    payload: currentStudentUserInfoData
+})
+
+export const currentProfessorUserInfo = (currentProfessorUserInfoData) => ({
+    type: CURRENT_PROFESSOR_USER,
+    payload: currentProfessorUserInfoData
+})
+
+export const myProfessorInfo = (myProfessorInfo) => ({
+    type: MY_PROFESSOR_INFO,
+    payload: myProfessorInfo
+})
 
 // 캐릭터 - 성준
 export const mainChar = (newPosition) => ({

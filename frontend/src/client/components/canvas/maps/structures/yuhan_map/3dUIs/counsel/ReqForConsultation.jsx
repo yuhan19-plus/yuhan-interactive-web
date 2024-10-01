@@ -1,6 +1,6 @@
 import { FormLabel as MuiFormLabel, FormControl as MuiFormControl, TextField, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { counselDate, myCounsel } from '../../../../../../../../redux/actions/actions'
@@ -10,43 +10,94 @@ import { faArrowRight, faBriefcase, faClock, faCompass, faFileAlt, faGlobe, faHo
 import axios from 'axios'
 
 
-const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
-    console.log(userInfo, studentInfo)
-    
-    const userData = {
-        userPhone: userInfo[0].user_phone,
-        userEmail: userInfo[0].user_email,
-        userMajor: userInfo[0].user_major,
-        userType: userInfo[0].user_type
-    }
-    
-    const studentData = {
-        studentNumber: studentInfo[0].student_number,
-        studentGrade: studentInfo[0].student_grade
-    }
-
+const ReqForConsultation = ({currentUserState}) => {
     const location = useLocation()
     const dispatch = useDispatch()
-    const { date = "날짜를 선택하세요" } = location.state || {}
+    const { checkedDateAndTime } = location.state || {}
+    const studentId = currentUserState.user_id
+    const date = checkedDateAndTime[0].counsel_date
 
-    const [files, setFiles] = useState([])
+    const counselTimes = checkedDateAndTime.map(item => item.counsel_time)
+    // console.log("counselTimes", counselTimes)
 
-    const handleFileChange = (e) => {
-        setFiles(Array.from(e.target.files))
+    const myProfessorInfoState = useSelector((state) => state.myProfessor)
+    // console.log(myProfessorInfoState)
+
+    const studentData = {
+        studentId: studentId,
+        userName: currentUserState.user_name,
+        userPhone: currentUserState.user_phone,
+        userEmail: currentUserState.user_email,
+        userMajor: currentUserState.user_major,
+        studentNumber: currentUserState.student_number,
+        studentGrade: currentUserState.student_grade
     }
+
+    const professorData = {
+        professorId: myProfessorInfoState.myProfessorId,
+        professorName: myProfessorInfoState.myProfessorName,
+        professorPhone: myProfessorInfoState.myProfessorPhone,
+        professorEmail: myProfessorInfoState.myProfessorEmail,
+        professorMajor: myProfessorInfoState.myProfessorMajor,
+        professorPosition: myProfessorInfoState.professorPosition,
+    }
+    // console.log(professorData)
 
     const handleMyCounsel = () => {
         dispatch(myCounsel())
+    }
+
+    const handleCheckCounselState = async (professorId, counselDate, counselTime) => {
+        try {
+            const response = await axios.get('/api/consultation/check-counsel-state', {
+                professorId: professorId,
+                counselDate: counselDate,
+                counselTime: counselTime
+            })
+            // console.log("상담상태 : ", response.data.counselState)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `${error.message} 상담신청 중 오류가 발생했습니다.`,
+            })
+        }
+    }
+
+    const handleUpdateCounselState = async (professorId, reqForCounselDate, reqForCounselTime) => {
+        try {
+            // console.log(professorId)
+            // console.log(reqForCounselDate)
+            // console.log(reqForCounselTime)
+
+            // 상담신청이 정상적으로 완료된 후 counsel_schedule의 counsel_state UPDATE
+            const response = await axios.put('/api/consultation/update-counsel-state', {
+                professorId: professorId,
+                counselDate: reqForCounselDate,
+                counselTime: reqForCounselTime,
+                counselState: 1
+            })
+            // console.log(response.data)
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '오류 발생',
+                text: `${error.message} 상담신청 중 오류가 발생했습니다.`,
+            })
+        }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
     
         const formData = {
-            userId: userId,
+            studentId: studentId,
+            studentName: studentData.userName,
+            professorId: professorData.professorId,
             professorName: e.target.professorName.value,
+            professorMajor: professorData.professorMajor,
             studentMajor: e.target.studentMajor.value,
-            studentNum: e.target.studentNum.value,
+            studentNumber: e.target.studentNumber.value,
             studentGrade: e.target.studentGrade.value,
             counselDate: e.target.counselDate.value,
             counselTime: e.target.counselTime.value,
@@ -57,14 +108,18 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
             counselContent: e.target.counselContent.value,
         }
     
-        axios.post("/api/consultation/req-for-consultation", formData)
+        axios.post('/api/consultation/req-for-consultation', formData)
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
+
                 Swal.fire({
                     icon: 'success',
                     title: '신청 완료',
                     text: '상담 신청이 성공적으로 접수되었습니다.',
                 }).then(() => {
+                    console.log()
+                    handleCheckCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
+                    handleUpdateCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
                     handleMyCounsel()
                 })
             })
@@ -75,34 +130,33 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                     text: `${error} 상담 신청 중 오류가 발생했습니다.`,
                 })
             })
-    }  
+    }
     
     return (
         <ReqForConsultationWrapper>
-            {userId &&
+            {studentId &&
                 <form action='/consultation/req-for-consultation' method='POST' onSubmit={handleSubmit}>
                     <StyledFormControl>
                         <StyledFormLabel><p>상담사</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='professorName' value={userData.userMajor} />
+                            <input type="hidden" name='professorName' defaultValue={professorData.professorName} />
                             <p name='professorName'>
-                                {userData.userMajor}학과장
-                                
+                                {professorData.professorName}학과장
                             </p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel><p>학과</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentMajor' value={userData.userMajor} />
-                            <p name='studentMajor'>{userData.userMajor}</p>
+                            <input type="hidden" name='studentMajor' value={studentData.userMajor} />
+                            <p name='studentMajor'>{studentData.userMajor}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel><p>학번</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentNum' value={studentData.studentNumber} />
-                            <p name='studentNum'>{studentData.studentNumber}</p>
+                            <input type="hidden" name='studentNumber' value={studentData.studentNumber} />
+                            <p name='studentNumber'>{studentData.studentNumber}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
@@ -125,7 +179,7 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                                 name="counselTime"
                                 style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
                             >
-                                {["09시~10시", "10시~11시", "11시~12시", "13시~14시", "14시~15시", "16시~17시"].map(time => (
+                                {counselTimes.map(time => (
                                     <FormControlLabel
                                         key={time}
                                         value={time}
@@ -214,15 +268,15 @@ const ReqForConsultation = ({userId, userInfo, studentInfo}) => {
                     <StyledFormControl>
                         <StyledFormLabel id='studentPhone'><p>연락처</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentPhone' value={userData.userPhone} />
-                            <p name='studentPhone'>{userData.userPhone}</p>
+                            <input type="hidden" name='studentPhone' value={studentData.userPhone} />
+                            <p name='studentPhone'>{studentData.userPhone}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>
                         <StyledFormLabel id='studentEmail'><p>이메일</p></StyledFormLabel>
                         <FormContent>
-                            <input type="hidden" name='studentEmail' value={userData.userEmail} />
-                            <p name='studentEmail'>{userData.userEmail}</p>
+                            <input type="hidden" name='studentEmail' value={studentData.userEmail} />
+                            <p name='studentEmail'>{studentData.userEmail}</p>
                         </FormContent>
                     </StyledFormControl>
                     <StyledFormControl>

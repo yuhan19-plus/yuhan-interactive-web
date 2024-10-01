@@ -1,33 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import "react-calendar/dist/Calendar.css";
-import moment from 'moment/moment';
 import YuhanCalendar from './YuhanCalendar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBullhorn } from '@fortawesome/free-solid-svg-icons';
 
 const CounselCalendar = () => {
-    // 상담 가능 날짜
-    const okDay = ['2024-09-23', '2024-09-27', '2024-10-01', '2024-09-20']
-
     return (
         <CounselCalendarWrapper>
             <YuhanCalendar />
             <CalendarContentWrapper>
                 <CalendarContentItem>
                     <CalendarContentTitle>
-                        Title One
+                        <FontAwesomeIcon icon={faBullhorn} color='#0F275C' /> 상담신청 안내사항
                     </CalendarContentTitle>
                     <CalendarContent>
-                        asdasd
-                    </CalendarContent>
-                </CalendarContentItem>
-                <CalendarContentItem>
-                    <CalendarContentTitle>
-                        이번달 상담 가능 날짜는?
-                    </CalendarContentTitle>
-                    <CalendarContent>
-                        {okDay.map((i) => (
-                            <p key={i}>{moment(i).format("MM월DD일")}</p>
-                        ))}
+                        <p>1. <b>지난 날짜</b> 혹은 <b>당일</b>은 상담신청을 할 수 없습니다.</p>
+                        <p>2. 상담신청이 <b>체크된 날짜만</b> 상담신청이 가능합니다.</p>
+                        <p>3. 상담신청은 <b>1시간 단위로 신청할 수 있으며 1:1 상담으로 진행</b>됩니다.</p>
                     </CalendarContent>
                 </CalendarContentItem>
             </CalendarContentWrapper>
@@ -75,8 +65,7 @@ const CalendarContentTitle = styled.h3`
 const CalendarContent = styled.div`
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    flex-direction: column;
     p {
         margin: 0 5px 0 0;
     }
