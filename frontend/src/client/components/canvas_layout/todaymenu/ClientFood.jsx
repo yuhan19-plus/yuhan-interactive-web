@@ -113,7 +113,8 @@ const ClientFood = () => {
             <BoardMainLayout>
                 <Box>
                     <Grid 
-                        width={"100%"}
+                        width={"46.6vw"}
+                        height={"6vh"}
                         container 
                         sx={{
                             justifyContent: "space-between",
@@ -149,72 +150,72 @@ const ClientFood = () => {
                         </Button>
                     </Grid>
 
-                    <Grid container spacing={2} sx={{ display:"flex",borderRadius: 2, boxShadow: 2, marginTop:1, width: "100%", marginLeft:0.1,height: "53vh", textAlign:"center"}}>
-                        <Grid sx={{ background: "white", borderRadius: 2, margin: 1, padding: 1, width: "48%" }}>
-                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"5%", textAlign: "center" }}>
+                    <BoardSubLayout>
+                        <Grid sx={{ background: "white", borderRadius: 2, margin: 1, padding: 1, width: "22vw" }}>
+                            <TitleLayout>
                                 <Typography color={"white"}>양식</Typography>
-                            </Grid>
+                            </TitleLayout>
 
                             {filteredMenu.filter(menu => menu.foodType === "양식").length > 0 ? (
                                 filteredMenu.filter(menu => menu.foodType === "양식").map((menu) => (
-                                    <Button style={{ height: "18%", fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
+                                    <Button style={{ height: "9vh", fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
                                 ))
                             ) : (
-                                <Typography style={{ height: "18%", textAlign: "center"}}>메뉴 없음</Typography>
+                                <Typography style={{ height: "9vh", textAlign: "center"}}>메뉴 없음</Typography>
                             )}
 
-                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"5%", textAlign: "center", color:"white"}}>
+                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.25vw", height:"2.5vh", textAlign: "center", color:"white"}}>
                                 <Typography>한식</Typography>
                             </Grid>
                             {filteredMenu.filter(menu => menu.foodType === "한식").length > 0 ? (
                                 filteredMenu.filter(menu => menu.foodType === "한식").map((menu) => (
-                                    <Button style={{height:"18%",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
+                                    <Button style={{height:"9vh",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
                                 ))
                             ) : (
-                                <Typography style={{ height: "18%", textAlign: "center",marginTop:1 }}>메뉴 없음</Typography>
+                                <Typography style={{ height: "9vh", textAlign: "center",marginTop:1 }}>메뉴 없음</Typography>
                             )}
 
-                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"5%", textAlign: "center", color:"white" }}>
+                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.25vw", height:"2.5vh", textAlign: "center", color:"white" }}>
                                 <Typography>일품1</Typography>
                             </Grid>
                             {getMenuForSpecialDishes("일품1").length > 0 ? (
                                 getMenuForSpecialDishes("일품1").map((menu) => (
-                                    <Button style={{height:"18%",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
+                                    <Button style={{height:"9vh",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
                                 ))
                             ) : (
-                                <Typography style={{ height: "18%", textAlign: "center" }}>메뉴 없음</Typography>
+                                <Typography style={{ height: "9vh", textAlign: "center" }}>메뉴 없음</Typography>
                             )}
 
-                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"5%", textAlign: "center", color:"white" }}>
+                            <Grid sx={{ background: "#0F275C", justifyContent: 'center', borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.25vw", height:"5%", textAlign: "center", color:"white" }}>
                                 <Typography>일품2</Typography>
                             </Grid>
                             {getMenuForSpecialDishes("일품2").length > 0 ? (
                                 getMenuForSpecialDishes("일품2").map((menu) => (
-                                    <Button style={{height:"18%",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
+                                    <Button style={{height:"9vh",fontSize:"20px" ,color:"black"}} key={menu.foodID} onClick={() => setSelectedFood(menu.foodID)}>{menu.foodName}</Button>
                                 ))
                             ) : (
-                                <Typography style={{ height: "18%", textAlign: "center" }}>메뉴 없음</Typography>
+                                <Typography style={{ height: "9vh", textAlign: "center" }}>메뉴 없음</Typography>
                             )}
                         </Grid>
 
-                        <Grid sx={{ background: "white", borderRadius: 2, margin: 1, padding: 1,width: "48%" }}>
-                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"4%", textAlign: "center" , color:"white"}}>
+                        <Grid sx={{ background: "white", borderRadius: 2, margin: 1, padding: 1,width: "22.5vw",height:"51.5vh"}}>
+                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.75vw", height:"2.5vh", textAlign: "center" , color:"white"}}>
                                 <Typography>이미지</Typography>
                             </Grid>
-                            <Grid sx={{ background: "white", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"61%", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Grid sx={{ background: "white", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.75vw", height:"28vh", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 {selectedFood ? (
-                                    <img src={`${getFoodDetails(selectedFood)?.foodImg}`} alt="Food" style={{ width: '200px', height: 'auto' }} />
+                                    <img src={`${getFoodDetails(selectedFood)?.foodImg}`} alt="Food" style={{ width: '10vw', height: 'auto' }} />
                                 ) : (
-                                    <img src={defaultImage} alt="Default" style={{opacity:"0.3", width: '50%', height: 'auto' }} />
+                                    <img src={defaultImage} alt="Default" style={{opacity:"0.3", width: '10vw', height: 'auto' }} />
                                 )}
                             </Grid>
-                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"5%", textAlign: "center",color:"white"}}>
+                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "21.75vw", height:"2.5vh", textAlign: "center",color:"white"}}>
                                 {selectedFood ? <Typography>{getFoodDetails(selectedFood)?.foodPrice}원</Typography> : <Typography>가격</Typography>}
                             </Grid>
-                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 1, width: "100%", height:"25%", textAlign: "center", color:"white"}}>
+                            <Grid sx={{ background: "#0F275C", borderRadius: 2, boxShadow: 2, marginBottom: 0.5, width: "21.75vw", height:"14vh", textAlign: "center", color:"white"}}>
                                 {selectedFood ? (
-                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                                        <Typography>별점: {renderStars(getFoodDetails(selectedFood)?.foodRating)}</Typography>
+                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                                        <Typography>별점: {renderStars(getFoodDetails(selectedFood)?.foodRating)} {getFoodDetails(selectedFood)?.foodRating?.toFixed(1) || '없음'}/5</Typography>
                                         {/* 평가하기 버튼 클릭 시 별점 선택 UI 나타나기 */}
                                         <Button onClick={() => setIsRating(true)}>평가하기</Button>
                                         {isRating && (
@@ -230,7 +231,11 @@ const ClientFood = () => {
                                                 </span>
                                                 ))}
                                                 {cookies.user ? ( // 로그인 여부에 따라 저장 버튼 표시
+                                                <div>
                                                     <Button onClick={submitRating}>저장</Button>
+                                                    <Button onClick={() => setIsRating(false)} style={{ marginLeft: '10px' }}>취소</Button>
+                                                </div>
+                                                    
                                                 ) : (
                                                     <Typography style={{ color: 'red' }}>로그인 후 평가할 수 있습니다.</Typography>
                                                 )}
@@ -242,7 +247,7 @@ const ClientFood = () => {
                                 )}
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </BoardSubLayout>
                 </Box>
             </BoardMainLayout>
         </BoardLayout>
@@ -254,9 +259,36 @@ export default ClientFood;
 const BoardLayout = styled.div`
   display: flex;
   justify-content: center;
-
+  width: 48vw;
+  height: 50vh;
 `;
 
 const BoardMainLayout = styled.div`
-  width: 96%;
+  width: 46.5vw;
+  height: 50vh;
+`;
+
+const BoardSubLayout = styled.div`
+  background: white; 
+  display: flex;
+  border-Radius: 12px;
+  box-Shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-Top: 10px;
+  width: 46.5vw;
+  margin-Left:0.1;
+  height: 53vh;
+  text-Align: center;
+`;
+
+const TitleLayout = styled.div`
+  background: #0F275C; 
+  border-radius: 8px;
+  box-shadow: 2px; 
+  margin-bottom: 1; 
+  width: 21.25vw; 
+  height: 2.5vh; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
 `;

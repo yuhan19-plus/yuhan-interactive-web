@@ -2,6 +2,7 @@ import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
+import Swal from 'sweetalert2';
 
 const AdminFoodUpdate = ({ foodID, onCancel }) => {
     const food_id = foodID.foodID;
@@ -69,25 +70,52 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
             foodImg: files[0]?.file_data || foodData.foodImg,
             day: foodData.day
         };
-
-        try {
-            const response = await fetch(`/api/food/update/${food_id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(todaymenu),
-            });
-
-            if (response.ok) {
-                alert('음식이 업데이트되었습니다.');
-                onCancel();
-            } else {
-                alert('음식 업데이트 중 오류 발생');
+    
+        // 업데이트 확인 알림
+        const result = await Swal.fire({
+            title: '업데이트 확인',
+            text: '음식을 업데이트하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '업데이트',
+            cancelButtonText: '취소'
+        });
+    
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`/api/food/update/${food_id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(todaymenu),
+                });
+    
+                if (response.ok) {
+                    Swal.fire({
+                        title: '업데이트 완료!',
+                        text: '음식이 성공적으로 업데이트되었습니다.',
+                        icon: 'success',
+                    });
+                    onCancel();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '음식 업데이트 중 오류 발생',
+                    });
+                }
+            } catch (error) {
+                console.error('업데이트 중 오류 발생:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '음식 업데이트 중 오류 발생',
+                });
             }
-        } catch (error) {
-            console.error('업데이트 중 오류 발생:', error);
-            alert('음식 업데이트 중 오류 발생');
         }
     };
+    
 
     return (
         <BoardLayout>

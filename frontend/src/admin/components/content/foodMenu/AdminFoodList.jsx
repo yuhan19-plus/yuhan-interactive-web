@@ -9,6 +9,7 @@ import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, Li
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
     const [cookies] = useCookies(['user']);
@@ -28,13 +29,21 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
         try {
             const response = await fetch('/api/food'); // 음식 API 엔드포인트로 수정
             if (!response.ok) {
-                throw new Error('음식 목록을 불러오는 데 실패했습니다.');
+                Swal.fire({
+                    icon: "warning",
+                    title: "에러",
+                    text: "음식을 가져 올 수 없습니다."
+                })
             }
             const data = await response.json();
             setFoodList(data);
             setTotalPages(Math.ceil(data.length / pageNum)); // 페이지 수 계산
         } catch (error) {
-            console.error('음식 목록 가져오기 오류:', error);
+            Swal.fire({
+                icon: "warning",
+                title: "에러",
+                text: "음식을 가져 올 수 없습니다."
+            })
         }
     };
 
@@ -46,7 +55,11 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
             setFoodList(data);
             setTotalPages(Math.ceil(data.length / pageNum));
         } catch (error) {
-            console.error('검색 중 오류 발생:', error);
+            Swal.fire({
+                icon: "warning",
+                title: "에러",
+                text: "검색에 실패 했습니다."
+            })
         }
     };
 
@@ -88,21 +101,47 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
     };
 
     // 삭제 핸들러
-    const handleDeleteClick = async (foodID) => {
-        try {
-            const response = await fetch(`/api/food/delete/${foodID}`, {
-                method: 'DELETE',
-            });
+    const handleDeleteClick = (foodID) => {
+    Swal.fire({
+        title: '삭제 확인',
+        text: '이 음식을 정말 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`/api/food/delete/${foodID}`, {
+                    method: 'DELETE',
+                });
 
-            if (!response.ok) {
-                throw new Error('음식 삭제에 실패했습니다.');
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "에러",
+                        text: "음식 삭제에 실패했습니다."
+                    });
+                } else {
+                    Swal.fire(
+                        '삭제 완료!',
+                        '음식이 성공적으로 삭제되었습니다.',
+                        'success'
+                    );
+                    fetchFoods(); // 삭제 후 음식 목록 새로고침
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "에러",
+                    text: "음식 삭제에 실패했습니다."
+                });
             }
-
-            fetchFoods(); // 삭제 후 음식 목록 새로고침
-        } catch (error) {
-            console.error('삭제 중 오류 발생:', error);
         }
-    };
+    });
+};
 
     return (
         <BoardLayout>
@@ -141,7 +180,16 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                 </div>
 
                 <List>
-                    <Box sx={{ display: 'flex', fontWeight: 'bold', mb: 2, p: 2, boxShadow: 2, borderRadius: 0.5, textAlign: 'center' }}>
+                    <Box sx={{background:"#0F275C",
+                        color:"white", 
+                        display: 'flex',
+                        fontSize:"16px", 
+                        fontWeight: 'bold', 
+                        mb: 2, 
+                        p: 2, 
+                        boxShadow: 2, 
+                        borderRadius: 2, 
+                        textAlign: 'center' }}>
                         <Box sx={{ width: '5%' }}>번호</Box>
                         <Box sx={{ width: '20%' }}>이름</Box>
                         <Box sx={{ width: '10%' }}>타입</Box>

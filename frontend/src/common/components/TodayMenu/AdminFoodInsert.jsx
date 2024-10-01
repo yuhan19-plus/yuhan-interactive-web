@@ -9,6 +9,7 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
 import styled from "styled-components";
+import Swal from 'sweetalert2';
 
 const AdminFoodInsert = ({ onCancel }) => {
     const navigate = useNavigate(); // useNavigate 훅 초기화
@@ -50,7 +51,6 @@ const AdminFoodInsert = ({ onCancel }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 음식 데이터 전송
         const todaymenu = {
             foodType: food.foodType,
             foodName: food.foodName,
@@ -59,24 +59,60 @@ const AdminFoodInsert = ({ onCancel }) => {
             day: food.day
         };
 
-        try {
-            const response = await fetch('/api/food', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(todaymenu),
-            });
+        // 등록 확인 알림
+        const result = await Swal.fire({
+            title: '등록 확인',
+            text: '음식을 등록하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '등록',
+            cancelButtonText: '취소'
+        });
 
-            if (response.ok) {
-                alert('음식이 등록되었습니다.');
-                onCancel(); // 등록 후 취소 기능 호출
-            } else {
-                alert('음식 등록 중 오류 발생');
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch('/api/food', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(todaymenu),
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: '등록 완료!',
+                        text: '음식이 성공적으로 등록되었습니다.',
+                        icon: 'success',
+                    });
+                    onCancel(); // 등록 후 취소 기능 호출
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '오류',
+                        text: '음식 등록 중 오류 발생',
+                    });
+                }
+            } catch (error) {
+                console.error('등록 중 오류 발생:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '음식 등록 중 오류 발생',
+                });
             }
-        } catch (error) {
-            console.error('등록 중 오류 발생:', error);
-            alert('음식 등록 중 오류 발생');
         }
     };
+
+    // 요일 옵션을 동적으로 필터링
+    const dayOptions = (() => {
+        if (food.foodType === '양식' || food.foodType === '한식') {
+            return ['월', '화', '수', '목', '금'];
+        } else if (food.foodType === '일품1' || food.foodType === '일품2') {
+            return ['매일'];
+        }
+        return []; // 기본값으로 아무것도 반환하지 않음
+    })();
 
     return (
         <BoardLayout>
@@ -139,13 +175,11 @@ const AdminFoodInsert = ({ onCancel }) => {
                                     name="day"
                                     value={food.day}
                                     onChange={handleChange}
+                                    disabled={dayOptions.length === 0} // 옵션이 없을 때 비활성화
                                 >
-                                    <MenuItem value="월">월</MenuItem>
-                                    <MenuItem value="화">화</MenuItem>
-                                    <MenuItem value="수">수</MenuItem>
-                                    <MenuItem value="목">목</MenuItem>
-                                    <MenuItem value="금">금</MenuItem>
-                                    <MenuItem value="매일">매일</MenuItem>
+                                    {dayOptions.map((day) => (
+                                        <MenuItem key={day} value={day}>{day}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -214,6 +248,3 @@ const BoardMainLayout = styled.div`
     max-width: 700px;
     margin: 0 auto;
 `;
-
-
-
