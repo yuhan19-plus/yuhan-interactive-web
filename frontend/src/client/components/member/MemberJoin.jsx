@@ -93,6 +93,12 @@ const MemberJoin = () => {
                 setMemberPhone(value);
                 break;
             case 'memberEmail':
+                // 이메일이 변경되면 인증 상태 초기화
+                setMemberEmail(value);
+                setIsEmailVerified(false); // 인증 여부 초기화
+                setIsCodeSent(false); // 인증 코드 전송 상태 초기화
+                setVerificationCode(''); // 입력된 인증 코드 초기화
+                break;
                 setMemberEmail(value);
                 break;
             case 'studentNum':
@@ -131,7 +137,8 @@ const MemberJoin = () => {
         if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
         if (!memberName) tempErrors.memberName = "이름을 입력하세요.";
         if (!memberPhone || !memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = "유효한 전화번호를 입력하세요.";
-        if (!memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
+        if (!memberEmail || !memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
+        else if (!isEmailVerified) tempErrors.memberEmail = "이메일 인증을 완료해주세요."; // 이메일 인증 완료 여부 추가
         if (!memberMajor) tempErrors.memberMajor = "전공을 선택하세요.";
         if (!memberGender) tempErrors.memberGender = "성별을 선택하세요.";
     
@@ -146,6 +153,83 @@ const MemberJoin = () => {
         setErrors(tempErrors);
         
         return Object.keys(tempErrors).length === 0;
+    };
+
+    // 이메일만 검증하는 함수
+    const validateEmail = () => {
+        let tempErrors = {};
+
+        if (!memberEmail || !memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+            tempErrors.memberEmail = "유효한 이메일을 입력하세요.";
+        }
+
+        setErrors(tempErrors);
+        
+        return Object.keys(tempErrors).length === 0;
+    };
+
+
+    // 이메일 인증을 위한 상태 및 관련 메서드
+    const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 여부 상태
+    const [verificationCode, setVerificationCode] = useState(''); // 사용자가 입력한 인증 코드
+    const [isCodeSent, setIsCodeSent] = useState(false); // 인증 코드가 전송되었는지 확인
+
+    // 이메일 전송 메서드
+    const handleSendVerification = async () => {
+        if(!validateEmail()){
+            return;
+        }
+        try {
+            const response = await fetch('/api/member/sendVerification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: memberEmail })
+            });
+    
+            if (response.ok) {
+                Swal.fire('성공', '인증 코드가 전송되었습니다. 이메일을 확인하세요.', 'success');
+                setIsCodeSent(true); // 인증 코드가 전송된 상태로 변경
+            } else {
+                const data = await response.json();
+                Swal.fire('실패', data.message, 'error');
+            }
+        } catch (error) {
+            Swal.fire('오류', '이메일 전송 중 오류가 발생했습니다.', 'error');
+        }
+    };
+
+    // 인증코드 확인 메서드
+    const handleVerifyCode = async () => {
+        try {
+            const response = await fetch('/api/member/verifyCode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: memberEmail, code: verificationCode })
+            });
+    
+            if (response.ok) {
+                setIsEmailVerified(true); // 이메일 인증 성공
+                Swal.fire('성공', '이메일 인증이 완료되었습니다.', 'success');
+            } else {
+                const data = await response.json();
+                if (data.message === '인증 시간이 지났습니다. 재인증해주세요.') {
+                    // 인증 시간이 만료된 경우 인증 입력란을 비우고 다시 인증받도록 설정
+                    setVerificationCode(''); // 입력된 인증 코드 비우기
+                    setIsCodeSent(false); // 인증 코드 전송 상태를 초기화
+                    setIsEmailVerified(false); // 이메일 인증 상태를 초기화
+                    Swal.fire('실패', '인증 시간이 만료되었습니다. 다시 인증을 시도해주세요.', 'error');
+                }
+                else {
+                    Swal.fire('실패', data.message, 'error');
+                }
+            }
+        } catch (error) {
+            Swal.fire('오류', '인증 코드 확인 중 오류가 발생했습니다.', 'error');
+        }
     };
 
     // 폼 제출 처리 메서드
@@ -248,7 +332,6 @@ const MemberJoin = () => {
             */
         }
     };
-    
 
     return (
         <div
@@ -301,8 +384,20 @@ const MemberJoin = () => {
                     {/* 본인인증 휴대폰 혹은 이메일 선택 후 나머지는 주석처리 (둘 다 가능) */}
                     <FormControl>
                         <JoinAuthArea>
-                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' value={memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
-                            <JoinAuthButton>인증하기</JoinAuthButton>
+                            <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" placeholder='Email을 입력하세요' label='Email' value={memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} disabled={isEmailVerified} />
+                            {!isEmailVerified && (
+                                <>
+                                    {!isCodeSent ? (
+                                        <JoinAuthButton onClick={handleSendVerification}>인증하기</JoinAuthButton>
+                                    ) : (
+                                        <>
+                                            <TextField className='form-item' variant="filled" id="verificationCode" name="verificationCode" placeholder='인증 코드를 입력하세요' label='인증 코드' value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
+                                            <JoinAuthButton onClick={handleVerifyCode}>인증 확인</JoinAuthButton>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                            {isEmailVerified && <JoinAuthButton disabled>인증 완료</JoinAuthButton>}
                         </JoinAuthArea>
                     </FormControl>
 

@@ -16,8 +16,8 @@ import { useCookies } from 'react-cookie'
 
 const MemberModify = () => {
     const [showPassword, setShowPassword] = useState(false)
-    const [cookies] = useCookies(['user', 'userType'])
-    const [memberType, setMemberType] = useState(cookies.userType === 'student') // 쿠키에서 회원 유형 결정
+    const [cookies, setCookie] = useCookies(['user', 'userType', 'userName'])
+    const [memberType, setMemberType] = useState(cookies.userType) // 쿠키에서 회원 유형 결정
     const [formData, setFormData] = useState({
         memberID: '',
         memberPW: '',
@@ -47,10 +47,10 @@ const MemberModify = () => {
                     memberEmail: data.user_email,
                     memberMajor: data.user_major,
                     memberGender: data.user_gender !== null ? data.user_gender.toString() : '', // 성별을 이미 선택한 경우 기본값으로 설정
-                    studentNum: memberType ? data.student_number : '',
-                    studentGrade: memberType ? data.student_grade : '',
-                    studentClass: memberType ? data.student_class : '',
-                    professorPosition: !memberType ? data.professor_position : ''
+                    studentNum: memberType === 'student' ? data.student_number : '',
+                    studentGrade: memberType === 'student' ? data.student_grade : '',
+                    studentClass: memberType === 'student' ? data.student_class : '',
+                    professorPosition: memberType === 'professor' ? data.professor_position : ''
                 })
             } catch (error) {
                 console.error('데이터 로드 실패:', error)
@@ -75,14 +75,18 @@ const MemberModify = () => {
         if (!formData.memberName) tempErrors.memberName = '이름을 입력하세요.'
         if (!formData.memberPhone || !formData.memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = '유효한 전화번호를 입력하세요.'
         if (!formData.memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = '유효한 이메일을 입력하세요.'
-        if (!formData.memberMajor) tempErrors.memberMajor = '전공을 선택하세요.'
+  
+        if (!memberType === 'admin'){
+            if (!formData.memberMajor) tempErrors.memberMajor = '전공을 선택하세요.'
+        } 
+
         if (!formData.memberGender) tempErrors.memberGender = '성별을 선택하세요.'
 
-        if (memberType) { // 학생일 경우
+        if (memberType === 'student') { // 학생일 경우
             if (!formData.studentNum) tempErrors.studentNum = '학번을 입력하세요.'
             if (!formData.studentGrade) tempErrors.studentGrade = '학년을 선택하세요.'
             if (!formData.studentClass) tempErrors.studentClass = '반을 선택하세요.'
-        } else { // 교수일 경우
+        } else if(memberType === 'professor') { // 교수일 경우
             if (!formData.professorPosition) tempErrors.professorPosition = '직책을 선택하세요.'
         }
 
@@ -98,7 +102,7 @@ const MemberModify = () => {
                 const { memberPW, ...restFormData } = formData
                 const payload = { 
                     ...restFormData,
-                    memberType: memberType ? 'student' : 'professor'
+                    memberType: memberType
                 }
                 
                 if (memberPW) {
@@ -120,6 +124,7 @@ const MemberModify = () => {
                         icon: 'success',
                         confirmButtonText: '확인'
                     }).then(() => {
+                        setCookie('userName', formData.memberName, { path: '/' }); // 쿠키 업데이트
                         window.location.href = '/' // 확인을 누르면 '/'로 리다이렉트
                     });
                 } else {
@@ -184,9 +189,10 @@ const MemberModify = () => {
                         <TextField className='form-item' variant="filled" type='Phone' id="memberPhone" name="memberPhone" placeholder='-없이 입력하세요' label='Phone' value={formData.memberPhone} onChange={handleChange} error={!!errors.memberPhone} helperText={errors.memberPhone} />
                     </div>
                     <div>
-                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} />
+                        <TextField className='form-item' variant="filled" type='email' id="memberEmail" name="memberEmail" label='Email' value={formData.memberEmail} onChange={handleChange} error={!!errors.memberEmail} helperText={errors.memberEmail} InputProps={{ readOnly: true }} />
                     </div>
 
+                    {(memberType === 'student' || memberType === 'professor') && (
                     <FormControl error={!!errors.memberMajor}>
                         <div className='form-item'>
                             <Select value={formData.memberMajor} onChange={handleChange} name='memberMajor' input={<FilledInput />}>
@@ -202,6 +208,8 @@ const MemberModify = () => {
                             <FormHelperText>{errors.memberMajor}</FormHelperText>
                         </div>
                     </FormControl>
+                    )}
+
                     <FormControl error={!!errors.memberGender}>
                         <div className='form-item'>
                             <FormLabel>성별</FormLabel>
@@ -212,48 +220,47 @@ const MemberModify = () => {
                             <FormHelperText>{errors.memberGender}</FormHelperText>
                         </div>
                     </FormControl>
-
-                    {memberType ? (
-                        <>
-                            <TextField className='form-item' variant="filled" id="studentNum" name="studentNum" label='학번' value={formData.studentNum} onChange={handleChange} error={!!errors.studentNum} helperText={errors.studentNum} />
-                            <FormControl error={!!errors.studentGrade}>
-                                <div className='form-item'>
-                                    <Select value={formData.studentGrade} onChange={handleChange} name="studentGrade">
-                                        <MenuItem disabled value=""><em>학년을 선택하세요</em></MenuItem>
-                                        <MenuItem value={1}>1학년</MenuItem>
-                                        <MenuItem value={2}>2학년</MenuItem>
-                                        <MenuItem value={3}>3학년</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{errors.studentGrade}</FormHelperText>
-                                </div>
-                            </FormControl>
-                            <FormControl error={!!errors.studentClass}>
-                                <div className='form-item'>
-                                    <Select value={formData.studentClass} onChange={handleChange} name="studentClass">
-                                        <MenuItem disabled value=""><em>반을 선택하세요</em></MenuItem>
-                                        <MenuItem value={1}>1반</MenuItem>
-                                        <MenuItem value={2}>2반</MenuItem>
-                                        <MenuItem value={3}>3반</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{errors.studentClass}</FormHelperText>
-                                </div>
-                            </FormControl>
-                        </>
-                    ) : (
-                        <FormControl error={!!errors.professorPosition}>
+                    {memberType === 'student' ? (
+                    <>
+                        <TextField className='form-item' variant="filled" id="studentNum" name="studentNum" label='학번' value={formData.studentNum} onChange={handleChange} error={!!errors.studentNum} helperText={errors.studentNum} />
+                        <FormControl error={!!errors.studentGrade}>
                             <div className='form-item'>
-                                <Select value={formData.professorPosition} onChange={handleChange} name="professorPosition">
-                                    <MenuItem disabled value=""><em>직책을 선택하세요</em></MenuItem>
-                                    {PROFESSOR_POSITION.map((position) => (
-                                        <MenuItem key={position} value={position}>
-                                            {position}
-                                        </MenuItem>
-                                    ))}
+                                <Select value={formData.studentGrade} onChange={handleChange} name="studentGrade">
+                                    <MenuItem disabled value=""><em>학년을 선택하세요</em></MenuItem>
+                                    <MenuItem value={1}>1학년</MenuItem>
+                                    <MenuItem value={2}>2학년</MenuItem>
+                                    <MenuItem value={3}>3학년</MenuItem>
                                 </Select>
-                                <FormHelperText>{errors.professorPosition}</FormHelperText>
+                                <FormHelperText>{errors.studentGrade}</FormHelperText>
                             </div>
                         </FormControl>
-                    )}
+                        <FormControl error={!!errors.studentClass}>
+                            <div className='form-item'>
+                                <Select value={formData.studentClass} onChange={handleChange} name="studentClass">
+                                    <MenuItem disabled value=""><em>반을 선택하세요</em></MenuItem>
+                                    <MenuItem value={1}>1반</MenuItem>
+                                    <MenuItem value={2}>2반</MenuItem>
+                                    <MenuItem value={3}>3반</MenuItem>
+                                </Select>
+                                <FormHelperText>{errors.studentClass}</FormHelperText>
+                            </div>
+                        </FormControl>
+                    </>
+                    ) : memberType === 'professor' ? (
+                        <FormControl error={!!errors.professorPosition}>
+                        <div className='form-item'>
+                            <Select value={formData.professorPosition} onChange={handleChange} name="professorPosition">
+                                <MenuItem disabled value=""><em>직책을 선택하세요</em></MenuItem>
+                                {PROFESSOR_POSITION.map((position) => (
+                                    <MenuItem key={position} value={position}>
+                                        {position}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            <FormHelperText>{errors.professorPosition}</FormHelperText>
+                        </div>
+                        </FormControl>
+                    ) : null}
                 </FormControl>
                 <ModifyButton type='submit' onClick={handleSubmit}>수정하기</ModifyButton>
             </MemberModifyContent>

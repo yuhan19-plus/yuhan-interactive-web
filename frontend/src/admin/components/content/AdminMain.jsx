@@ -14,8 +14,8 @@ import AdminReport from './report/AdminReport'
 
 const AdminMain = () => {
     const title = useLocation()
-    const titleValue = title.state.title
-    console.log(title.state.title)
+    const titleValue = title.state?.title || '관리자';
+    console.log(titleValue)
     return (
         <>
             <div className='admin-content'>
@@ -32,7 +32,7 @@ const AdminMain = () => {
                     titleValue === '유한게시판' && <AdminBoard />
                 }
                 {
-                    titleValue === '전공추천' && <AdminDeptRec />
+                    titleValue === '학부추천' && <AdminDeptRec />
                 }
                 {
                     titleValue === '신고내역' && <AdminReport />

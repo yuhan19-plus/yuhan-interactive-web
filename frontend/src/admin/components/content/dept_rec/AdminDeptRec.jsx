@@ -1,5 +1,5 @@
 /**
- * 전공추천관리 루트 컴포넌트 - 임성준
+ * 학부추천관리 루트 컴포넌트 - 임성준
  */
 import React, { useState, useEffect} from 'react'
 import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
@@ -9,42 +9,42 @@ const AdminDeptRec = () => {
     const [departments, setDepartments] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [rankings, setRankings] = useState([]);
-    const [selectedDept, setSelectedDept] = useState(''); // 선택된 학과
-    const [deptQuestions, setDeptQuestions] = useState([]); // 선택된 학과의 질문
+    const [selectedDept, setSelectedDept] = useState(''); // 선택된 학부
+    const [deptQuestions, setDeptQuestions] = useState([]); // 선택된 학부의 질문
     const [loading, setLoading] = useState(false);
 
-    // 학과 목록과 점수 정보 불러오기
+    // 학부 목록과 점수 정보 불러오기
     useEffect(() => {
         fetchDepartments();
         fetchRankings();
     }, []);
 
-    // 학과 목록을 서버에서 가져옴
+    // 학부 목록을 서버에서 가져옴
     const fetchDepartments = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
             const data = await response.json();
             setDepartments(data);
             if (data.length > 0) {
-                setSelectedDept(data[0].dept_name); // 기본으로 첫 번째 학과 선택
+                setSelectedDept(data[0].dept_name); // 기본으로 첫 번째 학부 선택
             }
         } catch (error) {
-            console.error('학과 목록을 불러오는 중 에러 발생:', error);
+            console.error('학부 목록을 불러오는 중 에러 발생:', error);
         }
     };
 
-    // 학과 점수 및 순위 정보를 서버에서 가져옴
+    // 학부 점수 및 순위 정보를 서버에서 가져옴
     const fetchRankings = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
             const data = await response.json();
             setRankings(data);
         } catch (error) {
-            console.error('학과 점수를 불러오는 중 에러 발생:', error);
+            console.error('학부 점수를 불러오는 중 에러 발생:', error);
         }
     };
 
-    // 선택된 학과의 질문 목록을 서버에서 가져옴
+    // 선택된 학부의 질문 목록을 서버에서 가져옴
     useEffect(() => {
         if (selectedDept) {
             fetchQuestions(selectedDept);
@@ -88,9 +88,9 @@ const AdminDeptRec = () => {
         <>
         <Box sx={{ p: 3 }}>
 
-            {/* 학과 선택 드롭다운 */}
+            {/* 학부 선택 드롭다운 */}
             <FormControl sx={{ mb: 3, minWidth: 200 }}>
-                <InputLabel id="dept-select-label">학과 선택</InputLabel>
+                <InputLabel id="dept-select-label">학부 선택</InputLabel>
                 <Select
                     labelId="dept-select-label"
                     value={selectedDept}
@@ -136,15 +136,15 @@ const AdminDeptRec = () => {
                 )}
             </Box>
 
-            {/* 학과 점수 및 순위 테이블 */}
+            {/* 학부 점수 및 순위 테이블 */}
             <Typography variant="h6" gutterBottom>
-                학과 점수 및 순위
+                학부 점수 및 순위
             </Typography>
             <TableContainer component={Paper} sx={{ width: '50%', margin: 'auto' }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>학과</TableCell>
+                            <TableCell>학부</TableCell>
                             <TableCell>점수</TableCell>
                             <TableCell>순위</TableCell>
                         </TableRow>

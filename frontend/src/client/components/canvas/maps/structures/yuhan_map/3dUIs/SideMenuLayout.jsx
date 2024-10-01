@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
 import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
+import DeptRecommand from '../../../../../canvas_layout/deptrecommand/deptrecommand'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import CounselContent from './counsel/CounselContent'
@@ -32,7 +33,7 @@ const SideMenuLayout = (props) => {
     if (title === 'consultation') title = '상담신청'
     else if (title === 'board') title = '유한게시판'
     else if (title === 'food') title = '오늘의 메뉴'
-    else if (title === 'deptRec') title = '전공추천'
+    else if (title === 'deptRec') title = '학부추천'
 
     // 사용자와 학생 정보의 초기값 설정
     const [userInfo, setUserInfo] = useState({
@@ -119,6 +120,9 @@ const SideMenuLayout = (props) => {
 
                         {title === '상담신청' &&
                             <CounselContent userInfo={userInfo} studentInfo={studentInfo} userId={userId} userType={userType} />
+                        }
+                        {title === '학부추천' &&
+                            <DeptRecommand />
                         }
                     </DetailContent>
                     <DetailFooter />
