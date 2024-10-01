@@ -1,9 +1,8 @@
 import { Html } from '@react-three/drei'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { CREATION_HALL, FREE_HALL, JAE_RA_YOO, MEMORIAL_HALL, PEACE_HALL, SHARING_HALL, STUDENT_CAFETERIA, VOLUNTEER_CENTER } from '../../../../../../../../../data/commonData'
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, Pagination } from '@mui/material'
+import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_YOO, MEMORIAL_HALL, PEACE_HALL, SHARING_HALL, STUDENT_CAFETERIA, VOLUNTEER_CENTER } from '../../../../../../../../../data/commonData'
+import { useNavigate } from 'react-router-dom'
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
@@ -73,22 +72,21 @@ const KioskModal = ({kioskName, ...props}) => {
             setCurrentPage(currentPage - 1)
         }
     }
-
     
     const handleComputerSW = () => {
-        dispatch(computerSoftwareMap())
+        dispatch(computerSoftwareMap(CSW_PATH))
         navigate('/department/csw')
     }
     const handleIndustrialDesign = () => {
-        dispatch(industrialDesignMap())
+        dispatch(industrialDesignMap(ID_PATH))
         navigate('/department/id')
     }
     const handleFoodNutrition = () => {
-        dispatch(foodNutritionMap())
+        dispatch(foodNutritionMap(FN_PATH))
         navigate('/department/fn')
     }
     const handleYuhanBio = () => {
-        dispatch(yuhanBioMap())
+        dispatch(yuhanBioMap(BIO_PATH))
         navigate('/department/bio')
     }
 

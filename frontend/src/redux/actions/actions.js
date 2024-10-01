@@ -9,7 +9,9 @@ export const CURRENT_PROFESSOR_USER = 'CURRENT_PROFESSOR_USER'
 export const MY_PROFESSOR_INFO = 'MY_PROFESSOR_INFO'
 
 // 캐릭터 - 성준
+export const INIT_CHARACTER = 'INIT_CHARACTER'
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
+export const MAIN_CHARACTER_DEPT = 'MAIN_CHARACTER_DEPT'
 
 export const INIT_MINI_MAP_TELEPORT = 'INIT_MINI_MAP_TELEPORT'
 export const MINI_MAP_TELEPORT = 'MINI_MAP_TELEPORT'
@@ -93,8 +95,15 @@ export const myProfessorInfo = (myProfessorInfo) => ({
 })
 
 // 캐릭터 - 성준
+export const initChar = () => ({
+    type: INIT_CHARACTER
+})
 export const mainChar = (newPosition) => ({
     type: MAIN_CHARACTER,
+    payload: newPosition
+})
+export const mainCharDept = (newPosition) => ({
+    type: MAIN_CHARACTER_DEPT,
     payload: newPosition
 })
 
@@ -114,17 +123,21 @@ export const yhMap = () => ({
 export const deptMap = () => ({
     type: DEPT_MAP
 })
-export const computerSoftwareMap = () => ({
-    type: COMPUTER_SOFTWARE_MAP
+export const computerSoftwareMap = (pathData) => ({
+    type: COMPUTER_SOFTWARE_MAP,
+    payload: pathData
 })
-export const industrialDesignMap = () => ({
-    type: INDUSTRIAL_DESIGN_MAP
+export const industrialDesignMap = (pathData) => ({
+    type: INDUSTRIAL_DESIGN_MAP,
+    payload: pathData
 })
-export const foodNutritionMap = () => ({
-    type: FOOD_NUTRITION_MAP
+export const foodNutritionMap = (pathData) => ({
+    type: FOOD_NUTRITION_MAP,
+    payload: pathData
 })
-export const yuhanBioMap = () => ({
-    type: YUHAN_LIFE_BIO_MAP
+export const yuhanBioMap = (pathData) => ({
+    type: YUHAN_LIFE_BIO_MAP,
+    payload: pathData
 })
 
 // 클라이언트 사이드 메뉴 - 성준

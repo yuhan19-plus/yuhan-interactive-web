@@ -1,14 +1,73 @@
 /** 파일생성자 : 임성준
  * 임성준 : 프론트엔드 개발
- * 
  */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DeptElements from './elements/DeptElements'
+import { useDispatch, useSelector } from 'react-redux'
+import { mainCharDept } from '../../../../../../redux/actions/actions'
+import DeptFloor from './elements/DeptFloor'
+import { MainCharacter } from '../../player/main/MainCharacter'
+import { BioDeptHeadCharacter } from '../../player/dept/BioDeptHeadCharacter'
+import { CSDeptHeadCharacter } from '../../player/dept/CSDeptHeadCharacter'
+import { DesignDeptHeadCharacter } from '../../player/dept/DesignDeptHeadCharacter'
+import { FoodDeptHeadCharacter } from '../../player/dept/FoodDeptHeadCharacter'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const DeptMap = (props) => {
+const DeptMap = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const myChar = useSelector((state) => state.mChar)
+    const groundMapState = useSelector((state) => state.groundMap)
+    const groundMapName = groundMapState.mapName
+    const [targetPosition, setTargetPosition] = useState(myChar.deptInitPosition)
+    console.log('dept targetPosition : ', targetPosition)
+    useEffect(() => {
+        if (targetPosition) {
+            dispatch(mainCharDept(targetPosition))
+        }
+    }, [targetPosition, dispatch])
+
+    const handleMove = (newPosition) => {
+        setTargetPosition(newPosition)
+    }
+
+    useEffect(() => {
+        if(groundMapName === '' || groundMapName === 'yh_map') {
+            navigate('/')
+            history.go(0)
+        }
+    }, [groundMapName])
+
     return (
         <group>
-            <DeptElements />
+            <DeptFloor
+                position={[0, -50, 0]}
+                onMove={handleMove}
+            />
+            <DeptElements groundMapName={groundMapName} />
+
+            <React.Fragment>
+                {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
+                {groundMapName === 'yuhan_bio_map' && (
+                    <BioDeptHeadCharacter groundMapName={groundMapName} position={[60, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'computer_sw_map' && (
+                    <CSDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'food_nutrition_map' && (
+                    <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'industrial_design_map' && (
+                    <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+            </React.Fragment>
+            
+            <React.Fragment>
+                {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
+                {targetPosition && myChar !== '' && (
+                    <MainCharacter myChar={myChar} position={targetPosition} />
+                )}
+            </React.Fragment>
         </group>
     )
 }

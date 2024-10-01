@@ -3,20 +3,26 @@
  * 
  */
 import React from 'react'
-import DeptFloor from './DeptFloor'
-import Wall from '../../yuhan_map/elements/testObject/Wall'
 
-const DeptElements = () => {
+const DeptElements = ({groundMapName}) => {
     return (
         <>
-            {/* 바닥 셋팅 */}
-            <DeptFloor />
-            
-            {/* 투명벽 셋팅 */}
-            <Wall position={[50, 51, -260]} />
-            <Wall position={[50, 51, 260]} />
-            <Wall position={[-260, 51, -20/2]} rotation={[0,  Math.PI / 2, 0]} />
-            <Wall position={[260, 51, -20/2]} rotation={[0,  Math.PI / 2, 0]} />
+            {groundMapName === 'yuhan_bio_map' && (
+                // 바이오
+                <></>
+            )}
+            {groundMapName === 'computer_sw_map' && (
+                // 컴소
+                <></>
+            )}
+            {groundMapName === 'food_nutrition_map' && (
+                // 식품영양
+                <></>
+            )}
+            {groundMapName === 'industrial_design_map' && (
+                // 산디
+                <></>
+            )}
         </>
     )
 }

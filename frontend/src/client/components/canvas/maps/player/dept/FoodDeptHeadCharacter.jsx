@@ -3,7 +3,7 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
-export function FoodDeptHeadCharacter({position, ...props}) {
+export function FoodDeptHeadCharacter({groundMapName, position, ...props}) {
   const group = React.useRef()
   const { scene, animations } = useGLTF('/assets/models/character/FoodDeptHead.glb')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
@@ -13,7 +13,13 @@ export function FoodDeptHeadCharacter({position, ...props}) {
   // console.log(animations)
 
   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
-  const [animation, setAnimation] = useState('yes')
+  const [animation, setAnimation] = useState('Cook')
+
+  useEffect(() => {
+    if(groundMapName === 'yh_map') {
+      setAnimation('yes')
+    }
+  }, [groundMapName])
 
   useEffect(() => {
     if (actions && actions[animation]) {

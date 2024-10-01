@@ -18,11 +18,12 @@ import { ShowCase } from './structures/yuhan_map/elements/etc/ShowCase'
 import { Statue } from './structures/yuhan_map/elements/etc/Statue'
 
 const RootMap = () => {
-    const myChar = useSelector((state) => state.mChar)
     const dispatch = useDispatch()
+    const myChar = useSelector((state) => state.mChar)
+    const groundMapState = useSelector((state) => state.groundMap)
+    const currentGroundMapName = groundMapState.mapName
 
     const [targetPosition, setTargetPosition] = useState(myChar.currentPosition)
-    // console.log(targetPosition)
 
     useEffect(() => {
         dispatch(mainChar(targetPosition))
@@ -62,60 +63,66 @@ const RootMap = () => {
                 onMove={handleMove}
             />
 
-            {/* 맵 오브젝트들 */}
-            <KioskGroup />
-
-            {/* 버스정류장 */}
-            <BusStationOne position={[271.453, 6.15, -163.289]} />
-            <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
-
-            {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
-            {directionsState ? (
+            {currentGroundMapName === 'yh_map' && (
                 <>
-                    <Direction position={[100, 0, 500]} />
-                    <Bus position={[355, 17.5, -150]} />
-                </>
-            ) : (
-                <>
-                    {isInBusStationOne && (
+                    {/* 맵 오브젝트들 */}
+                    <KioskGroup />
+
+                    <YuhanElements />
+
+                    {/* 버스정류장 */}
+                    <BusStationOne position={[271.453, 6.15, -163.289]} />
+                    <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
+                    {/* 동상 모달창 위치 */}
+                    <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12}/>
+                    {isInStatue &&(
                         <>
-                            <Direction position={[253, 10, -140]} />
-                            <Bus position={[355, 17.5, -150]} />
+                            <StatueModal position={[50, 40, -650]}/>
                         </>
                     )}
-                    {isInBusStationTwo && (
+                    
+                    {isInStudentKiosk &&(
                         <>
-                            <Direction position={[553, 0, -220]} />
-                            <Bus position={[355, 17.5, -150]} />
+                            <FoodGroup position={[196.605, 12.5, 136.919]} scale={[1.5]}/>
+                            <ShowCase position={[189.605, 7, 136.919]} rotation={[Math.PI, 0, Math.PI]} scale={2}/>
+                            <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
                         </>
                     )}
-                </>
-            )}
-            {/* 동상 모달창 위치 */}
-            <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12}/>
-            {isInStatue &&(
-                <>
-                    <StatueModal position={[50, 40, -650]}/>
-                </>
-            )}
-            
-            {isInStudentKiosk &&(
-                <>
-                    <FoodGroup position={[196.605, 12.5, 136.919]} scale={[1.5]}/>
-                    <ShowCase position={[189.605, 7, 136.919]} rotation={[Math.PI, 0, Math.PI]} scale={2}/>
-                    <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
-                </>
-            )}
 
-            <YuhanElements />
+                    {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
+                    {directionsState ? (
+                            <>
+                                <Direction position={[100, 0, 500]} />
+                                <Bus position={[355, 17.5, -150]} />
+                            </>
+                        ) : (
+                                <>
 
-            {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
-            <React.Fragment>
-                {/* 캐릭터 이동에 클릭한 위치를 전달, 초기에는 null 상태 */}
-                {(targetPosition && myChar !== '') && (
-                    <MainCharacter myChar={myChar} position={targetPosition} />
-                )}
-            </React.Fragment>
+                                    {/* 찾아오는 길 안내문 */}
+                                    {isInBusStationOne && (
+                                        <>
+                                            <Direction position={[253, 10, -140]} />
+                                            <Bus position={[355, 17.5, -150]} />
+                                        </>
+                                    )}
+                                    {isInBusStationTwo && (
+                                        <>
+                                            <Direction position={[553, 0, -220]} />
+                                            <Bus position={[355, 17.5, -150]} />
+                                        </>
+                                    )}
+                                </>
+                            )
+                    }
+                    {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
+                    <React.Fragment>
+                        {/* 캐릭터 이동에 클릭한 위치를 전달, 초기에는 null 상태 */}
+                        {(targetPosition && myChar !== '') && (
+                            <MainCharacter myChar={myChar} position={targetPosition} />
+                        )}
+                    </React.Fragment>
+                </>
+            )}
         </group> 
     )
 }
