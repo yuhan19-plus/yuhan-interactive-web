@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
 import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
+import DeptRecommand from '../../../../../canvas_layout/deptrecommand/deptrecommand'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import CounselContent from './counsel/CounselContent'
@@ -119,6 +120,9 @@ const SideMenuLayout = (props) => {
 
                         {title === '상담신청' &&
                             <CounselContent userInfo={userInfo} studentInfo={studentInfo} userId={userId} userType={userType} />
+                        }
+                        {title === '학부추천' &&
+                            <DeptRecommand />
                         }
                     </DetailContent>
                     <DetailFooter />
