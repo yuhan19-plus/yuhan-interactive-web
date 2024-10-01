@@ -1,16 +1,21 @@
 /** 작성자 : 임성준
  */
 import React, { useEffect, useState } from 'react'
-import YuhanElements from './structures/yuhan_map/YuhanElements'
-import { MainCharacter } from './player/main/MainCharacter'
 import { useDispatch, useSelector } from 'react-redux'
 import { mainChar } from '../../../../redux/actions/actions'
+import { MainCharacter } from './player/main/MainCharacter'
+import Direction from './structures/yuhan_map/3dUIs/modal/Direction'
+import StatueModal from './structures/yuhan_map/3dUIs/modal/StatueModal'
+import YuhanElements from './structures/yuhan_map/YuhanElements'
 import Floor from './structures/yuhan_map/elements/Floor'
+import FoodGroup from './structures/yuhan_map/elements/FoodGroup'
 import KioskGroup from './structures/yuhan_map/elements/KioskGroup'
+import { Bus } from './structures/yuhan_map/elements/bus/Bus'
 import { BusStationOne } from './structures/yuhan_map/elements/etc/BusStationOne'
 import { BusStationTwo } from './structures/yuhan_map/elements/etc/BusStationTwo'
-import { Bus } from './structures/yuhan_map/elements/bus/Bus'
-import Direction from './structures/yuhan_map/3dUIs/modal/Direction'
+import { Plate } from './structures/yuhan_map/elements/etc/Plate'
+import { ShowCase } from './structures/yuhan_map/elements/etc/ShowCase'
+import { Statue } from './structures/yuhan_map/elements/etc/Statue'
 
 const RootMap = () => {
     const myChar = useSelector((state) => state.mChar)
@@ -33,6 +38,21 @@ const RootMap = () => {
     const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
     // 찾아오는 길버튼의 클릭여부를 확인
     const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+    useEffect(() => {
+        console.log(isInBusStationTwo)
+    }, [isInBusStationTwo])
+
+    // 동상 출퇴장 처리
+    const isInStatue = useSelector(state=> state.statue.inStatue);
+    useEffect(()=>{
+        console.log("동상",isInStatue)
+    },[isInStatue])
+    
+    //학생 식당 음식 출퇴장 처리
+    const isInStudentKiosk = useSelector(state=> state.studentKiosk.inStudentKiosk);
+    useEffect(()=>{
+        console.log("식당",isInStudentKiosk)
+    },[isInStudentKiosk])
 
     return (
         <group>
@@ -71,6 +91,21 @@ const RootMap = () => {
                     )}
                 </>
             )}
+            {/* 동상 모달창 위치 */}
+            <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12}/>
+            {isInStatue &&(
+                <>
+                    <StatueModal position={[50, 40, -650]}/>
+                </>
+            )}
+            
+            {isInStudentKiosk &&(
+                <>
+                    <FoodGroup position={[196.605, 12.5, 136.919]} scale={[1.5]}/>
+                    <ShowCase position={[189.605, 7, 136.919]} rotation={[Math.PI, 0, Math.PI]} scale={2}/>
+                    <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
+                </>
+            )}
 
             <YuhanElements />
 
@@ -81,7 +116,7 @@ const RootMap = () => {
                     <MainCharacter myChar={myChar} position={targetPosition} />
                 )}
             </React.Fragment>
-        </group>
+        </group> 
     )
 }
 

@@ -1,15 +1,17 @@
 // 파일 생성자 : 임성준
 
 import { combineReducers } from "redux";
-import { sideMenuReducer } from "./sideMenuReducer";
-import { mapReducer } from "./mapReducer";
-import { modalReducer } from "./modalReducer";
-import { mainCharReducer } from "./mainCharReducer";
-import { menuBtnReducer } from "./menuBtnReducer";
+import { statueReducer } from "./StatueReducer";
 import { busReducer } from "./busReducer";
 import { consultationReducer } from "./consultationReducer";
 import { kioskReducer } from "./kioskReducer";
+import { mainCharReducer } from "./mainCharReducer";
+import { mapReducer } from "./mapReducer";
+import { menuBtnReducer } from "./menuBtnReducer";
 import { miniMapReducer } from "./miniMapReducer";
+import { modalReducer } from "./modalReducer";
+import { sideMenuReducer } from "./sideMenuReducer";
+import { StudentKioskReducer } from "./studentKioskReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -22,12 +24,15 @@ const rootReducer = combineReducers({
     counsel: consultationReducer,
     kiosk: kioskReducer,
     teleport: miniMapReducer,
+    
 
     // 석재
 
     // 자현
-    bus: busReducer
+    bus: busReducer,
     // 정민
+    statue: statueReducer,
+    studentKiosk: StudentKioskReducer
 })
 
 export default rootReducer

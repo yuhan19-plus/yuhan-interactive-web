@@ -1,11 +1,12 @@
-import React from 'react'
-import { BasketballHoop } from './etc/BasketballHoop'
-import { YuhanEntrance } from './etc/YuhanEntrance'
-import { Statue } from './etc/Statue'
-import { Wire_Netting } from './etc/Wire_Netting'
-import { NoEntry } from './etc/NoEntry'
+import React from 'react';
+import { BasketballHoop } from './etc/BasketballHoop';
+import { Statue } from './etc/Statue';
+import { Wire_Netting } from './etc/Wire_Netting';
+import { YuhanEntrance } from './etc/YuhanEntrance';
+
 
 const EtcGroup = () => {
+
     return (
         <>
             {/* 농구골대 */}
@@ -17,7 +18,6 @@ const EtcGroup = () => {
             <YuhanEntrance position={[225.126, 31.653, -507.304]} rotation={[Math.PI, 0, Math.PI]} />
 
             {/* 동상 */}
-            <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12} />
             <Statue position={[-480, 26 + 4, -500]} rotation={[0, Math.PI / 2.7, 0]} scale={26} />
 
             {/* 철조망 */}
@@ -25,8 +25,9 @@ const EtcGroup = () => {
 
             {/* 바리게이트 */}
             {/* <NoEntry position={[-460, -9, -97]} rotation={[0, Math.PI / 2, 0]} scale={1.7} /> */}
-        </>
-    )
-}
 
-export default EtcGroup
+        </>
+    );
+};
+
+export default EtcGroup;
