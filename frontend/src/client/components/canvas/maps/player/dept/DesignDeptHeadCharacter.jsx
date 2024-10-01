@@ -3,7 +3,7 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
-export function DesignDeptHeadCharacter({position, ...props}) {
+export function DesignDeptHeadCharacter({groundMapName, position, ...props}) {
   const group = React.useRef()
   const { scene, animations } = useGLTF('/assets/models/character/DesignDeptHead.glb')
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
@@ -12,7 +12,7 @@ export function DesignDeptHeadCharacter({position, ...props}) {
   // console.log(animations)
 
   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
-  const [animation, setAnimation] = useState('WindMill')
+  const [animation, setAnimation] = useState('Hello')
 
   useEffect(() => {
     if (actions && actions[animation]) {
@@ -25,6 +25,12 @@ export function DesignDeptHeadCharacter({position, ...props}) {
       }
     }
   }, [actions, animation])
+
+  useEffect(() => {
+    if(groundMapName === 'yh_map') {
+      setAnimation('WindMill')
+    }
+  }, [groundMapName])
 
   return (
     <group ref={group} position={position} {...props}>

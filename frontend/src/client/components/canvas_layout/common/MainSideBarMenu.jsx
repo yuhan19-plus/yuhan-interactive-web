@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelopeOpenText, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelopeOpenText, faLightbulb, faSchool } from '@fortawesome/free-solid-svg-icons';
 import { RestaurantMenu } from '@mui/icons-material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -19,10 +19,12 @@ import SupportIcon from '@mui/icons-material/Support';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { board, consultation, deptRec, food } from '../../../../redux/actions/actions';
+import { board, consultation, deptRec, food, initChar, yhMap } from '../../../../redux/actions/actions';
+import Swal from 'sweetalert2';
 
 const MainSideBarMenu = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSideMenuConsultation = () => {
         dispatch(consultation())
@@ -42,6 +44,27 @@ const MainSideBarMenu = () => {
 
     return (
         <>
+            <div>
+                <FontAwesomeIcon icon={faSchool} />
+                <span>
+                    <a onClick={() => {
+                        Swal.fire({
+                            title: '정문이동',
+                            icon: 'warning',
+                            text: '모든 상태가 초기화되고 정문으로 이동합니다.',
+                            showCancelButton: true,
+                            confirmButtonText: '이동',
+                            cancelButtonText: '닫기'                     
+                        }).then((res) => {
+                            if (res.isConfirmed) {
+                                history.go(0) // 새로고침
+                            }
+                        })
+                    }}>
+                        유한대학교
+                    </a>
+                </span>
+            </div>
             <div>
                 <AccountBalanceIcon />
                 <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3007' target='_blank'>대학소개</a></span>

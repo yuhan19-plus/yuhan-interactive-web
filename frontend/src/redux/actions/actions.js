@@ -3,6 +3,7 @@
 /* 액션타입 정의영역 - 성준 */
 
 // 캐릭터 - 성준
+export const INIT_CHARACTER = 'INIT_CHARACTER'
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
 export const MAIN_CHARACTER_DEPT = 'MAIN_CHARACTER_DEPT'
 
@@ -64,6 +65,9 @@ export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 /* 액션 생성자 정의영역 - 성준 */
 
 // 캐릭터 - 성준
+export const initChar = () => ({
+    type: INIT_CHARACTER
+})
 export const mainChar = (newPosition) => ({
     type: MAIN_CHARACTER,
     payload: newPosition

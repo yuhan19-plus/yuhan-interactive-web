@@ -4,9 +4,25 @@
  */
 import React from 'react'
 
-const DeptElements = () => {
+const DeptElements = ({groundMapName}) => {
     return (
         <>
+            {groundMapName === 'yuhan_bio_map' && (
+                // 바이오
+                <></>
+            )}
+            {groundMapName === 'computer_sw_map' && (
+                // 컴소
+                <></>
+            )}
+            {groundMapName === 'food_nutrition_map' && (
+                // 식품영양
+                <></>
+            )}
+            {groundMapName === 'industrial_design_map' && (
+                // 산디
+                <></>
+            )}
         </>
     )
 }

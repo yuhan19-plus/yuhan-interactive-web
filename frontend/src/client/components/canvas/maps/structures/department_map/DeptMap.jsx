@@ -1,50 +1,3 @@
-// /** 파일생성자 : 임성준
-//  * 임성준 : 프론트엔드 개발
-//  * 
-//  */
-// import React, { useEffect, useState } from 'react'
-// import DeptElements from './elements/DeptElements'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { mainCharDept } from '../../../../../../redux/actions/actions'
-// import DeptFloor from './elements/DeptFloor'
-// import { MainCharacter } from '../../player/main/MainCharacter'
-
-// const DeptMap = (props) => {
-//     const dispatch = useDispatch()
-//     const myChar = useSelector((state) => state.mChar)
-//     const [targetPosition, setTargetPosition] = useState(myChar.deptInitPosition)
-//     console.log(targetPosition)
-
-//     useEffect(() => {
-//         dispatch(mainCharDept(targetPosition))
-//     }, [targetPosition])
-
-//     const handleMove = (newPosition) => {
-//         // console.log('newPosition', newPosition)
-//         setTargetPosition(newPosition)
-//     }
-
-//     return (
-//         <group>
-//             <DeptFloor
-//                 onMove={handleMove}
-//             />
-//             <DeptElements />
-
-//             {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
-//             <React.Fragment>
-//                 {/* 캐릭터 이동에 클릭한 위치를 전달, 초기에는 null 상태 */}
-//                 {(targetPosition && myChar !== '') && (
-//                     <MainCharacter myChar={myChar} position={targetPosition} />
-//                 )}
-                
-//                 {/* <MainCharacter myChar={myChar} position={targetPosition} /> */}
-//             </React.Fragment>
-//         </group>
-//     )
-// }
-
-// export default DeptMap
 /** 파일생성자 : 임성준
  * 임성준 : 프론트엔드 개발
  */
@@ -54,39 +7,67 @@ import { useDispatch, useSelector } from 'react-redux'
 import { mainCharDept } from '../../../../../../redux/actions/actions'
 import DeptFloor from './elements/DeptFloor'
 import { MainCharacter } from '../../player/main/MainCharacter'
+import { BioDeptHeadCharacter } from '../../player/dept/BioDeptHeadCharacter'
+import { CSDeptHeadCharacter } from '../../player/dept/CSDeptHeadCharacter'
+import { DesignDeptHeadCharacter } from '../../player/dept/DesignDeptHeadCharacter'
+import { FoodDeptHeadCharacter } from '../../player/dept/FoodDeptHeadCharacter'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const DeptMap = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const myChar = useSelector((state) => state.mChar)
+    const groundMapState = useSelector((state) => state.groundMap)
+    const groundMapName = groundMapState.mapName
     const [targetPosition, setTargetPosition] = useState(myChar.deptInitPosition)
-    console.log('dept targetPosition', targetPosition)
+    console.log('dept targetPosition : ', targetPosition)
     useEffect(() => {
         if (targetPosition) {
             dispatch(mainCharDept(targetPosition))
         }
-    }, [targetPosition, dispatch]) // dispatch가 외부 함수이므로 의존성 배열에 추가
+    }, [targetPosition, dispatch])
 
     const handleMove = (newPosition) => {
         setTargetPosition(newPosition)
     }
 
+    useEffect(() => {
+        if(groundMapName === '' || groundMapName === 'yh_map') {
+            navigate('/')
+            history.go(0)
+        }
+    }, [groundMapName])
+
     return (
         <group>
-            {/* DeptFloor 컴포넌트에 캐릭터 이동 관련 핸들러 전달 */}
             <DeptFloor
                 position={[0, -50, 0]}
                 onMove={handleMove}
             />
-            <DeptElements />
+            <DeptElements groundMapName={groundMapName} />
+
+            <React.Fragment>
+                {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
+                {groundMapName === 'yuhan_bio_map' && (
+                    <BioDeptHeadCharacter groundMapName={groundMapName} position={[60, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'computer_sw_map' && (
+                    <CSDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'food_nutrition_map' && (
+                    <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'industrial_design_map' && (
+                    <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                )}
+            </React.Fragment>
             
-            {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
             <React.Fragment>
                 {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
                 {targetPosition && myChar !== '' && (
                     <MainCharacter myChar={myChar} position={targetPosition} />
                 )}
             </React.Fragment>
-            
         </group>
     )
 }

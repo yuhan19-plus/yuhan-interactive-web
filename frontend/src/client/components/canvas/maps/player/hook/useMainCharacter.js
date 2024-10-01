@@ -41,7 +41,7 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
     const point = document.getElementById(`student-point-${player}`)
 
     // 초기 목표 위치를 설정
-    console.log('position', position)
+    // console.log('position', position)
     const [targetPosition, setTargetPosition] = useState(new Vector3(...position))
 
     const { scene, materials, animations } = useGLTF('/assets/models/character/MainCharacter.glb')
@@ -82,7 +82,7 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
 
     // 처음 렌더링 시 초기 위치를 설정
     useEffect(() => {
-        console.log('groundMapState.mapName', groundMapState.mapName)
+        console.log('groundMapState.mapName ', groundMapState.mapName)
         console.log(myChar.currentPosition)
         console.log(myChar.deptInitPosition)
         if(charRef.current) {
@@ -439,13 +439,13 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
                     // 동상 Zone
                     if(currentPosition.x <= 69 && currentPosition.x >= 9) {
                         if(currentPosition.z <= -487 && currentPosition.z >= -537) {
-                            handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110)
+                            handleCamera(currentPosition.x + 130, currentPosition.y + 30, currentPosition.z + 130)
                         }
                     }
                 }   
             } else {
                 // 학과맵일 경우
-                handleCamera(currentPosition.x + 50, currentPosition.y + 100, currentPosition.z + 120)
+                handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 150)
             }
 
             camera.lookAt(currentPosition)

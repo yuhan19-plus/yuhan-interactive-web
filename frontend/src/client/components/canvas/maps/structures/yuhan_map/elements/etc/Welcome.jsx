@@ -12,8 +12,11 @@ import { BioDeptHeadCharacter } from '../../../../player/dept/BioDeptHeadCharact
 import { DesignDeptHeadCharacter } from '../../../../player/dept/DesignDeptHeadCharacter'
 import { FoodDeptHeadCharacter } from '../../../../player/dept/FoodDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
+import { useSelector } from 'react-redux'
 
 const Welcome = () => {
+    const groundMapState = useSelector((state) => state.groundMap)
+    const groundMapName = groundMapState.mapName
     const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
     const targetRef = useRef()
     const lightRef = useRef(null)
@@ -186,10 +189,10 @@ const Welcome = () => {
             <LightingObject position={[-335, -5, -340]} rotation={[0, Math.PI / 1.35, 0]} />
             <YuhanLogo position={[-490, 13, -290]} />
 
-            <BioDeptHeadCharacter position={[-360, 10, -540]} rotation={[0, Math.PI / 2, 0]} />
-            <CSDeptHeadCharacter position={[-340, 20, -465]} rotation={[0, Math.PI / 2, 0]} />
-            <DesignDeptHeadCharacter position={[-340, 10, -510]} rotation={[0, Math.PI / 2, 0]} />
-            <FoodDeptHeadCharacter position={[-340, 20, -385]} rotation={[0, Math.PI / 2, 0]} />
+            <BioDeptHeadCharacter groundMapName={groundMapName} position={[-360, 10, -540]} rotation={[0, Math.PI / 2, 0]} />
+            <CSDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -465]} rotation={[0, Math.PI / 2, 0]} />
+            <DesignDeptHeadCharacter groundMapName={groundMapName} position={[-340, 10, -510]} rotation={[0, Math.PI / 2, 0]} />
+            <FoodDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -385]} rotation={[0, Math.PI / 2, 0]} />
 
             <spotLight
                 // ref={lightRef}

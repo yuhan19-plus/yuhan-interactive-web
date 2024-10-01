@@ -113,10 +113,6 @@ const SideBar = () => {
                     )}
                 </SideBarHeader>
                 <SideBarList>
-                    <div>
-                        <FontAwesomeIcon icon={faSchool} />
-                        <span><a href='/'>유한대학교</a></span>
-                    </div>
                     {
                         (currentMapName === 'yh_map' &&  currentPath === '/') ? <MainSideBarMenu /> : <DeptSideBarMenu currentMapName={currentMapName} />
                     }

@@ -4,7 +4,7 @@
  */
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faCalendarDays, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faCalendarDays, faImage, faSchool } from '@fortawesome/free-solid-svg-icons';
 import SchoolIcon from '@mui/icons-material/School';
 import { useSelector } from 'react-redux';
 
@@ -15,6 +15,10 @@ const DeptSideBarMenu = ({currentMapName}) => {
     // console.log(groundMapState)
     return (
         <>
+            <div>
+                <FontAwesomeIcon icon={faSchool} />
+                <span><a onClick={() => {history.back()}}>유한대학교</a></span>
+            </div>
             <div>
                 <SchoolIcon />
                 <span><a href={pathData[0]} target='_blank'>학과소개</a></span>
