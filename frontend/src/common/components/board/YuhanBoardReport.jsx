@@ -8,12 +8,9 @@ import React, { useState } from "react";
 import { Grid, Typography, Select, MenuItem, TextField, Box, Button } from '@mui/material';
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import styled from "styled-components";
 
 // 신고글을 작성하는 컴포넌트 
-// 신고는 수정불가
-// 신고처리는 관리자게시판list에 신고처리 버튼을 두고 거기서 해결하게 하기
-// 신고하기 누르면 진짜 신고하냐고 한번 물어보고 거기서도 확인을 눌러야 요청을 보내자
-
 const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     const [cookies] = useCookies(["user"]);
     const [reportData, setReportData] = useState({
@@ -53,7 +50,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                 // 성공 후 페이지 이동 or 리스트로 돌아가기
                 onCancel();
             });
-            console.log("신고 성공");
+            // console.log("신고 성공");
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -77,33 +74,26 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
                 </Grid>
-                <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <Typography variant="h2" sx={{ color: "#ee2e2e", fontWeight: "bold", fontSize: "2.5rem" }}>
-                        신고게시물 제목: {boardTitle}
-                    </Typography>
-                </Grid>
-                <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <Typography variant="h2" sx={{ color: "#ee2e2e", fontWeight: "bold", fontSize: "2rem" }}>
+                <StyledGrid container>
+                    <StyledTitleTypography variant="h4">
+                        신고게시글: {boardTitle}
+                    </StyledTitleTypography>
+                </StyledGrid>
+                <StyledGrid container>
+                    <StyledReporterTypography variant="h5">
                         신고자 : {cookies.user}
-                    </Typography>
-                </Grid>
+                    </StyledReporterTypography>
+                </StyledGrid>
 
                 {/* 게시글 신고 태그 선택 드롭박스 */}
                 <Grid item xs={12} sx={{ marginBottom: "2vh" }}>
@@ -135,19 +125,12 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                     />
                 </Grid>
                 <Grid item xs={12} textAlign="right">
-                    <Button
+                    <StyledDeleteButton
                         variant="contained"
-                        color="primary"
-                        sx={{
-                            background: 'linear-gradient(45deg, #e74c3c 30%, #f1c40f 90%)', // 빨간색(#e74c3c)과 노란색(#f1c40f)의 그라데이션
-                            '&:hover': {
-                                backgroundColor: "#c0392b",  // 호버 시 어두운 빨간색
-                            }
-                        }}
                         onClick={() => { handleReport(); }}
                     >
                         신고하기
-                    </Button>
+                    </StyledDeleteButton>
 
                 </Grid>
             </Box >
@@ -156,3 +139,42 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
 };
 
 export default YuhanBoardReport;
+
+const StyledDeleteButton = styled(Button)`
+  margin-right: 1vw !important;
+  margin-top: 1vh !important;
+  background: linear-gradient(45deg, #e74c3c 30%, #f1c40f 90%);
+  border-color: #e74c3c;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #c0392b !important;
+    color: #ffffff;
+  }
+`;
+
+const StyledGrid = styled(Grid)`
+  margin-top: 0.5vh;
+  padding: 0.5vw;
+`;
+
+const StyledTitleTypography = styled(Typography)`
+  color: #ee2e2e;
+  font-weight: bold !important;
+  font-size: 2.5rem !important; 
+`;
+
+const StyledReporterTypography = styled(Typography)`
+  color: #ee2e2e;
+  font-weight: bold !important;
+  font-size: 2rem !important;
+`;
+
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
+`;

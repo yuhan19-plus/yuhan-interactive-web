@@ -11,7 +11,7 @@ import { useCookies } from "react-cookie";
 // 신고 처리 순서
 // 1.신고내역을 클릭으로 처리페이지 진입
 // 2.처리내역 작성 후 처리완료
-const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
+const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
     const [dataList, setDataList] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
@@ -66,6 +66,7 @@ const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
             const data = await response.json();
 
             setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
         } catch (error) {
             console.error("데이터 불러오는 중 에러 발생:", error);
         }
@@ -82,37 +83,8 @@ const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
     return (
         <>
             <Box sx={{ p: 3 }}>
-                {/* 버튼구역 */}
-                <Grid container alignItems="center" justifyContent="space-between">
-                    {/* 돌아가기 버튼 */}
-                    <Grid item>
-                        <Button
-                            variant="contained"
-                            size="medium"
-                            color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
-                            onClick={onCancel}
-                        >
-                            돌아가기
-                        </Button>
-                    </Grid>
-                </Grid>
-
-                <Grid container alignItems="center" justifyContent="center" sx={{ position: 'relative' }} >
-                    <Grid item>
-                        <Typography variant="h2"
-                            sx={{ textAlign: "center", color: "#ee2e2e", fontWeight: "bold", fontSize: "2.5rem" }}
-                        >
-                            신고내역
-                        </Typography>
-                    </Grid>
-                    <FormControl sx={{ position: 'absolute', right: '2vw', minWidth: 80 }}>
+                <Grid container alignItems="center" justifyContent="flex-end" sx={{ position: 'relative' }} >
+                    <FormControl sx={{ minWidth: 80 }}>
                         <Select
                             labelId="sort-label"
                             value={sortCriteria}
@@ -124,8 +96,6 @@ const AdminBoardReportList = ({ onCancel, onReportManagement }) => {
                         </Select>
                     </FormControl>
                 </Grid>
-
-
                 <List>
                     {/* 테이블 헤더 */}
                     <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>

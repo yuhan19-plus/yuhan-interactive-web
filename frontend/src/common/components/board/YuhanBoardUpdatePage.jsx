@@ -227,21 +227,14 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                     <Grid container alignItems="center" justifyContent="space-between">
                         {/* 돌아가기 버튼 */}
                         <Grid item sx={{ marginBottom: "2vh" }}>
-                            <Button
+                            <StyledBackButton
                                 variant="contained"
                                 size="medium"
                                 color="primary"
-                                sx={{
-                                    backgroundColor: "#2ecc71",
-                                    '&:hover': {
-                                        backgroundColor: "#27ae60"
-                                    },
-                                    padding: "0.5vh 2vw"
-                                }}
                                 onClick={onCancel}
                             >
                                 돌아가기
-                            </Button>
+                            </StyledBackButton>
                         </Grid>
                     </Grid>
                     <Grid container spacing={2} >
@@ -335,4 +328,13 @@ const BoardLayout = styled.div`
     }
 `;
 const BoardMainLayout = styled.div`
+`;
+
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
 `;

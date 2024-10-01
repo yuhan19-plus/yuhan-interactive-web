@@ -8,12 +8,13 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import styled from "styled-components";
 
 // 신고 처리 순서
 // 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
 // 2. 처리 내역 작성 후 처리 완료
 
-const AdminBoardReportManagement = ({ reportID, onReport }) => {
+const AdminBoardReportManagement = ({ reportID, onCancel }) => {
     const [cookies] = useCookies(["user"]);
     const [totalData, setTotalData] = useState({
         board_content: "",       // 게시판 글 내용
@@ -94,7 +95,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                 title: '삭제 완료',
                 text: '게시글이 성공적으로 삭제되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onReport());
+            }).then(() => onCancel());
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -137,7 +138,7 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                 title: '무시 완료',
                 text: '신고가 성공적으로 무시되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onReport());
+            }).then(() => onCancel());
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -159,21 +160,14 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
                 {/* 돌아가기 버튼 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
-                            onClick={onReport}
+                            onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
                 </Grid>
 
@@ -265,3 +259,11 @@ const AdminBoardReportManagement = ({ reportID, onReport }) => {
 };
 
 export default AdminBoardReportManagement;
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
+`;

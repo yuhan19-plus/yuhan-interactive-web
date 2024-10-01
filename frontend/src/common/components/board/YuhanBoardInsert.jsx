@@ -17,6 +17,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         board_title: "",
         board_content: "",
         board_writer: cookies.user, // 세션쿠키에서 user를 받아서 작성자로 입력
+        writer_type: cookies.userType,
         files: []  // 파일 데이터를 저장하는 배열
     });
     // shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
@@ -148,7 +149,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             });
 
             if (response.ok) {
-                console.log("임시저장성공");
+                // console.log("임시저장성공");
             } else {
                 // 응답이 성공하지 않았을 때
                 const message = await response.text();
@@ -310,27 +311,20 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
                 </Grid>
                 <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <Typography variant="h2" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2.5rem" }}>
+                    <StyledTitleTypography variant="h3">
                         게시물 작성
-                    </Typography>
+                    </StyledTitleTypography>
                 </Grid>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -346,32 +340,18 @@ const YuhanBoardInsert = ({ onCancel }) => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <div {...getRootProps()} style={{
-                            border: "2px dashed #cccccc",
-                            borderRadius: "8px",
-                            padding: "30px",
-                            textAlign: "center",
-                            cursor: "pointer",
-                            transition: "border-color 0.3s ease-in-out",
-                            "&:hover": {
-                                borderColor: "#3f51b5",
-                            },
-                            backgroundColor: "#fafafa",
-                        }}>
-
+                        <StyledDropZone {...getRootProps()}>
                             <input {...getInputProps()} />
-
                             {boardData.files.length === 0 ? (
-                                // 파일이 없을 때만 안내 메시지 표시
-                                <p>파일은 15mb를 넘으면 안됩니다.<br/> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
+                                <p>파일은 15mb를 넘으면 안됩니다.<br /> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
                             ) : (
-                                // 파일이 있을 때만 파일 목록 표시
-                                <div style={{ textAlign: "left" }}>
-                                    <Box mt={2}>
-                                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                                            {boardData.files.map((file, index) => (
-                                                <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                    <span>{file.file_name} ({(file.file_size / 1024).toFixed(2)} KB) <Button
+                                <Box mt={2}>
+                                    <FileList>
+                                        {boardData.files.map((file, index) => (
+                                            <FileItem key={index}>
+                                                <span>
+                                                    {file.file_name} ({(file.file_size / 1024).toFixed(2)} KB)
+                                                    <Button
                                                         variant="outlined"
                                                         color="secondary"
                                                         size="small"
@@ -381,16 +361,14 @@ const YuhanBoardInsert = ({ onCancel }) => {
                                                         }}
                                                     >
                                                         제거
-                                                    </Button></span>
-
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </Box>
-                                </div>
+                                                    </Button>
+                                                </span>
+                                            </FileItem>
+                                        ))}
+                                    </FileList>
+                                </Box>
                             )}
-                        </div>
-
+                        </StyledDropZone>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -432,3 +410,44 @@ const BoardLayout = styled.div`
         margin: 0 auto;
     }`
     ;
+
+const StyledDropZone = styled.div`
+  border: 2px dashed #cccccc;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out;
+  background-color: #fafafa;
+
+  &:hover {
+    border-color: #3f51b5;
+  }
+`;
+
+const FileList = styled.ul`
+  list-style-type: none;
+  padding-left: 0;
+  text-align: left;
+`;
+
+const FileItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
+`;
+
+const StyledTitleTypography = styled(Typography)`
+  color: #34495e;
+  font-weight: bold;
+  font-size: 2.5rem;
+`;

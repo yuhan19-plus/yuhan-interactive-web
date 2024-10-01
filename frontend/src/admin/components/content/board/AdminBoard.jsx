@@ -4,18 +4,14 @@
  */
 
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import AdminBoardList from './AdminBoardList';
-import AdminBoardReportList from './AdminBoardReportList';
-import AdminReportManagement from './AdminBoardReportManagement';
 import AdminBoardPage from './AdminBoardPage';
 
 const AdminBoard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
-    const [selectReportID, setselectReportID] = useState(null);
 
     const handleCreatePost = () => {
         setCurrentView('insert');
@@ -38,17 +34,6 @@ const AdminBoard = () => {
         setCurrentView('list');
     };
 
-    // 신고목록으로 진입
-    const handleReport = () => {
-        setCurrentView('reportlist');
-    };
-    // 신고처리로 진입
-    const handleReportManagement = (reportID) => {
-        setselectReportID(reportID);
-        // console.log(reportID);
-        setCurrentView('reportManagement');
-    };
-
     return (
         <>
             {currentView === 'insert' ? (
@@ -58,7 +43,7 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : (
-                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} onReport={handleReport} />
+                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem}/>
             )}
         </>
     );

@@ -29,26 +29,19 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
     return (
         <BoardLayout>
             {/* background 맨뒤 cc는 투명도 */}
-            <Box sx={{ p: 3, background: "#ffffffcc", }}>
+            <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
                     {/* 돌아가기 버튼 */}
                     <Grid item>
-                        <Button
+                        <StyledBackButton
                             variant="contained"
                             size="medium"
                             color="primary"
-                            sx={{
-                                backgroundColor: "#2ecc71",
-                                '&:hover': {
-                                    backgroundColor: "#27ae60"
-                                },
-                                padding: "0.5vh 2vw"
-                            }}
                             onClick={onCancel}
                         >
                             돌아가기
-                        </Button>
+                        </StyledBackButton>
                     </Grid>
 
                     {/* 수정 및 삭제 버튼 */}
@@ -56,34 +49,17 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                         {/* 작성자는 수정 및 삭제에 모두 접근 가능 */}
                         {(cookies.user === boardData.board_writer) && (
                             <>
-                                <Button
+                                <StyledUpdateButton
                                     variant="outlined"
                                     size="medium"
-                                    sx={{
-                                        marginRight: "1vw",
-                                        color: "#3498db",
-                                        borderColor: "#3498db",
-                                        '&:hover': {
-                                            backgroundColor: "#3498db",
-                                            color: "#ffffff"
-                                        }
-                                    }}
                                     onClick={() => onSelectUpdateItem(boardData.board_id)}
                                 >
                                     수정
-                                </Button>
-                                <Button
+                                </StyledUpdateButton>
+                                <StyledDeleteButton
                                     variant="outlined"
                                     size="medium"
                                     color="error"
-                                    sx={{
-                                        marginRight: "1vw",
-                                        borderColor: "#e74c3c",
-                                        '&:hover': {
-                                            backgroundColor: "#e74c3c",
-                                            color: "#ffffff"
-                                        }
-                                    }}
                                     onClick={async () => {
                                         const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
                                         if (isDeleted) {
@@ -92,24 +68,16 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                                     }}
                                 >
                                     삭제
-                                </Button>
+                                </StyledDeleteButton>
                             </>
                         )}
 
                         {/* 관리자는 삭제에만 접근 가능 */}
-                        {(cookies.user === 'testadmin') && cookies.user !== boardData.board_writer && (
-                            <Button
+                        {(cookies.userType === 'admin') && cookies.user !== boardData.board_writer && (
+                            <StyledDeleteButton
                                 variant="outlined"
                                 size="medium"
                                 color="error"
-                                sx={{
-                                    marginRight: "1vw",
-                                    borderColor: "#e74c3c",
-                                    '&:hover': {
-                                        backgroundColor: "#e74c3c",
-                                        color: "#ffffff"
-                                    }
-                                }}
                                 onClick={async () => {
                                     const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
                                     if (isDeleted) {
@@ -118,29 +86,21 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                                 }}
                             >
                                 삭제
-                            </Button>
+                            </StyledDeleteButton>
                         )}
                     </Grid>
 
                     {/* 신고버튼 관리자는 신고할 필요없이 그냥 삭제 */}
-                    {(cookies.user !== 'testadmin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
+                    {(cookies.userType !== 'admin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
                         <Grid item>
-                            <Button
+                            <StyledDeleteButton
                                 variant="outlined"
                                 size="medium"
                                 color="error"
-                                sx={{
-                                    marginRight: "1vw",
-                                    borderColor: "#e74c3c",
-                                    '&:hover': {
-                                        backgroundColor: "#e74c3c",
-                                        color: "#ffffff"
-                                    }
-                                }}
                                 onClick={() => handleReportItem(boardData.board_id, boardData.board_title)}
                             >
                                 신고
-                            </Button>
+                            </StyledDeleteButton>
                         </Grid>
                     )}
                 </Grid>
@@ -178,70 +138,50 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                 </Grid>
                 <Divider />
                 {/* 첨부파일 영역 */}
-                <div style={{ padding: "1vw", display: "flex", justifyContent: "flex-end" }}>
+                <AttachmentsContainer>
                     {attachments.length > 0 ? (
-                        <Accordion sx={{ border: 'none', boxShadow: 'none', outline: 'none' }}>
-                            <AccordionSummary
+                        <StyledAccordion>
+                            <StyledAccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
                                 id="panel1a-header"
-                                sx={{ fontSize: '1.2rem' }}
                             >
                                 첨부파일
-                            </AccordionSummary>
-                            <AccordionDetails style={{
-                                background:"#ffffff", display: "flex", flexWrap: "wrap", flexDirection: "column", gap: "5px", position: "absolute", zIndex: 10
-                            }}>
+                            </StyledAccordionSummary>
+                            <StyledAccordionDetails>
                                 {attachments.map((attachment, index) => {
                                     const displayName = attachment.file_name.length > 15
                                         ? attachment.file_name.slice(0, 10) + "..."
                                         : attachment.file_name;
 
                                     return (
-                                        <div key={index} style={{ width: "auto", textAlign: "center" }}>
-                                            <a
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleDownload(
-                                                        attachment.file_name,
-                                                        attachment.file_data,
-                                                        attachment.file_type
-                                                    );
-                                                }}
-                                                style={{ color: "#2980B9" }}
-                                            >
-                                                {displayName}
-                                            </a>
-                                        </div>
+                                        <AttachmentLink
+                                            key={index}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleDownload(
+                                                    attachment.file_name,
+                                                    attachment.file_data,
+                                                    attachment.file_type
+                                                );
+                                            }}
+                                        >
+                                            {displayName}
+                                        </AttachmentLink>
                                     );
                                 })}
-                            </AccordionDetails>
-                        </Accordion>
+                            </StyledAccordionDetails>
+                        </StyledAccordion>
                     ) : (
-                        // 없으면 비어있게 처리
                         <></>
                     )}
-                </div>
+                </AttachmentsContainer>
 
                 {/* 내용 영역 */}
-                <Grid
-                    item xs={12}
-                    sx={{
-                        marginBottom: "2vh",
-                        padding: "1vh 1vw",
-                        borderRadius: "0.5vh",
-                        boxShadow: "0 0.4vh 0.8vh rgba(0, 0, 0, 0.1)",
-                        minHeight: "15vh",
-                        maxHeight: "40vh",
-                        overflowY: "auto",
-                        whiteSpace: "pre-line",
-                        color: "#2C3E50",
-                        wordWrap: "break-word",
-                    }}
-                >
+                <StyledGridItem>
                     {boardData.board_content}
-                </Grid>
+                </StyledGridItem>
 
                 {/* 좋아요 버튼영역 */}
                 <Grid>
@@ -266,10 +206,11 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
 export default SideBoardPage;
 
 const BoardLayout = styled.div`
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     background-color: white;
+    border-radius: 2vh;
     
     .header {
         color: white;
@@ -279,4 +220,80 @@ const BoardLayout = styled.div`
         max-width: 1200px;
         margin: 0 auto;
     }
+`;
+
+const StyledUpdateButton = styled(Button)`
+  margin-right: 1vw !important;
+  color: #3498db;
+  border-color: #3498db;
+  
+  &:hover {
+    background-color: #3498db !important;
+    color: #ffffff;
+  }
+`;
+
+const StyledDeleteButton = styled(Button)`
+  margin-right: 1vw !important;
+  border-color: #e74c3c;
+  
+  &:hover {
+    background-color: #e74c3c !important;
+    color: #ffffff;
+  }
+`;
+
+
+const AttachmentsContainer = styled.div`
+  padding: 1vw;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const StyledAccordion = styled(Accordion)`
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+`;
+
+const StyledAccordionSummary = styled(AccordionSummary)`
+  font-size: 1.1rem;
+`;
+
+const StyledAccordionDetails = styled(AccordionDetails)`
+  background: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.25vh;
+  position: absolute;
+  z-index: 10;
+`;
+
+const AttachmentLink = styled.a`
+  color: #2980B9;
+  text-align: center;
+  display: block;
+  width: auto;
+`;
+
+const StyledGridItem = styled(Grid)`
+  margin-bottom: 2vh;
+  padding: 1vh 1vw;
+  border-radius: 0.5vh;
+  box-shadow: 0 0.4vh 0.8vh rgba(0, 0, 0, 0.1);
+  min-height: 15vh;
+  max-height: 40vh;
+  overflow-y: auto;
+  white-space: pre-line;
+  color: #2C3E50;
+  word-wrap: break-word;
+`;
+const StyledBackButton = styled(Button)`
+  background-color: #2ecc71 !important;
+  padding: 0.5vh 2vw !important;
+  
+  &:hover {
+    background-color: #27ae60 !important;
+  }
 `;

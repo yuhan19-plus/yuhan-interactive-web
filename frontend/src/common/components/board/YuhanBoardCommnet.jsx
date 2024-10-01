@@ -9,6 +9,7 @@ import { Grid, Typography, List, ListItem, ListItemText, ListItemButton, Button,
 import { useCookies } from "react-cookie";
 import { CalendarToday, NoteAlt } from '@mui/icons-material';
 import Swal from 'sweetalert2';
+import styled from 'styled-components';
 
 export const YuhanBoardComment = ({ boardData }) => {
     const [cookies] = useCookies(["user"]);  // 쿠키에서 user 정보 가져오기
@@ -200,7 +201,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                             <Grid item xs={1}>
                                                 {/* 삭제 버튼 */}
                                                 {cookies.user &&
-                                                    (cookies.user === item.comment_writer || cookies.user === "testadmin") &&
+                                                    (cookies.user === item.comment_writer || cookies.userType === "admin") &&
                                                     (
                                                         <Grid item xs={12} sx={{ textAlign: "right" }}>
                                                             <ListItemButton onClick={() => handleDeleteComment(item.comment_id)}>
@@ -213,15 +214,8 @@ export const YuhanBoardComment = ({ boardData }) => {
                                         </Grid>
 
                                         <Grid item xs={11} sx={{ width: "100%" }}>
-                                            <ListItemText
-                                                primary={item.comment_content}
-                                                sx={{
-                                                    borderRadius: "0.5vh",
-                                                    backgroundColor: "#0F275C",
-                                                    color: "#FFFFFF",
-                                                    padding: "2vh",
-                                                }}
-                                            />
+                                            <StyledContentListItemText
+                                                primary={item.comment_content} />
                                         </Grid>
 
                                         <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
@@ -263,47 +257,26 @@ export const YuhanBoardComment = ({ boardData }) => {
                 <Grid item xs={12} sx={{ marginTop: "2vh" }}>
                     <Grid container alignItems="center" spacing={0.5}>
                         <Grid item xs={10}>
-                            <TextField
-                                name='comment_content'
+                            <StyledTextField
+                                name="comment_content"
                                 placeholder="원하시는 댓글을 작성하세요"
                                 multiline
                                 minRows={2}
                                 maxRows={4}
                                 fullWidth
-                                sx={{
-                                    backgroundColor: "#0F275C",
-                                    color: "#FFFFFF",
-                                    borderRadius: "0.5vh",  // 모서리 둥글게           
-                                    "& .MuiInputBase-input::placeholder": {
-                                        color: "#FFFFFF"  // 기본 placeholder 색상
-                                    },
-                                }}
-                                InputProps={{
-                                    style: {
-                                        color: "#FFFFFF",  // 기본 입력 글자 색상
-                                    }
-                                }}
                                 value={comment.comment_content}
                                 onChange={handleInputChange}
                             />
                         </Grid>
 
                         <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end', paddingLeft: '0.5vw' }}>
-                            <Button
+                            <StyledButton
                                 variant="contained"
                                 color="primary"
-                                sx={{
-                                    padding: "3vh 1vw",  // 세로 길이는 유지, 가로 패딩 살짝 증가
-                                    fontSize: "1rem",
-                                    backgroundColor: "#0F275C",
-                                    '&:hover': {
-                                        backgroundColor: "#325db8",
-                                    },
-                                }}
                                 onClick={() => handleSaveComment(boardData.board_id)}
                             >
                                 작성하기
-                            </Button>
+                            </StyledButton>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -311,3 +284,32 @@ export const YuhanBoardComment = ({ boardData }) => {
         </>
     );
 };
+
+const StyledTextField = styled(TextField)`
+  background-color: #0F275C;
+  border-radius: 0.5vh;
+
+  & .MuiInputBase-input::placeholder {
+    color: #FFFFFF;
+  }
+
+  & .MuiInputBase-input {
+    color: #FFFFFF;
+  }
+`;
+const StyledButton = styled(Button)`
+  padding: 3vh 1vw !important; 
+  font-size: 1rem !important;
+  background-color: #0F275C !important;
+
+  &:hover {
+    background-color: #325db8 !important;;
+  }
+`;
+
+const StyledContentListItemText = styled(ListItemText)`
+  border-radius: 0.5vh;
+  background-color: #0F275C;
+  color: #FFFFFF;
+  padding: 2vh;
+`;
