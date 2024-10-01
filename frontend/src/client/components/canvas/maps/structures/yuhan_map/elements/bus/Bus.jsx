@@ -1,12 +1,17 @@
+/**
+ * 파일생성자 오자현
+ */
 import React, { useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function Bus({ position }) {
-  const group = React.useRef();
+  const groupOne = React.useRef(); // 버스 1을 위한 그룹 레퍼런스
+  const groupTwo = React.useRef(); // 버스 2를 위한 그룹 레퍼런스
   const { nodes, materials, animations } = useGLTF('/assets/models/bus/bus.glb');
-  const { actions } = useAnimations(animations, group);
+  const { actions: actionsOne } = useAnimations(animations, groupOne); // 첫 번째 그룹의 애니메이션
+  const { actions: actionsTwo } = useAnimations(animations, groupTwo); // 두 번째 그룹의 애니메이션
   const x = position[0];
   const y = position[1];
   const z = position[2];
@@ -14,11 +19,13 @@ export function Bus({ position }) {
   // Redux 상태에서 버스존 1과 2에 있는지 여부 가져오기
   const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
   const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
+  // 찾아오는 길버튼의 클릭여부를 확인
+  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
 
-  // group.current에서 트래버스 실행
+  // 첫 번째 group.current에서 트래버스 실행
   useEffect(() => {
-    if (group.current) {
-      group.current.traverse((obj) => {
+    if (groupOne.current) {
+      groupOne.current.traverse((obj) => {
         if (obj.isObject3D) {
           obj.castShadow = true;
           obj.receiveShadow = true;
@@ -27,35 +34,63 @@ export function Bus({ position }) {
     }
   }, []);
 
+  // 두 번째 group.current에서 트래버스 실행
   useEffect(() => {
-    // `front_move` 애니메이션 실행
-    const frontMoveAction = actions['front_move'];
-    // `back_move` 애니메이션 실행
-    const backMoveAction = actions['back_move'];
+    if (groupTwo.current) {
+      groupTwo.current.traverse((obj) => {
+        if (obj.isObject3D) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+    }
+  }, []);
 
-    // 두 개의 애니메이션을 동시에 실행
-    if (frontMoveAction && backMoveAction) {
-      frontMoveAction.play();
-      backMoveAction.play();
+  // 첫 번째 버스 애니메이션 실행
+  useEffect(() => {
+    const frontMoveActionOne = actionsOne['front_move'];
+    const backMoveActionOne = actionsOne['back_move'];
+
+    if (frontMoveActionOne && backMoveActionOne) {
+      frontMoveActionOne.play();
+      backMoveActionOne.play();
     }
 
     return () => {
-      // 컴포넌트 언마운트 시 애니메이션 정지
-      if (frontMoveAction) frontMoveAction.stop();
-      if (backMoveAction) backMoveAction.stop();
+      if (frontMoveActionOne) frontMoveActionOne.stop();
+      if (backMoveActionOne) backMoveActionOne.stop();
     };
-  }, [actions]);
+  }, [actionsOne]);
+
+  // 두 번째 버스 애니메이션 실행
+  useEffect(() => {
+    const frontMoveActionTwo = actionsTwo['front_move'];
+    const backMoveActionTwo = actionsTwo['back_move'];
+
+    if (frontMoveActionTwo && backMoveActionTwo) {
+      frontMoveActionTwo.play();
+      backMoveActionTwo.play();
+    }
+
+    return () => {
+      if (frontMoveActionTwo) frontMoveActionTwo.stop();
+      if (backMoveActionTwo) backMoveActionTwo.stop();
+    };
+  }, [actionsTwo]);
 
   return (
     <>
-      {isInBusStationOne && (
-        <motion.group ref={group} position={[x, y + 17.5, z]} scale={8}
-          animate={{ x: [x, x, x], y: [y, y, y], z: [z - 200, z-50, z + 100] }} // 기준 위치를 기반으로 이동
+      {(isInBusStationOne || directionsState) && (
+        <motion.group ref={groupOne} position={[x, y + 17.5, z]} scale={8}
+          animate={{ x: [x, x, x], y: [y, y, y], z: [z - 370, z - 50, z + 500] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">
             <group name="Cube" scale={[2, 2, 5]}>
-              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} material={materials.main} />
+              {/* <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} color={'#ff0000'} /> */}
+              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry}>
+                <meshStandardMaterial color={'#006961'}/>
+              </mesh>
               <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
               <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
               <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
@@ -71,9 +106,9 @@ export function Bus({ position }) {
           </group>
         </motion.group>
       )}
-      {isInBusStationTwo && (
-        <motion.group ref={group} position={[x, y + 17.5, z]} scale={8} rotation={[0, Math.PI, 0]}
-          animate={{ x: [x, x, x], y: [y, y, y], z: [z + 140, z-60, z - 260] }} // 기준 위치를 기반으로 이동
+      {(isInBusStationTwo || directionsState) && (
+        <motion.group ref={groupTwo} position={[x, y + 17.5, z]} scale={8} rotation={[0, Math.PI, 0]}
+          animate={{ x: [x + 100, x + 100, x + 100], y: [y, y, y], z: [z + 500, z - 60, z - 370] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">

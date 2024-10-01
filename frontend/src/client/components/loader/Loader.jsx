@@ -3,11 +3,20 @@
  * 기능구현 : 오자현
  */
 import { Canvas } from '@react-three/fiber';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LoadingAnimation } from './loadingObject/LoaderObject';
+import { LoadingMessages } from '../../../data/commonData';
 
 const Loader = ({ progress }) => {
+ // 처음 로드될 때만 메시지를 랜덤으로 설정
+ const [message, setMessage] = useState('');
+
+ useEffect(() => {
+   const randomMessage = LoadingMessages[Math.floor(Math.random() * LoadingMessages.length)];
+   setMessage(randomMessage);
+ }, []); // 빈 배열을 사용하여 처음 렌더링 시 한 번만 실행
+
   return (
     <LoaderLayout>
       {/* 3D 모델을 렌더링할 Canvas */}
@@ -18,7 +27,7 @@ const Loader = ({ progress }) => {
         </Canvas>
       </CanvasWrapper>
       <BubbleChat>
-        학교가야지~
+        {message}
       </BubbleChat>
       {/* 로딩 바 */}
       <Progressing>
@@ -87,6 +96,7 @@ const BubbleChat = styled.div`
   margin-top: -10vh;
   margin-left: 20vw; 
   box-shadow: 0vw 0.4vw 1vw rgba(0, 0, 0, 0.2);
+  white-space: pre-line;
   
   /* 말풍선 꼬리 부분 */
   &:after {

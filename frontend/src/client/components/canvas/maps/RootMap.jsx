@@ -30,14 +30,10 @@ const RootMap = () => {
 
     // Redux 상태에서 버스존 1에 있는지 여부 가져오기
     const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
-    useEffect(() => {
-        console.log(isInBusStationOne)
-    }, [isInBusStationOne])
     const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
-    useEffect(() => {
-        console.log(isInBusStationTwo)
-    }, [isInBusStationTwo])
-    
+    // 찾아오는 길버튼의 클릭여부를 확인
+    const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+
     return (
         <group>
             {/* 바닥 셋팅 */}
@@ -53,17 +49,26 @@ const RootMap = () => {
             <BusStationOne position={[271.453, 6.15, -163.289]} />
             <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
 
-            {/* 찾아오는 길 안내문 */}
-            {isInBusStationOne && (
+            {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
+            {directionsState ? (
                 <>
-                    <Direction position={[253, 10, -140]} />
-                    <Bus position={[350, 17.5, -150]}/>
+                    <Direction position={[100, 0, 500]} />
+                    <Bus position={[355, 17.5, -150]} />
                 </>
-            )}
-            {isInBusStationTwo && (
+            ) : (
                 <>
-                    <Direction position={[553, 0, -220]} />
-                    <Bus position={[450, 17.5, -150]}/>
+                    {isInBusStationOne && (
+                        <>
+                            <Direction position={[253, 10, -140]} />
+                            <Bus position={[355, 17.5, -150]} />
+                        </>
+                    )}
+                    {isInBusStationTwo && (
+                        <>
+                            <Direction position={[553, 0, -220]} />
+                            <Bus position={[355, 17.5, -150]} />
+                        </>
+                    )}
                 </>
             )}
 
