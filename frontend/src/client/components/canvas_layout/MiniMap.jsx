@@ -27,7 +27,7 @@ const MiniMap = () => {
             <BtnMenuGroup />
             <MiniMapContentWrapper>
                 <MiniMapContent cameraPosition={cameraPosition} />
-                <Teleport top="40%" right="40%" onClick={() => {
+                <Teleport style={{top: "40%", right: "40%"}} $tooltipcontent="평화관 정문" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "평화관 정문",
@@ -43,10 +43,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    평화관 정문
-                </Teleport>
-                <Teleport top="55%" right="45%" onClick={() => {
+                } />
+                <Teleport style={{top: "55%", right: "45%"}} $tooltipcontent="평화관 후문" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "평화관 후문",
@@ -62,10 +60,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    평화관 후문
-                </Teleport>
-                <Teleport top="35%" right="30%" onClick={() => {
+                } />
+                <Teleport style={{top: "35%", right: "30%"}} $tooltipcontent="봉사관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "봉사관",
@@ -81,10 +77,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    봉사관
-                </Teleport>
-                <Teleport top="35%" left="30%" onClick={() => {
+                } />
+                <Teleport style={{top: "35%", left: "33%"}} $tooltipcontent="자유관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "자유관",
@@ -100,10 +94,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    자유관
-                </Teleport>
-                <Teleport top="65%" right="25%" onClick={() => {
+                } />
+                <Teleport style={{top: "65%", left: "30%"}} $tooltipcontent="학생회관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "학생회관",
@@ -119,10 +111,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    학생회관
-                </Teleport>
-                <Teleport top="63%" right="45%" onClick={() => {
+                } />
+                <Teleport style={{top: "60%", right: "45%"}} $tooltipcontent="나눔관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "나눔관",
@@ -138,10 +128,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    나눔관
-                </Teleport>
-                <Teleport top="80%" left="30%" onClick={() => {
+                } />
+                <Teleport style={{top: "79%", left: "33%"}} $tooltipcontent="창조관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "창조관",
@@ -157,10 +145,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    창조관
-                </Teleport>
-                <Teleport top="65%" left="25%" onClick={() => {
+                } />
+                <Teleport style={{top: "65%", left: "30%"}} $tooltipcontent="유일한기념관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "유일한기념관",
@@ -176,10 +162,8 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    유일한기념관
-                </Teleport>
-                <Teleport top="50%" left="15%" onClick={() => {
+                } />
+                <Teleport style={{top: "48%", left: "17.5%"}} $tooltipcontent="유재라관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "유재라관",
@@ -195,9 +179,7 @@ const MiniMap = () => {
                             return
                         }
                     })}
-                }>
-                    유재라관
-                </Teleport>
+                } />
 
                 <ClientPointer
                     id={`student-point-${player}`}
@@ -209,27 +191,57 @@ const MiniMap = () => {
 
 const Teleport = styled.div`
     position: absolute;
-    width: 16%;
+    width: 5%;
     height: 5%;
-    background-color: #63CAB9;
-    /* background-color: #015850; */
-    font-size: 10px;
+    background-color: #0F275C;
     font-weight: 900;
     border-radius: 50%;
+    border: 2px solid #F4CE3D;
     display : flex;
     justify-content : center;
     align-items : center;
     cursor: pointer;
-    color: #015850;
-    /* color: white; */
-    ${(props) => props.top && `top: ${props.top};`}
-    ${(props) => props.right && `right: ${props.right};`}
-    ${(props) => props.left && `left: ${props.left};`}
     transition: all 0.2s ease-in-out;
     &:hover {
-        width: 17%;
+        width: 6%;
         height: 6%;
-        font-size: 11px;
+
+        /* 버튼 위에 말풍선 표시 */
+        &::after {
+            content: '${(props) => props.$tooltipcontent || ''}';
+            position: absolute;
+            bottom: 200%; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0F275C;
+            color: #F4CE3D;
+            font-size: 17px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* 말풍선 아래에 삼각형 표시 */
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: #0F275C transparent transparent transparent;
+            z-index: 10;
+        }
+    }
+
+    &:not(:hover) {
+        &::after {
+            opacity: 0;
+        }
     }
 `
 
@@ -249,7 +261,7 @@ const MiniMapContentWrapper = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: #00000055;
+    background: black;
     border-radius: 7px 7px 0px 7px;
     border: 5px solid #0F275C;
     padding-top: 15px;
