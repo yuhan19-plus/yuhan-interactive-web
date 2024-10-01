@@ -6,13 +6,12 @@
 
 import { useGLTF } from "@react-three/drei"
 import { useFrame, useGraph, useThree } from "@react-three/fiber"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { SkeletonUtils } from "three-stdlib"
-import { AnimationMixer, Vector3 } from "three"
-import { useDispatch, useSelector } from "react-redux"
 import gsap from "gsap"
-import { enterBusStationOne, enterBusStationTwo, leaveBusStationOne, leaveBusStationTwo } from "../../../../../../redux/actions/actions"
-import { initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar } from "../../../../../../redux/actions/actions"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { AnimationMixer, Vector3 } from "three"
+import { SkeletonUtils } from "three-stdlib"
+import { Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
@@ -59,6 +58,12 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
 
     // 버스영역에 있는지 상태를 관리하는 상태변수
     const [isInBusZone, setIsInBusZone] = useState(false);
+
+    // 동상영역에 있는지 상태를 관리하는 상태 변수
+    const [isInStatueZone, setIsInStatueZone] = useState(false);
+
+    //학생회관 음식 호출
+    const [isInStudentKioskZone,setIsInStudentKioskZone] = useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -197,31 +202,48 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
                 }
             }
         }
-        
-        
-        // 9호관 & 학생식당 앞
-        if(currentPosition.x > 147 && currentPosition.x <= 224) {
-            if(currentPosition.z >= -28 && currentPosition.z < 285) {
-                handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
 
-                // 학생식당 키오스크 + 이벤트
-                if((currentPosition.x >= 179 && currentPosition.x <= 202) &&
-                    (currentPosition.z >= 128  && currentPosition.z <= 168)) {
-                        handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10)
-                        if (!kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = true
-                            dispatch(kioskCafeteria())
-                        }
-                    }
-                else {
-                    if (kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = false
-                        dispatch(initKiosk())
-                    }
+        if (currentPosition.x > 147 && currentPosition.x <= 224 && currentPosition.z >= -28 && currentPosition.z < 285) {
+            handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20);
+        
+            const isInKioskArea = (currentPosition.x >= 179 && currentPosition.x <= 202 && currentPosition.z >= 128 && currentPosition.z <= 168);
+            
+            // 학생 식당 영역에 들어왔을 때
+            if (isInKioskArea) {
+                handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10);
+        
+                // 학생 식당 입장 처리
+                if (!isInStudentKioskZone) {
+                    setIsInStudentKioskZone(true);
+                    dispatch(Enter_StudentKiosk());
+                    console.log("학생식당 입장", isInStudentKioskZone);  // 상태를 true로 출력
+                }
+        
+                // 키오스크 입장 처리
+                if (!kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = true;
+                    dispatch(kioskCafeteria());
+                    console.log("키오스크 퇴장", kioskDispatchFlag.current);
+                }
+            } 
+            // 학생 식당 영역을 벗어났을 때
+            else {
+                // 학생 식당 퇴장 처리
+                if (isInStudentKioskZone) {
+                    setIsInStudentKioskZone(false);
+                    dispatch(Leave_StudentKiosk());
+                    console.log("학생식당 퇴장", isInStudentKioskZone);  // 상태를 false로 출력
+                }
+        
+                // 키오스크 퇴장 처리
+                if (kioskDispatchFlag.current) {
+                    kioskDispatchFlag.current = false;
+                    dispatch(initKiosk());
+                    console.log("키오스크 퇴장", kioskDispatchFlag.current);
                 }
             }
         }
-        
+
         if(currentPosition.x <= 150 && currentPosition.z > 120) {
             if(currentPosition.x < -170 && currentPosition.x > -240) {
                 handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
@@ -415,13 +437,25 @@ export const useMainCharacter = ({position, myChar, onEnterBusZone}) => {
                 handleCamera(currentPosition.x + 180, currentPosition.y + 230, currentPosition.z + 0)
             }
             // 동상 Zone
-            if(currentPosition.x <= 69 && currentPosition.x >= 9) {
-                if(currentPosition.z <= -487 && currentPosition.z >= -537) {
-                    handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110)
+        if (currentPosition.x <= 69 && currentPosition.x >= 9) {
+            if (currentPosition.z <= -487 && currentPosition.z >= -537) {
+                handleCamera(currentPosition.x + 110, currentPosition.y + 30, currentPosition.z + 110);
+                if (!isInStatueZone) {
+                    setIsInStatueZone(true);
+                    dispatch(Enter_Statue());
+                    console.log("동상 입장",isInStatueZone);
+                }
+            } else {
+                if (isInStatueZone) {
+                    setIsInStatueZone(false);
+                    dispatch(Leave_Statue());
+                    console.log("동상 퇴장",isInStatueZone);
                 }
             }
         }
-
+        }
+        
+        
         camera.lookAt(currentPosition)
     
         if (distance > 0.4) {

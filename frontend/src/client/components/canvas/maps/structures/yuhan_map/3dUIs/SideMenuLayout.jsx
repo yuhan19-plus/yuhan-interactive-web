@@ -3,18 +3,16 @@
  * 오자현 : sideboard 추가
  */
 
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import styled from 'styled-components'
+import Swal from 'sweetalert2'
 import SideBoard from '../../../../../canvas_layout/sideboard/SideBoard'
 import ClientFood from '../../../../../canvas_layout/todaymenu/ClientFood'
 import DetailFooter from './DetailFooter'
 import DetailHeader from './DetailHeader'
 import CounselContent from './counsel/CounselContent'
-import { useCookies } from 'react-cookie'
-import { useDispatch, useSelector } from 'react-redux'
-import { myCounsel, reqForConsultation } from '../../../../../../../redux/actions/actions'
-import axios from 'axios'
-import Swal from 'sweetalert2'
 
 let title, counselName
 

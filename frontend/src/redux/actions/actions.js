@@ -53,6 +53,13 @@ export const KIOSK_YUJAELA = 'KIOSK_YUJAELA'
 // 미니맵 상단 버튼 그룹 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 
+//입구 동상 - 정민
+export const ENTER_STATUE = 'ENTER_STATUE';
+export const LEAVE_STATUE = 'LEAVE_STATUE';
+
+//학생 식당 키오스크 오브젝트 호출 -정민
+export const ENTER_STUDENTKIOSK = 'ENTER_STUDENTKIOSK';
+export const LEAVE_STUDENTKIOSK = 'LEAVE_STUDENTKIOSK';
 
 // 버스 정류장 - 자현
 export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
@@ -202,4 +209,19 @@ export const kioskMemorialHall = (boolValue) => ({
 export const kioskYujaela = (boolValue) => ({
     type: KIOSK_YUJAELA,
     payload: boolValue
+})
+//입구 동상
+export const Enter_Statue = () =>({
+    type:ENTER_STATUE
+})
+export const Leave_Statue = () =>({
+    type:LEAVE_STATUE
+})
+
+//학생 식당 오브젝트 소환
+export const Enter_StudentKiosk =() =>({
+    type:ENTER_STUDENTKIOSK
+})
+export const Leave_StudentKiosk =() =>({
+    type:LEAVE_STUDENTKIOSK
 })
