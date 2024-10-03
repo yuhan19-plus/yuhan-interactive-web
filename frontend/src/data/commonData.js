@@ -211,3 +211,10 @@ export const LoadingMessages = [
     "📑 과제는 꼭 챙겨야지!\n잊으면 큰일이야! 🔖",
     "📝 오늘 배울 내용들...\n미리 준비 완료! 💼"
 ];
+
+// 코딩체험에 들어갈 코드
+export const CodingExperienceCode = [
+    "#include <stdio.h>\n  int main() { \n    int num = '정수형데이터';\n    for (int i = 1; i <= 9; i++) { \n      printf(\"%d * %d = %d\\n\", num, i, num * i);\n    }\n  return 0; \n}",
+    "public class Main {\n  public static void main(String[] args) {\n    int num = '정수형데이터';\n    for (int i = 1; i <= 9; i++) {\n      System.out.println(num + \" * \" + i + \" = \" + (num * i));\n    }\n  }\n}",
+    "num = '정수형데이터'\nfor i in range(1, 10):\n    print(f'{num} * {i} = {num * i}')"
+];

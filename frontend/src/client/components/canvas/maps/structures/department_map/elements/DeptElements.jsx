@@ -3,8 +3,9 @@
  * 
  */
 import React from 'react'
+import CodingGroup from './CodingGroup'
 
-const DeptElements = ({groundMapName}) => {
+const DeptElements = ({ groundMapName }) => {
     return (
         <>
             {groundMapName === 'yuhan_bio_map' && (
@@ -17,7 +18,9 @@ const DeptElements = ({groundMapName}) => {
             )}
             {groundMapName === 'food_nutrition_map' && (
                 // 식품영양
-                <></>
+                <>
+                    <CodingGroup />
+                </>
             )}
             {groundMapName === 'industrial_design_map' && (
                 // 산디
