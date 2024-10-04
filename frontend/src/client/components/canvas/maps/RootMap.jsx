@@ -83,9 +83,9 @@ const RootMap = () => {
                     
                     {isInStudentKiosk &&(
                         <>
-                            <FoodGroup position={[196.605, 12.5, 136.919]} scale={[1.5]}/>
-                            <ShowCase position={[189.605, 7, 136.919]} rotation={[Math.PI, 0, Math.PI]} scale={2}/>
-                            <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
+                            <FoodGroup position={[203.2, 5.2, 135]}/>
+                            <ShowCase position={[193.605, -3, 134.919]} rotation={[Math.PI, 0, Math.PI]} scale={3}/>
+                            <Plate position={[203.05, 3.6, 135.1]} scale={2}/>
                         </>
                     )}
 

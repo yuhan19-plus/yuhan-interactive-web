@@ -1,11 +1,18 @@
+/** 파일생성자 : 이정민
+    음식 그룹 
+ */
 import React, { useEffect, useState } from 'react';
 import { Hamburger } from './Food/Hamburger';
+import { JapaneseRamen } from './Food/JapaneseRamen';
+import { KoreaCheeseRamen } from './Food/KoreaCheeseRamen';
 import { Pizza } from './Food/Pizza';
 import { Udon } from './Food/Udon';
 
 const FoodGroup = ({ position }) => {
     const foodItems = [
         <Hamburger />,
+        <JapaneseRamen/>,
+        <KoreaCheeseRamen/>,
         <Pizza rotation={[Math.PI, 0, Math.PI]} />,
         <Udon />
     ];

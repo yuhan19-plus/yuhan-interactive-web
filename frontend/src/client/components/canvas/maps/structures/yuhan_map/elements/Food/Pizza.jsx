@@ -8,7 +8,7 @@ export function Pizza(props) {
   const { nodes, materials } = useGLTF('/assets/models/Food/Pizza.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[-0.1, -0.6, 0.100]} rotation={[0, Math.PI / 2, 0]} scale={0.800}>
+      <group position={[-0.1, -0.6, 0.100]} rotation={[0, Math.PI / 2, 0]} scale={1.5}>
         <mesh geometry={nodes.Circle007.geometry} material={materials.Dou} />
         <mesh geometry={nodes.Circle007_1.geometry} material={materials.Cheeze} />
         <mesh geometry={nodes.Circle007_2.geometry} material={materials.Salami} />
