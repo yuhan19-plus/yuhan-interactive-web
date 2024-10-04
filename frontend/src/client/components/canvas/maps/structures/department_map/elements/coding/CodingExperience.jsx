@@ -11,6 +11,7 @@ const CodingExperience = ({ onResultCode }) => {
 
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
+        console.log("Selected language:", event.target.value);
     };
 
     const handleNumChange = (event) => {
@@ -30,27 +31,36 @@ const CodingExperience = ({ onResultCode }) => {
         }
     }, [num]); // num이 변경될 때마다 실행
 
+    const splitCodes = CodingExperienceCode.map(code => {
+        const [part1, part2] = code.split("'정수형데이터'");
+        return { part1, part2 };
+    });
 
     return (
         <Html position={[100, 0, 50]} center>
             <MainContainer
+                selectLanguage={selectLanguage}
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerMove={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
             >
-                <h3>언어 선택</h3>
+                <h4>언어 선택</h4>
                 <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
                     <FormControlLabel value="C" control={<Radio />} label="C" />
                     <FormControlLabel value="Java" control={<Radio />} label="Java" />
                     <FormControlLabel value="Python" control={<Radio />} label="Python" />
                 </RadioGroup>
-                <h3>간단한 구구단 코드</h3>
+                <div>간단한 구구단 코드</div>
                 <CodeContainer>
-                    <Input type="text" value={num} onChange={handleNumChange} style={{ width: "5vw" }} placeholder="정수데이터" />
-                    <br />
-                    {selectLanguage === "C" && (CodingExperienceCode[0])}
-                    {selectLanguage === "Java" && (CodingExperienceCode[1])}
-                    {selectLanguage === "Python" && (CodingExperienceCode[2])}
+                    {selectLanguage === "C" && <pre>{splitCodes[0].part1}
+                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                        {splitCodes[0].part2}</pre>}
+                    {selectLanguage === "Java" && <pre>{splitCodes[1].part1}
+                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                        {splitCodes[1].part2}</pre>}
+                    {selectLanguage === "Python" && <pre>{splitCodes[2].part1}
+                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                        {splitCodes[2].part2}</pre>}
                 </CodeContainer>
                 <CodeResult>
 
@@ -65,8 +75,14 @@ export default CodingExperience;
 const MainContainer = styled.div`
     background-color: white;
     padding: 10px;
-    width: 30vw;
-    height: 40vh;
+    width: ${(props) =>
+        props.selectLanguage === 'C' ? '25vw' :
+            props.selectLanguage === 'Java' ? '30vw' :
+                '20vw'}; 
+    height: ${(props) =>
+        props.selectLanguage === 'C' ? '40vh' :
+            props.selectLanguage === 'Java' ? '35vh' :
+                '30vh'}; 
     display: flex;
     flex-direction: column;
     justify-content: center;

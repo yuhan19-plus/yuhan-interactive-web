@@ -8,9 +8,9 @@ const CodingGroup = () => {
         setResultCode(Code)
     }
 
-    useEffect(() =>{
-        console.log(resultCode);
-    },[resultCode])
+    // useEffect(() =>{
+    //     console.log(resultCode);
+    // },[resultCode])
 
     return (
         <>
