@@ -14,13 +14,13 @@ const ThreeDCode = ({ resultCode }) => {
         // console.log(resultCode); // 값 전달 확인
         const loader = new FontLoader();
 
-        // 폰트 로딩 (해당 경로에 JSON 폰트가 존재해야 합니다)
+        // 폰트 로딩
         loader.load('/assets/fonts/HakgyoansimWoojuR.json', (font) => {
-            const textGeometry = new TextGeometry(resultCode || '', {
+            const textGeometry = new TextGeometry(resultCode || '', { // 코드결과값이 있으면 결과코드를 없으면 빈값을 보여줌 
                 font: font,
                 size: 5,       // 텍스트 크기
                 height: 2,     // 텍스트 깊이
-                curveSegments: 12,
+                curveSegments: 5, // 커브점갯수
                 bevelEnabled: false, // 베벨(경사) 옵션
             });
 
@@ -37,7 +37,7 @@ const ThreeDCode = ({ resultCode }) => {
 
     return (
         <motion.group
-            animate={{ x: [0, -5, 0], y: [30, 40, 30], z: [150, 150, 150], rotateY: [0, Math.PI * 2] }}
+            animate={{ x: [50, 50, 50], y: [30, 40, 30], z: [250, 250, 250], scale: [1, 1.5, 1] }}
             transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
             <group ref={meshRef} position={[0, 40, 0]}>

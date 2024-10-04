@@ -39,7 +39,8 @@ const CodingExperience = ({ onResultCode }) => {
     return (
         <Html position={[100, 0, 50]} center>
             <MainContainer
-                selectLanguage={selectLanguage}
+                selectLanguage={selectLanguage} // styled에 언어별로 영역을 다르게 설정한 것에 값을 넣어주는 부분
+                // 마우스클릭 이벤트전파를 차단하는 부분 (※이유 모달창을 클릭 시 케릭터이동을 차단)
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerMove={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
@@ -62,9 +63,6 @@ const CodingExperience = ({ onResultCode }) => {
                         <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
                         {splitCodes[2].part2}</pre>}
                 </CodeContainer>
-                <CodeResult>
-
-                </CodeResult>
             </MainContainer>
         </Html>
     );
@@ -75,6 +73,7 @@ export default CodingExperience;
 const MainContainer = styled.div`
     background-color: white;
     padding: 10px;
+    /* 언어별로 영역을 다르게 설정 */
     width: ${(props) =>
         props.selectLanguage === 'C' ? '25vw' :
             props.selectLanguage === 'Java' ? '30vw' :
@@ -95,8 +94,4 @@ const CodeContainer = styled.pre`
     padding: 10px;
     white-space: pre-wrap;
     word-break: break-word;
-`;
-
-const CodeResult = styled.div`
-    
 `;
