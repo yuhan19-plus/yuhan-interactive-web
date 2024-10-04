@@ -35,8 +35,22 @@ const AdminNav = () => {
     };
 
     useEffect(() => {
-        fetchBadge();
+        const handleStorageChange = () => {
+            const shouldUpdate = localStorage.getItem('updateBadge');
+            if (shouldUpdate === 'true') {
+                fetchBadge(); // 뱃지 갱신
+                localStorage.removeItem('updateBadge'); // 플래그 제거하여 재실행 방지
+            }
+        };
+    
+        window.addEventListener('storage', handleStorageChange); 
+        // 신고관리에서 발생한 storage 이벤트가 실행되면 handleStorageChange를 실행
+    
+        return () => {
+            window.removeEventListener('storage', handleStorageChange); // 언마운트 시 리스너 제거
+        };
     }, []);
+    
 
     const [, ,removeCookie] = useCookies(['adminMode']); // adminMode 쿠키 삭제 함수 사용
 

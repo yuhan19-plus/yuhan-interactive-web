@@ -126,18 +126,25 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                     </Grid>
 
                     {/* 작성일과 조회수 */}
-                    <Grid item xs={12}>
-                        <Typography sx={{ color: "#7F8C8D", fontSize: "0.9rem", display: 'inline-block', marginRight: '10px' }}>
+                    <Grid item xs={12} container alignItems="center">
+                        <SubProfileInfo>
+                            작성일 : {' '}
                             {new Intl.DateTimeFormat('ko-KR', {
                                 year: 'numeric', month: '2-digit', day: '2-digit',
                                 hour: '2-digit', minute: '2-digit', hour12: false
                             }).format(new Date(boardData.board_date))}
-                        </Typography>
-                        <Typography sx={{ color: "#7F8C8D", fontSize: "0.9rem", display: 'inline-block' }}>
+                        </SubProfileInfo>
+                        <SubProfileInfo>
                             조회 {boardData.board_view}
-                        </Typography>
+                        </SubProfileInfo>
+                        <SubProfileInfo style={{ marginLeft: 'auto' }}>
+                            수정일 : {' '}
+                            {new Intl.DateTimeFormat('ko-KR', {
+                                year: 'numeric', month: '2-digit', day: '2-digit',
+                                hour: '2-digit', minute: '2-digit', hour12: false
+                            }).format(new Date(boardData.board_last_modified))}
+                        </SubProfileInfo>
                     </Grid>
-
                 </Grid>
                 <Divider />
                 {/* 첨부파일 영역 */}
@@ -339,4 +346,11 @@ const StyledBackButton = styled(Button)`
   &:hover {
     background-color: #27ae60 !important;
   }
+`;
+
+const SubProfileInfo = styled(Typography)`
+    color: #7F8C8D;
+    font-size: 0.9rem !important;
+    display: inline-block;
+    margin-right: 10px !important;
 `;

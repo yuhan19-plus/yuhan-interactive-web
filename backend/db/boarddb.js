@@ -108,7 +108,7 @@ router.get("/:board_id", (req, res) => {
     const selectIdQuery = "SELECT * FROM board where board_id = ?";
     const checkAttachmentQuery = "SELECT * FROM attachment where board_id = ?";
     // 조회수증가쿼리
-    const boardViewPlusQuery = "UPDATE board SET board_view = board_view + 1 WHERE board_id= ?"
+    const boardViewPlusQuery = "UPDATE board SET board_view = board_view + 1, board_last_modified = board_last_modified WHERE board_id = ?";
 
     // board_id에 해당하는 데이터를 검색
     mysqlconnection.query(selectIdQuery, [board_id], (err, boardResults) => {
