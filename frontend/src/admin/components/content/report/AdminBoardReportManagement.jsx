@@ -96,8 +96,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 text: '게시글이 성공적으로 삭제되었습니다.',
                 confirmButtonColor: '#3085d6',
             }).then(() => {
-                localStorage.setItem('updateBadge', 'true'); // 신고플래그 설정
-                window.dispatchEvent(new Event('storage')); // 수동으로 이벤트 발생
+                window.dispatchEvent(new Event('updateBadge')); // 수동으로 이벤트 발생
                 onCancel();
             });
         } catch (error) {
@@ -143,8 +142,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 text: '신고가 성공적으로 무시되었습니다.',
                 confirmButtonColor: '#3085d6',
             }).then(() => {
-                localStorage.setItem('updateBadge', 'true'); // 플래그 설정
-                window.dispatchEvent(new Event('storage')); // 수동으로 이벤트 발생
+                window.dispatchEvent(new Event('updateBadge')); // 수동으로 이벤트 발생
                 onCancel();
             });
         } catch (error) {
