@@ -3,13 +3,14 @@
  * 
  */
 import React from 'react'
+import BioGroup from './dept/bio/BioGroup'
 
 const DeptElements = ({groundMapName}) => {
     return (
         <>
             {groundMapName === 'yuhan_bio_map' && (
                 // 바이오
-                <></>
+                <BioGroup />
             )}
             {groundMapName === 'computer_sw_map' && (
                 // 컴소

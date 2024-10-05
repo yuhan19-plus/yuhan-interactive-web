@@ -14,13 +14,13 @@
  * - 가로등 position, 그룹화(24/08/28)
  */
 import React from 'react'
+import { motion } from 'framer-motion-3d'
 
 // 공원
 import MainPark from './elements/park/MainPark'
 import SubPark from './elements/park/SubPark'
 
 // etc
-import Wall from './elements/testObject/Wall'
 import Welcome from './elements/etc/Welcome'
 import { SideWalk } from './elements/road/SideWalk'
 import { YuhanTV } from './elements/yuhanTv/YuhanTV'
@@ -37,27 +37,38 @@ import StreetLampGroup from './elements/StreetLampGroup'
 const YuhanElements = () => {
     return (
         <>
-            {/* 유한대 Welcome */}
-            <Welcome />
+            {/* <motion.group
+                animate={{
+                    scale: [0, 1]
+                }}
+                transition={{
+                    delay: 3,
+                    duration: 1,
+                    ease: "easeInOut"
+                }}
+            > */}
+                {/* 유한대 Welcome */}
+                <Welcome />
 
-            {/* 그룹화 */}
-            <BuildingGroup />
-            <TreeGroup />
-            <GrassGroup />
-            <TerraceGroup />
-            <SmokingGroup />
-            <EtcGroup />
-            <StreetLampGroup/>
+                {/* 그룹화 */}
+                <BuildingGroup />
+                <TreeGroup />
+                <GrassGroup />
+                <TerraceGroup />
+                <SmokingGroup />
+                <EtcGroup />
+                <StreetLampGroup/>
 
-            {/* 인도 */}
-            <SideWalk position={[-0.5, -6.6, 0]} />
-            
-            {/* 공원 */}
-            <MainPark />
-            <SubPark />
+                {/* 인도 */}
+                <SideWalk position={[-0.5, -6.6, 0]} />
 
-            {/* 유한TV */}
-            <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
+                {/* 공원 */}
+                <MainPark />
+                <SubPark />
+
+                {/* 유한TV */}
+                <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
+            {/* </motion.group> */}
 
             {/* 투명벽 셋팅 */}
             {/* <Wall position={[12, 46, -577.5]} />

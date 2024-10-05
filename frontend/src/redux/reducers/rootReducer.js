@@ -14,6 +14,7 @@ import { sideMenuReducer } from "./sideMenuReducer";
 import { StudentKioskReducer } from "./studentKioskReducer";
 import { currentUserInfoReducer } from "./currentUserInfoReducer";
 import { myProfessorInfoReducer } from "./myProfessorInfoReducer";
+import { deptInfoReducer } from "./deptInfoReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -28,7 +29,7 @@ const rootReducer = combineReducers({
     counsel: consultationReducer,
     kiosk: kioskReducer,
     teleport: miniMapReducer,
-    
+    deptInfo: deptInfoReducer,
 
     // 석재
 

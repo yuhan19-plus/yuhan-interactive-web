@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -20,8 +20,13 @@ export const useMainCharacter = ({ position, myChar }) => {
     const kioskValue = kiosk.value
     const kioskName = kiosk.name
     const dispatch = useDispatch()
-    // 추가적인 useRef 선언으로 kioskDispatchFlag 상태를 추적
+    // 추가적인 useRef 선언으로 상태를 추적
     const kioskDispatchFlag = useRef(false)
+    const deptInfoEduGoalsDispatchFlag = useRef(false)
+    const deptInfoMainEduFieldsDispatchFlag = useRef(false)
+    const deptInfoLicenseDispatchFlag = useRef(false)
+    const deptInfoDeptFeaturesDispatchFlag = useRef(false)
+    const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
 
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
@@ -528,8 +533,89 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }  
             } else {
+                // return
+
                 // 학과맵일 경우
-                handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 150)
+                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 75)
+
+                // 1사분면 : 학과소개영역
+                if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
+                    // handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
+                    handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
+
+                    // 교육목표
+                    if((currentPosition.x >= 77 && currentPosition.x <= 117) && (currentPosition.z >= -75 && currentPosition.z <= -35)) {
+                        handleCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
+                        if(!deptInfoEduGoalsDispatchFlag.current) {
+                            deptInfoEduGoalsDispatchFlag.current = true
+                            dispatch(deptInfoEduGoals())
+                        }
+                    } else if(deptInfoEduGoalsDispatchFlag.current) {
+                        deptInfoEduGoalsDispatchFlag.current = false
+                        dispatch(initDeptInfo())
+                    }
+
+                    // 전공교육분야
+                    if((currentPosition.x >= 35 && currentPosition.x <= 75) && (currentPosition.z >= -115 && currentPosition.z < -75)) {
+                        handleCamera(currentPosition.x + -30, currentPosition.y + 50, currentPosition.z + 60)
+                        if(!deptInfoMainEduFieldsDispatchFlag.current) {
+                            deptInfoMainEduFieldsDispatchFlag.current = true
+                            dispatch(deptInfoMainEduFields())
+                        }
+                    } else if(deptInfoMainEduFieldsDispatchFlag.current) {
+                        deptInfoMainEduFieldsDispatchFlag.current = false
+                        dispatch(initDeptInfo())
+                    }
+
+                    // 학과특징
+                    if((currentPosition.x >= 133 && currentPosition.x <= 173) && (currentPosition.z >= -168 && currentPosition.z <= -128)) {
+                        handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
+                        if(!deptInfoDeptFeaturesDispatchFlag.current) {
+                            deptInfoDeptFeaturesDispatchFlag.current = true
+                            dispatch(deptInfoDeptFeatures())
+                        }
+                    } else if(deptInfoDeptFeaturesDispatchFlag.current) {
+                        deptInfoDeptFeaturesDispatchFlag.current = false
+                        dispatch(initDeptInfo())
+                    }
+
+                    // 진로 및 취업분야
+                    if((currentPosition.x >= 27 && currentPosition.x <= 67) && (currentPosition.z >= -189 && currentPosition.z <= -149)) {
+                        handleCamera(currentPosition.x + -50, currentPosition.y + 70, currentPosition.z + 50)
+                        if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
+                            deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
+                            dispatch(deptInfoCareerAndEmploymentField())
+                        }
+                    } else if(deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
+                        deptInfoCareerAndEmploymentFieldDispatchFlag.current = false
+                        dispatch(initDeptInfo())
+                    }
+
+                    // 자격증
+                    if((currentPosition.x >= 180 && currentPosition.x <= 220) && (currentPosition.z >= -70 && currentPosition.z <= -30)) {
+                        handleCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
+                        if(!deptInfoLicenseDispatchFlag.current) {
+                            deptInfoLicenseDispatchFlag.current = true
+                            dispatch(deptInfoLicense())
+                        }
+                    } else if(deptInfoLicenseDispatchFlag.current) {
+                        deptInfoLicenseDispatchFlag.current = false
+                        dispatch(initDeptInfo())
+                    }
+                }
+
+                // 2사분면 & 3사분면 : 학과체험영역
+                if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
+                    handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 100)
+                }
+                if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
+                    handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + -100)
+                }
+
+                // 4사분면 : 자유영역
+                if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
+                    handleCamera(currentPosition.x + -100, currentPosition.y + 100, currentPosition.z + -100)
+                }
             }
 
             camera.lookAt(currentPosition)

@@ -41,7 +41,7 @@ const DeptMap = () => {
     return (
         <group>
             <DeptFloor
-                position={[0, -50, 0]}
+                position={[0, -11, 0]}
                 onMove={handleMove}
             />
             <DeptElements groundMapName={groundMapName} />
@@ -49,16 +49,16 @@ const DeptMap = () => {
             <React.Fragment>
                 {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
                 {groundMapName === 'yuhan_bio_map' && (
-                    <BioDeptHeadCharacter groundMapName={groundMapName} position={[60, 0, -100]} scale={0.7} />
+                    <BioDeptHeadCharacter groundMapName={groundMapName} position={[80, -7.7, -100]} scale={0.7} />
                 )}
                 {groundMapName === 'computer_sw_map' && (
-                    <CSDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                    <CSDeptHeadCharacter groundMapName={groundMapName} position={[0, 0.7, -100]} scale={0.7} />
                 )}
                 {groundMapName === 'food_nutrition_map' && (
-                    <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                    <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0.7, -100]} scale={0.7} />
                 )}
                 {groundMapName === 'industrial_design_map' && (
-                    <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, 0, -100]} scale={0.7} />
+                    <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, -6.3, -100]} scale={0.7} />
                 )}
             </React.Fragment>
             

@@ -8,7 +8,7 @@ import { INIT_CHARACTER, MAIN_CHARACTER, MAIN_CHARACTER_DEPT } from "../actions/
 const initialState = {
     name: '',
     currentPosition: [280, 0, -355],
-    deptInitPosition: [0, 0, 0]
+    deptInitPosition: [0, -2, 0]
 }
 
 export function mainCharReducer(state = initialState, action) {

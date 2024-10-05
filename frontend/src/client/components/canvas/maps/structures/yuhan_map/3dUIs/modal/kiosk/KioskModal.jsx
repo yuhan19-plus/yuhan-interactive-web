@@ -7,7 +7,7 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
-import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
+import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, initKiosk, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 
 const dataKiosk = {
     PEACE_HALL,

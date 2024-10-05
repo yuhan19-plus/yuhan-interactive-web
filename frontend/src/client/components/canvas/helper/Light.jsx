@@ -10,8 +10,11 @@ import * as THREE from 'three'
 import { Sun } from '../maps/structures/yuhan_map/elements/etc/Sun'
 // 달
 import { Moon } from '../maps/structures/yuhan_map/elements/etc/Moon'
+import { useSelector } from 'react-redux'
 
 const Light = () => {
+    const groundMapState = useSelector((state) => state.groundMap)
+    const groundMapName = groundMapState.mapName
     const lightRef = useRef(null)
     const [lightPos, setLightPos] = useState([0, 0, 0]);
     const [lightIntensity, setLightIntensity] = useState(0); // 초기 강도는 0 (빛 없음)
@@ -113,18 +116,27 @@ const Light = () => {
                 shadow-mapSize-width={1024}
                 shadow-mapSize-height={1024}
             />
-            {(NowHour >= 7 && NowHour < 20) &&
-                <Sun position={objectPosition} />}
-            {(NowHour >= 20 || NowHour < 7) && (<>
-                <Moon position={objectPosition} />
-                <Stars
-                    radius={1000}           // 별들이 나타날 반경
-                    depth={50}             // 별들의 깊이 (z축)
-                    count={5000}           // 별의 개수
-                    factor={2}             // 별의 크기 조절 (값이 클수록 별이 커져서 밝아짐)
-                    saturation={0}         // 별의 색상 채도 (0에 가까울수록 하얗고 밝게 보임)
-                    fade                   // 별이 멀어질수록 페이드 아웃
-                /></>)}
+
+            {groundMapName === 'yh_map' && (
+                <>
+                    {(NowHour >= 7 && NowHour < 20) &&
+                        <Sun position={objectPosition} />
+                    }
+                    {(NowHour >= 20 || NowHour < 7) && (
+                        <>
+                            <Moon position={objectPosition} />
+                            <Stars
+                                radius={1000}           // 별들이 나타날 반경
+                                depth={50}             // 별들의 깊이 (z축)
+                                count={5000}           // 별의 개수
+                                factor={2}             // 별의 크기 조절 (값이 클수록 별이 커져서 밝아짐)
+                                saturation={0}         // 별의 색상 채도 (0에 가까울수록 하얗고 밝게 보임)
+                                fade                   // 별이 멀어질수록 페이드 아웃
+                            />
+                        </>
+                    )}
+                </>
+            )}
 
             {/* 이부분 나중에 자현이가 수정바람 - 성준 */}
             {/* <Sky
