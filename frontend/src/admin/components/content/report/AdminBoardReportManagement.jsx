@@ -47,6 +47,13 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
             }
             const data = await response.json();
             setTotalData(data.reportData);
+            if (data.reportData.board_status === "delete") {
+                Swal.fire({
+                    icon: 'info',
+                    title: '이미 삭제된 게시글',
+                    text: '글쓴이가 삭제했거나 관리자가 삭제한 글입니다.'
+                });
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -189,7 +196,10 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                         <strong>신고 유형: </strong>{totalData.report_type}
                     </Typography>
                     <Typography variant="body1">
-                        <strong>신고 날짜: </strong>{totalData.report_date}
+                        <strong>신고 날짜: </strong>
+                        {new Date(totalData.report_date).toLocaleString('ko-KR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                        })}
                     </Typography>
                     <Typography variant="body1">
                         <strong>신고 내용: </strong>{totalData.report_content}
