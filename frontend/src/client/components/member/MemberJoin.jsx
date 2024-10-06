@@ -271,6 +271,13 @@ const MemberJoin = () => {
                     icon: 'warning',
                     confirmButtonText: '확인'
                 });
+            } else if (response.status === 418){
+                Swal.fire({
+                    title: '중복된 학과장 정보!',
+                    text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
+                    icon: 'warning',
+                    confirmButtonText: '확인'
+                });
             } else if (response.ok) {
                 Swal.fire({
                     title: '회원가입 성공!',

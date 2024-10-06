@@ -145,76 +145,166 @@ router.post('/register', async (req, res) => {
                 return res.status(409).send('이미 존재하는 아이디입니다.');
             }
 
-            // 비밀번호 암호화
-            bcrypt.hash(memberPW, 10, (err, hashedPassword) => {
-                if (err) {
-                    console.error('비밀번호 암호화 실패:', err);
-                    return res.status(500).send('서버 오류가 발생했습니다.');
-                }
-
-                // MySQL 트랜잭션 시작
-                mysqlconnection.beginTransaction((err) => {
+            // 교수 등록 시 학과장 중복 확인
+            if (memberType === false && professorPosition === '학과장') {
+                const checkDeptHeadQuery = `
+                    SELECT user_id FROM professor 
+                    WHERE professor_position = '학과장' AND user_major = ?
+                `;
+                mysqlconnection.query(checkDeptHeadQuery, [memberMajor], (err, results) => {
                     if (err) {
-                        throw err;
+                        console.error('학과장 중복 확인 실패:', err);
+                        return res.status(500).send('서버 오류가 발생했습니다.');
                     }
 
-                    // 2. 학생일 경우 student 테이블에 데이터 저장
-                    if (memberType === true) {
-                        const studentQuery = `
-                            INSERT INTO student (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, student_number, student_grade, student_class, user_status)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
-                        `;
-                        mysqlconnection.query(
-                            studentQuery,
-                            [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, studentNum, studentGrade, studentClass],
-                            (err, results) => {
-                                if (err) {
-                                    return mysqlconnection.rollback(() => {
-                                        throw err;
-                                    });
-                                }
-                                // 트랜잭션 커밋
-                                mysqlconnection.commit((err) => {
-                                    if (err) {
-                                        return mysqlconnection.rollback(() => {
-                                            throw err;
-                                        });
-                                    }
-                                    res.status(200).send('학생 데이터 저장 성공');
-                                });
-                            }
-                        );
+                    if (results.length > 0) {
+                        // 이미 해당 학과에 학과장이 존재하는 경우
+                        return res.status(418).send('이미 해당 학과에 학과장이 존재합니다.');
                     }
 
-                    // 3. 교수일 경우 professor 테이블에 데이터 저장
-                    if (memberType === false) {
-                        const professorQuery = `
-                            INSERT INTO professor (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, professor_position, user_status)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
-                        `;
-                        mysqlconnection.query(
-                            professorQuery,
-                            [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition],
-                            (err, results) => {
-                                if (err) {
-                                    return mysqlconnection.rollback(() => {
-                                        throw err;
-                                    });
-                                }
-                                // 트랜잭션 커밋
-                                mysqlconnection.commit((err) => {
-                                    if (err) {
-                                        return mysqlconnection.rollback(() => {
-                                            throw err;
+                    // 비밀번호 암호화 및 데이터 저장 진행
+                    bcrypt.hash(memberPW, 10, (err, hashedPassword) => {
+                        if (err) {
+                            console.error('비밀번호 암호화 실패:', err);
+                            return res.status(500).send('서버 오류가 발생했습니다.');
+                        }
+
+                        // MySQL 트랜잭션 시작
+                        mysqlconnection.beginTransaction((err) => {
+                            if (err) {
+                                throw err;
+                            }
+
+                            // 2. 학생일 경우 student 테이블에 데이터 저장
+                            if (memberType === true) {
+                                const studentQuery = `
+                                    INSERT INTO student (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, student_number, student_grade, student_class, user_status)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
+                                `;
+                                mysqlconnection.query(
+                                    studentQuery,
+                                    [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, studentNum, studentGrade, studentClass],
+                                    (err, results) => {
+                                        if (err) {
+                                            return mysqlconnection.rollback(() => {
+                                                throw err;
+                                            });
+                                        }
+                                        // 트랜잭션 커밋
+                                        mysqlconnection.commit((err) => {
+                                            if (err) {
+                                                return mysqlconnection.rollback(() => {
+                                                    throw err;
+                                                });
+                                            }
+                                            res.status(200).send('학생 데이터 저장 성공');
                                         });
                                     }
-                                    res.status(200).send('교수 데이터 저장 성공');
-                                });
+                                );
                             }
-                        );
-                    }
+
+                            // 3. 교수일 경우 professor 테이블에 데이터 저장
+                            if (memberType === false) {
+                                const professorQuery = `
+                                    INSERT INTO professor (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, professor_position, user_status)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
+                                `;
+                                mysqlconnection.query(
+                                    professorQuery,
+                                    [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition],
+                                    (err, results) => {
+                                        if (err) {
+                                            return mysqlconnection.rollback(() => {
+                                                throw err;
+                                            });
+                                        }
+                                        // 트랜잭션 커밋
+                                        mysqlconnection.commit((err) => {
+                                            if (err) {
+                                                return mysqlconnection.rollback(() => {
+                                                    throw err;
+                                                });
+                                            }
+                                            res.status(200).send('교수 데이터 저장 성공');
+                                        });
+                                    }
+                                );
+                            }
+                        });
+                    });
                 });
-            });
+            } else {
+                // 비밀번호 암호화 및 데이터 저장 진행
+                bcrypt.hash(memberPW, 10, (err, hashedPassword) => {
+                    if (err) {
+                        console.error('비밀번호 암호화 실패:', err);
+                        return res.status(500).send('서버 오류가 발생했습니다.');
+                    }
+
+                    // MySQL 트랜잭션 시작
+                    mysqlconnection.beginTransaction((err) => {
+                        if (err) {
+                            throw err;
+                        }
+
+                        // 2. 학생일 경우 student 테이블에 데이터 저장
+                        if (memberType === true) {
+                            const studentQuery = `
+                                INSERT INTO student (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, student_number, student_grade, student_class, user_status)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
+                            `;
+                            mysqlconnection.query(
+                                studentQuery,
+                                [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, studentNum, studentGrade, studentClass],
+                                (err, results) => {
+                                    if (err) {
+                                        return mysqlconnection.rollback(() => {
+                                            throw err;
+                                        });
+                                    }
+                                    // 트랜잭션 커밋
+                                    mysqlconnection.commit((err) => {
+                                        if (err) {
+                                            return mysqlconnection.rollback(() => {
+                                                throw err;
+                                            });
+                                        }
+                                        res.status(200).send('학생 데이터 저장 성공');
+                                    });
+                                }
+                            );
+                        }
+
+                        // 3. 교수일 경우 professor 테이블에 데이터 저장
+                        if (memberType === false) {
+                            const professorQuery = `
+                                INSERT INTO professor (user_id, user_password, user_name, user_phone, user_email, user_major, user_gender, professor_position, user_status)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)  -- user_status를 기본값으로 1로 설정
+                            `;
+                            mysqlconnection.query(
+                                professorQuery,
+                                [memberID, hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition],
+                                (err, results) => {
+                                    if (err) {
+                                        return mysqlconnection.rollback(() => {
+                                            throw err;
+                                        });
+                                    }
+                                    // 트랜잭션 커밋
+                                    mysqlconnection.commit((err) => {
+                                        if (err) {
+                                            return mysqlconnection.rollback(() => {
+                                                throw err;
+                                            });
+                                        }
+                                        res.status(200).send('교수 데이터 저장 성공');
+                                    });
+                                }
+                            );
+                        }
+                    });
+                });
+            }
         });
 
     } catch (err) {
@@ -222,7 +312,6 @@ router.post('/register', async (req, res) => {
         res.status(500).send('데이터 저장 실패');
     }
 });
-
 
 
 // POST 요청 처리 - 로그인
@@ -386,7 +475,7 @@ router.post('/modify', async (req, res) => {
                 const studentQuery = `
                     UPDATE student 
                     SET 
-                        ${memberPW ? 'user_password = ?, ' : ''}
+                        ${memberPW ? 'user_password = ?, ' : ''} 
                         user_name = ?, 
                         user_phone = ?, 
                         user_email = ?, 
@@ -422,39 +511,95 @@ router.post('/modify', async (req, res) => {
 
             // 3. 교수일 경우 professor 테이블 업데이트
             if (memberType === 'professor') {
-                const professorQuery = `
-                    UPDATE professor 
-                    SET 
-                        ${memberPW ? 'user_password = ?, ' : ''}
-                        user_name = ?, 
-                        user_phone = ?, 
-                        user_email = ?, 
-                        user_major = ?, 
-                        user_gender = ?, 
-                        professor_position = ?
-                    WHERE user_id = ?
-                `;
-                const professorValues = memberPW
-                    ? [hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID]
-                    : [memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID];
-
-                mysqlconnection.query(professorQuery, professorValues, (err, results) => {
-                    if (err) {
-                        return mysqlconnection.rollback(() => {
-                            throw err;
-                        });
-                    }
-
-                    // 트랜잭션 커밋
-                    mysqlconnection.commit((err) => {
+                // 학과장이 중복되는지 확인
+                if (professorPosition === '학과장') {
+                    const checkDeptHeadQuery = `
+                        SELECT user_id FROM professor 
+                        WHERE professor_position = '학과장' AND user_major = ? AND user_id != ?
+                    `;
+                    mysqlconnection.query(checkDeptHeadQuery, [memberMajor, memberID], (err, results) => {
                         if (err) {
                             return mysqlconnection.rollback(() => {
                                 throw err;
                             });
                         }
-                        res.status(200).send('교수 정보 수정 성공');
+
+                        if (results.length > 0) {
+                            // 이미 해당 학과에 학과장이 존재하는 경우
+                            return res.status(418).send('이미 해당 학과에 학과장이 존재합니다.');
+                        }
+
+                        // 학과장이 중복되지 않은 경우 교수 정보 업데이트
+                        const professorQuery = `
+                            UPDATE professor 
+                            SET 
+                                ${memberPW ? 'user_password = ?, ' : ''} 
+                                user_name = ?, 
+                                user_phone = ?, 
+                                user_email = ?, 
+                                user_major = ?, 
+                                user_gender = ?, 
+                                professor_position = ?
+                            WHERE user_id = ?
+                        `;
+                        const professorValues = memberPW
+                            ? [hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID]
+                            : [memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID];
+
+                        mysqlconnection.query(professorQuery, professorValues, (err, results) => {
+                            if (err) {
+                                return mysqlconnection.rollback(() => {
+                                    throw err;
+                                });
+                            }
+
+                            // 트랜잭션 커밋
+                            mysqlconnection.commit((err) => {
+                                if (err) {
+                                    return mysqlconnection.rollback(() => {
+                                        throw err;
+                                    });
+                                }
+                                res.status(200).send('교수 정보 수정 성공');
+                            });
+                        });
                     });
-                });
+                } else {
+                    // 학과장이 아닌 경우 교수 정보 업데이트
+                    const professorQuery = `
+                        UPDATE professor 
+                        SET 
+                            ${memberPW ? 'user_password = ?, ' : ''} 
+                            user_name = ?, 
+                            user_phone = ?, 
+                            user_email = ?, 
+                            user_major = ?, 
+                            user_gender = ?, 
+                            professor_position = ?
+                        WHERE user_id = ?
+                    `;
+                    const professorValues = memberPW
+                        ? [hashedPassword, memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID]
+                        : [memberName, memberPhone, memberEmail, memberMajor, memberGender, professorPosition, memberID];
+
+                    mysqlconnection.query(professorQuery, professorValues, (err, results) => {
+                        if (err) {
+                            return mysqlconnection.rollback(() => {
+                                throw err;
+                            });
+                        }
+
+                        // 트랜잭션 커밋
+                        mysqlconnection.commit((err) => {
+                            if (err) {
+                                return mysqlconnection.rollback(() => {
+                                    throw err;
+                                });
+                            }
+                            res.status(200).send('교수 정보 수정 성공');
+                        });
+                    });
+                }
             }
 
             // 4. 관리자인 경우 admin 테이블 업데이트
@@ -462,7 +607,7 @@ router.post('/modify', async (req, res) => {
                 const adminQuery = `
                     UPDATE admin 
                     SET 
-                        ${memberPW ? 'user_password = ?, ' : ''}
+                        ${memberPW ? 'user_password = ?, ' : ''} 
                         user_name = ?, 
                         user_phone = ?, 
                         user_email = ?, 
