@@ -15,21 +15,17 @@ const CodingExperience = ({ onResultCode }) => {
     };
 
     const handleNumChange = (event) => {
-        setNum(event.target.value);
+        const value = event.target.value;
+        // 숫자 입력만 허용하고 마지막 숫자만 남기도록 처리
+        if (/^[0-9]+$/.test(value)) {
+            const lastNum = value.slice(-1);
+            setNum(lastNum); 
+        }
     };
 
     useEffect(() => {
-        if (num !== '') {
-            let result = '';
-            for (let i = 1; i <= 9; i++) {
-                result += `${num} * ${i} = ${num * i}\n`;
-            }
-            setResultCode(result);
-            onResultCode(result)
-        } else {
-            setResultCode('');
-        }
-    }, [num]); // num이 변경될 때마다 실행
+        onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
+    }, [num]); 
 
     const splitCodes = CodingExperienceCode.map(code => {
         const [part1, part2] = code.split("'정수형데이터'");
@@ -76,7 +72,7 @@ const MainContainer = styled.div`
     /* 언어별로 영역을 다르게 설정 */
     width: ${(props) =>
         props.selectLanguage === 'C' ? '25vw' :
-            props.selectLanguage === 'Java' ? '30vw' :
+            props.selectLanguage === 'Java' ? '32vw' :
                 '20vw'}; 
     height: ${(props) =>
         props.selectLanguage === 'C' ? '40vh' :
