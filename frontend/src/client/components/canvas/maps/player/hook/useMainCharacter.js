@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Enter_Statue, Enter_StudentKiosk, Leave_CodingArea, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -67,6 +67,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     //학생회관 음식 호출
     const [isInStudentKioskZone, setIsInStudentKioskZone] = useState(false);
+
+    // 학과체험의 코딩영역 상태관리
+    const [isCodingArea, setIsCodingArea]= useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -530,6 +533,24 @@ export const useMainCharacter = ({ position, myChar }) => {
             } else {
                 // 학과맵일 경우
                 handleCamera(currentPosition.x + 0, currentPosition.y + 130, currentPosition.z + 150)
+
+                // 코딩체험 위치 4사분면에 배치
+                if ((currentPosition.x <= 125 && currentPosition.x >= 0) && (currentPosition.z <= 250 && currentPosition.z >= 175)) {
+                    handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 100)
+                    // 영역진입체크
+                    if (isCodingArea === false) {
+                        setIsCodingArea(true); // 상태 변경
+                        dispatch(Enter_CodingArea()); // 리덕스 액션 디스패치
+                        console.log("코딩영역에 진입했습니다.");
+                    }
+                } else {
+                    if (isCodingArea === true) {
+                        setIsCodingArea(false); // 상태 변경
+                        dispatch(Leave_CodingArea()); // 리덕스 액션 디스패치
+                        console.log("코딩영역을 떠났습니다.");
+                    }
+                }
+
             }
 
             camera.lookAt(currentPosition)

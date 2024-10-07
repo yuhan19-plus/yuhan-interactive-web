@@ -11,7 +11,7 @@ const CodingExperience = ({ onResultCode }) => {
 
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
-        console.log("Selected language:", event.target.value);
+        // console.log("Selected language:", event.target.value);
     };
 
     const handleNumChange = (event) => {
@@ -33,9 +33,9 @@ const CodingExperience = ({ onResultCode }) => {
     });
 
     return (
-        <Html position={[100, 0, 50]} center>
+        <Html position={[50, 0, 120]} center>
             <MainContainer
-                selectLanguage={selectLanguage} // styled에 언어별로 영역을 다르게 설정한 것에 값을 넣어주는 부분
+                selectLanguage={selectLanguage} 
                 // 마우스클릭 이벤트전파를 차단하는 부분 (※이유 모달창을 클릭 시 케릭터이동을 차단)
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerMove={(e) => e.stopPropagation()}
@@ -66,24 +66,24 @@ const CodingExperience = ({ onResultCode }) => {
 
 export default CodingExperience;
 
-const MainContainer = styled.div`
+const MainContainer = styled.div.attrs(props => ({
+    //선택언어별로 다르게 설정
+    style: {
+        width: props.selectLanguage === 'C' ? '25vw' :
+            props.selectLanguage === 'Java' ? '32vw' : '20vw',
+        height: props.selectLanguage === 'C' ? '40vh' :
+            props.selectLanguage === 'Java' ? '35vh' : '30vh',
+    }
+}))`
     background-color: white;
     padding: 10px;
-    /* 언어별로 영역을 다르게 설정 */
-    width: ${(props) =>
-        props.selectLanguage === 'C' ? '25vw' :
-            props.selectLanguage === 'Java' ? '32vw' :
-                '20vw'}; 
-    height: ${(props) =>
-        props.selectLanguage === 'C' ? '40vh' :
-            props.selectLanguage === 'Java' ? '35vh' :
-                '30vh'}; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
 `;
+
 
 const CodeContainer = styled.pre`
     background-color: #f0f0f0;
