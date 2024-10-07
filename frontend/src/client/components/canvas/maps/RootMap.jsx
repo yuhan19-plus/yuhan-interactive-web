@@ -6,6 +6,7 @@ import { mainChar } from '../../../../redux/actions/actions'
 import { MainCharacter } from './player/main/MainCharacter'
 import Direction from './structures/yuhan_map/3dUIs/modal/Direction'
 import StatueModal from './structures/yuhan_map/3dUIs/modal/StatueModal'
+import SmokingArea from './structures/yuhan_map/3dUIs/modal/SmokingArea'
 import YuhanElements from './structures/yuhan_map/YuhanElements'
 import Floor from './structures/yuhan_map/elements/Floor'
 import FoodGroup from './structures/yuhan_map/elements/FoodGroup'
@@ -55,6 +56,12 @@ const RootMap = () => {
         console.log("식당",isInStudentKiosk)
     },[isInStudentKiosk])
 
+    // 흡연장 출퇴장 처리
+    const isInSmokingArea = useSelector(state=> state.smokingArea.inSmokingArea);
+    useEffect(()=>{
+        console.log("흡연장",isInSmokingArea)
+    },[isInSmokingArea])
+
     return (
         <group>
             {/* 바닥 셋팅 */}
@@ -86,6 +93,12 @@ const RootMap = () => {
                             <FoodGroup position={[196.605, 12.5, 136.919]} scale={[1.5]}/>
                             <ShowCase position={[189.605, 7, 136.919]} rotation={[Math.PI, 0, Math.PI]} scale={2}/>
                             <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
+                        </>
+                    )}
+
+                    {isInSmokingArea &&(
+                        <>
+                            <SmokingArea position={[40, 0, -280]}/>
                         </>
                     )}
 

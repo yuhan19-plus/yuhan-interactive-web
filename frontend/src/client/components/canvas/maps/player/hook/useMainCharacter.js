@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_SmokingArea, Leave_Statue, Leave_StudentKiosk, enterBusStationOne, enterBusStationTwo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -64,6 +64,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 동상영역에 있는지 상태를 관리하는 상태 변수
     const [isInStatueZone, setIsInStatueZone] = useState(false);
+
+    // 흡연장영역에 있는지 상태를 관리하는 상태 변수
+    const [isInSmokingArea, setIsInSmokingArea] = useState(false);
 
     //학생회관 음식 호출
     const [isInStudentKioskZone, setIsInStudentKioskZone] = useState(false);
@@ -488,6 +491,18 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if ((currentPosition.x <= 61 && currentPosition.x >= 21) &&
                             currentPosition.z <= -255 && currentPosition.z >= -301) {
                             handleCamera(currentPosition.x + 10, currentPosition.y + 50, currentPosition.z + 50)
+                            if (!isInSmokingArea) {
+                                setIsInSmokingArea(true);
+                                dispatch(Enter_SmokingArea());
+                                console.log("흡연구역 입장", isInSmokingArea);
+                            }
+                        }
+                        else{
+                            if (isInSmokingArea) {
+                                setIsInSmokingArea(false);
+                                dispatch(Leave_SmokingArea());
+                                console.log("흡연구역 퇴장", isInSmokingArea);
+                            }
                         }
                     }
                 }

@@ -77,6 +77,10 @@ export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
 export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
 export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 
+// 흡연장 - 석재
+export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
+export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
+
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
 export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
@@ -265,4 +269,12 @@ export const Enter_StudentKiosk =() =>({
 })
 export const Leave_StudentKiosk =() =>({
     type:LEAVE_STUDENTKIOSK
+})
+
+// 흡연장
+export const Enter_SmokingArea = () =>({
+    type:ENTER_SMOKINGAREA
+})
+export const Leave_SmokingArea = () =>({
+    type:LEAVE_SMOKINGAREA
 })
