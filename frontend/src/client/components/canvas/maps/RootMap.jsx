@@ -98,7 +98,7 @@ const RootMap = () => {
 
                     {isInSmokingArea &&(
                         <>
-                            <SmokingArea position={[40, 0, -280]}/>
+                            <SmokingArea position={[32, 0, -280]}/>
                         </>
                     )}
 
