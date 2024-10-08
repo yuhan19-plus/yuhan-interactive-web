@@ -195,7 +195,7 @@ const DeptRecommand = () => {
         currentRank = displayRank; // 현재 순위는 항상 displayRank를 따라감
   
         previousScore = score;
-        return `${displayRank}위: ${dept} (점수: ${score})`;
+        return { rank: displayRank, deptName: dept, score: score };
       });
   
       // 학과명과 점수를 API로 전송하기 위한 데이터 생성
@@ -253,7 +253,7 @@ if (result) {
           <p>아이콘을 클릭하면 자유전공학과 소개 페이지로 이동합니다.</p>
           <IconTextWrapper onClick={() => handleIconClick("자유전공학과")}>
             <School style={{ fontSize: 50, color: "#007bff", cursor: "pointer" }} />
-            <span>자유전공학과</span>
+            <span>자유전공학과 소개 페이지로 이동하기</span>
           </IconTextWrapper>
         </FreeDeptContainer>
       ) : (
@@ -261,15 +261,14 @@ if (result) {
           <SubTitle>아이콘을 클릭하면 각 학부의 대표 학과 소개 페이지로 이동합니다.</SubTitle>
           {result.ranking && result.ranking.length > 0 ? (
             <div>
-              {result.ranking.map((rank, index) => {
-                const deptMatch = rank.match(/([가-힣]+부)/); // 학부명만 추출
-                const deptName = deptMatch ? deptMatch[1] : ""; // 학부명만 추출
-
+              {result.ranking.map((item, index) => {
                 return (
                   <RankBox key={index}>
-                    <IconTextWrapper onClick={() => handleIconClick(deptName)}>
-                      {getDepartmentIcon(deptName)} {/* 아이콘 표시 */}
-                      <span>{rank}</span> {/* 순위 및 학부명 표시 */}
+                    <IconTextWrapper onClick={() => handleIconClick(item.deptName)}>
+                      <RankText>{`${item.rank}위`} {/* 순위 출력 */}</RankText>
+                      {getDepartmentIcon(item.deptName)} {/* 학부 아이콘 출력 */}
+                      <span>{item.deptName}</span> {/* 학부 이름 출력 */}
+                      <span>{`${item.score}점`}</span> {/* 점수 출력 */}
                     </IconTextWrapper>
                   </RankBox>
                 );
@@ -440,4 +439,9 @@ const SubTitle = styled.h4`
 `;
 const Title = styled.h2`
   margin-bottom: 5px;  // 원하는 간격 설정
+`;
+
+const RankText = styled.span`
+    font-weight: 900;
+    font-size: 1.3em;
 `;
