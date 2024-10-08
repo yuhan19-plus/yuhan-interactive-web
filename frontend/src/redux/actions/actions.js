@@ -62,6 +62,8 @@ export const KIOSK_YUJAELA = 'KIOSK_YUJAELA'
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 // 찾아오는 길버튼 - 자현
 export const DIRECTIONS_VIEW = 'DIRECTIONS_VIEW'
+// 미니맵 흡연구역 버튼 - 석재
+export const SMOKINGAREA_VIEW = 'SMOKINGAREA_VIEW'
 
 //입구 동상 - 정민
 export const ENTER_STATUE = 'ENTER_STATUE';
@@ -196,6 +198,10 @@ export const aerialView = () => ({
 // 미니맵 상단 찾아오는 길 버튼
 export const directionsView = () => ({
     type: DIRECTIONS_VIEW
+})
+// 미니냅 상단 흡연구역 버튼 - 석재
+export const smokingAreaView = () => ({
+    type: SMOKINGAREA_VIEW
 })
 
 

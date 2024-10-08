@@ -5,7 +5,7 @@
  * 찾아오는 길 뷰 상태 추가
  */
 
-import { AERIAL_VIEW, DIRECTIONS_VIEW } from "../actions/actions"
+import { AERIAL_VIEW, DIRECTIONS_VIEW, SMOKINGAREA_VIEW } from "../actions/actions"
 
 const initialState = {
     value: false,
@@ -25,6 +25,12 @@ export function menuBtnReducer(state = initialState, action) {
                 ...state,
                 value: !state.value,
                 btnMenuName: 'directionsView'
+            }
+        case SMOKINGAREA_VIEW:
+            return {
+                ...state,
+                value: !state.vakue,
+                btnMenuName: 'smokingAreaView'
             }
         default:
             return state

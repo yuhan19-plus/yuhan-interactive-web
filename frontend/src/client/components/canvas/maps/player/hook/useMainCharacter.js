@@ -26,6 +26,7 @@ export const useMainCharacter = ({ position, myChar }) => {
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
     const directionsState = btnValue.value && btnValue.btnMenuName === 'directionsView'
+    const smokingAreaState = btnValue.value && btnValue.btnMenuName === 'smokingAreaView'
 
     // 텔레포트
     const teleportState = useSelector((state) => state.teleport)
@@ -165,6 +166,19 @@ export const useMainCharacter = ({ position, myChar }) => {
             });
         }
     }, [directionsState, camera]);
+
+    // 흡연구역 뷰
+    useEffect(() => {
+        if (smokingAreaState){
+            gsap.to(camera.position,{
+                x: 0,
+                y: 500,
+                z: -300,
+                duration: 1.5,
+                ease: 'power2.inOut',
+            });
+        }
+    }, [smokingAreaState, camera]);
 
     useFrame(({ camera }) => {
         if (!player || !charRef.current || !targetPosition) return
