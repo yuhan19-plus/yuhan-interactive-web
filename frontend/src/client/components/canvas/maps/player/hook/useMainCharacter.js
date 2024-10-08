@@ -171,9 +171,9 @@ export const useMainCharacter = ({ position, myChar }) => {
     useEffect(() => {
         if (smokingAreaState){
             gsap.to(camera.position,{
-                x: 0,
+                x: -90,
                 y: 500,
-                z: -300,
+                z: 0,
                 duration: 1.5,
                 ease: 'power2.inOut',
             });

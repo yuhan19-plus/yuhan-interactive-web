@@ -29,7 +29,7 @@ export function menuBtnReducer(state = initialState, action) {
         case SMOKINGAREA_VIEW:
             return {
                 ...state,
-                value: !state.vakue,
+                value: !state.value,
                 btnMenuName: 'smokingAreaView'
             }
         default:

@@ -32,7 +32,7 @@ const BoardLayout = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  width: 60vh;
+  width: 50vh;
   height: auto;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;

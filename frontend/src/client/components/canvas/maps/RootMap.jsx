@@ -44,6 +44,9 @@ const RootMap = () => {
         console.log(isInBusStationTwo)
     }, [isInBusStationTwo])
 
+    // 찾아오는 길버튼의 클릭여부를 확인
+    const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView');
+
     // 동상 출퇴장 처리
     const isInStatue = useSelector(state=> state.statue.inStatue);
     useEffect(()=>{
@@ -96,11 +99,20 @@ const RootMap = () => {
                         </>
                     )}
 
-                    {isInSmokingArea &&(
+                    {smokingAreaState ? (
                         <>
-                            <SmokingArea position={[32, 0, -280]}/>
+                            <SmokingArea position={[-120, 0, -520]}/>
                         </>
-                    )}
+                    ) : (
+                            <>
+                                {isInSmokingArea &&(
+                                <>
+                                    <SmokingArea position={[32, 0, -280]}/>
+                                </>
+                                )}
+                            </>
+                        )
+                    }
 
                     {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
                     {directionsState ? (

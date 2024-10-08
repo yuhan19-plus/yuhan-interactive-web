@@ -5,7 +5,9 @@
 
 import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { useSelector } from 'react-redux'
 
 export function SmokingArea({position, scale, ...props}) {
   const { scene, nodes, materials } = useGLTF('/assets/models/etc/SmokingArea.glb')
@@ -17,6 +19,29 @@ export function SmokingArea({position, scale, ...props}) {
     scale,
     ...props
   }))
+
+  const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView')
+
+  useEffect(() => {
+    // 흡연구역 상태가 활성화되면 애니메이션 시작
+    if (smokingAreaState) {
+      gsap.to(meshRef.current.scale, {
+        x: 2.5, y: 2.5, z: 2.5, 
+        duration: 0.5,
+        yoyo: true, 
+        repeat: -1, 
+        ease: "power1.inOut"
+      })
+    } else {
+      // 흡연구역 상태가 해지되면 원래 크기로 복귀
+      gsap.killTweensOf(meshRef.current.scale) // 현재 진행 중인 애니메이션을 중단
+      gsap.to(meshRef.current.scale, {
+        x: 1, y: 1, z: 1, 
+        duration: 1,
+        ease: "power1.inOut"
+      })
+    }
+  }, [smokingAreaState]) // smokingAreaState 변경을 감지
 
   useEffect(() => {
     scene.traverse((obj) => {
