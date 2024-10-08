@@ -258,7 +258,7 @@ if (result) {
         </FreeDeptContainer>
       ) : (
         <div>
-          <h4>아이콘을 클릭하면 각 학부의 대표 학과 소개 페이지로 이동합니다.</h4>
+          <SubTitle>아이콘을 클릭하면 각 학부의 대표 학과 소개 페이지로 이동합니다.</SubTitle>
           {result.ranking && result.ranking.length > 0 ? (
             <div>
               {result.ranking.map((rank, index) => {
@@ -281,7 +281,7 @@ if (result) {
                 <p>아이콘을 클릭하면 자유전공학과 소개 페이지로 이동합니다.</p>
                 <IconTextWrapper onClick={() => handleIconClick("자유전공학과")}>
                   <School style={{ fontSize: 50, color: "#007bff", cursor: "pointer" }} />
-                  <span>자유전공학과</span>
+                  <span>자유전공학과 소개 페이지로 이동하기</span>
                 </IconTextWrapper>
               </FreeDeptContainer>
             </div>
@@ -335,13 +335,16 @@ const IconTextWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: flex-start;
+  gap: 25px;
+  margin-top: 10x;
+  margin-bottom: 5px;
   font-size: 1.2em;
   color: #007bff;
+  width: 100%;
 
   span {
-    margin-top: 10px;
+    position: relative;
   }
 `;
 
@@ -365,13 +368,14 @@ const ResultContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 20px 0; // 위아래 마진만 유지
+  margin: 10px 0; // 위아래 마진만 유지
 `;
 
 const FreeDeptContainer = styled.div`
   text-align: center;
-  margin-top: 20px;
-  padding: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
   background-color: #f0f8ff;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -392,6 +396,7 @@ const QuestionContainer = styled.div`
   border-radius: 10px;
   width: 80%;
   text-align: center;
+  margin-bottom: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
@@ -427,4 +432,12 @@ const SubmitButton = styled.button`
     background-color: gray;
     cursor: not-allowed;
   }
+`;
+
+const SubTitle = styled.h4`
+  text-align: center;
+    margin-top: 5px;    // 원하는 간격 설정
+`;
+const Title = styled.h2`
+  margin-bottom: 5px;  // 원하는 간격 설정
 `;
