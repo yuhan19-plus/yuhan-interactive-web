@@ -232,3 +232,12 @@ export const LoadingMessages = [
     "📑 과제는 꼭 챙겨야지!\n잊으면 큰일이야! 🔖",
     "📝 오늘 배울 내용들...\n미리 준비 완료! 💼"
 ];
+
+export const departmentLinks = {
+    공학부: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6082&menu_idx=6083&tabCnt=4&code=CDMJC0220101",
+    디자인문화학부: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6165&menu_idx=6206&tabCnt=4&code=CDMJC0220105",
+    건강보건학부: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6170&menu_idx=6226&tabCnt=4&code=CDMJC0220104",
+    건강생활학부: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6184&menu_idx=6282&tabCnt=4&code=CDMJC0221106",
+    비즈니스학부: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6174&menu_idx=6242&tabCnt=4&code=CDMJC0220106",
+    자유전공학과: "https://sky.yuhan.ac.kr/deptIPSI/view.do?per_menu_idx=6290&menu_idx=6291&tabCnt=4&code=CDMJC0220403",
+  };
