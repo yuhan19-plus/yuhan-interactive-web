@@ -6,6 +6,7 @@ import { mainChar } from '../../../../redux/actions/actions'
 import { MainCharacter } from './player/main/MainCharacter'
 import Direction from './structures/yuhan_map/3dUIs/modal/Direction'
 import StatueModal from './structures/yuhan_map/3dUIs/modal/StatueModal'
+import SmokingArea from './structures/yuhan_map/3dUIs/modal/SmokingArea'
 import YuhanElements from './structures/yuhan_map/YuhanElements'
 import Floor from './structures/yuhan_map/elements/Floor'
 import FoodGroup from './structures/yuhan_map/elements/FoodGroup'
@@ -43,6 +44,9 @@ const RootMap = () => {
         console.log(isInBusStationTwo)
     }, [isInBusStationTwo])
 
+    // 찾아오는 길버튼의 클릭여부를 확인
+    const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView');
+
     // 동상 출퇴장 처리
     const isInStatue = useSelector(state=> state.statue.inStatue);
     useEffect(()=>{
@@ -54,6 +58,12 @@ const RootMap = () => {
     useEffect(()=>{
         console.log("식당",isInStudentKiosk)
     },[isInStudentKiosk])
+
+    // 흡연장 출퇴장 처리
+    const isInSmokingArea = useSelector(state=> state.smokingArea.inSmokingArea);
+    useEffect(()=>{
+        console.log("흡연장",isInSmokingArea)
+    },[isInSmokingArea])
 
     return (
         <group>
@@ -88,6 +98,21 @@ const RootMap = () => {
                             <Plate position={[196.605, 11.1, 136.919]} scale={1.3}/>
                         </>
                     )}
+
+                    {smokingAreaState ? (
+                        <>
+                            <SmokingArea position={[-120, 0, -520]}/>
+                        </>
+                    ) : (
+                            <>
+                                {isInSmokingArea &&(
+                                <>
+                                    <SmokingArea position={[32, 0, -280]}/>
+                                </>
+                                )}
+                            </>
+                        )
+                    }
 
                     {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
                     {directionsState ? (

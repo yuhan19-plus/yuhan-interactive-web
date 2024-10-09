@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { aerialView, directionsView, initKiosk } from '../../../redux/actions/actions'
+import { aerialView, directionsView, initKiosk, smokingAreaView } from '../../../redux/actions/actions'
 
 const BtnMenuGroup = () => {
     const dispatch = useDispatch()
@@ -16,13 +16,17 @@ const BtnMenuGroup = () => {
         e.stopPropagation()
         dispatch(directionsView())
     } 
+    const handleSmokingAreaView = (e) => {
+        e.stopPropagation()
+        dispatch(smokingAreaView())
+    }
     return (
         <BtnMenuWrapper>
             <BtnList>
                 <BtnItem onClick={handleAerialView} data-tooltip='항공뷰'>
                     <FontAwesomeIcon icon={faPlane} />
                 </BtnItem>
-                <BtnItem data-tooltip='흡연구역'>
+                <BtnItem onClick={handleSmokingAreaView} data-tooltip='흡연구역'>
                     <FontAwesomeIcon icon={faSmoking} />
                 </BtnItem>
                 <BtnItem onClick={handleDirectionsView} data-tooltip='찾아오는 길'>
