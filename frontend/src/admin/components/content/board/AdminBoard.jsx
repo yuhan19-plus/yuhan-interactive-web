@@ -29,7 +29,7 @@ const AdminBoard = () => {
         setCurrentView('update'); // 업데이트 페이지 보기로 전환
     };
 
-     // 목록으로 진입
+    // 목록으로 진입
     const handleBackToList = () => {
         setCurrentView('list');
     };
@@ -43,7 +43,7 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : (
-                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem}/>
+                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
             )}
         </>
     );

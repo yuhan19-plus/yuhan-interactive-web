@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 
 const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     const board_id = boardId;
-
     // 읽어온 데이터 관리
     const [boardData, setBoardData] = useState({
         board_id: "",
@@ -27,8 +26,12 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     });
     // attachment 테이블의 데이터를 관리하기 위한 상태
     const [attachments, setAttachments] = useState([]);
-    // 파일 입력요소 접근용 ref
+    // 파일 입력요소 접근용도 ref
     const fileInputRef = useRef(null);
+    // 기존파일의 attachment_id를 받아와 관리하는 상태
+    const [attachmentId, setAttachmentId] = useState(0)
+    // boardData의 files배열의 수정할 인덱스를 관리하는 상태
+    const [fileIndex, setFileIndex] = useState(0)
 
     // 데이터 가져오기 함수
     const fetchData = async () => {
@@ -131,11 +134,6 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         const { name, value } = e.target;
         setBoardData({ ...boardData, [name]: value });
     };
-
-    // 기존파일의 attachment_id를 받아와 관리하는 상태
-    const [attachmentId, setAttachmentId] = useState(0)
-    // boardData의 files배열의 수정할 인덱스를 관리하는 상태
-    const [fileIndex, setFileIndex] = useState(0)
 
     const handleAttachmentEdit = (attachment_id, index) => {
         setFileIndex(index); // boardData의 files의 배열의 인덱스값을 설정 파일처리에서 해당 인덱스에 집어넣기 위함

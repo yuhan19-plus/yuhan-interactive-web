@@ -12,45 +12,24 @@ import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const YuhanBoardComment = ({ boardData }) => {
+    // console.log(boardID)
     const [cookies] = useCookies(["user"]);  // 쿠키에서 user 정보 가져오기
     const boardID = boardData.board_id;
     const [sortCriteria, setSortCriteria] = useState('comment_date'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const pageNum = 8; // 한 페이지에서 볼 댓글의 수
-
-    // console.log(boardID)
+    const [commentList, setCommentList] = useState([]);
     const [comment, setComment] = useState({
         comment_id: "", // 백엔드쿼리에서 추가
         board_id: boardID, // 진입시들어온 boardData로 게시판id 연결
         comment_writer: cookies.user, // 쿠키로 로그인중인 사용자 id 잡음
         comment_content: "", // onChange이벤트로 입력
     });
-    const [commentList, setCommentList] = useState([]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setComment({ ...comment, [name]: value });
-    };
-
-    // 목록 불러오기
-    const fetchComment = async () => {
-        try {
-            const response = await fetch(`/api/comment/List/${boardID}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-            // console.log("들어온 데이터", data);
-            setCommentList(data); // 받아온 데이터를 상태에 설정
-        } catch (error) {
-            console.error("댓글 목록을 불러오는 중 에러 발생:", error);
-        }
     };
 
     // 댓글 저장
@@ -119,8 +98,6 @@ export const YuhanBoardComment = ({ boardData }) => {
         }
     };
 
-
-
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
@@ -173,6 +150,26 @@ export const YuhanBoardComment = ({ boardData }) => {
         return sortedData.slice(startIndex, endIndex);
     };
 
+    // 목록 불러오기
+    const fetchComment = async () => {
+        try {
+            const response = await fetch(`/api/comment/List/${boardID}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            // console.log("들어온 데이터", data);
+            setCommentList(data); // 받아온 데이터를 상태에 설정
+        } catch (error) {
+            console.error("댓글 목록을 불러오는 중 에러 발생:", error);
+        }
+    };
+    
     useEffect(() => {
         fetchComment(boardID);
     }, [boardID]);

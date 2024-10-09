@@ -6,11 +6,7 @@
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
-import {
-    Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon,
-    CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon,
-    NoteAlt
-} from '@mui/icons-material';
+import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
 import { useBoardData } from "./hooks/useBoardData";
 import styled from "styled-components";
@@ -20,7 +16,6 @@ import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoar
 const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
     const { boardData, attachments, loading, error, liked, comment, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardData(boardId);
-
 
     // 로딩 또는 에러 상태 처리
     if (loading) return <Typography>로딩 중...</Typography>;

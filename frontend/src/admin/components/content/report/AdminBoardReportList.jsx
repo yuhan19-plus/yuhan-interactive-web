@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 
 // 신고 처리 순서
 // 1.신고내역을 클릭으로 처리페이지 진입
-// 2.처리내역 작성 후 처리완료
+// 2.처리사유 작성 후 처리완료
 const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
     const [dataList, setDataList] = useState([]);
@@ -18,6 +18,10 @@ const AdminBoardReportList = ({ onReportManagement }) => {
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
     const pageNum = 8;
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
@@ -57,6 +61,7 @@ const AdminBoardReportList = ({ onReportManagement }) => {
         return sortedData.slice(startIndex, endIndex);
     };
 
+
     const fetchData = async () => {
         try {
             const response = await fetch("/api/report/fetch");
@@ -73,9 +78,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
     };
 
 
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
-    };
     useEffect(() => {
         fetchData();
     }, [])

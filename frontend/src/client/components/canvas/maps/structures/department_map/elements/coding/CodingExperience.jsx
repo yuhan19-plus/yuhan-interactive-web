@@ -34,7 +34,7 @@ const CodingExperience = ({ onResultCode }) => {
     return (
         <Html position={[-20, 0, 240]} center>
             <MainContainer
-                $selectLanguage={selectLanguage} // $가 없으면 html의 기본요소로 사용한다는 뜻인데 없는 것이었으니 오류가 발생했던 것
+                $selectLanguage={selectLanguage} // $를 이용하여 해당 컴포넌트의 속성으로 사용함 (MainContainer)
                 // 마우스클릭 이벤트전파를 차단하는 부분 (※이유 모달창을 클릭 시 케릭터이동을 차단)
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerMove={(e) => e.stopPropagation()}

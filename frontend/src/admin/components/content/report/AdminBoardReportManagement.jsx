@@ -37,34 +37,6 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         resolved_at: ""          // 신고가 처리된 날짜 (처리 완료 시점)
     });
 
-
-    // 신고글을 불러오는 함수
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`/api/report/fetch/${reportID}`);
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-            setTotalData(data.reportData);
-            if (data.reportData.board_status === "delete") {
-                Swal.fire({
-                    icon: 'info',
-                    title: '이미 삭제된 게시글',
-                    text: '글쓴이가 삭제했거나 관리자가 삭제한 글입니다.'
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: '데이터 불러오기 실패',
-                text: '데이터를 불러오는 중 문제가 발생했습니다.',
-                confirmButtonColor: '#d33',
-            });
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
-    };
-
     // 입력창에서 value가 변경되면 totalData에 저장하는 함수
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -162,6 +134,33 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
             console.error("무시하는 중 에러 발생:", error);
         }
     }
+
+    // 신고글을 불러오는 함수
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`/api/report/fetch/${reportID}`);
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            setTotalData(data.reportData);
+            if (data.reportData.board_status === "delete") {
+                Swal.fire({
+                    icon: 'info',
+                    title: '이미 삭제된 게시글',
+                    text: '글쓴이가 삭제했거나 관리자가 삭제한 글입니다.'
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: '데이터 불러오기 실패',
+                text: '데이터를 불러오는 중 문제가 발생했습니다.',
+                confirmButtonColor: '#d33',
+            });
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
+    };
 
     useEffect(() => {
         fetchData();
