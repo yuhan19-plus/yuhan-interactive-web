@@ -8,7 +8,6 @@ import styled from 'styled-components'
 export function EducationalGoals({name, deptInfoValue, deptInfoName, position, scale, ...props}) {
   const { scene, nodes, materials } = useGLTF('/assets/models/dept_info/education.glb')
   const [animationState, setAnimationState] = useState('y')
-  const [clickState, setClickState] = useState(false)
   const [meshRef, api] = useBox(() => ({
     args: [285, 60, 150],
     type: 'Static',
@@ -31,6 +30,7 @@ export function EducationalGoals({name, deptInfoValue, deptInfoName, position, s
       }
     })
   }, [scene])
+  
   return (
     <>
       <motion.group

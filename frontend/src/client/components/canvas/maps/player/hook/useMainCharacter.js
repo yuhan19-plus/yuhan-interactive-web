@@ -540,8 +540,8 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                 // 1사분면 : 학과소개영역
                 if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
-                    // handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
-                    handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
+                    handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
+                    // handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
 
                     // 교육목표
                     if((currentPosition.x >= 77 && currentPosition.x <= 117) && (currentPosition.z >= -75 && currentPosition.z <= -35)) {
@@ -607,6 +607,11 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 2사분면 & 3사분면 : 학과체험영역
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
                     handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 100)
+
+                    // 학과장 영역
+                    if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
+                        handleCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                    }
                 }
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
                     handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + -100)

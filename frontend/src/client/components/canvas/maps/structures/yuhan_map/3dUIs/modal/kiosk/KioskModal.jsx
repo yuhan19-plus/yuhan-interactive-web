@@ -5,8 +5,8 @@ import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_
 import { useNavigate } from 'react-router-dom'
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
-import { useDispatch } from 'react-redux'
+import { faBowlFood, faClose, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
+import { useDispatch, useSelector } from 'react-redux'
 import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, initKiosk, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 
 const dataKiosk = {
@@ -26,6 +26,8 @@ const KioskModal = ({kioskName, ...props}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [currentPage, setCurrentPage] = useState(0) // 현재 페이지 상태
+
+
     switch(kioskName) {
         case '평화관':
             name = 'PEACE_HALL'
@@ -89,7 +91,7 @@ const KioskModal = ({kioskName, ...props}) => {
         dispatch(yuhanBioMap(BIO_PATH))
         navigate('/department/bio')
     }
-
+    
     return (
         <>
             <Html position={[50, -55, 50]} center>
@@ -192,6 +194,7 @@ const KioskModal = ({kioskName, ...props}) => {
 
 const KioskWrapper = styled.div`
     width: 250px;
+    border: 3px solid white;
     height: auto;
     display: flex;
     border-radius: 25px;
@@ -203,6 +206,9 @@ const KioskWrapper = styled.div`
 `
 
 const KioskHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
     width: 100%;
     border-radius: 15px;
     padding: 3px;

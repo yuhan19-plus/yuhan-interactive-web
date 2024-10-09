@@ -1,5 +1,4 @@
 import React from 'react'
-import DeptInfoGroup from '../info/DeptInfoGroup'
 
 const BioGroup = () => {
     return (
@@ -7,7 +6,6 @@ const BioGroup = () => {
             {/* 
                 학과소개
             */}
-            <DeptInfoGroup />
         </>
     )
 }

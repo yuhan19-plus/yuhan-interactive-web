@@ -50,6 +50,7 @@ const DeptMap = () => {
                 {/* 캐릭터가 있는 경우에만 MainCharacter 컴포넌트 렌더링 */}
                 {groundMapName === 'yuhan_bio_map' && (
                     <BioDeptHeadCharacter groundMapName={groundMapName} position={[80, -7.7, -100]} scale={0.7} />
+                    // <BioDeptHeadCharacter groundMapName={groundMapName} position={[-100, 0, 42.5]} scale={0.7} />
                 )}
                 {groundMapName === 'computer_sw_map' && (
                     <CSDeptHeadCharacter groundMapName={groundMapName} position={[0, 0.7, -100]} scale={0.7} />

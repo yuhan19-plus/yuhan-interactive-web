@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useTexture } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'
 
 export function Computer({position, ...props}) {
+  const texture = useTexture('/assets/images/yuhan-intro-page.png')
   const { scene, nodes, materials } = useGLTF('/assets/models/dept_etc/computer.glb')
 
   const [meshRef, api] = useBox(() => ({
@@ -21,12 +22,16 @@ export function Computer({position, ...props}) {
       }
     })
   }, [scene])
+  
 
   return (
     <group position={position} {...props}>
       <group position={[-4.636, 2.438, -0.059]} scale={[0.272, 0.178, 0.409]}>
         <mesh geometry={nodes.큐브001.geometry} material={materials.Monitor} />
-        <mesh geometry={nodes.큐브001_1.geometry} material={materials.display} />
+        {/* <mesh geometry={nodes.큐브001_1.geometry} material={materials.display} /> */}
+        <mesh geometry={nodes.큐브001_1.geometry}>
+          <meshStandardMaterial map={texture} />
+        </mesh>
         <mesh geometry={nodes.큐브001_2.geometry} material={materials.power} />
         <mesh geometry={nodes.큐브001_3.geometry} material={materials.systemUnit} />
         <mesh geometry={nodes.큐브001_4.geometry} material={materials.FrameButton} />

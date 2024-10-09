@@ -3,9 +3,7 @@ import React from 'react'
 import { motion } from 'framer-motion-3d'
 import { useSelector } from 'react-redux'
 
-const DeptNameObject = ({positionOne, positionTwo , ...props}) => {
-    const myProfessorState = useSelector((state) => state.myProfessor)
-    // console.log(myProfessorState)
+const DeptNameObject = ({groundMapName, positionOne, positionTwo , ...props}) => {
     const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
     const fontStyle = {
         font: fontUrl,
@@ -29,10 +27,12 @@ const DeptNameObject = ({positionOne, positionTwo , ...props}) => {
                 }}
                 {...props}
             >
-                <Text3D size={8} {...fontStyle}>
-                    IT 융복합 시대를 선도하는 컴퓨터소프트웨어공학과
-                    <meshStandardMaterial color={'#042A59'} />
-                </Text3D>
+                {groundMapName === 'computer_sw_map' && (
+                    <Text3D size={8} {...fontStyle}>
+                        IT 융복합 시대를 선도하는 컴퓨터소프트웨어공학과
+                        <meshStandardMaterial color={'white'} />
+                    </Text3D>
+                )}
             </motion.group>
             <motion.group
                 position={positionTwo}
@@ -46,10 +46,12 @@ const DeptNameObject = ({positionOne, positionTwo , ...props}) => {
                 }}
                 {...props}
             >
-                <Text3D size={8} {...fontStyle}>
-                    컴퓨터소프트웨어공학전공
-                    <meshStandardMaterial color={'#042A59'} />
-                </Text3D>
+                {groundMapName === 'computer_sw_map' && (
+                    <Text3D size={8} {...fontStyle}>
+                        컴퓨터소프트웨어공학전공
+                        <meshStandardMaterial color={'white'} />
+                    </Text3D>
+                )}
             </motion.group>
             <motion.group
                 position={[248, 50, -200]}
@@ -64,10 +66,12 @@ const DeptNameObject = ({positionOne, positionTwo , ...props}) => {
                 }}
                 {...props}
             >
-                <Text3D size={8} {...fontStyle}>
-                    가자~ 소프트웨어 개발자의 꿈을 찾아서~
-                    <meshStandardMaterial color={'#042A59'} />
-                </Text3D>
+                {groundMapName === 'computer_sw_map' && (
+                    <Text3D size={8} {...fontStyle}>
+                            가자~ 소프트웨어 개발자의 꿈을 찾아서~
+                        <meshStandardMaterial color={'white'} />
+                    </Text3D>
+                )}
             </motion.group>
         </>
     )
