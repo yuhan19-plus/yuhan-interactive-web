@@ -58,6 +58,14 @@ export const KIOSK_CHANGJO = 'KIOSK_CHANGJO'
 export const KIOSK_MEMORIAL_HALL = 'KIOSK_MEMORIAL_HALL'
 export const KIOSK_YUJAELA = 'KIOSK_YUJAELA'
 
+// 학과체험 맵 학과소개 - 성준
+export const INIT_DEPT_INFO = 'INIT_DEPT_INFO'
+export const DEPT_INFO_EDU_GOALS = 'DEPT_INFO_EDU_GOALS' // 교육목표
+export const DEPT_INFO_MAIN_EDU_FIELDS = 'DEPT_INFO_MAIN_EDU_FIELDS' // 주요교육분야
+export const DEPT_INFO_CAREER_EMPLOYMENT_FIELD = 'DEPT_INFO_CAREER_EMPLOYMENT_FIELD' // 진로 및 취업분야
+export const DEPT_INFO_LICENSE = 'DEPT_INFO_LICENSE' // 자격증
+export const DEPT_INFO_DEPT_FEATURES = 'DEPT_INFO_DEPT_FEATURES' // 학과특징
+
 // 미니맵 상단 버튼 그룹 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 // 찾아오는 길버튼 - 자현
@@ -283,4 +291,29 @@ export const Enter_SmokingArea = () =>({
 })
 export const Leave_SmokingArea = () =>({
     type:LEAVE_SMOKINGAREA
+})
+
+// 학과체험 맵 학과 소개 - 성준
+// 교육목표
+export const initDeptInfo = () => ({
+    type: INIT_DEPT_INFO
+})
+export const deptInfoEduGoals = () => ({
+    type: DEPT_INFO_EDU_GOALS
+})
+// 주요교육분야
+export const deptInfoMainEduFields = () => ({
+    type: DEPT_INFO_MAIN_EDU_FIELDS
+})
+// 진로 및 취업분야
+export const deptInfoCareerAndEmploymentField = () => ({
+    type: DEPT_INFO_CAREER_EMPLOYMENT_FIELD
+})
+// 자격증
+export const deptInfoLicense = () => ({
+    type: DEPT_INFO_LICENSE
+})
+// 학과특징
+export const deptInfoDeptFeatures = () => ({
+    type: DEPT_INFO_DEPT_FEATURES
 })

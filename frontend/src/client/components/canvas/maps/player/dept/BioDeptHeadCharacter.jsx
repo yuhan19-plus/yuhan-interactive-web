@@ -14,7 +14,7 @@ export function BioDeptHeadCharacter({groundMapName, position, ...props}) {
   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
   const [animation, setAnimation] = useState('Hello')
 
-  console.log(animations)
+  // console.log(animations)
 
   useEffect(() => {
     if(groundMapName !== 'yh_map') {

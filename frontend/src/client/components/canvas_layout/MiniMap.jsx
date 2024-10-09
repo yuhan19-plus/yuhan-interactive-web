@@ -95,7 +95,7 @@ const MiniMap = () => {
                         }
                     })}
                 } />
-                <Teleport style={{top: "65%", left: "30%"}} $tooltipcontent="학생회관" onClick={() => {
+                <Teleport style={{top: "65%", right: "30%"}} $tooltipcontent="학생회관" onClick={() => {
                     Swal.fire({
                         icon: "question",
                         title: "학생회관",

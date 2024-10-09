@@ -53,12 +53,13 @@ const DepartmentCanvas = () => {
                     // minDistance={100} // 카메라 확대 최소 범위
                     maxDistance={700} // 카메라 확대 최대 범위
                 />
+                {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
                 <Physics gravity={[0, -2.6, 0]}>
-                    {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
-                    <Debug>
-                        {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
+                    {/* Debug 컴포넌트로 물리엔진의 충돌체 영역 확인 */}
+                    {/* <Debug>
                         <DeptMap />
-                    </Debug>
+                    </Debug> */}
+                    <DeptMap />
                 </Physics>
             </Canvas>
         </>

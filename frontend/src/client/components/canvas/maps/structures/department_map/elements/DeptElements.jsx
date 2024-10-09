@@ -3,25 +3,34 @@
  * 
  */
 import React from 'react'
+import BioGroup from './dept/bio/BioGroup'
+import EtcGroup from './dept/etc/EtcGroup'
+import DeptInfoGroup from './dept/info/DeptInfoGroup'
 
 const DeptElements = ({groundMapName}) => {
     return (
         <>
-            {groundMapName === 'yuhan_bio_map' && (
-                // 바이오
-                <></>
-            )}
-            {groundMapName === 'computer_sw_map' && (
-                // 컴소
-                <></>
-            )}
-            {groundMapName === 'food_nutrition_map' && (
-                // 식품영양
-                <></>
-            )}
-            {groundMapName === 'industrial_design_map' && (
-                // 산디
-                <></>
+            {groundMapName !== '' && (
+                <>
+                    <DeptInfoGroup groundMapName={groundMapName} />
+                    <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
+                    {groundMapName === 'yuhan_bio_map' && (
+                        // 바이오
+                        <BioGroup />
+                    )}
+                    {groundMapName === 'computer_sw_map' && (
+                        // 컴소
+                        <></>
+                    )}
+                    {groundMapName === 'food_nutrition_map' && (
+                        // 식품영양
+                        <></>
+                    )}
+                    {groundMapName === 'industrial_design_map' && (
+                        // 산디
+                        <></>
+                    )}
+                </>
             )}
         </>
     )
