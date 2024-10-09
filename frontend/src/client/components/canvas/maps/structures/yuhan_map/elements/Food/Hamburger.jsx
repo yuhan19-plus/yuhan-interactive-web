@@ -8,7 +8,7 @@ export function Hamburger(props) {
   const { nodes, materials } = useGLTF('/assets/models/Food/Hamburger.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[-0.098, 0.4, -0.000]} scale={0.900}>
+      <group position={[-0.098, 1, -0.000]} scale={1.5}>
       <mesh geometry={nodes.WhitePlate.geometry} material={materials['White Plate']} position={[-0.077, -0.819, -0.064]} scale={[1, 0.012, 1]} />
       <mesh geometry={nodes.LowBurn.geometry} material={materials.BreadBurn} position={[-0.077, -0.86, -0.064]} scale={[0.555, 0.083, 0.555]} />
       <mesh geometry={nodes.Patty.geometry} material={materials.Patty} position={[-0.077, -0.721, -0.064]} scale={[0.587, 0.058, 0.587]} />
