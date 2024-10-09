@@ -61,6 +61,9 @@ const DeptMap = () => {
                 {groundMapName === 'industrial_design_map' && (
                     <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, -6.3, -100]} scale={0.7} />
                 )}
+                {groundMapName === 'mini_game_map' && (
+                    <></>
+                )}
             </React.Fragment>
             
             <React.Fragment>

@@ -31,6 +31,10 @@ const DeptElements = ({ groundMapName }) => {
                         // 산디
                         <></>
                     )}
+                    {groundMapName === 'mini_game_map' && (
+                        // 미니게임
+                        <></>
+                    )}
                 </>
             )}
             

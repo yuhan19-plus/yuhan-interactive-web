@@ -40,7 +40,7 @@ export const COMPUTER_SOFTWARE_MAP = 'COMPUTER_SOFTWARE_MAP'
 export const INDUSTRIAL_DESIGN_MAP = 'INDUSTRIAL_DESIGN_MAP'
 export const FOOD_NUTRITION_MAP = 'FOOD_NUTRITION_MAP'
 export const YUHAN_LIFE_BIO_MAP = 'YUHAN_LIFE_BIO_MAP'
-
+export const MINI_GAME_MAP = 'MINI_GAME_MAP'
 
 // 모달 - 성준
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
@@ -155,6 +155,10 @@ export const foodNutritionMap = (pathData) => ({
 })
 export const yuhanBioMap = (pathData) => ({
     type: YUHAN_LIFE_BIO_MAP,
+    payload: pathData
+})
+export const miniGameMap = (pathData) => ({
+    type: MINI_GAME_MAP,
     payload: pathData
 })
 
