@@ -22,7 +22,7 @@ const AdminMenuPreview = () => {
     }, []);
 
     const fetchMenuData = async () => {
-        const response = await fetch("/api/adminmain/todayMenu");
+        const response = await fetch("/api/food");
         const data = await response.json();
         setMenuData(data);
     };
@@ -64,11 +64,11 @@ const AdminMenuPreview = () => {
         }
     };
 
-    // testadmin이 작성한 글을 우선으로 최대 5개의 게시글을 가져오는 함수
+    // 관리자가 작성한 글을 우선으로 최대 5개의 게시글을 가져오는 함수
     const getAdminAndRecentPosts = () => {
         const adminPosts = boardData.filter(item => item.writer_type === 'admin');
 
-        // testadmin이 작성한 글이 5개 미만으로 보이도록
+        // 관리자가 작성한 글이 5개 미만으로 보이도록
         const combinedPosts = adminPosts.slice(0, 5);
         return combinedPosts;
     };
@@ -77,12 +77,16 @@ const AdminMenuPreview = () => {
         const WaitingReports = reportData.filter(item => item.report_status === 'Waiting');
         const nonWaitingReports = reportData.filter(item => item.report_status !== 'Waiting');
 
-        // testadmin이 작성한 글이 5개 미만이면 최신 글을 추가
+        // 관리자가 작성한 글이 5개 미만이면 최신 글을 추가
         const combinedReports = WaitingReports.concat(nonWaitingReports).slice(0, 5);
 
         return combinedReports;
     };
 
+    const getAdminFoodData = () => {
+        const finalFoodData = menuData.slice(0, 5);
+        return finalFoodData;
+    }
     return (
         <>
             <Part>
@@ -159,11 +163,28 @@ const AdminMenuPreview = () => {
                 <HalfPart>
                     <PartTitle>오늘의 메뉴</PartTitle>
                     <TableHeader>
-                        <Box sx={{ width: '50%' }}>제목</Box>
-                        <Box sx={{ width: '50%' }}>내용</Box>
+                        <Box sx={{ width: '50%' }}>이름</Box>
+                        <Box sx={{ width: '50%' }}>가격</Box>
                     </TableHeader>
                     <PartContent>
-                        {/* 메뉴 3~5개 보여주는 로직 */}
+                        {getAdminFoodData().map((item) => (
+                            <ListItem key={item.foodID} sx={{ textAlign: 'center' }}>
+                                <Box sx={{ display: 'flex', width: '100%' }}>
+                                    {/* 음식명 */}
+                                    <Box sx={{ width: '50%' }}>
+                                        <ListItemText
+                                            primary={item.foodName.substring(0, 20)}
+                                        />
+                                    </Box>
+                                    {/* 가격 */}
+                                    <Box sx={{ width: '50%' }}>
+                                        <ListItemText
+                                            primary={item.foodPrice}
+                                        />
+                                    </Box>
+                                </Box>
+                            </ListItem>
+                        ))}
                     </PartContent>
                 </HalfPart>
             </PHalfPart>

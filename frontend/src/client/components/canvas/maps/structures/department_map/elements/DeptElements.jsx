@@ -6,8 +6,9 @@ import React from 'react'
 import BioGroup from './dept/bio/BioGroup'
 import EtcGroup from './dept/etc/EtcGroup'
 import DeptInfoGroup from './dept/info/DeptInfoGroup'
+import CodingGroup from './CodingGroup'
 
-const DeptElements = ({groundMapName}) => {
+const DeptElements = ({ groundMapName }) => {
     return (
         <>
             {groundMapName !== '' && (
@@ -24,7 +25,7 @@ const DeptElements = ({groundMapName}) => {
                     )}
                     {groundMapName === 'food_nutrition_map' && (
                         // 식품영양
-                        <></>
+                        <CodingGroup />
                     )}
                     {groundMapName === 'industrial_design_map' && (
                         // 산디
@@ -32,6 +33,7 @@ const DeptElements = ({groundMapName}) => {
                     )}
                 </>
             )}
+            
         </>
     )
 }

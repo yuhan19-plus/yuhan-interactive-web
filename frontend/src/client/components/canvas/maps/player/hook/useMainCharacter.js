@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -76,6 +76,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     //학생회관 음식 호출
     const [isInStudentKioskZone, setIsInStudentKioskZone] = useState(false);
+
+    // 학과체험의 코딩영역 상태관리
+    const [isCodingArea, setIsCodingArea]= useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -649,7 +652,25 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 4사분면 : 자유영역
                 if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
                     handleCamera(currentPosition.x + -100, currentPosition.y + 100, currentPosition.z + -100)
+                    // 코딩체험 위치 4사분면에 배치
+                    if ((currentPosition.x <= 125 && currentPosition.x >= 0) && (currentPosition.z <= 250 && currentPosition.z >= 175)) {
+                        handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 100)
+                        // 영역진입체크
+                        if (isCodingArea === false) {
+                            setIsCodingArea(true); // 상태 변경
+                            dispatch(Enter_CodingArea()); // 리덕스 액션 디스패치
+                            // console.log("코딩영역에 진입했습니다.");
+                        }
+                    } else {
+                        if (isCodingArea === true) {
+                            setIsCodingArea(false); // 상태 변경
+                            dispatch(Leave_CodingArea()); // 리덕스 액션 디스패치
+                            // console.log("코딩영역을 떠났습니다.");
+                        }
+                    }    
                 }
+
+                
             }
 
             camera.lookAt(currentPosition)

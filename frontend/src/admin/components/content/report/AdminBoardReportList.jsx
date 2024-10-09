@@ -108,7 +108,10 @@ const AdminBoardReportList = ({ onReportManagement }) => {
 
                     {/* 신고 데이터 목록 */}
                     {getCurrentPageData().map((item, index) => (
-                        <ListItem key={item.report_id} divider sx={{ textAlign: "center" }}>
+                        <ListItem key={item.report_id} divider sx={{ textAlign: "center" }}
+                            onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                            onClick={() => onReportManagement(item.report_id)}
+                        >
                             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
 
                                 {/* 번호 */}
@@ -127,8 +130,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                 <Box sx={{ width: '60%', textAlign: 'left' }}>
                                     <ListItemText
                                         primary={item.report_content.substring(0, 25)}
-                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                        onClick={() => onReportManagement(item.report_id)}
                                     />
                                 </Box>
 
@@ -136,7 +137,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                 <Box sx={{ width: '15%', textAlign: 'center' }}>
                                     <ListItemText
                                         primary={item.report_writer}
-                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
                                     />
                                 </Box>
 

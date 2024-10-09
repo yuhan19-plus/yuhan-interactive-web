@@ -300,3 +300,10 @@ export const deptInfoDeptFeaturesData = [
     "컴퓨터소프트웨어공학과 컴퓨터소프트웨어전공은 “창의적이고 문제 해결 능력을 갖춘 IT 전문인력 양성”이라는 시대적 요청에 부응하여, 컴퓨터를 이용한 정보처리 기술 이론 및 실습을 바탕으로 응용 소프트웨어 개발자와 정보시스템 운영자를 양성하기 위한 학과입니다.",
     "산업체의 정보시스템 개발과 운영에 필요한 SW 개발, 웹/모바일 솔루션 개발 및 콘텐츠 제작, 정보시스템 운영 등의 실무를 수행할 수 있는 현장 밀착형 IT 전문인력 양성을 목표로 교육하고 있습니다."
 ]
+
+// 코딩체험에 들어갈 코드
+export const CodingExperienceCode = [
+    "#include <stdio.h>\n  int main() { \n    int num = '정수형데이터';\n    for (int i = 1; i <= 9; i++) { \n      printf(\"%d * %d = %d\\n\", num, i, num * i);\n    }\n  return 0; \n}",
+    "public class Main {\n  public static void main(String[] args) {\n    int num = '정수형데이터';\n    for (int i = 1; i <= 9; i++) {\n      System.out.println(num + \" * \" + i + \" = \" + (num * i));\n    }\n  }\n}",
+    "num = '정수형데이터'\nfor i in range(1, 10):\n    print(f'{num} * {i} = {num * i}')"
+];

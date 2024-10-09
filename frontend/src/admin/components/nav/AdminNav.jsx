@@ -35,8 +35,21 @@ const AdminNav = () => {
     };
 
     useEffect(() => {
+        // 일단 연결되면 실행
         fetchBadge();
+
+        //신고처리 후 발생시킨 이벤트를 받아 다시 한번 패치뱃지 실행
+        const handleStorageChange = () => {
+            fetchBadge();
+        };
+        window.addEventListener('updateBadge', handleStorageChange);
+        // 신고관리에서 발생한 storage 이벤트가 실행되면 handleStorageChange를 실행
+
+        return () => {
+            window.removeEventListener('updateBadge', handleStorageChange); // 언마운트 시 리스너 제거
+        };
     }, []);
+    
 
     const [, ,removeCookie] = useCookies(['adminMode']); // adminMode 쿠키 삭제 함수 사용
 

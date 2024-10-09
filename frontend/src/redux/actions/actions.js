@@ -91,6 +91,10 @@ export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
 export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
+// 코딩경험영역 - 자현
+export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
+export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
+
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
 export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
@@ -316,4 +320,12 @@ export const deptInfoLicense = () => ({
 // 학과특징
 export const deptInfoDeptFeatures = () => ({
     type: DEPT_INFO_DEPT_FEATURES
+})
+
+//학과체험의 코딩영역
+export const Enter_CodingArea= () => ({
+    type:ENTER_CODINGAREA
+})
+export const Leave_CodingArea= () => ({
+    type:LEAVE_CODINGAREA 
 })

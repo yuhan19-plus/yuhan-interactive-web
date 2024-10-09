@@ -47,6 +47,13 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
             }
             const data = await response.json();
             setTotalData(data.reportData);
+            if (data.reportData.board_status === "delete") {
+                Swal.fire({
+                    icon: 'info',
+                    title: '이미 삭제된 게시글',
+                    text: '글쓴이가 삭제했거나 관리자가 삭제한 글입니다.'
+                });
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -95,7 +102,10 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 title: '삭제 완료',
                 text: '게시글이 성공적으로 삭제되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onCancel());
+            }).then(() => {
+                window.dispatchEvent(new Event('updateBadge')); // 수동으로 이벤트 발생
+                onCancel();
+            });
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -138,7 +148,10 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 title: '무시 완료',
                 text: '신고가 성공적으로 무시되었습니다.',
                 confirmButtonColor: '#3085d6',
-            }).then(() => onCancel());
+            }).then(() => {
+                window.dispatchEvent(new Event('updateBadge')); // 수동으로 이벤트 발생
+                onCancel();
+            });
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -183,7 +196,10 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                         <strong>신고 유형: </strong>{totalData.report_type}
                     </Typography>
                     <Typography variant="body1">
-                        <strong>신고 날짜: </strong>{totalData.report_date}
+                        <strong>신고 날짜: </strong>
+                        {new Date(totalData.report_date).toLocaleString('ko-KR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                        })}
                     </Typography>
                     <Typography variant="body1">
                         <strong>신고 내용: </strong>{totalData.report_content}
