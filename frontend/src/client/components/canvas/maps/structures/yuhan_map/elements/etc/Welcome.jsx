@@ -140,7 +140,7 @@ const Welcome = () => {
                             <MeshDistortMaterial color="#EE7421" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
-                    <Float position={[100, 0, 95]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
+                    <Float position={[110, 0, 95]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
                                 Y
@@ -149,7 +149,7 @@ const Welcome = () => {
                         </mesh>
                     </Float>
 
-                    <Float position={[100, 0, 55]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
+                    <Float position={[110, 0, 55]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
                                 U
@@ -158,7 +158,7 @@ const Welcome = () => {
                         </mesh>
                     </Float>
 
-                    <Float position={[100, 0, 15]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
+                    <Float position={[110, 0, 15]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
                                 H
@@ -167,7 +167,7 @@ const Welcome = () => {
                         </mesh>
                     </Float>
 
-                    <Float position={[100, 0, -35]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
+                    <Float position={[110, 0, -35]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
                                 A
@@ -176,7 +176,7 @@ const Welcome = () => {
                         </mesh>
                     </Float>
 
-                    <Float position={[100, 0, -75]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
+                    <Float position={[110, 0, -75]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
                                 N
