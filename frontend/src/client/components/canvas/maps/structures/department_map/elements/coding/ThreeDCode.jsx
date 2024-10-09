@@ -10,7 +10,7 @@ const ThreeDCode = ({ resultCode }) => {
     const finalMeshRef = useRef();
     const colorArray = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#A833FF"];
     const [codeResult, setCodeResult] = useState([]);
-    const [randomColor, setRandomColor] = useState("#FFFFFF"); // 색상을 상태로 관리
+    const [randomColor, setRandomColor] = useState("#33FF57"); // 색상을 상태로 관리
     const [font, setFont] = useState(null); // 로드된 폰트를 상태로 저장
 
     useEffect(() => {
@@ -97,16 +97,16 @@ const ThreeDCode = ({ resultCode }) => {
     }, [resultCode, font]); // 폰트가 로드된 후에만 이 효과 실행
 
     return (
-        <group position={[75, 35, 240]} rotation={[0, Math.PI, 0]}>
+        <group position={[120, 60, 250]} rotation={[0, Math.PI, 0]}>
             <motion.group
-                animate={{scale: [1, 1.125, 1] }}
+                animate={{scale: [1, 1.125, 1], y:[0,5,0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
             >
                 <group ref={firstmMshRef}></group>
             </motion.group>
             <group ref={staticMeshRef}></group>
             <motion.group
-                animate={{scale: [1, 1.125, 1] }}
+                animate={{scale: [1, 1.125, 1], y:[0,5,0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
             >
                 <group ref={finalMeshRef}></group>

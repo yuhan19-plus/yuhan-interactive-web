@@ -6,8 +6,7 @@ import { CodingExperienceCode } from "../../../../../../../../data/commonData";
 
 const CodingExperience = ({ onResultCode }) => {
     const [selectLanguage, setSelectLanguage] = useState('C');
-    const [num, setNum] = useState('');
-    const [resultCode, setResultCode] = useState('');
+    const [num, setNum] = useState(5);
 
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
@@ -19,13 +18,13 @@ const CodingExperience = ({ onResultCode }) => {
         // 숫자 입력만 허용하고 마지막 숫자만 남기도록 처리
         if (/^[0-9]+$/.test(value)) {
             const lastNum = value.slice(-1);
-            setNum(lastNum); 
+            setNum(lastNum);
         }
     };
 
     useEffect(() => {
         onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
-    }, [num]); 
+    }, [num]);
 
     const splitCodes = CodingExperienceCode.map(code => {
         const [part1, part2] = code.split("'정수형데이터'");
@@ -33,9 +32,9 @@ const CodingExperience = ({ onResultCode }) => {
     });
 
     return (
-        <Html position={[50, 0, 120]} center>
+        <Html position={[-20, 0, 240]} center>
             <MainContainer
-                selectLanguage={selectLanguage} 
+                $selectLanguage={selectLanguage} // $가 없으면 html의 기본요소로 사용한다는 뜻인데 없는 것이었으니 오류가 발생했던 것
                 // 마우스클릭 이벤트전파를 차단하는 부분 (※이유 모달창을 클릭 시 케릭터이동을 차단)
                 onPointerDown={(e) => e.stopPropagation()}
                 onPointerMove={(e) => e.stopPropagation()}
@@ -49,15 +48,26 @@ const CodingExperience = ({ onResultCode }) => {
                 </RadioGroup>
                 <div>간단한 구구단 코드</div>
                 <CodeContainer>
-                    {selectLanguage === "C" && <pre>{splitCodes[0].part1}
-                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                        {splitCodes[0].part2}</pre>}
-                    {selectLanguage === "Java" && <pre>{splitCodes[1].part1}
-                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                        {splitCodes[1].part2}</pre>}
-                    {selectLanguage === "Python" && <pre>{splitCodes[2].part1}
-                        <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                        {splitCodes[2].part2}</pre>}
+                    {selectLanguage === "C" &&
+                        <>
+                            {splitCodes[0].part1}
+                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                            {splitCodes[0].part2}
+                        </>}
+                    {selectLanguage === "Java" &&
+                        <>
+                            {splitCodes[1].part1}
+                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                            {splitCodes[1].part2}
+                        </>
+                    }
+                    {selectLanguage === "Python" &&
+                        <>
+                            {splitCodes[2].part1}
+                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
+                            {splitCodes[2].part2}
+                        </>
+                    }
                 </CodeContainer>
             </MainContainer>
         </Html>
@@ -66,15 +76,7 @@ const CodingExperience = ({ onResultCode }) => {
 
 export default CodingExperience;
 
-const MainContainer = styled.div.attrs(props => ({
-    //선택언어별로 다르게 설정
-    style: {
-        width: props.selectLanguage === 'C' ? '25vw' :
-            props.selectLanguage === 'Java' ? '32vw' : '20vw',
-        height: props.selectLanguage === 'C' ? '40vh' :
-            props.selectLanguage === 'Java' ? '35vh' : '30vh',
-    }
-}))`
+const MainContainer = styled.div`
     background-color: white;
     padding: 10px;
     display: flex;
@@ -82,12 +84,26 @@ const MainContainer = styled.div.attrs(props => ({
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+
+    width: ${(props) =>
+        props.$selectLanguage === 'C' ? '25vw' :
+        props.$selectLanguage === 'Java' ? '32vw' : '20vw'};
+    height: ${(props) =>
+        props.$selectLanguage === 'C' ? '40vh' :
+        props.$selectLanguage === 'Java' ? '35vh' : '30vh'};
 `;
 
 
-const CodeContainer = styled.pre`
+
+const CodeContainer = styled.div`
+    width: 100%;
     background-color: #f0f0f0;
     padding: 10px;
     white-space: pre-wrap;
     word-break: break-word;
 `;
+
+const CodeArea = styled.div`
+    width: 100%;
+
+`

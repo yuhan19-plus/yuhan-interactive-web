@@ -652,9 +652,9 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 4사분면 : 자유영역
                 if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
                     handleCamera(currentPosition.x + -100, currentPosition.y + 100, currentPosition.z + -100)
-                    // 코딩체험 위치 4사분면에 배치
-                    if ((currentPosition.x <= 125 && currentPosition.x >= 0) && (currentPosition.z <= 250 && currentPosition.z >= 175)) {
-                        handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 100)
+                    // 코딩체험 위치
+                    if ((currentPosition.x <= 70 && currentPosition.x >= 30) && (currentPosition.z <= 220 && currentPosition.z >= 180)) {
+                        handleCamera(currentPosition.x + 0, currentPosition.y , currentPosition.z - 100)
                         // 영역진입체크
                         if (isCodingArea === false) {
                             setIsCodingArea(true); // 상태 변경
