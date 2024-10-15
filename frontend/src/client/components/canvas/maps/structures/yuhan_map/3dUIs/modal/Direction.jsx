@@ -2,7 +2,7 @@ import { Html } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 import { Subway, DirectionsBus, DirectionsCar, LocalParking } from '@mui/icons-material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { kakaoApiKey } from '../../../../../../../../../appkey';
+import { kakaoApiKey } from '../../../../../../../../appkey';
 
 const Direction = ({ position }) => {
     const [openSection, setOpenSection] = useState(null); // 열려 있는 섹션을 관리하는 상태

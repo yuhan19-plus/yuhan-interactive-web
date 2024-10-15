@@ -33,6 +33,7 @@ import TerraceGroup from './elements/TerraceGroup'
 import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
+import GoldBoxGroup from './elements/GoldBoxGroup'
 
 const YuhanElements = () => {
     return (
@@ -58,6 +59,7 @@ const YuhanElements = () => {
                 <SmokingGroup />
                 <EtcGroup />
                 <StreetLampGroup/>
+                <GoldBoxGroup/>
 
                 {/* 인도 */}
                 <SideWalk position={[-0.5, -6.6, 0]} />
