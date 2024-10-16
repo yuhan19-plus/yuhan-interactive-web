@@ -40,13 +40,16 @@ const CodingExperience = ({ onResultCode }) => {
                 onPointerMove={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
             >
-                <h4>언어 선택</h4>
-                <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
-                    <FormControlLabel value="C" control={<Radio />} label="C" />
-                    <FormControlLabel value="Java" control={<Radio />} label="Java" />
-                    <FormControlLabel value="Python" control={<Radio />} label="Python" />
-                </RadioGroup>
-                <div>간단한 구구단 코드</div>
+                <CodeTitle>
+                    <h4>언어 선택</h4>
+                    <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
+                        <FormControlLabel value="C" control={<Radio />} label="C" />
+                        <FormControlLabel value="Java" control={<Radio />} label="Java" />
+                        <FormControlLabel value="Python" control={<Radio />} label="Python" />
+                    </RadioGroup>
+                    <p>간단한 구구단 코드</p>
+                    <p>0~9까지만 가능</p>
+                </CodeTitle>
                 <CodeContainer>
                     {selectLanguage === "C" &&
                         <>
@@ -87,13 +90,11 @@ const MainContainer = styled.div`
 
     width: ${(props) =>
         props.$selectLanguage === 'C' ? '25vw' :
-        props.$selectLanguage === 'Java' ? '32vw' : '20vw'};
+            props.$selectLanguage === 'Java' ? '32vw' : '20vw'};
     height: ${(props) =>
         props.$selectLanguage === 'C' ? '40vh' :
-        props.$selectLanguage === 'Java' ? '35vh' : '30vh'};
+            props.$selectLanguage === 'Java' ? '35vh' : '30vh'};
 `;
-
-
 
 const CodeContainer = styled.div`
     width: 100%;
@@ -102,6 +103,9 @@ const CodeContainer = styled.div`
     white-space: pre-wrap;
     word-break: break-word;
 `;
+const CodeTitle = styled.div`
+    text-align: center;
+`
 
 const CodeArea = styled.div`
     width: 100%;

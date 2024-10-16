@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, Enter_GoldBoxArea, Leave_GoldBoxArea } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -79,6 +79,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 학과체험의 코딩영역 상태관리
     const [isCodingArea, setIsCodingArea]= useState(false);
+
+    // 보물상자영역 상태관리
+    const [isGoldBoxArea, setisGoldBoxArea] = useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -564,6 +567,25 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                     }
                 }  
+
+                //보물상자 영역
+                // 유재라관
+                if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
+                    handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
+                    // 영역진입체크
+                    if (!isGoldBoxArea) {
+                        setisGoldBoxArea(true)
+                        dispatch(Enter_GoldBoxArea('isZone1'));
+                        console.log("유재라관 보물상자 진입")
+                    }
+                } else {
+                    if (isGoldBoxArea) {
+                        setisGoldBoxArea(false);
+                        dispatch(Leave_GoldBoxArea('isZone1'))
+                        // console.log("유재라관 보물상자 탈출")
+                    }
+                }
+                
             } else {
                 // return
 

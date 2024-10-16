@@ -95,6 +95,12 @@ export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
 export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
+// 보물상자영역 - 자현
+export const ENTER_GOLDBOXAREA = 'ENTER_GOLDBOXAREA';
+export const LEAVE_GOLDBOXAREA = 'LEAVE_GOLDBOXAREA';
+export const INCREASE_GOLDBOX_COUNT = 'INCREASE_GOLDBOX_COUNT';
+export const RESET_GOLDBOX_COUNT = 'RESET_GOLDBOX_COUNT';
+
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
 export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
@@ -329,3 +335,22 @@ export const Enter_CodingArea= () => ({
 export const Leave_CodingArea= () => ({
     type:LEAVE_CODINGAREA 
 })
+
+//보물상자 영역
+export const Enter_GoldBoxArea = (zone) => ({
+    type: ENTER_GOLDBOXAREA,
+    zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+});
+export const Leave_GoldBoxArea = (zone) => ({
+    type: LEAVE_GOLDBOXAREA,
+    zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+});
+// 보물상자 카운트 증가
+export const increaseGoldBoxCount = (count = 1) => ({
+    type: INCREASE_GOLDBOX_COUNT,
+    payload: count,
+});
+// 보물상자 카운트 초기화
+export const resetGoldBoxCount = () => ({
+    type: RESET_GOLDBOX_COUNT,
+});
