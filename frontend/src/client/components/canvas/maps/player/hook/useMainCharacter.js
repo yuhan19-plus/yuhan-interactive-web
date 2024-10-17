@@ -15,6 +15,8 @@ import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingAre
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
+    const [isAnimating, setIsAnimating] = useState(false)
+    const [gsapState, setGsapState] = useState(false)
     const groundMapState = useSelector((state) => state.groundMap)
     const kiosk = useSelector((state) => state.kiosk)
     const kioskValue = kiosk.value
@@ -188,6 +190,33 @@ export const useMainCharacter = ({ position, myChar }) => {
         }
     }, [smokingAreaState, camera]);
 
+    // 카메라 설정 부분
+    const handleGSAPCamera = (x, y, z) => {
+        // console.log('currentPosition', charRef.current.position)
+        console.log('x, y, z', x, y, z)
+        // console.log(isAnimating, gsapState)
+        if (isAnimating) return
+        setIsAnimating(true)
+        gsap.to(camera.position, {
+            x: x,
+            y: y,
+            z: z,
+            duration: 1,
+            ease: "power2.inOut",
+            onComplete: () => {
+                setIsAnimating(false) // 애니메이션이 끝난 후 상태를 업데이트
+            }
+        })
+    }
+
+    const handleCamera = (x, y, z) => {
+        // if (isAnimating) return
+        // isAnimating = true
+        if(!gsapState) {
+            camera.position.set(x, y, z)
+        }
+    }
+
     useFrame(({ camera }) => {
         if (!player || !charRef.current || !targetPosition) return
 
@@ -198,23 +227,17 @@ export const useMainCharacter = ({ position, myChar }) => {
         }
         else {
             const currentPosition = charRef.current.position // 현재 위치
-
             const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리
-
-            // 카메라 설정 부분
-            const handleCamera = (x, y, z) => {
-                camera.position.set(x, y, z)
-            }
 
             // 학교맵일 경우
             if (groundMapState.mapName === 'yh_map') {
-                handleCamera(currentPosition.x + 130, currentPosition.y + 400, currentPosition.z - 150)
-
                 // Start Zone
-                if (currentPosition.x <= 285 && currentPosition.x >= 275) {
-                    if (currentPosition.z >= -360 && currentPosition.z <= -350) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
-                    }
+                if ((currentPosition.x <= 285 && currentPosition.x >= 275)
+                    && (currentPosition.z >= -360 && currentPosition.z <= -350)) {
+                    // console.log('이것', currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
+                    handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
+                } else {
+                    handleGSAPCamera(currentPosition.x + 130, currentPosition.y + 300, currentPosition.z - 150)
                 }
 
                 // Bus Zone
@@ -245,43 +268,34 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }
 
-                if (currentPosition.x > 147 && currentPosition.x <= 224 && currentPosition.z >= -28 && currentPosition.z < 285) {
+                if ((currentPosition.x > 147 && currentPosition.x <= 224)
+                    && (currentPosition.z >= -28 && currentPosition.z < 285)) {
                     handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
 
-                    const isInKioskArea = (currentPosition.x >= 179 && currentPosition.x <= 202 && currentPosition.z >= 128 && currentPosition.z <= 168);
-
                     // 학생 식당 영역에 들어왔을 때
-                    if (isInKioskArea) {
+                    if ((currentPosition.x >= 179 && currentPosition.x <= 202)
+                        && (currentPosition.z >= 128 && currentPosition.z <= 168)) {
                         handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 10);
-
                         // 학생 식당 입장 처리
                         if (!isInStudentKioskZone) {
                             setIsInStudentKioskZone(true);
                             dispatch(Enter_StudentKiosk());
                             console.log("학생식당 입장", isInStudentKioskZone);  // 상태를 true로 출력
                         }
-
-                        // 키오스크 입장 처리
                         if (!kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = true;
-                            dispatch(kioskCafeteria());
-                            console.log("키오스크 퇴장", kioskDispatchFlag.current);
+                            kioskDispatchFlag.current = true
+                            dispatch(kioskCafeteria())
                         }
-                    }
-                    // 학생 식당 영역을 벗어났을 때
-                    else {
+                    } else {
                         // 학생 식당 퇴장 처리
                         if (isInStudentKioskZone) {
                             setIsInStudentKioskZone(false);
                             dispatch(Leave_StudentKiosk());
                             console.log("학생식당 퇴장", isInStudentKioskZone);  // 상태를 false로 출력
                         }
-
-                        // 키오스크 퇴장 처리
                         if (kioskDispatchFlag.current) {
-                            kioskDispatchFlag.current = false;
-                            dispatch(initKiosk());
-                            console.log("키오스크 퇴장", kioskDispatchFlag.current);
+                            kioskDispatchFlag.current = false
+                            dispatch(initKiosk())
                         }
                     }
                 }
@@ -316,10 +330,9 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
 
                 // 테라스 안쪽 좌측
-                if (currentPosition.z <= 213 && currentPosition.z >= 143) {
-                    if (currentPosition.x <= 0 && currentPosition.x >= -42) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y + 30, currentPosition.z + 30)
-                    }
+                if ((currentPosition.z <= 213 && currentPosition.z >= 143)
+                    && (currentPosition.x <= 0 && currentPosition.x >= -42)) {
+                    handleCamera(currentPosition.x + 0, currentPosition.y + 30, currentPosition.z + 30)
                 }
 
                 // 학생식당 가는 길목
@@ -403,8 +416,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (currentPosition.x <= -270) {
                         handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
                         // 유재라관 키오스크 + 이벤트
-                        if ((currentPosition.x <= -279 && currentPosition.x >= -319) &&
-                            (currentPosition.z <= -65 && currentPosition.z >= -85)) {
+                        if ((currentPosition.x <= -279 && currentPosition.x >= -319)
+                            && (currentPosition.z <= -65 && currentPosition.z >= -85)) {
                             handleCamera(currentPosition.x + 0, currentPosition.y + 70, currentPosition.z + 40)
                             if (!kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = true
@@ -568,7 +581,9 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // return
 
                 // 학과맵일 경우
-                handleCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 75)
+                if(currentPosition.x === 0 && currentPosition.z === 0) {
+                    handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 75)
+                }
 
                 // 1사분면 : 학과소개영역
                 if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
@@ -577,61 +592,81 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                     // 교육목표
                     if((currentPosition.x >= 77 && currentPosition.x <= 117) && (currentPosition.z >= -75 && currentPosition.z <= -35)) {
-                        handleCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
-                        if(!deptInfoEduGoalsDispatchFlag.current) {
-                            deptInfoEduGoalsDispatchFlag.current = true
-                            dispatch(deptInfoEduGoals())
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 90)
+                            if(!deptInfoEduGoalsDispatchFlag.current) {
+                                deptInfoEduGoalsDispatchFlag.current = true
+                                dispatch(deptInfoEduGoals())
+                            }
                         }
                     } else if(deptInfoEduGoalsDispatchFlag.current) {
                         deptInfoEduGoalsDispatchFlag.current = false
+                        setGsapState(false)
                         dispatch(initDeptInfo())
                     }
 
                     // 전공교육분야
                     if((currentPosition.x >= 35 && currentPosition.x <= 75) && (currentPosition.z >= -115 && currentPosition.z < -75)) {
-                        handleCamera(currentPosition.x + -30, currentPosition.y + 50, currentPosition.z + 60)
-                        if(!deptInfoMainEduFieldsDispatchFlag.current) {
-                            deptInfoMainEduFieldsDispatchFlag.current = true
-                            dispatch(deptInfoMainEduFields())
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + -30, currentPosition.y + 50, currentPosition.z + 60)
+                            if(!deptInfoMainEduFieldsDispatchFlag.current) {
+                                deptInfoMainEduFieldsDispatchFlag.current = true
+                                dispatch(deptInfoMainEduFields())
+                            }
                         }
                     } else if(deptInfoMainEduFieldsDispatchFlag.current) {
                         deptInfoMainEduFieldsDispatchFlag.current = false
+                        setGsapState(false)
                         dispatch(initDeptInfo())
                     }
 
                     // 학과특징
                     if((currentPosition.x >= 133 && currentPosition.x <= 173) && (currentPosition.z >= -168 && currentPosition.z <= -128)) {
-                        handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
-                        if(!deptInfoDeptFeaturesDispatchFlag.current) {
-                            deptInfoDeptFeaturesDispatchFlag.current = true
-                            dispatch(deptInfoDeptFeatures())
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
+                            if(!deptInfoDeptFeaturesDispatchFlag.current) {
+                                deptInfoDeptFeaturesDispatchFlag.current = true
+                                dispatch(deptInfoDeptFeatures())
+                            }
                         }
                     } else if(deptInfoDeptFeaturesDispatchFlag.current) {
                         deptInfoDeptFeaturesDispatchFlag.current = false
+                        setGsapState(false)
                         dispatch(initDeptInfo())
                     }
 
                     // 진로 및 취업분야
                     if((currentPosition.x >= 27 && currentPosition.x <= 67) && (currentPosition.z >= -189 && currentPosition.z <= -149)) {
-                        handleCamera(currentPosition.x + -50, currentPosition.y + 70, currentPosition.z + 50)
-                        if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
-                            deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
-                            dispatch(deptInfoCareerAndEmploymentField())
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 70, currentPosition.z + 50)
+                            if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
+                                deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
+                                dispatch(deptInfoCareerAndEmploymentField())
+                            }
                         }
                     } else if(deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
                         deptInfoCareerAndEmploymentFieldDispatchFlag.current = false
+                        setGsapState(false)
                         dispatch(initDeptInfo())
                     }
 
                     // 자격증
                     if((currentPosition.x >= 180 && currentPosition.x <= 220) && (currentPosition.z >= -70 && currentPosition.z <= -30)) {
-                        handleCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
-                        if(!deptInfoLicenseDispatchFlag.current) {
-                            deptInfoLicenseDispatchFlag.current = true
-                            dispatch(deptInfoLicense())
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
+                            if(!deptInfoLicenseDispatchFlag.current) {
+                                deptInfoLicenseDispatchFlag.current = true
+                                dispatch(deptInfoLicense())
+                            }
                         }
                     } else if(deptInfoLicenseDispatchFlag.current) {
                         deptInfoLicenseDispatchFlag.current = false
+                        setGsapState(false)
                         dispatch(initDeptInfo())
                     }
                 }
@@ -642,7 +677,12 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                     // 학과장 영역
                     if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
-                        handleCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                        if(!gsapState) {
+                            setGsapState(true)
+                            handleGSAPCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                        }
+                    } else {
+                        setGsapState(false)
                     }
                 }
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
@@ -669,8 +709,6 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                     }    
                 }
-
-                
             }
 
             camera.lookAt(currentPosition)
@@ -690,9 +728,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                 if (point) {
                     point.style.transform = `
-                translate(${calculateMinimapPosition(currentPosition).x}px,
-                ${(calculateMinimapPosition(currentPosition).y)}px)
-            `
+                        translate(${calculateMinimapPosition(currentPosition).x}px,
+                        ${(calculateMinimapPosition(currentPosition).y)}px)
+                    `
                 }
 
                 setAnimation('WalkSpeed24')
