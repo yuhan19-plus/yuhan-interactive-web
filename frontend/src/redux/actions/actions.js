@@ -341,9 +341,10 @@ export const Enter_GoldBoxArea = (zone) => ({
     type: ENTER_GOLDBOXAREA,
     zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
 });
-export const Leave_GoldBoxArea = (zone) => ({
+export const Leave_GoldBoxArea = (zone, hasVisited) => ({
     type: LEAVE_GOLDBOXAREA,
-    zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+    zone: zone, // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+    hasVisited: hasVisited // 'hasVisitedZone1', 'hasVisitedZone2', 'hasVisitedZone3' 중 하나를 전달
 });
 // 보물상자 카운트 증가
 export const increaseGoldBoxCount = (count = 1) => ({

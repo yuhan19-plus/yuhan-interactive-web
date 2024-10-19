@@ -81,7 +81,9 @@ export const useMainCharacter = ({ position, myChar }) => {
     const [isCodingArea, setIsCodingArea]= useState(false);
 
     // 보물상자영역 상태관리
-    const [isGoldBoxArea, setisGoldBoxArea] = useState(false);
+    const [isGoldBoxArea1, setisGoldBoxArea1] = useState(false);
+    const [isGoldBoxArea2, setisGoldBoxArea2] = useState(false);
+    const [isGoldBoxArea3, setisGoldBoxArea3] = useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -573,16 +575,48 @@ export const useMainCharacter = ({ position, myChar }) => {
                 if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
                     handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
                     // 영역진입체크
-                    if (!isGoldBoxArea) {
-                        setisGoldBoxArea(true)
+                    if (!isGoldBoxArea1) {
+                        setisGoldBoxArea1(true)
                         dispatch(Enter_GoldBoxArea('isZone1'));
                         console.log("유재라관 보물상자 진입")
                     }
                 } else {
-                    if (isGoldBoxArea) {
-                        setisGoldBoxArea(false);
-                        dispatch(Leave_GoldBoxArea('isZone1'))
+                    if (isGoldBoxArea1) {
+                        setisGoldBoxArea1(false);
+                        dispatch(Leave_GoldBoxArea('isZone1', 'hasVisitedZone1'))
                         // console.log("유재라관 보물상자 탈출")
+                    }
+                }
+                // 테라스
+                if ((currentPosition.x >= -140 && currentPosition.x <= -100) && (currentPosition.z >= 180 && currentPosition.z <= 220)) {
+                    handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
+                    // 영역진입체크
+                    if (!isGoldBoxArea2) {
+                        setisGoldBoxArea2(true)
+                        dispatch(Enter_GoldBoxArea('isZone2'));
+                        console.log("테라스 보물상자 진입")
+                    }
+                } else {
+                    if (isGoldBoxArea2) {
+                        setisGoldBoxArea2(false);
+                        dispatch(Leave_GoldBoxArea('isZone2', 'hasVisitedZone2'))
+                        // console.log("테라스 보물상자 탈출")
+                    }
+                }
+                // 나눔의 숲
+                if ((currentPosition.x >= -75 && currentPosition.x <= 115) && (currentPosition.z >= -220 && currentPosition.z <= -180)) {
+                    handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
+                    // 영역진입체크
+                    if (!isGoldBoxArea3) {
+                        setisGoldBoxArea3(true)
+                        dispatch(Enter_GoldBoxArea('isZone3'));
+                        console.log("나눔의 숲 보물상자 진입")
+                    }
+                } else {
+                    if (isGoldBoxArea3) {
+                        setisGoldBoxArea3(false);
+                        dispatch(Leave_GoldBoxArea('isZone3', 'hasVisitedZone3'))
+                        // console.log("나눔의 숲 보물상자 탈출")
                     }
                 }
                 
