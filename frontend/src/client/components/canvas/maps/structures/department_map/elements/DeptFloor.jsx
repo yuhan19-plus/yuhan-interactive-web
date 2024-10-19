@@ -4,7 +4,7 @@
  */
 import { useBox } from '@react-three/cannon'
 import React from 'react'
-import { Zone } from './dept/etc/Zone'
+import { Zone } from '../../common/Zone'
 
 const DeptFloor = ({onMove, ...props}) => {
     const [meshRef] = useBox(

@@ -16,7 +16,7 @@ import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
     const [isAnimating, setIsAnimating] = useState(false)
-    const [gsapState, setGsapState] = useState(false)
+    const [gsapCameraState, setGsapCameraState] = useState(false)
     const groundMapState = useSelector((state) => state.groundMap)
     const kiosk = useSelector((state) => state.kiosk)
     const kioskValue = kiosk.value
@@ -24,6 +24,9 @@ export const useMainCharacter = ({ position, myChar }) => {
     const dispatch = useDispatch()
     // 추가적인 useRef 선언으로 상태를 추적
     const kioskDispatchFlag = useRef(false)
+    const welcomeZoneCameraFlag = useRef(false) 
+    const yuhanTvZoneCameraFlag = useRef(false)
+    const yuhanStatueCameraFlag = useRef(false)
     const deptInfoEduGoalsDispatchFlag = useRef(false)
     const deptInfoMainEduFieldsDispatchFlag = useRef(false)
     const deptInfoLicenseDispatchFlag = useRef(false)
@@ -193,7 +196,7 @@ export const useMainCharacter = ({ position, myChar }) => {
     // 카메라 설정 부분
     const handleGSAPCamera = (x, y, z) => {
         // console.log('currentPosition', charRef.current.position)
-        console.log('x, y, z', x, y, z)
+        // console.log('x, y, z', x, y, z)
         // console.log(isAnimating, gsapState)
         if (isAnimating) return
         setIsAnimating(true)
@@ -212,7 +215,9 @@ export const useMainCharacter = ({ position, myChar }) => {
     const handleCamera = (x, y, z) => {
         // if (isAnimating) return
         // isAnimating = true
-        if(!gsapState) {
+        // console.log('handleCamera', gsapCameraState)
+        if(!gsapCameraState) {
+            // console.log('handleCamera')
             camera.position.set(x, y, z)
         }
     }
@@ -236,9 +241,11 @@ export const useMainCharacter = ({ position, myChar }) => {
                     && (currentPosition.z >= -360 && currentPosition.z <= -350)) {
                     // console.log('이것', currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
                     handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
-                } else {
-                    handleGSAPCamera(currentPosition.x + 130, currentPosition.y + 300, currentPosition.z - 150)
                 }
+                // else {
+                //     // console.log('asd')
+                //     handleGSAPCamera(currentPosition.x + 130, currentPosition.y + 300, currentPosition.z - 150)
+                // }
 
                 // Bus Zone
                 if ((currentPosition.x <= 322 && currentPosition.x >= 262) && (currentPosition.z >= -188 && currentPosition.z <= -138)) {
@@ -400,19 +407,28 @@ export const useMainCharacter = ({ position, myChar }) => {
                         // 유일한기념관 키오스크 + 이벤트
                         if ((currentPosition.x >= -248 && currentPosition.x <= -228) &&
                             (currentPosition.z >= 74 && currentPosition.z <= 114)) {
-                            handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskMemorialHall())
-                            }
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    // console.log('gsapCameraState', gsapCameraState)
+                                    handleGSAPCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 0)
+                                }
+                                
+                                if(!kioskDispatchFlag.current) {
+                                    kioskDispatchFlag.current = true
+                                    dispatch(kioskMemorialHall())
+                                }
                         }
                         else {
+                            if(gsapCameraState) {
+                                setGsapCameraState(false)
+                                console.log("유일한기념관 setGsapCameraState")
+                            }
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
                                 dispatch(initKiosk())
                             }
                         }
-                    }
+                    } 
                     if (currentPosition.x <= -270) {
                         handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
                         // 유재라관 키오스크 + 이벤트
@@ -455,13 +471,6 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                     if (currentPosition.z <= -270) {
                         handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
-                    }
-                }
-
-                // Welcome 존 앞
-                if (currentPosition.z < -260) {
-                    if (currentPosition.x < -230) {
-                        handleCamera(currentPosition.x + 400, currentPosition.y + 200, currentPosition.z + 0)
                     }
                 }
 
@@ -546,37 +555,82 @@ export const useMainCharacter = ({ position, myChar }) => {
                 if (currentPosition.z <= -340) {
                     if (currentPosition.x >= -128 && currentPosition.x <= -30) {
                         handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
-
                     }
                 }
+
+                // Welcome Zone
+                if ((currentPosition.x <= -260 && currentPosition.x >= -286) &&
+                    (currentPosition.z <= -420 && currentPosition.z >= -450)) {
+                        console.log('Welcome Zone 진입')
+                    if(!welcomeZoneCameraFlag.current) {
+                        welcomeZoneCameraFlag.current = true
+                        setGsapCameraState(true)
+                        handleGSAPCamera(currentPosition.x + 150, currentPosition.y + 0, currentPosition.z + 50)
+                    }
+                }
+                else {
+                    if(welcomeZoneCameraFlag.current) {
+                        welcomeZoneCameraFlag.current = false
+                        if(gsapCameraState) {
+                            console.log("Welcome setGsapCameraState")
+                            setGsapCameraState(false)
+                        }
+                    }
+                }
+
                 // 유한TV Zone
-                if (currentPosition.x > -225 && currentPosition.x < -30) {
-                    if (currentPosition.z < -400) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y + 5, currentPosition.z + 150)
+                if ((currentPosition.x <= -152 && currentPosition.x >= -178)
+                    && (currentPosition.z <= -405 && currentPosition.z >= -435)) {
+                        console.log('유한TV Zone 진입')
+                    if(!yuhanTvZoneCameraFlag.current) {
+                        yuhanTvZoneCameraFlag.current = true
+                        setGsapCameraState(true)
+                        handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 35, currentPosition.z + 250)
+                    }
+                }
+                else {
+                    if(yuhanTvZoneCameraFlag.current) {
+                        yuhanTvZoneCameraFlag.current = false
+                        if(gsapCameraState) {
+                            console.log("유한TV setGsapCameraState")
+                            setGsapCameraState(false)
+                        }
                     }
                 }
 
                 // 학교입구
-                if (currentPosition.x > -30 && currentPosition.x <= 245) {
-                    if (currentPosition.z < -337) {
-                        handleCamera(currentPosition.x + 180, currentPosition.y + 230, currentPosition.z + 0)
-                    }
-                    // 동상 Zone
-                    if ((currentPosition.x <= 69 && currentPosition.x >= 9) && (currentPosition.z <= -487 && currentPosition.z >= -537)) {
-                        handleCamera(currentPosition.x + 130, currentPosition.y + 30, currentPosition.z + 130)
-                        if (!isInStatueZone) {
-                            setIsInStatueZone(true);
-                            dispatch(Enter_Statue());
-                            console.log("동상 입장", isInStatueZone);
+                if ((currentPosition.x > -30 && currentPosition.x <= 250) &&
+                    (currentPosition.z < -337 && currentPosition.z >= -560)) {
+                        handleCamera(currentPosition.x + 180, currentPosition.y + 70, currentPosition.z + 0)
+                        // 동상 Zone
+                        if ((currentPosition.x >= 31 && currentPosition.x <= 71) &&
+                            (currentPosition.z >= -531 && currentPosition.z <= -491)) {
+                                if(!yuhanStatueCameraFlag.current) {
+                                    yuhanStatueCameraFlag.current = true
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(currentPosition.x + 130, currentPosition.y + 30, currentPosition.z + 130)
+                                }
+                                if (!isInStatueZone) {
+                                    setIsInStatueZone(true);
+                                    dispatch(Enter_Statue());
+                                    console.log("동상 입장", isInStatueZone);
+                                }
                         }
-                    } else {
-                        if (isInStatueZone) {
-                            setIsInStatueZone(false);
-                            dispatch(Leave_Statue());
-                            console.log("동상 퇴장", isInStatueZone);
+                        else {
+                            if(yuhanStatueCameraFlag.current) {
+                                yuhanStatueCameraFlag.current = false
+                                if(gsapCameraState) {
+                                    console.log("동상 setGsapCameraState")
+                                    setGsapCameraState(false)
+                                }
+                            }
+                            if (isInStatueZone) {
+                                setIsInStatueZone(false);
+                                dispatch(Leave_Statue());
+                                console.log("동상 퇴장", isInStatueZone);
+                            }
                         }
-                    }
-                }  
+                }
             } else {
                 // return
 
@@ -590,84 +644,95 @@ export const useMainCharacter = ({ position, myChar }) => {
                     handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
                     // handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
 
+                    // console.log(deptInfoEduGoalsDispatchFlag.current)
                     // 교육목표
                     if((currentPosition.x >= 77 && currentPosition.x <= 117) && (currentPosition.z >= -75 && currentPosition.z <= -35)) {
-                        if(!gsapState) {
-                            setGsapState(true)
+                        if(!deptInfoEduGoalsDispatchFlag.current) {
+                            deptInfoEduGoalsDispatchFlag.current = true
+                            setGsapCameraState(true)
                             handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 90)
-                            if(!deptInfoEduGoalsDispatchFlag.current) {
-                                deptInfoEduGoalsDispatchFlag.current = true
-                                dispatch(deptInfoEduGoals())
-                            }
+                            dispatch(deptInfoEduGoals())
                         }
-                    } else if(deptInfoEduGoalsDispatchFlag.current) {
-                        deptInfoEduGoalsDispatchFlag.current = false
-                        setGsapState(false)
-                        dispatch(initDeptInfo())
+                    }
+                    else {
+                        if(deptInfoEduGoalsDispatchFlag.current) {
+                            console.log("교육목표 setGsapCameraState")
+                            deptInfoEduGoalsDispatchFlag.current = false
+                            setGsapCameraState(false)
+                            dispatch(initDeptInfo())
+                        }
                     }
 
                     // 전공교육분야
                     if((currentPosition.x >= 35 && currentPosition.x <= 75) && (currentPosition.z >= -115 && currentPosition.z < -75)) {
-                        if(!gsapState) {
-                            setGsapState(true)
+                        if(!deptInfoMainEduFieldsDispatchFlag.current) {
+                            deptInfoMainEduFieldsDispatchFlag.current = true
+                            setGsapCameraState(true)
                             handleGSAPCamera(currentPosition.x + -30, currentPosition.y + 50, currentPosition.z + 60)
-                            if(!deptInfoMainEduFieldsDispatchFlag.current) {
-                                deptInfoMainEduFieldsDispatchFlag.current = true
-                                dispatch(deptInfoMainEduFields())
-                            }
+                            dispatch(deptInfoMainEduFields())
                         }
-                    } else if(deptInfoMainEduFieldsDispatchFlag.current) {
-                        deptInfoMainEduFieldsDispatchFlag.current = false
-                        setGsapState(false)
-                        dispatch(initDeptInfo())
+                    }
+                    else {
+                        if(deptInfoMainEduFieldsDispatchFlag.current) {
+                            console.log("전공교육분야 setGsapCameraState")
+                            deptInfoMainEduFieldsDispatchFlag.current = false
+                            setGsapCameraState(false)
+                            dispatch(initDeptInfo())
+                        }
                     }
 
                     // 학과특징
                     if((currentPosition.x >= 133 && currentPosition.x <= 173) && (currentPosition.z >= -168 && currentPosition.z <= -128)) {
-                        if(!gsapState) {
-                            setGsapState(true)
+                        if(!deptInfoDeptFeaturesDispatchFlag.current) {
+                            deptInfoDeptFeaturesDispatchFlag.current = true
+                            setGsapCameraState(true)
                             handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
-                            if(!deptInfoDeptFeaturesDispatchFlag.current) {
-                                deptInfoDeptFeaturesDispatchFlag.current = true
-                                dispatch(deptInfoDeptFeatures())
-                            }
+                            dispatch(deptInfoDeptFeatures())
                         }
-                    } else if(deptInfoDeptFeaturesDispatchFlag.current) {
-                        deptInfoDeptFeaturesDispatchFlag.current = false
-                        setGsapState(false)
-                        dispatch(initDeptInfo())
+                    }
+                    else {
+                        if(deptInfoDeptFeaturesDispatchFlag.current) {
+                            console.log("학과특징 setGsapCameraState")
+                            deptInfoDeptFeaturesDispatchFlag.current = false
+                            setGsapCameraState(false)
+                            dispatch(initDeptInfo())
+                        }
                     }
 
                     // 진로 및 취업분야
                     if((currentPosition.x >= 27 && currentPosition.x <= 67) && (currentPosition.z >= -189 && currentPosition.z <= -149)) {
-                        if(!gsapState) {
-                            setGsapState(true)
+                        if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
+                            deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
+                            setGsapCameraState(true)
                             handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 70, currentPosition.z + 50)
-                            if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
-                                deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
-                                dispatch(deptInfoCareerAndEmploymentField())
-                            }
+                            dispatch(deptInfoCareerAndEmploymentField())
                         }
-                    } else if(deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
-                        deptInfoCareerAndEmploymentFieldDispatchFlag.current = false
-                        setGsapState(false)
-                        dispatch(initDeptInfo())
+                    }
+                    else {
+                        if(deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
+                            console.log("진로 및 취업분야 setGsapCameraState")
+                            deptInfoCareerAndEmploymentFieldDispatchFlag.current = false
+                            setGsapCameraState(false)
+                            dispatch(initDeptInfo())
+                        }
                     }
 
                     // 자격증
                     if((currentPosition.x >= 180 && currentPosition.x <= 220) && (currentPosition.z >= -70 && currentPosition.z <= -30)) {
-                        if(!gsapState) {
-                            setGsapState(true)
-                            handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
                             if(!deptInfoLicenseDispatchFlag.current) {
                                 deptInfoLicenseDispatchFlag.current = true
+                                setGsapCameraState(true)
+                                handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
                                 dispatch(deptInfoLicense())
                             }
+                    }
+                    else {
+                        if(deptInfoLicenseDispatchFlag.current) {
+                            console.log("자격증 setGsapCameraState")
+                            setGsapCameraState(false)
+                            deptInfoLicenseDispatchFlag.current = false
+                            dispatch(initDeptInfo())
                         }
-                    } else if(deptInfoLicenseDispatchFlag.current) {
-                        deptInfoLicenseDispatchFlag.current = false
-                        setGsapState(false)
-                        dispatch(initDeptInfo())
                     }
                 }
 
@@ -677,12 +742,16 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                     // 학과장 영역
                     if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
-                        if(!gsapState) {
-                            setGsapState(true)
+                        if(!gsapCameraState) {
+                            setGsapCameraState(true)
                             handleGSAPCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
                         }
-                    } else {
-                        setGsapState(false)
+                    }
+                    else {
+                        if(gsapCameraState) {
+                            console.log("학과장 setGsapCameraState")
+                            setGsapCameraState(false)
+                        }
                     }
                 }
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
