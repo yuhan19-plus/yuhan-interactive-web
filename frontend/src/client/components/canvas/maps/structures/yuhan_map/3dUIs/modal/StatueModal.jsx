@@ -3,15 +3,27 @@
  * 기능 구현- 이정민
  * 클라이언트(학생)이 동상 구역에 들어갔을 때 출력되는 창
  * 
- */import { Grid, Typography } from "@mui/material";
+ * **********************************************************
+ * 정리할 부분
+ * - 스타일 컴포넌트로 변경 후 코드 정리
+ * **********************************************************
+ */
+import { Grid, Typography } from "@mui/material";
 import { Html } from '@react-three/drei';
 import React from 'react';
 import styled from 'styled-components';
 
 const StatueModal = ({ position }) => {
     return (
-        <Html position={position} center>
-            <BoardLayout>
+        <Html
+            position={position}
+            center
+        >
+            <BoardLayout
+                onPointerUp={(e) => {
+                    e.stopPropagation()
+                }}
+            >
                 <Grid sx={{ background: "white", width: '22vw', height: '45.5vh', margin: 1, boxShadow: 2, padding: 1.2, borderRadius: 2 }} >
                     <Grid sx={{ height: '6.5vh', marginBottom: 1, boxShadow: 2, padding: 1, borderRadius: 2 }}>
                         <Typography sx={{ fontSize: '14px', fontWeight: 'bold', }}>설립자 유일한,</Typography>

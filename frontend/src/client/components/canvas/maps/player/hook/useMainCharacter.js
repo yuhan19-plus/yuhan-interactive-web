@@ -184,7 +184,7 @@ export const useMainCharacter = ({ position, myChar }) => {
     useEffect(() => {
         if (smokingAreaState){
             gsap.to(camera.position,{
-                x: -90,
+                x: -580,
                 y: 1000,
                 z: 0,
                 duration: 1.5,
@@ -580,14 +580,20 @@ export const useMainCharacter = ({ position, myChar }) => {
                         handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 120)
                         if ((currentPosition.x <= 61 && currentPosition.x >= 21) &&
                             currentPosition.z <= -255 && currentPosition.z >= -301) {
-                            handleCamera(currentPosition.x + 10, currentPosition.y + 50, currentPosition.z + 50)
-                            if (!isInSmokingArea) {
-                                setIsInSmokingArea(true);
-                                dispatch(Enter_SmokingArea());
-                                console.log("흡연구역 입장", isInSmokingArea);
-                            }
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(70, 100, -170)
+                                }
+                                if (!isInSmokingArea) {
+                                    setIsInSmokingArea(true);
+                                    dispatch(Enter_SmokingArea());
+                                    console.log("흡연구역 입장", isInSmokingArea);
+                                }
                         }
                         else{
+                            if(gsapCameraState) {
+                                setGsapCameraState(false)
+                            }
                             if (isInSmokingArea) {
                                 setIsInSmokingArea(false);
                                 dispatch(Leave_SmokingArea());
@@ -791,7 +797,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
                         if(!gsapCameraState) {
                             setGsapCameraState(true)
-                            handleGSAPCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                            handleGSAPCamera(-125, 50, -50)
                         }
                     }
                     else {

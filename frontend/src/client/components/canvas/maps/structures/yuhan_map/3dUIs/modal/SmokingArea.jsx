@@ -4,8 +4,15 @@ import styled from "styled-components";
 
 const SmokingArea = ({ position }) => {
   return (
-    <Html position={position} center>
-      <BoardLayout>
+    <Html
+      position={position}
+      center
+    >
+      <BoardLayout
+        onPointerUp={(e) => {
+            e.stopPropagation()
+        }}
+      >
         <h2><img style={{width:"8%",height:"8%",verticalAlign:"sub"}}src="assets/images/smokingArea.png"/> 흡연장 위치 안내 <img style={{width:"8%",height:"8%",verticalAlign:"sub"}}src="assets/images/smokingArea.png"/></h2>
         <ImageContainer>
         <img style={{boxShadow:1,borderRadius:7,width:"90%",height:"90%"}}src="assets/images/smokingAreaPosition.png"/>

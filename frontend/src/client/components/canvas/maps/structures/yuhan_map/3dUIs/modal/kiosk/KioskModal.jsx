@@ -1,13 +1,13 @@
 import { Html } from '@react-three/drei'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_YOO, MEMORIAL_HALL, PEACE_HALL, SHARING_HALL, STUDENT_CAFETERIA, VOLUNTEER_CENTER } from '../../../../../../../../../data/commonData'
 import { useNavigate } from 'react-router-dom'
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBowlFood, faClose, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
-import { useDispatch, useSelector } from 'react-redux'
-import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, initKiosk, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
+import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
+import { useDispatch } from 'react-redux'
+import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 
 const dataKiosk = {
     PEACE_HALL,
@@ -19,8 +19,9 @@ const dataKiosk = {
     MEMORIAL_HALL,
     JAE_RA_YOO
 }
-let name
 const ITEMS_PER_PAGE = 5 // 페이지당 7개 아이템
+
+let name
 
 const KioskModal = ({kioskName, position, ...props}) => {
     const dispatch = useDispatch()
@@ -96,11 +97,12 @@ const KioskModal = ({kioskName, position, ...props}) => {
             <Html 
                 position={ position }
                 center
-                onPointerDown={(e) => {
-                    e.stopPropagation()
-                }}
             >
-                <KioskWrapper>
+                <KioskWrapper
+                    onPointerUp={(e) => {
+                        e.stopPropagation()
+                    }}
+                >
                     <KioskHeader>
                         <b>{kioskName}</b>
                     </KioskHeader>
