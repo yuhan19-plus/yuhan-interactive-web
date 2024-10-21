@@ -159,7 +159,7 @@ export const useMainCharacter = ({ position, myChar }) => {
         if (aerialViewState) {
             gsap.to(camera.position, {
                 x: 0,
-                y: 500,
+                y: 1000,
                 z: -300,
                 duration: 1,
                 ease: 'power2.inOut'
@@ -185,7 +185,7 @@ export const useMainCharacter = ({ position, myChar }) => {
         if (smokingAreaState){
             gsap.to(camera.position,{
                 x: -90,
-                y: 500,
+                y: 1000,
                 z: 0,
                 duration: 1.5,
                 ease: 'power2.inOut',
@@ -246,7 +246,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
                     ((currentPosition.z < -325 && currentPosition.z >= -560))) {
                         console.log('학교 밖 정문 앞 쪽')
-                        handleCamera(450, 300, -250)
+                        handleCamera(550, 150, -550)
                 }
                 // 그 외 학교 밖
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
@@ -647,7 +647,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 학교입구
                 if ((currentPosition.x > -32 && currentPosition.x <= 250) &&
                     (currentPosition.z < -325 && currentPosition.z >= -560)) {
-                        handleCamera(currentPosition.x + 180, currentPosition.y + 70, currentPosition.z + 0)
+                        handleCamera(currentPosition.x + 180, currentPosition.y + 200, currentPosition.z + 0)
                         // 동상 Zone
                         if ((currentPosition.x >= 31 && currentPosition.x <= 71) &&
                             (currentPosition.z >= -531 && currentPosition.z <= -491)) {
@@ -669,11 +669,11 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     console.log("동상 setGsapCameraState")
                                     setGsapCameraState(false)
                                 }
-                            }
-                            if (isInStatueZone) {
-                                setIsInStatueZone(false);
-                                dispatch(Leave_Statue());
-                                console.log("동상 퇴장", isInStatueZone);
+                                if (isInStatueZone) {
+                                    setIsInStatueZone(false);
+                                    dispatch(Leave_Statue());
+                                    console.log("동상 퇴장", isInStatueZone);
+                                }
                             }
                         }
                 }

@@ -17,6 +17,7 @@ import { BusStationTwo } from './structures/yuhan_map/elements/etc/BusStationTwo
 import { Plate } from './structures/yuhan_map/elements/etc/Plate'
 import { ShowCase } from './structures/yuhan_map/elements/etc/ShowCase'
 import { Statue } from './structures/yuhan_map/elements/etc/Statue'
+import { YuhanLogo } from './structures/yuhan_map/elements/etc/YuhanLogo'
 
 const RootMap = () => {
     const dispatch = useDispatch()
@@ -80,11 +81,15 @@ const RootMap = () => {
 
                     <YuhanElements />
 
+                    <YuhanLogo position={[-495, 13, -290]} />
+
                     {/* 버스정류장 */}
                     <BusStationOne position={[271.453, 6.15, -163.289]} />
                     <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
-                    {/* 동상 모달창 위치 */}
+
                     <Statue position={[10, 34, -540]} rotation={[0, Math.PI / 3.5, 0]} scale={12}/>
+
+                    {/* 동상 모달창 위치 */}
                     {isInStatue &&(
                         <>
                             <StatueModal position={[50, 40, -650]}/>

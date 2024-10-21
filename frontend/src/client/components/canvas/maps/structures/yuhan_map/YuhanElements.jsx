@@ -37,16 +37,6 @@ import StreetLampGroup from './elements/StreetLampGroup'
 const YuhanElements = () => {
     return (
         <>
-            {/* <motion.group
-                animate={{
-                    scale: [0, 1]
-                }}
-                transition={{
-                    delay: 3,
-                    duration: 1,
-                    ease: "easeInOut"
-                }}
-            > */}
             {/* 유한대 Welcome */}
             <Welcome />
 
@@ -68,13 +58,6 @@ const YuhanElements = () => {
 
             {/* 유한TV */}
             <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
-            {/* </motion.group> */}
-
-            {/* 투명벽 셋팅 */}
-            {/* <Wall position={[12, 46, -577.5]} />
-            <Wall position={[12, 46, 412.5]} />
-            <Wall position={[-543.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} />
-            <Wall position={[566.5, 46, -90]} rotation={[0,  Math.PI / 2, 0]} /> */}
         </>
     )
 }

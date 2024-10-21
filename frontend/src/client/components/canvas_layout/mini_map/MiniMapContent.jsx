@@ -6,7 +6,7 @@ import React from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Physics } from '@react-three/cannon'
-import YuhanElements from '../../canvas/maps/structures/yuhan_map/YuhanElements'
+import MiniMapElements from './MiniMapElements'
 
 const MiniMapContent = ({cameraPosition}) => {
     return (
@@ -16,8 +16,8 @@ const MiniMapContent = ({cameraPosition}) => {
             shadows
             camera={{
                 fov: 50,
-                near: 0.1,
-                far: 100000,
+                near: 1.5,
+                far: 5000,
                 position: cameraPosition
             }}
             style={{width: '320px', height: '330px'}}
@@ -40,11 +40,9 @@ const MiniMapContent = ({cameraPosition}) => {
             <OrbitControls
                 enabled={false}
                 makeDefault // 카메라의 설정이 계속 변경될 예정일 경우에 튕기거나 끊김없게 해주기 위해 설정
-                minDistance={700} // 카메라 확대 최소 범위
-                maxDistance={700} // 카메라 확대 최대 범위
             />
             <Physics gravity={[0, -2.6, 0]}>
-                <YuhanElements />
+                <MiniMapElements />
             </Physics>
         </Canvas>
     )

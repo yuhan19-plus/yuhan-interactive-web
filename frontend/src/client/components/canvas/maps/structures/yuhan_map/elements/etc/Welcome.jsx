@@ -1,9 +1,8 @@
 /**
  * 임성준 구현
  */
-import { Float, MeshDistortMaterial, Sky, Stars, Text, Text3D, useHelper } from '@react-three/drei'
+import { Float, MeshDistortMaterial, Stars, Text3D, useHelper } from '@react-three/drei'
 import React, { useEffect, useRef } from 'react'
-import { YuhanLogo } from './YuhanLogo'
 import { useBox } from '@react-three/cannon'
 import * as THREE from 'three'
 import { useThree } from '@react-three/fiber'
@@ -13,6 +12,7 @@ import { DesignDeptHeadCharacter } from '../../../../player/dept/DesignDeptHeadC
 import { FoodDeptHeadCharacter } from '../../../../player/dept/FoodDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
 import { useSelector } from 'react-redux'
+import { YuhanLogo } from './YuhanLogo'
 
 const Welcome = () => {
     const groundMapState = useSelector((state) => state.groundMap)
@@ -186,9 +186,8 @@ const Welcome = () => {
                     </Float>
                 </group>
             </group>
-            <LightingObject position={[-335, -5, -340]} rotation={[0, Math.PI / 1.35, 0]} />
 
-            <YuhanLogo position={[-495, 13, -290]} />
+            <LightingObject position={[-335, -5, -340]} rotation={[0, Math.PI / 1.35, 0]} />
 
             <BioDeptHeadCharacter groundMapName={groundMapName} position={[-360, 10, -540]} rotation={[0, Math.PI / 2, 0]} />
             <CSDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -465]} rotation={[0, Math.PI / 2, 0]} />
