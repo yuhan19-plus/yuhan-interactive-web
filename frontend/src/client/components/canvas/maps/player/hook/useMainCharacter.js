@@ -683,7 +683,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                 // 학과맵일 경우
                 if(currentPosition.x === 0 && currentPosition.z === 0) {
-                    handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 75)
+                    handleGSAPCamera(0, 50, 75)
                 }
 
                 // 1사분면 : 학과소개영역
