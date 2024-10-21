@@ -187,7 +187,8 @@ const Welcome = () => {
                 </group>
             </group>
             <LightingObject position={[-335, -5, -340]} rotation={[0, Math.PI / 1.35, 0]} />
-            <YuhanLogo position={[-490, 13, -290]} />
+
+            <YuhanLogo position={[-495, 13, -290]} />
 
             <BioDeptHeadCharacter groundMapName={groundMapName} position={[-360, 10, -540]} rotation={[0, Math.PI / 2, 0]} />
             <CSDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -465]} rotation={[0, Math.PI / 2, 0]} />

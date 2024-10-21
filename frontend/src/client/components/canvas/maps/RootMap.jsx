@@ -126,13 +126,13 @@ const RootMap = () => {
                                     {/* 찾아오는 길 안내문 */}
                                     {isInBusStationOne && (
                                         <>
-                                            <Direction position={[253, 10, -140]} />
+                                            <Direction position={[170, 0, 0]} />
                                             <Bus position={[355, 17.5, -150]} />
                                         </>
                                     )}
                                     {isInBusStationTwo && (
                                         <>
-                                            <Direction position={[553, 0, -220]} />
+                                            <Direction position={[540, 0, 0]} />
                                             <Bus position={[355, 17.5, -150]} />
                                         </>
                                     )}

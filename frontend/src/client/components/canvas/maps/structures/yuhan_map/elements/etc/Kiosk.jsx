@@ -3,11 +3,9 @@
  * position, scale 수정 및 그림자 설정 : 임성준
  */
 import { useBox } from '@react-three/cannon'
-import { Html, useGLTF } from '@react-three/drei'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { useGLTF } from '@react-three/drei'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
 import KioskModal from '../../3dUIs/modal/kiosk/KioskModal'
 
 export function Kiosk({position, name, ...props}) {
@@ -57,7 +55,66 @@ export function Kiosk({position, name, ...props}) {
                 emissive={'#16B6FC'} // 발광 색상
                 emissiveIntensity={5} // 발광 강도
               />
-              <KioskModal kioskName={kioskName} />
+              {
+                kioskName === '평화관 정문' && (
+                  <KioskModal kioskName={kioskName} position={[-60, 0, 10]} />
+                )
+              }
+              {
+                kioskName === '평화관 후문' && (
+                  <KioskModal kioskName={kioskName} position={[-70, 10, 0]} />
+                )
+              }
+              {
+                kioskName === '봉사관' && (
+                  <KioskModal kioskName={kioskName} position={[60, 0, 0]} />
+                )
+              }
+              {
+                kioskName === '학생회관' && (
+                  <KioskModal kioskName={kioskName} position={[-130, 20, 50]} />
+                )
+              }
+              {
+                kioskName === '나눔관' && (
+                  <KioskModal kioskName={kioskName} position={[10, -70, -40]} />
+                )
+              }
+              {
+                kioskName === '자유관' && (
+                  <KioskModal kioskName={kioskName} position={[-65, -55, 50]} />
+                )
+              }
+              {
+                kioskName === '창조관' && (
+                  <KioskModal kioskName={kioskName} position={[-75, -55, 50]} />
+                )
+              }
+              {
+                kioskName === '유재라관' && (
+                  <KioskModal kioskName={kioskName} position={[-85, -85, 30]} />
+                )
+              }
+              {
+                kioskName === '유일한기념관' && (
+                  <KioskModal kioskName={kioskName} position={[-70, -55, 50]} />
+                )
+              }
+              {
+                (
+                  (kioskName !== '평화관 정문') &&
+                  (kioskName !== '봉사관') &&
+                  (kioskName !== '나눔관') &&
+                  (kioskName !== '자유관') &&
+                  (kioskName !== '학생회관') &&
+                  (kioskName !== '유재라관') &&
+                  (kioskName !== '창조관') &&
+                  (kioskName !== '유일한기념관') &&
+                  (kioskName !== '평화관 후문'))
+                  && (
+                    <KioskModal kioskName={kioskName} position={[65, -55, 50]} />
+                  )
+              }
             </mesh>
           </>
         }

@@ -10,8 +10,16 @@ import { Debug, Physics } from '@react-three/cannon'
 import RootMap from './maps/RootMap'
 import { aspectRatio } from '../../../data/commonData'
 import * as THREE from 'three'
+import { useSelector } from 'react-redux'
 
 const MainCanvas = () => {
+    const kiosk = useSelector((state) => state.kiosk)
+    const bus = useSelector((state) => state.bus)
+    const statue = useSelector((state) => state.statue)
+    const kioskValue = kiosk.value
+    const busOneValue = bus.inBusStationOne
+    const busTwoValue = bus.inBusStationTwo
+    const statueValue = statue.inStatue
     // 빛의 위치 값 설정 변수
     const cameraPosition = [0, 1000, 0]
 
@@ -53,9 +61,14 @@ const MainCanvas = () => {
                     maxPolarAngle={Math.PI - Math.PI / 2}
                     enableZoom={false}
                     minDistance={150}               // 카메라 확대 최소 범위
-                    maxDistance={1000}               // 카메라 확대 최대 범위
+                    maxDistance={1000}              // 카메라 확대 최대 범위
                     mouseButtons={{
-                        LEFT: THREE.MOUSE.ROTATE,   // 왼쪽 클릭은 회전
+                        LEFT: (
+                            kioskValue ||
+                            busOneValue ||
+                            busTwoValue ||
+                            statueValue
+                        ) ? false : THREE.MOUSE.ROTATE,   // 왼쪽 클릭은 회전
                         MIDDLE: null,               // 중간 클릭은 줌
                         RIGHT: null                 // 오른쪽 클릭은 비활성화
                     }}

@@ -9,8 +9,12 @@ import { aspectRatio } from '../../../../../../data/commonData'
 import { Debug, Physics } from '@react-three/cannon'
 import Light from '../../../helper/Light'
 import { OrbitControls } from '@react-three/drei'
+import { useSelector } from 'react-redux'
+import * as THREE from 'three'
 
 const DepartmentCanvas = () => {
+    const deptInfo = useSelector((state) => state.deptInfo)
+    const deptInfoValue = deptInfo.value
     // 빛의 위치 값 설정 변수
     const lightPosition = [-500, 500, -350]
     const cameraPosition = [30, 300, 50]
@@ -52,6 +56,14 @@ const DepartmentCanvas = () => {
                     maxPolarAngle={Math.PI - Math.PI / 2}
                     // minDistance={100} // 카메라 확대 최소 범위
                     maxDistance={700} // 카메라 확대 최대 범위
+                    mouseButtons={{
+                        LEFT: (
+                            deptInfoValue
+                        ) ? false : THREE.MOUSE.ROTATE,   // 왼쪽 클릭은 회전
+                        MIDDLE: null,               // 중간 클릭은 줌
+                        RIGHT: null                 // 오른쪽 클릭은 비활성화
+                    }}
+                    onContextMenu={(event) => event.preventDefault()}  // 우클릭 기본 동작(컨텍스트 메뉴) 비활성화
                 />
                 {/* Physics 컴포넌트로 중력 적용. 중력은 y축에 적용 */}
                 <Physics gravity={[0, -2.6, 0]}>

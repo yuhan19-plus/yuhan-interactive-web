@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_YOO, MEMORIAL_HALL, PEACE_HALL, SHARING_HALL, STUDENT_CAFETERIA, VOLUNTEER_CENTER } from '../../../../../../../../../data/commonData'
 import { useNavigate } from 'react-router-dom'
@@ -22,11 +22,10 @@ const dataKiosk = {
 let name
 const ITEMS_PER_PAGE = 5 // 페이지당 7개 아이템
 
-const KioskModal = ({kioskName, ...props}) => {
+const KioskModal = ({kioskName, position, ...props}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [currentPage, setCurrentPage] = useState(0) // 현재 페이지 상태
-
 
     switch(kioskName) {
         case '평화관':
@@ -91,10 +90,16 @@ const KioskModal = ({kioskName, ...props}) => {
         dispatch(yuhanBioMap(BIO_PATH))
         navigate('/department/bio')
     }
-    
+
     return (
         <>
-            <Html position={[50, -55, 50]} center>
+            <Html 
+                position={ position }
+                center
+                onPointerDown={(e) => {
+                    e.stopPropagation()
+                }}
+            >
                 <KioskWrapper>
                     <KioskHeader>
                         <b>{kioskName}</b>
@@ -171,17 +176,17 @@ const KioskModal = ({kioskName, ...props}) => {
                         </KioskLink>
                         {
                             kioskName === '유재라관' ? (
-                                <p><a href='https://sanhak.yuhan.ac.kr/index.do'><b>산학협력단</b></a> 페이지 가기</p>
+                                <p><a href='https://sanhak.yuhan.ac.kr/index.do' target='_blank'><b>산학협력단</b></a> 페이지 가기</p>
                             ) : (
                                 <>
                                     {
                                         kioskName === '유일한기념관' && (
                                             <>
-                                                <p><a href='https://newih.yuhan.ac.kr/index.do'><b>유일한기념관</b></a> 페이지 가기</p>
+                                                <p><a href='https://newih.yuhan.ac.kr/index.do' target='_blank'><b>유일한기념관</b></a> 페이지 가기</p>
                                             </>
                                         )
                                     }
-                                    <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091'><b>학과안내</b></a> 페이지 가기</p>
+                                    <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'><b>학과안내</b></a> 페이지 가기</p>
                                 </>
                             )
                         }
