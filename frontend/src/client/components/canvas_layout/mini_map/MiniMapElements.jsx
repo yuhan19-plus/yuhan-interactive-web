@@ -8,8 +8,6 @@ import { SideWalk } from '../../canvas/maps/structures/yuhan_map/elements/road/S
 import MainPark from '../../canvas/maps/structures/yuhan_map/elements/park/MainPark'
 import SubPark from '../../canvas/maps/structures/yuhan_map/elements/park/SubPark'
 import { Statue } from '../../canvas/maps/structures/yuhan_map/elements/etc/Statue'
-import { BusStationOne } from '../../canvas/maps/structures/yuhan_map/elements/etc/BusStationOne'
-import { BusStationTwo } from '../../canvas/maps/structures/yuhan_map/elements/etc/BusStationTwo'
 import { YuhanEntrance } from '../../canvas/maps/structures/yuhan_map/elements/etc/YuhanEntrance'
 
 const MiniMapElements = () => {
@@ -37,10 +35,6 @@ const MiniMapElements = () => {
 
             {/* 동상 */}
             <Statue position={[0, 50, -500]} rotation={[0, Math.PI / 2.7, 0]} scale={26} />
-
-            {/* 버스정류장 */}
-            <BusStationOne position={[271.453, 6.15, -163.289]} />
-            <BusStationTwo position={[526.536, 5.55, -235.881]} rotation={[Math.PI, 0, Math.PI]} />
         </>
     )
 }
