@@ -5,7 +5,9 @@
 import React from 'react'
 import { GoldBox } from './etc/GoldBox'
 import { useSelector } from 'react-redux';
-import { Coin } from './etc/Coin';
+import { Ccoin } from './etc/coin/Ccoin';
+import { PythonCoin } from './etc/coin/PythonCoin';
+import { JavaCoin } from './etc/coin/JavaCoin';
 
 const GoldBoxGroup = () => {
 
@@ -20,21 +22,21 @@ const GoldBoxGroup = () => {
             {!isZone1 && (
                 <>
                     <GoldBox position={[-350, 0, -110]} rotation={[0, 0, 0]} />
-                    <Coin position={[-350, 0, -110]} rotation={[0, 0, 0]} />
+                    <Ccoin position={[-350, 0, -110]} rotation={[0, 0, 0]} />
                 </>
             )}
             {/* 테라스 */}
             {!isZone2 && (
                 <>
                     <GoldBox position={[-120, 0, 200]} rotation={[0, Math.PI / 2, 0]} />
-                    <Coin position={[-120, 0, 200]} rotation={[0, Math.PI / 2, 0]} />
+                    <JavaCoin position={[-120, 0, 200]} rotation={[0, Math.PI / 2, 0]} />
                 </>
             )}
             {/* 나눔의 숲 */}
             {!isZone3 && (
                 <>
                     <GoldBox position={[95, 0, -200]} rotation={[0, 0, 0]} />
-                    <Coin position={[95, 0, -200]} rotation={[0, 0, 0]} />
+                    <PythonCoin position={[95, 0, -200]} rotation={[0, 0, 0]} />
                 </>
             )}
         </>

@@ -1,7 +1,7 @@
 /**
  * 오자현 보물상자영역 리듀서
  */
-import { ENTER_GOLDBOXAREA, INCREASE_GOLDBOX_COUNT, LEAVE_GOLDBOXAREA, RESET_GOLDBOX_COUNT } from "../actions/actions";
+import { ENTER_GOLDBOXAREA, LEAVE_GOLDBOXAREA } from "../actions/actions";
 
 const initialState = {
     value: false,
@@ -37,16 +37,6 @@ export function goldBoxReducer(state = initialState, action) {
                 [action.zone]: false, // 떠난 영역의 상태를 false로 설정
                 [action.hasVisited]: true,  // 진입한 영역의 방문 이력을 true로 설정
                 name: '떠남'
-            };
-        case INCREASE_GOLDBOX_COUNT:
-            return {
-                ...state,
-                goldBoxCount: state.goldBoxCount + action.payload, // 카운트 증가
-            };
-        case RESET_GOLDBOX_COUNT:
-            return {
-                ...state,
-                goldBoxCount: 0, // 카운트 초기화
             };
         default:
             return state;

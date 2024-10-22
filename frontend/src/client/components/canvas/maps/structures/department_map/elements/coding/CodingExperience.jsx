@@ -3,10 +3,14 @@ import { Html } from "@react-three/drei";
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { CodingExperienceCode } from "../../../../../../../../data/commonData";
+import { useSelector } from "react-redux";
 
 const CodingExperience = ({ onResultCode }) => {
     const [selectLanguage, setSelectLanguage] = useState('C');
     const [num, setNum] = useState(5);
+    const CZone = useSelector((state) => state.goldBox.hasVisitedZone1);// 1번 진입했었는지 여부
+    const JavaZone = useSelector((state) => state.goldBox.hasVisitedZone2);// 2번 진입했었는지 여부
+    const PythonZone = useSelector((state) => state.goldBox.hasVisitedZone3);// 3번 진입했었는지 여부
 
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
@@ -43,9 +47,21 @@ const CodingExperience = ({ onResultCode }) => {
                 <CodeTitle>
                     <h4>언어 선택</h4>
                     <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
-                        <FormControlLabel value="C" control={<Radio />} label="C" />
-                        <FormControlLabel value="Java" control={<Radio />} label="Java" />
-                        <FormControlLabel value="Python" control={<Radio />} label="Python" />
+                        {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
+                            <>
+                                {CZone && (
+                                    <FormControlLabel value="C" control={<Radio />} label="C" />
+                                )}
+                                {JavaZone && (
+                                    <FormControlLabel value="Java" control={<Radio />} label="Java" />
+                                )}
+                                {PythonZone && (
+                                    <FormControlLabel value="Python" control={<Radio />} label="Python" />
+                                )}
+                            </>
+                        ):(
+                            <p>보물을 찾아야 함</p>
+                        )}
                     </RadioGroup>
                     <p>간단한 구구단 코드</p>
                     <p>0~9까지만 가능</p>
