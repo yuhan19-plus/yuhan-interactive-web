@@ -137,39 +137,50 @@ const KioskModal = ({kioskName, position, ...props}) => {
                     <KioskFooter>
                         <KioskLink>
                             {
-                                kioskName !== '유재라관' && (
+                                ((kioskName !== '유재라관') || (kioskName !== '학생회관')) && (
                                     <>
-                                        <p>학과체험하러가기</p>
                                         {
                                             (kioskName === '평화관 정문' || kioskName === '평화관 후문') && (
-                                                <div style={{margin: '5px 0px'}}>
-                                                    <FontAwesomeIcon icon={faBowlFood} size='lg' style={{marginRight: '5px'}} />
-                                                    <span><a onClick={handleFoodNutrition}>식품영양학과체험</a></span>
-                                                </div>
+                                                <>
+                                                    <p>학과체험하러가기</p>
+                                                    <div style={{margin: '5px 0px'}}>
+                                                        <FontAwesomeIcon icon={faBowlFood} size='lg' style={{marginRight: '5px'}} />
+                                                        <span><a onClick={handleFoodNutrition}>식품영양학과체험</a></span>
+                                                    </div>
+                                                </>
                                             )
                                         }
                                         {
                                             kioskName === '유일한기념관' && (
-                                                <div style={{margin: '5px 0px'}}>
-                                                    <FontAwesomeIcon icon={faCode} size='lg' style={{marginRight: '5px'}} />
-                                                    <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
-                                                </div>
+                                                <>
+                                                    <p>학과체험하러가기</p>
+                                                    <div style={{margin: '5px 0px'}}>
+                                                        <FontAwesomeIcon icon={faCode} size='lg' style={{marginRight: '5px'}} />
+                                                        <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
+                                                    </div>
+                                                </>
                                             )
                                         }
                                         {
                                             kioskName === '나눔관' && (
-                                                <div style={{margin: '5px 0px'}}>
-                                                    <FontAwesomeIcon icon={faDna} size='lg' style={{marginRight: '5px'}} />
-                                                    <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
-                                                </div>
+                                                <>
+                                                    <p>학과체험하러가기</p>
+                                                    <div style={{margin: '5px 0px'}}>
+                                                        <FontAwesomeIcon icon={faDna} size='lg' style={{marginRight: '5px'}} />
+                                                        <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
+                                                    </div>
+                                                </>
                                             )
                                         }
                                         {
                                             kioskName === '창조관' && (
-                                                <div style={{margin: '5px 0px'}}>
-                                                    <FontAwesomeIcon icon={faPenRuler} size='lg' style={{marginRight: '5px'}} />
-                                                    <span><a onClick={handleIndustrialDesign}>산업디자인학과체험</a></span>
-                                                </div>
+                                                <>
+                                                    <p>학과체험하러가기</p>
+                                                    <div style={{margin: '5px 0px'}}>
+                                                        <FontAwesomeIcon icon={faPenRuler} size='lg' style={{marginRight: '5px'}} />
+                                                        <span><a onClick={handleIndustrialDesign}>산업디자인학과체험</a></span>
+                                                    </div>
+                                                </>
                                             )
                                         }
                                     </>
@@ -188,7 +199,13 @@ const KioskModal = ({kioskName, position, ...props}) => {
                                             </>
                                         )
                                     }
-                                    <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'><b>학과안내</b></a> 페이지 가기</p>
+                                    {
+                                        kioskName !== '학생회관' && (
+                                            <>
+                                                <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'><b>학과안내</b></a> 페이지 가기</p>
+                                            </>
+                                        )
+                                    }
                                 </>
                             )
                         }

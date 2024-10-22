@@ -427,7 +427,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             (currentPosition.z >= 74 && currentPosition.z <= 114)) {
                                 if(!gsapCameraState) {
                                     setGsapCameraState(true)
-                                    // console.log('gsapCameraState', gsapCameraState)
+                                    console.log('gsapCameraState', gsapCameraState)
                                     handleGSAPCamera(-160, 50, 95)
                                 }
                                 
@@ -699,11 +699,12 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                     // console.log(deptInfoEduGoalsDispatchFlag.current)
                     // 교육목표
-                    if((currentPosition.x >= 77 && currentPosition.x <= 117) && (currentPosition.z >= -75 && currentPosition.z <= -35)) {
+                    if((currentPosition.x >= 77 && currentPosition.x <= 117) &&
+                        (currentPosition.z >= -75 && currentPosition.z <= -35)) {
                         if(!deptInfoEduGoalsDispatchFlag.current) {
                             deptInfoEduGoalsDispatchFlag.current = true
                             setGsapCameraState(true)
-                            handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 90)
+                            handleGSAPCamera(7, 50, 35)
                             dispatch(deptInfoEduGoals())
                         }
                     }
@@ -717,11 +718,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
 
                     // 전공교육분야
-                    if((currentPosition.x >= 35 && currentPosition.x <= 75) && (currentPosition.z >= -115 && currentPosition.z < -75)) {
+                    if((currentPosition.x >= 35 && currentPosition.x <= 75) &&
+                        (currentPosition.z >= -115 && currentPosition.z < -75)) {
                         if(!deptInfoMainEduFieldsDispatchFlag.current) {
                             deptInfoMainEduFieldsDispatchFlag.current = true
                             setGsapCameraState(true)
-                            handleGSAPCamera(currentPosition.x + -30, currentPosition.y + 50, currentPosition.z + 60)
+                            handleGSAPCamera(25, 50, -35)
                             dispatch(deptInfoMainEduFields())
                         }
                     }
@@ -735,11 +737,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
 
                     // 학과특징
-                    if((currentPosition.x >= 133 && currentPosition.x <= 173) && (currentPosition.z >= -168 && currentPosition.z <= -128)) {
+                    if((currentPosition.x >= 127 && currentPosition.x <= 167) &&
+                        (currentPosition.z >= -160 && currentPosition.z <= -120)) {
                         if(!deptInfoDeptFeaturesDispatchFlag.current) {
                             deptInfoDeptFeaturesDispatchFlag.current = true
                             setGsapCameraState(true)
-                            handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
+                            handleGSAPCamera(97, 50, -90)
                             dispatch(deptInfoDeptFeatures())
                         }
                     }
@@ -753,11 +756,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
 
                     // 진로 및 취업분야
-                    if((currentPosition.x >= 27 && currentPosition.x <= 67) && (currentPosition.z >= -189 && currentPosition.z <= -149)) {
+                    if((currentPosition.x >= 27 && currentPosition.x <= 67) &&
+                        (currentPosition.z >= -189 && currentPosition.z <= -149)) {
                         if(!deptInfoCareerAndEmploymentFieldDispatchFlag.current) {
                             deptInfoCareerAndEmploymentFieldDispatchFlag.current = true
                             setGsapCameraState(true)
-                            handleGSAPCamera(currentPosition.x + -50, currentPosition.y + 70, currentPosition.z + 50)
+                            handleGSAPCamera(-3, 70, -119)
                             dispatch(deptInfoCareerAndEmploymentField())
                         }
                     }
@@ -771,11 +775,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
 
                     // 자격증
-                    if((currentPosition.x >= 180 && currentPosition.x <= 220) && (currentPosition.z >= -70 && currentPosition.z <= -30)) {
+                    if((currentPosition.x >= 180 && currentPosition.x <= 220) &&
+                        (currentPosition.z >= -70 && currentPosition.z <= -30)) {
                             if(!deptInfoLicenseDispatchFlag.current) {
                                 deptInfoLicenseDispatchFlag.current = true
                                 setGsapCameraState(true)
-                                handleGSAPCamera(currentPosition.x + -90, currentPosition.y + 50, currentPosition.z + 0)
+                                handleGSAPCamera(110, 50, -50)
                                 dispatch(deptInfoLicense())
                             }
                     }
