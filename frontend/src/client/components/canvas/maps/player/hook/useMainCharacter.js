@@ -254,11 +254,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                         handleCamera(600, 150, 50)
                         // Bus Zone
                         if ((currentPosition.x <= 322 && currentPosition.x >= 262) &&
-                                (currentPosition.z >= -188 && currentPosition.z <= -138)) {
+                                (currentPosition.z >= -183 && currentPosition.z <= -143)) {
                                 if(!gsapCameraState) {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(550, 100, -170)
                                 }
+                                
                                 if (!isInBusZone) {
                                     setIsInBusZone(true); // 상태 변경
                                     dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
@@ -266,35 +267,36 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 }
                         }
                         else if ((currentPosition.x <= 522 && currentPosition.x >= 482) &&
-                                    (currentPosition.z >= -257 && currentPosition.z <= -217)) {
-                                        if(!gsapCameraState) {
-                                            setGsapCameraState(true)
-                                            handleGSAPCamera(750, 100, -450)
-                                        }
-                                        if (!isInBusZone) {
-                                            setIsInBusZone(true); // 상태 변경
-                                            dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
-                                            console.log("버스존 2에 진입했습니다.");
-                                        }
+                            (currentPosition.z >= -257 && currentPosition.z <= -217)) {
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(750, 100, -450)
+                                }
+                                
+                                if (!isInBusZone) {
+                                    setIsInBusZone(true); // 상태 변경
+                                    dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
+                                    console.log("버스존 2에 진입했습니다.");
+                                }
                         }
                         else {
                             if(gsapCameraState) {
                                 console.log('Bus Zone')
                                 setGsapCameraState(false)
                             }
+
+                            if (isInBusZone) {
+                                setIsInBusZone(false); // 상태를 false로 변경
+                                dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
+                                dispatch(leaveBusStationTwo()); // 리덕스 상태를 false로 설정
+                                console.log("버스존을 벗어났습니다.");
+                            }
+
+                            if (kioskDispatchFlag.current) {
+                                kioskDispatchFlag.current = false
+                                dispatch(initKiosk())
+                            }
                         }
-                }
-                else {
-                    if (isInBusZone) {
-                        setIsInBusZone(false); // 상태를 false로 변경
-                        dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
-                        dispatch(leaveBusStationTwo()); // 리덕스 상태를 false로 설정
-                        console.log("버스존을 벗어났습니다.");
-                    }
-                    if (kioskDispatchFlag.current) {
-                        kioskDispatchFlag.current = false
-                        dispatch(initKiosk())
-                    }
                 }
 
                 if ((currentPosition.x > 147 && currentPosition.x <= 224)
@@ -308,12 +310,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 setGsapCameraState(true)
                                 handleGSAPCamera(165, 50, 200)
                             }
+
                             // 학생 식당 입장 처리
                             if(!isInStudentKioskZone) {
                                 setIsInStudentKioskZone(true);
                                 dispatch(Enter_StudentKiosk());
                                 console.log("학생식당 입장", isInStudentKioskZone); // 상태를 true로 출력
                             }
+
                             if(!kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = true
                                 dispatch(kioskCafeteria())
@@ -324,12 +328,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                             console.log('학생 식당')
                             setGsapCameraState(false)
                         }
+
                         // 학생 식당 퇴장 처리
                         if(isInStudentKioskZone) {
                             setIsInStudentKioskZone(false);
                             dispatch(Leave_StudentKiosk());
                             console.log("학생식당 퇴장", isInStudentKioskZone); // 상태를 false로 출력
                         }
+
                         if(kioskDispatchFlag.current) {
                             kioskDispatchFlag.current = false
                             dispatch(initKiosk())
@@ -347,14 +353,17 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (currentPosition.x < -170 && currentPosition.x > -240) {
                         handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
                     }
+
                     if (currentPosition.x > -170 && currentPosition.x <= -48) {
                         // 테라스 입구
                         handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 0)
                     }
+
                     if (currentPosition.x > -48 && currentPosition.x <= 0) {
                         // 테라스 안쪽 우측
                         handleCamera(currentPosition.x - 60, currentPosition.y + 60, currentPosition.z + 0)
                     }
+
                     // 창조관 키오스크 + 이벤트
                     if ((currentPosition.x >= -175 && currentPosition.x <= -155) &&
                         (currentPosition.z >= 244 && currentPosition.z <= 284)) {
@@ -447,6 +456,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             }
                         }
                     } 
+
                     if (currentPosition.x <= -270) {
                         handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
                         // 유재라관 키오스크 + 이벤트
@@ -657,8 +667,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                     (currentPosition.z < -325 && currentPosition.z >= -560)) {
                         handleCamera(currentPosition.x + 180, currentPosition.y + 200, currentPosition.z + 0)
                         // 동상 Zone
-                        if ((currentPosition.x >= 31 && currentPosition.x <= 71) &&
-                            (currentPosition.z >= -531 && currentPosition.z <= -491)) {
+                        if ((currentPosition.x >= 22 && currentPosition.x <= 62) &&
+                            (currentPosition.z >= -535 && currentPosition.z <= -495)) {
                                 if(!yuhanStatueCameraFlag.current) {
                                     yuhanStatueCameraFlag.current = true
                                     setGsapCameraState(true)

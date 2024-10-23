@@ -12,8 +12,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSchool } from '@fortawesome/free-solid-svg-icons';
 import MainSideBarMenu from './MainSideBarMenu';
 import DeptSideBarMenu from './DeptSideBarMenu';
 import { adminEnterModal, consultation, initConsultation, initSideMenu } from '../../../../redux/actions/actions';

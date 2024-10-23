@@ -18,6 +18,7 @@ import { Plate } from './structures/yuhan_map/elements/etc/Plate'
 import { ShowCase } from './structures/yuhan_map/elements/etc/ShowCase'
 import { Statue } from './structures/yuhan_map/elements/etc/Statue'
 import { YuhanLogo } from './structures/yuhan_map/elements/etc/YuhanLogo'
+import { Arrow } from './structures/common/Arrow'
 
 const RootMap = () => {
     const dispatch = useDispatch()
@@ -105,10 +106,16 @@ const RootMap = () => {
                     )}
 
                     {smokingAreaState ? (
-                        <>
-                            <SmokingArea position={[-120, 0, -520]}/>
-                        </>
-                    ) : (
+                            <>
+                                <Arrow position={[41.672, 50, -284.431]} scale={8} />
+                                <Arrow position={[131.979, 25, -125]} scale={8} />
+                                <Arrow position={[150, 160, -70]} scale={8} />
+                                <Arrow position={[220, 160, -120]} scale={8} />
+                                <Arrow position={[100, 178, 125]} scale={8} />
+                                <Arrow position={[12, 190, 230]} scale={8} />
+                                <Arrow position={[-310, 171, 125]} scale={8} />
+                            </>
+                        ) : (
                             <>
                                 {isInSmokingArea &&(
                                     <>
@@ -116,33 +123,32 @@ const RootMap = () => {
                                     </>
                                 )}
                             </>
-                        )
+                        )  
                     }
 
-                    {/* 찾아오는 길과 버스 버스정류장에서 찾아오는 길 버튼 클릭 시 찾아오는 길이 우선으로 */}
                     {directionsState ? (
                             <>
-                                <Direction position={[100, 0, 500]} />
+                                <Arrow position={[282, 25, -163]} scale={8} />
+                                <Arrow position={[502, 25, -237]} scale={8} />
                                 <Bus position={[355, 17.5, -150]} />
                             </>
                         ) : (
-                                <>
-
-                                    {/* 찾아오는 길 안내문 */}
-                                    {isInBusStationOne && (
-                                        <>
-                                            <Direction position={[170, 0, 0]} />
-                                            <Bus position={[355, 17.5, -150]} />
-                                        </>
-                                    )}
-                                    {isInBusStationTwo && (
-                                        <>
-                                            <Direction position={[540, 0, 0]} />
-                                            <Bus position={[355, 17.5, -150]} />
-                                        </>
-                                    )}
-                                </>
-                            )
+                            <>
+                                {/* 찾아오는 길 안내문 */}
+                                {isInBusStationOne && (
+                                    <>
+                                        <Direction position={[170, 0, 0]} />
+                                        <Bus position={[355, 17.5, -150]} />
+                                    </>
+                                )}
+                                {isInBusStationTwo && (
+                                    <>
+                                        <Direction position={[540, 0, 0]} />
+                                        <Bus position={[355, 17.5, -150]} />
+                                    </>
+                                )}
+                            </>
+                        )
                     }
                     {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
                     <React.Fragment>

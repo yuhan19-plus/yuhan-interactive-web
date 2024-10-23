@@ -35,6 +35,12 @@ const Floor = ({onMove, ...props}) => {
                 <meshStandardMaterial color='#333333' />
             </mesh>
 
+            {/* 동상 Zone */}
+            <Arrow position={[42, 15, -515]} scale={5} />
+            <Zone position={[20, -15, -515]} rotation={[0, Math.PI / 3.5, 0]} scale={4} />
+            <Zone position={[20, -15, -515]} rotation={[0, Math.PI / -5, 0]} scale={4} />
+            <Zone position={[36, -15, -535]} rotation={[0, Math.PI / -5, 0]} scale={4} />
+
             {/* Welcome Zone */}
             <Arrow position={[-275, 15, -433]} scale={5} />
             <Zone position={[-286, -15, -420]} rotation={[0, 0, 0]} scale={4} />

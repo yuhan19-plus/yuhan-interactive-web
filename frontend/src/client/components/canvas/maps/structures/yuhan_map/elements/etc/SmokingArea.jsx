@@ -26,7 +26,7 @@ export function SmokingArea({position, scale, ...props}) {
     // 흡연구역 상태가 활성화되면 애니메이션 시작
     if (smokingAreaState) {
       gsap.to(meshRef.current.scale, {
-        x: 2.5, y: 2.5, z: 2.5, 
+        x: 1.5, y: 1.5, z: 1.5, 
         duration: 0.5,
         yoyo: true, 
         repeat: -1, 

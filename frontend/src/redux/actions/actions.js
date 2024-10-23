@@ -13,6 +13,7 @@ export const INIT_CHARACTER = 'INIT_CHARACTER'
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
 export const MAIN_CHARACTER_DEPT = 'MAIN_CHARACTER_DEPT'
 
+// 미니맵 - 성준
 export const INIT_MINI_MAP_TELEPORT = 'INIT_MINI_MAP_TELEPORT'
 export const MINI_MAP_TELEPORT = 'MINI_MAP_TELEPORT'
 
@@ -41,6 +42,11 @@ export const INDUSTRIAL_DESIGN_MAP = 'INDUSTRIAL_DESIGN_MAP'
 export const FOOD_NUTRITION_MAP = 'FOOD_NUTRITION_MAP'
 export const YUHAN_LIFE_BIO_MAP = 'YUHAN_LIFE_BIO_MAP'
 
+// 가이드
+export const INIT_GUIDE = 'INIT_GUIDE'
+export const GUIDE_WELCOME = 'GUIDE_WELCOME'
+export const GUIDE_TV = 'GUIDE_TV'
+export const GUIDE_STATUE = 'GUIDE_STATUE'
 
 // 모달 - 성준
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
@@ -125,6 +131,7 @@ export const mainCharDept = (newPosition) => ({
     payload: newPosition
 })
 
+// 미니맵 - 성준
 export const initMiniMapTeleport = () => ({
     type: INIT_MINI_MAP_TELEPORT
 })
@@ -193,6 +200,20 @@ export const reqForConsultation = () => ({
 })
 export const counselDateRegister = () => ({
     type: COUNSEL_DATE_REGISTER
+})
+
+// 가이드 - 성준
+export const initGuide = () => ({
+    type: INIT_GUIDE
+})
+export const welcomeGuide = () => ({
+    type: GUIDE_WELCOME
+})
+export const tvGuide = () => ({
+    type: GUIDE_TV
+})
+export const statueGuide = () => ({
+    type: GUIDE_STATUE
 })
 
 // 모달 - 성준

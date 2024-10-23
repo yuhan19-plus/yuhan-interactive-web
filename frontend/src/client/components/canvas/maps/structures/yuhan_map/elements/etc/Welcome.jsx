@@ -12,7 +12,6 @@ import { DesignDeptHeadCharacter } from '../../../../player/dept/DesignDeptHeadC
 import { FoodDeptHeadCharacter } from '../../../../player/dept/FoodDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
 import { useSelector } from 'react-redux'
-import { YuhanLogo } from './YuhanLogo'
 
 const Welcome = () => {
     const groundMapState = useSelector((state) => state.groundMap)
