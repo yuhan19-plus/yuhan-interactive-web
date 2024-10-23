@@ -100,21 +100,6 @@ export function Kiosk({position, name, ...props}) {
                   <KioskModal kioskName={kioskName} position={[-70, -55, 50]} />
                 )
               }
-              {
-                (
-                  (kioskName !== '평화관 정문') &&
-                  (kioskName !== '봉사관') &&
-                  (kioskName !== '나눔관') &&
-                  (kioskName !== '자유관') &&
-                  (kioskName !== '학생회관') &&
-                  (kioskName !== '유재라관') &&
-                  (kioskName !== '창조관') &&
-                  (kioskName !== '유일한기념관') &&
-                  (kioskName !== '평화관 후문'))
-                  && (
-                    <KioskModal kioskName={kioskName} position={[65, -55, 50]} />
-                  )
-              }
             </mesh>
           </>
         }

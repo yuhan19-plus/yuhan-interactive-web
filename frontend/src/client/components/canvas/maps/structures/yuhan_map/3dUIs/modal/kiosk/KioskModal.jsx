@@ -133,7 +133,9 @@ const KioskModal = ({kioskName, position, ...props}) => {
                     <KioskFooter>
                         <KioskLink>
                             {
-                                ((kioskName !== '유재라관') || (kioskName !== '학생회관')) && (
+                                ((kioskName === '유재라관') || (kioskName === '학생회관')) ? (
+                                    <></>
+                                ) : (
                                     <>
                                         {
                                             (kioskName === '평화관 정문' || kioskName === '평화관 후문') && (

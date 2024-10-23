@@ -267,15 +267,15 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                         else if ((currentPosition.x <= 522 && currentPosition.x >= 482) &&
                                     (currentPosition.z >= -257 && currentPosition.z <= -217)) {
-                                if(!gsapCameraState) {
-                                    setGsapCameraState(true)
-                                    handleGSAPCamera(750, 100, -450)
-                                }
-                                if (!isInBusZone) {
-                                    setIsInBusZone(true); // 상태 변경
-                                    dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
-                                    console.log("버스존 2에 진입했습니다.");
-                                }
+                                        if(!gsapCameraState) {
+                                            setGsapCameraState(true)
+                                            handleGSAPCamera(750, 100, -450)
+                                        }
+                                        if (!isInBusZone) {
+                                            setIsInBusZone(true); // 상태 변경
+                                            dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
+                                            console.log("버스존 2에 진입했습니다.");
+                                        }
                         }
                         else {
                             if(gsapCameraState) {
@@ -514,7 +514,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
 
                 // 나눔의 숲 1사분면, 2사분면
-                if (currentPosition.z <= -102 && currentPosition.z >= -200) {
+                if ((currentPosition.z <= -102 && currentPosition.z >= -200)) {
                     if (currentPosition.x >= -69 && currentPosition.x <= 58) {
                         handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 50)
                         // 평화관 정문 키오스크
@@ -567,19 +567,22 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }
 
-                // 나눔의 숲 3사분면, 4사분면
-                if (currentPosition.z < -200 && currentPosition.z >= -320) {
-                    if (currentPosition.x > 58 && currentPosition.x <= 190) {
-                        handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 50)
-                    }
-                    if (currentPosition.x >= -69 && currentPosition.x < -30) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
-                    }
-                    if (currentPosition.x >= -30 && currentPosition.x <= 58) {
+                // 나눔의 숲 3사분면
+                if ((currentPosition.z < -200 && currentPosition.z >= -320) &&
+                    (currentPosition.x > 58 && currentPosition.x <= 190)) {
+                        handleCamera(currentPosition.x + -50, currentPosition.y + 100, currentPosition.z + 50)
+                }
+                // 나눔의 숲 4사분면
+                if((currentPosition.x >= -69 && currentPosition.x <= 58) &&
+                    (currentPosition.z < -200 && currentPosition.z >= -320)) {
+                        handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 50)
+                        // if ((currentPosition.x >= -69 && currentPosition.x < -30) &&
+                        //     (currentPosition.z < -200 && currentPosition.z >= -320)) {
+                        //         handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
+                        // }
                         // 흡연구역 이벤트 발생 지역
-                        handleCamera(currentPosition.x - 150, currentPosition.y + 100, currentPosition.z - 120)
-                        if ((currentPosition.x <= 61 && currentPosition.x >= 21) &&
-                            currentPosition.z <= -255 && currentPosition.z >= -301) {
+                        if ((currentPosition.x <= 58 && currentPosition.x >= 25) &&
+                            (currentPosition.z <= -240 && currentPosition.z >= -280)) {
                                 if(!gsapCameraState) {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(70, 100, -170)
@@ -589,16 +592,15 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     dispatch(Enter_SmokingArea());
                                     console.log("흡연구역 입장", isInSmokingArea);
                                 }
+                    }
+                    else{
+                        if(gsapCameraState) {
+                            setGsapCameraState(false)
                         }
-                        else{
-                            if(gsapCameraState) {
-                                setGsapCameraState(false)
-                            }
-                            if (isInSmokingArea) {
-                                setIsInSmokingArea(false);
-                                dispatch(Leave_SmokingArea());
-                                console.log("흡연구역 퇴장", isInSmokingArea);
-                            }
+                        if (isInSmokingArea) {
+                            setIsInSmokingArea(false);
+                            dispatch(Leave_SmokingArea());
+                            console.log("흡연구역 퇴장", isInSmokingArea);
                         }
                     }
                 }
@@ -631,14 +633,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
 
                 // 유한TV Zone
-                if ((currentPosition.x <= -132 && currentPosition.x >= -178)
-                    && (currentPosition.z <= -408 && currentPosition.z >= -448)) {
+                if ((currentPosition.x <= -108 && currentPosition.x >= -148) &&
+                    (currentPosition.z <= -410 && currentPosition.z >= -450)) {
                         console.log('유한TV Zone 진입')
-                    if(!yuhanTvZoneCameraFlag.current) {
-                        yuhanTvZoneCameraFlag.current = true
-                        setGsapCameraState(true)
-                        handleGSAPCamera(-149, 35, -230)
-                    }
+                        if(!yuhanTvZoneCameraFlag.current) {
+                            yuhanTvZoneCameraFlag.current = true
+                            setGsapCameraState(true)
+                            handleGSAPCamera(-128, 35, -250)
+                        }
                 }
                 else {
                     if(yuhanTvZoneCameraFlag.current) {

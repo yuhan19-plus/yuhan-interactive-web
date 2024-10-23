@@ -14,7 +14,6 @@
  * - 가로등 position, 그룹화(24/08/28)
  */
 import React from 'react'
-import { motion } from 'framer-motion-3d'
 
 // 공원
 import MainPark from './elements/park/MainPark'
@@ -57,7 +56,7 @@ const YuhanElements = () => {
             <SubPark />
 
             {/* 유한TV */}
-            <YuhanTV position={[-125, 55, -557.49]} rotation={[0,0,0]}/>
+            <YuhanTV position={[-125, 45, -557.49]} rotation={[0,0,0]}/>
         </>
     )
 }

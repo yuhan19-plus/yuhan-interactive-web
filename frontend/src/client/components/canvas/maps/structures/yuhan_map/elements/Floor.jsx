@@ -5,6 +5,7 @@ import { useBox } from '@react-three/cannon'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Zone } from '../../common/Zone'
+import { Arrow } from '../../common/Arrow'
 
 const Floor = ({onMove, ...props}) => {
     const viewMenuState = useSelector((state) => state.btnMenu)
@@ -35,14 +36,16 @@ const Floor = ({onMove, ...props}) => {
             </mesh>
 
             {/* Welcome Zone */}
+            <Arrow position={[-275, 15, -433]} scale={5} />
             <Zone position={[-286, -15, -420]} rotation={[0, 0, 0]} scale={4} />
             <Zone position={[-286, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
             <Zone position={[-286, -15, -445]} rotation={[0, 0, 0]} scale={4} />
 
             {/* 유한TV Zone */}
-            <Zone position={[-165, -15, -445]} rotation={[0, 0, 0]} scale={4} />
-            <Zone position={[-165, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
+            <Arrow position={[-128, 15, -430]} scale={5} />
+            <Zone position={[-140, -15, -445]} rotation={[0, 0, 0]} scale={4} />
             <Zone position={[-140, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
+            <Zone position={[-115, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
             {/* <mesh position={[-278, -5, -433]}>
                 <boxGeometry args={[15, 3, 15]} />
                 <meshStandardMaterial color='red' />
