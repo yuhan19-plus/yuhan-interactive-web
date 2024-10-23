@@ -17,6 +17,7 @@ import { myProfessorInfoReducer } from "./myProfessorInfoReducer";
 import { smokingAreaReducer } from "./smokingAreaReducer";
 import { deptInfoReducer } from "./deptInfoReducer";
 import { codingAreaReducer } from "./codingAreaReducer";
+import { guideReducer } from "./guideReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     kiosk: kioskReducer,
     teleport: miniMapReducer,
     deptInfo: deptInfoReducer,
+    guide: guideReducer,
 
     // 석재
     smokingArea: smokingAreaReducer,

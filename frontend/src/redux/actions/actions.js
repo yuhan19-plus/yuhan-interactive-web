@@ -165,6 +165,28 @@ export const yuhanBioMap = (pathData) => ({
     payload: pathData
 })
 
+// 가이드 - 성준
+export const initGuide = () => ({
+    type: INIT_GUIDE
+})
+export const welcomeGuide = () => ({
+    type: GUIDE_WELCOME
+})
+export const tvGuide = () => ({
+    type: GUIDE_TV
+})
+export const statueGuide = () => ({
+    type: GUIDE_STATUE
+})
+
+// 모달 - 성준
+export const initModal = () => ({
+    type: INIT_MODAL
+})
+export const adminEnterModal = () => ({
+    type: ADMIN_ENTER_MODAL
+})
+
 // 클라이언트 사이드 메뉴 - 성준
 export const initSideMenu = () =>({
     type: INIT_SIDE_MENU
@@ -200,28 +222,6 @@ export const reqForConsultation = () => ({
 })
 export const counselDateRegister = () => ({
     type: COUNSEL_DATE_REGISTER
-})
-
-// 가이드 - 성준
-export const initGuide = () => ({
-    type: INIT_GUIDE
-})
-export const welcomeGuide = () => ({
-    type: GUIDE_WELCOME
-})
-export const tvGuide = () => ({
-    type: GUIDE_TV
-})
-export const statueGuide = () => ({
-    type: GUIDE_STATUE
-})
-
-// 모달 - 성준
-export const initModal = () => ({
-    type: INIT_MODAL
-})
-export const adminEnterModal = () => ({
-    type: ADMIN_ENTER_MODAL
 })
 
 // 미니맵 상단 버튼 그룹 - 성준
