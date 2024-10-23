@@ -570,7 +570,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }  
 
-                //보물상자 영역
+                // 보물상자 영역 학교맵일 경우에 넣기 - 오자현 시작
                 // 유재라관
                 if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
                     handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
@@ -578,7 +578,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (!isGoldBoxArea1) {
                         setisGoldBoxArea1(true)
                         dispatch(Enter_GoldBoxArea('isZone1'));
-                        console.log("유재라관 보물상자 진입")
+                        // console.log("유재라관 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea1) {
@@ -594,7 +594,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (!isGoldBoxArea2) {
                         setisGoldBoxArea2(true)
                         dispatch(Enter_GoldBoxArea('isZone2'));
-                        console.log("테라스 보물상자 진입")
+                        // console.log("테라스 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea2) {
@@ -610,7 +610,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (!isGoldBoxArea3) {
                         setisGoldBoxArea3(true)
                         dispatch(Enter_GoldBoxArea('isZone3'));
-                        console.log("나눔의 숲 보물상자 진입")
+                        // console.log("나눔의 숲 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea3) {
@@ -619,6 +619,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         // console.log("나눔의 숲 보물상자 탈출")
                     }
                 }
+                // 오자현 끝
                 
             } else {
                 // return
@@ -706,11 +707,11 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
 
                 // 4사분면 : 자유영역
-                if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
+                if ((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
                     handleCamera(currentPosition.x + -100, currentPosition.y + 100, currentPosition.z + -100)
                     // 코딩체험 위치
                     if ((currentPosition.x <= 70 && currentPosition.x >= 30) && (currentPosition.z <= 220 && currentPosition.z >= 180)) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y , currentPosition.z - 100)
+                        handleCamera(currentPosition.x + 0, currentPosition.y, currentPosition.z - 100)
                         // 영역진입체크
                         if (isCodingArea === false) {
                             setIsCodingArea(true); // 상태 변경
@@ -721,9 +722,10 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if (isCodingArea === true) {
                             setIsCodingArea(false); // 상태 변경
                             dispatch(Leave_CodingArea()); // 리덕스 액션 디스패치
+                            // init_CodingArea
                             // console.log("코딩영역을 떠났습니다.");
                         }
-                    }    
+                    }
                 }
 
                 

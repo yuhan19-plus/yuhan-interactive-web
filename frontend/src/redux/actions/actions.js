@@ -91,11 +91,13 @@ export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
 export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
-// 코딩경험영역 - 자현
+// 코딩경험영역 - 자현 INIT_CODINGAREA
+export const INIT_CODINGAREA = 'INIT_CODINGAREA';
 export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
 export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
 // 보물상자영역 - 자현
+export const INIT_GOLDBOXAREA = 'INIT_GOLDBOXAREA';
 export const ENTER_GOLDBOXAREA = 'ENTER_GOLDBOXAREA';
 export const LEAVE_GOLDBOXAREA = 'LEAVE_GOLDBOXAREA';
 
@@ -327,6 +329,9 @@ export const deptInfoDeptFeatures = () => ({
 })
 
 //학과체험의 코딩영역
+export const init_CodingArea = () => ({
+    type: INIT_CODINGAREA
+})
 export const Enter_CodingArea= () => ({
     type:ENTER_CODINGAREA
 })
@@ -335,6 +340,9 @@ export const Leave_CodingArea= () => ({
 })
 
 //보물상자 영역
+export const init_GoldboxArea = () => ({
+    type: INIT_GOLDBOXAREA
+})
 export const Enter_GoldBoxArea = (zone) => ({
     type: ENTER_GOLDBOXAREA,
     zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달

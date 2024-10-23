@@ -13,13 +13,13 @@ export function codingAreaReducer(state = initialState, action) {
         case ENTER_CODINGAREA:
             return {
                 ...state,
-                value: !state.value,
+                value: true,
                 name: '진입'
             }
         case LEAVE_CODINGAREA:
             return {
                 ...state,
-                value: !state.value,
+                value: false,
                 name: '떠남'
             }
         default:

@@ -2,7 +2,7 @@
  * 오자현 
  */
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useGLTF } from '@react-three/drei'
 import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
@@ -10,33 +10,47 @@ import { useSelector } from 'react-redux';
 export function JavaCoin({ position, rotation }) {
   const { nodes, materials } = useGLTF('/assets/models/etc/JavaCoin.glb')
   const isZoneActive = useSelector((state) => state.goldBox.isZone2); // 2번 존상태
-  const [isEnd, setIsEnd] = useState(true);
 
   return (
     <group position={position} rotation={rotation} scale={0.5}>
       {isZoneActive && (
-        <motion.group
-          animate={{
-            y: isEnd ? [0, 5, 0] : 20,  // y 애니메이션은 isEnd에 따라 동작
-          }}
-          transition={{ duration: 2.5 }}
-          onAnimationComplete={() => setIsEnd(false)}  // y 애니메이션 완료 시 isEnd를 false로 설정
-        >
+        <>
           <motion.group
             animate={{
-              rotateY: [0, Math.PI * 2, 0],  // rotateY는 무한 반복
+              y: 20,  // y 애니메이션은 isEnd에 따라 동작
+            }}
+            transition={{ duration: 2.5 }}
+          >
+            <motion.group
+              animate={{
+                rotateY: [0, Math.PI * 2, 0],  // rotateY는 무한 반복
+              }}
+              transition={{
+                repeat: Infinity,  // 무한 반복
+                duration: 2.5  // 회전 속도
+              }}
+            >
+              <group position={[0, 0, 0.022]} rotation={[Math.PI / 2, 0, 0]} scale={[8.202, 0.517, 8.202]}>
+                <mesh geometry={nodes.Cylinder_1.geometry} material={materials.Material} />
+                <mesh geometry={nodes.Cylinder_2.geometry} material={materials.Java} />
+              </group>
+            </motion.group>
+          </motion.group>
+          <motion.group
+            animate={{
+              y: [10, -20, 10]
             }}
             transition={{
               repeat: Infinity,  // 무한 반복
-              duration: 2.5  // 회전 속도
+              duration: 2.5
             }}
           >
-            <group position={[0, 0, 0.022]} rotation={[Math.PI / 2, 0, 0]} scale={[8.202, 0.517, 8.202]}>
-              <mesh geometry={nodes.Cylinder_1.geometry} material={materials.Material} />
-              <mesh geometry={nodes.Cylinder_2.geometry} material={materials.Java} />
-            </group>
+            <mesh  position={[0, 20, 0]} rotation={[Math.PI / 2, 0, 0]} scale={7}>
+              <torusGeometry args={[5, 0.25, 16, 25]} />
+              <meshStandardMaterial color="yellow" />
+            </mesh>
           </motion.group>
-        </motion.group>
+        </>
       )}
     </group>
   );

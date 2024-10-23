@@ -4,10 +4,14 @@ import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import { CodingExperienceCode } from "../../../../../../../../data/commonData";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faJava } from "@fortawesome/free-brands-svg-icons";
+import { faC } from "@fortawesome/free-solid-svg-icons";
+import { faPython } from "@fortawesome/free-brands-svg-icons";
 
 const CodingExperience = ({ onResultCode }) => {
-    const [selectLanguage, setSelectLanguage] = useState('C');
-    const [num, setNum] = useState(5);
+    const [selectLanguage, setSelectLanguage] = useState('');
+    const [num, setNum] = useState('');
     const CZone = useSelector((state) => state.goldBox.hasVisitedZone1);// 1번 진입했었는지 여부
     const JavaZone = useSelector((state) => state.goldBox.hasVisitedZone2);// 2번 진입했었는지 여부
     const PythonZone = useSelector((state) => state.goldBox.hasVisitedZone3);// 3번 진입했었는지 여부
@@ -27,7 +31,9 @@ const CodingExperience = ({ onResultCode }) => {
     };
 
     useEffect(() => {
-        onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
+        if ((CZone || JavaZone || PythonZone) && selectLanguage) {
+            onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
+        }
     }, [num]);
 
     const splitCodes = CodingExperienceCode.map(code => {
@@ -44,50 +50,59 @@ const CodingExperience = ({ onResultCode }) => {
                 onPointerMove={(e) => e.stopPropagation()}
                 onPointerUp={(e) => e.stopPropagation()}
             >
-                <CodeTitle>
-                    <h4>언어 선택</h4>
-                    <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
-                        {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
-                            <>
-                                {CZone && (
-                                    <FormControlLabel value="C" control={<Radio />} label="C" />
-                                )}
-                                {JavaZone && (
-                                    <FormControlLabel value="Java" control={<Radio />} label="Java" />
-                                )}
-                                {PythonZone && (
-                                    <FormControlLabel value="Python" control={<Radio />} label="Python" />
-                                )}
-                            </>
-                        ):(
-                            <p>보물을 찾아야 함</p>
-                        )}
-                    </RadioGroup>
-                    <p>간단한 구구단 코드</p>
-                    <p>0~9까지만 가능</p>
-                </CodeTitle>
-                <CodeContainer>
-                    {selectLanguage === "C" &&
-                        <>
-                            {splitCodes[0].part1}
-                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                            {splitCodes[0].part2}
-                        </>}
-                    {selectLanguage === "Java" &&
-                        <>
-                            {splitCodes[1].part1}
-                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                            {splitCodes[1].part2}
-                        </>
-                    }
-                    {selectLanguage === "Python" &&
-                        <>
-                            {splitCodes[2].part1}
-                            <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} placeholder="5" />
-                            {splitCodes[2].part2}
-                        </>
-                    }
-                </CodeContainer>
+                <IconContainer>
+                    {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconStyle icon={faJava} />)}
+                    {!CZone ? (<IconStyle icon={faC} />) : (<VisitedIconStyle icon={faC} />)}
+                    {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconStyle icon={faPython} />)}
+                </IconContainer>
+                {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
+                    <>
+                        <CodeTitle>
+                            <ChoseLan>언어 선택</ChoseLan>
+                            <RadioGroup row value={selectLanguage} onChange={handleLanguageChange}>
+                                <>
+                                    {CZone && (
+                                        <FormControlLabel value="C" control={<Radio />} label="C" />
+                                    )}
+                                    {JavaZone && (
+                                        <FormControlLabel value="Java" control={<Radio />} label="Java" />
+                                    )}
+                                    {PythonZone && (
+                                        <FormControlLabel value="Python" control={<Radio />} label="Python" />
+                                    )}
+                                </>
+
+                            </RadioGroup>
+                            <p>간단한 구구단 코드</p>
+                            <p>0~9까지만 가능</p>
+                        </CodeTitle>
+                        <CodeContainer>
+                            {selectLanguage === "C" &&
+                                <>
+                                    {splitCodes[0].part1}
+                                    <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} />
+                                    {splitCodes[0].part2}
+                                </>}
+                            {selectLanguage === "Java" &&
+                                <>
+                                    {splitCodes[1].part1}
+                                    <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} />
+                                    {splitCodes[1].part2}
+                                </>
+                            }
+                            {selectLanguage === "Python" &&
+                                <>
+                                    {splitCodes[2].part1}
+                                    <Input type="number" value={num} onChange={handleNumChange} style={{ width: "2vw" }} />
+                                    {splitCodes[2].part2}
+                                </>
+                            }
+                        </CodeContainer>
+                    </>
+                ) : (
+                    <GoldBoxInfo>보물을 찾아 언어를 얻어주세요</GoldBoxInfo>
+                )}
+
             </MainContainer>
         </Html>
     );
@@ -103,13 +118,8 @@ const MainContainer = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-
-    width: ${(props) =>
-        props.$selectLanguage === 'C' ? '25vw' :
-            props.$selectLanguage === 'Java' ? '32vw' : '20vw'};
-    height: ${(props) =>
-        props.$selectLanguage === 'C' ? '40vh' :
-            props.$selectLanguage === 'Java' ? '35vh' : '30vh'};
+    width:35vw;
+    height: 35vh;
 `;
 
 const CodeContainer = styled.div`
@@ -123,7 +133,32 @@ const CodeTitle = styled.div`
     text-align: center;
 `
 
-const CodeArea = styled.div`
-    width: 100%;
+const GoldBoxInfo = styled.div`
+    font-size: large;
+    font-weight: 900;
+    color: red;
 
+`
+const IconContainer = styled.div`
+    position: absolute; /* 상단에 고정 */
+    top: 0; /* 위쪽에 고정 */
+    height: 10%; /* 높이를 줄여 아이콘만 상단에 고정되게 설정 */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px; /* 아이콘과 경계 사이에 여백 추가 */
+`;
+
+const IconStyle = styled(FontAwesomeIcon)`
+    font-size: 2rem; /* 아이콘 크기 조정 */
+`;
+const VisitedIconStyle = styled(FontAwesomeIcon)`
+    font-size: 2rem; /* 아이콘 크기 조정 */
+    color: red;
+`;
+const ChoseLan = styled.div`
+    padding: 0;
+    margin: 0;
+    margin-top: 4vh;
 `
