@@ -567,7 +567,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }
 
-                // 나눔의 숲 3사분면, 4사분면(4-1, 4-2)
+                // 나눔의 숲 3사분면, 4사분면
                 if (currentPosition.z < -200 && currentPosition.z >= -320) {
                     if (currentPosition.x > 58 && currentPosition.x <= 190) {
                         handleCamera(currentPosition.x - 50, currentPosition.y + 100, currentPosition.z + 50)

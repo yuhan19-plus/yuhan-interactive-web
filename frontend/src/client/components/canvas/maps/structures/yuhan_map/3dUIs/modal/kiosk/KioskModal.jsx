@@ -98,11 +98,7 @@ const KioskModal = ({kioskName, position, ...props}) => {
                 position={ position }
                 center
             >
-                <KioskWrapper
-                    onPointerUp={(e) => {
-                        e.stopPropagation()
-                    }}
-                >
+                <KioskWrapper>
                     <KioskHeader>
                         <b>{kioskName}</b>
                     </KioskHeader>

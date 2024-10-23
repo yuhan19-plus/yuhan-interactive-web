@@ -19,7 +19,6 @@ const Floor = ({onMove, ...props}) => {
                 ref={meshRef}
                 castShadow
                 receiveShadow
-                onPoint
                 onPointerUp={(e) => {
                     if(!aerialViewStateValue) {
                         const currentPosition = [e.point.x, 0.3, e.point.z]
