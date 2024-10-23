@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_First_Work, Leave_First_Work, Enter_Second_Work, Leave_Second_Work, Enter_Third_Work, Leave_Third_Work, Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -79,6 +79,11 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 학과체험의 코딩영역 상태관리
     const [isCodingArea, setIsCodingArea]= useState(false);
+
+    // 갤러리 영역 상태관리
+    const [isFirstWork, setIsFirstWork] = useState(false);
+    const [isSecondWork, setIsSecondWork] = useState(false);
+    const [isThirdWork, setIsThirdWork] = useState(false);
 
     const actions = useMemo(() => {
         return animations.reduce((acc, clip) => {
@@ -646,7 +651,55 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
-                    handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + -100)
+                    handleCamera(currentPosition.x + 90, currentPosition.y + 40, currentPosition.z)
+                    // 3등 작품 영역
+                    if ((currentPosition.x >= -145 && currentPosition.x <= -107) && (currentPosition.z >= 150 && currentPosition.z <= 191)) {
+                        if (!isThirdWork) {
+                            setIsThirdWork(true);
+                            dispatch(Enter_Third_Work());
+                            console.log("3등 작품 영역에 들어왔습니다.");
+                        }
+                    }
+
+                    // 1등 작품 영역
+                    else if ((currentPosition.x >= -145 && currentPosition.x <= -107) && (currentPosition.z >= 85 && currentPosition.z <= 121)) {
+                        if (!isFirstWork) {
+                            setIsFirstWork(true);
+                            dispatch(Enter_First_Work());
+                            console.log("1등 작품 영역에 들어왔습니다.");
+                        }
+                    }
+
+                    // 2등 작품 영역
+                    else if ((currentPosition.x >= -145 && currentPosition.x <= -107) && (currentPosition.z >= 5 && currentPosition.z <= 57)) {
+                        if (!isSecondWork) {
+                            setIsSecondWork(true);
+                            dispatch(Enter_Second_Work());
+                            console.log("2등 작품 영역에 들어왔습니다.");
+                        }
+                    }
+
+                    // 퇴장 처리
+                    else {
+                        // 3등 영역 퇴장
+                        if (isThirdWork){
+                            setIsThirdWork(false);
+                            dispatch(Leave_Third_Work());
+                            console.log("3등 작품 영역에서 나갔습니다.");
+                        }
+                        // 1등 영역 퇴장
+                        else if (isFirstWork){
+                            setIsFirstWork(false);
+                            dispatch(Leave_First_Work());
+                            console.log("1등 작품 영역에서 나갔습니다.");
+                        }
+                        // 2등 영역 퇴장
+                        else if (isSecondWork){
+                            setIsSecondWork(false);
+                            dispatch(Leave_Second_Work());
+                            console.log("2등 작품 영역에서 나갔습니다.");
+                        }
+                    }
                 }
 
                 // 4사분면 : 자유영역

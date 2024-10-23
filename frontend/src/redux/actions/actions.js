@@ -95,6 +95,14 @@ export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
 export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
+// 갤러리 영역 - 석재
+export const ENTER_FIRST_WORK = 'ENTER_FIRST_WORK'
+export const LEAVE_FIRST_WORK = 'LEAVE_FIRST_WORK'
+export const ENTER_SECOND_WORK = 'ENTER_SECOND_WORK'
+export const LEAVE_SECOND_WORK = 'LEAVE_SECOND_WORK'
+export const ENTER_THIRD_WORK = 'ENTER_THIRD_WORK'
+export const LEAVE_THIRD_WORK = 'LEAVE_THIRD_WORK'
+
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
 export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
@@ -328,4 +336,25 @@ export const Enter_CodingArea= () => ({
 })
 export const Leave_CodingArea= () => ({
     type:LEAVE_CODINGAREA 
+})
+
+// 갤러리 영역
+export const Enter_First_Work= () => ({
+    type:ENTER_FIRST_WORK
+})
+export const Leave_First_Work= () => ({
+    type:LEAVE_FIRST_WORK
+})
+export const Enter_Second_Work= () => ({
+    type:ENTER_SECOND_WORK
+})
+export const Leave_Second_Work= () => ({
+    type:LEAVE_SECOND_WORK 
+})
+
+export const Enter_Third_Work= () => ({
+    type:ENTER_THIRD_WORK
+})
+export const Leave_Third_Work= () => ({
+    type:LEAVE_THIRD_WORK 
 })

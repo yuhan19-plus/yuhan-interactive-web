@@ -17,6 +17,7 @@ import { myProfessorInfoReducer } from "./myProfessorInfoReducer";
 import { smokingAreaReducer } from "./smokingAreaReducer";
 import { deptInfoReducer } from "./deptInfoReducer";
 import { codingAreaReducer } from "./codingAreaReducer";
+import { galleryAreaReducer } from "./galleryAreaReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
 
     // 석재
     smokingArea: smokingAreaReducer,
+    galleryArea: galleryAreaReducer, 
 
     // 자현
     bus: busReducer,

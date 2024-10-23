@@ -7,6 +7,7 @@ import BioGroup from './dept/bio/BioGroup'
 import EtcGroup from './dept/etc/EtcGroup'
 import DeptInfoGroup from './dept/info/DeptInfoGroup'
 import CodingGroup from './CodingGroup'
+import GalleryGroup from './dept/gallery/GalleryGroup'
 
 const DeptElements = ({ groundMapName }) => {
     return (
@@ -15,6 +16,7 @@ const DeptElements = ({ groundMapName }) => {
                 <>
                     <DeptInfoGroup groundMapName={groundMapName} />
                     <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
+                    <GalleryGroup />
                     {groundMapName === 'yuhan_bio_map' && (
                         // 바이오
                         <BioGroup />
