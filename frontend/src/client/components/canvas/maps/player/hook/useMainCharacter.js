@@ -11,16 +11,13 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, welcomeGuide, initGuide, tvGuide, statueGuide } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
     const [isAnimating, setIsAnimating] = useState(false)
     const [gsapCameraState, setGsapCameraState] = useState(false)
     const groundMapState = useSelector((state) => state.groundMap)
-    const kiosk = useSelector((state) => state.kiosk)
-    const kioskValue = kiosk.value
-    const kioskName = kiosk.name
     const dispatch = useDispatch()
     // 추가적인 useRef 선언으로 상태를 추적
     const kioskDispatchFlag = useRef(false)
@@ -299,6 +296,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                 }
 
+                // 학생회관과 5&6호관 사이
                 if ((currentPosition.x > 147 && currentPosition.x <= 224)
                     && (currentPosition.z >= -28 && currentPosition.z < 285)) {
                     handleCamera(currentPosition.x + 30, currentPosition.y + 200, currentPosition.z - 20)
@@ -512,6 +510,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                     }
                     if (currentPosition.z <= -270) {
+                        // console.log("여긴 어디?")
                         handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
                     }
                 }
@@ -618,6 +617,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이
                 if (currentPosition.z <= -340) {
                     if (currentPosition.x >= -128 && currentPosition.x <= -30) {
+                        // console.log("학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이")
                         handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
                     }
                 }
@@ -626,11 +626,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                 if ((currentPosition.x <= -260 && currentPosition.x >= -286) &&
                     (currentPosition.z <= -420 && currentPosition.z >= -450)) {
                         console.log('Welcome Zone 진입')
-                    if(!welcomeZoneCameraFlag.current) {
-                        welcomeZoneCameraFlag.current = true
-                        setGsapCameraState(true)
-                        handleGSAPCamera(currentPosition.x + 160, currentPosition.y + 30, currentPosition.z + 60)
-                    }
+                        if(!welcomeZoneCameraFlag.current) {
+                            welcomeZoneCameraFlag.current = true
+                            setGsapCameraState(true)
+                            handleGSAPCamera(-115, 30, -370)
+                            dispatch(welcomeGuide())
+                        }
                 }
                 else {
                     if(welcomeZoneCameraFlag.current) {
@@ -638,6 +639,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if(gsapCameraState) {
                             console.log("Welcome setGsapCameraState")
                             setGsapCameraState(false)
+                            dispatch(initGuide())
                         }
                     }
                 }
@@ -650,6 +652,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             yuhanTvZoneCameraFlag.current = true
                             setGsapCameraState(true)
                             handleGSAPCamera(-128, 35, -250)
+                            dispatch(tvGuide())
                         }
                 }
                 else {
@@ -658,6 +661,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if(gsapCameraState) {
                             console.log("유한TV setGsapCameraState")
                             setGsapCameraState(false)
+                            dispatch(initGuide())
                         }
                     }
                 }
@@ -672,7 +676,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 if(!yuhanStatueCameraFlag.current) {
                                     yuhanStatueCameraFlag.current = true
                                     setGsapCameraState(true)
-                                    handleGSAPCamera(currentPosition.x + 130, currentPosition.y + 30, currentPosition.z + 130)
+                                    handleGSAPCamera(172, 30, -385)
+                                    dispatch(statueGuide())
                                 }
                                 if (!isInStatueZone) {
                                     setIsInStatueZone(true);
@@ -686,6 +691,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 if(gsapCameraState) {
                                     console.log("동상 setGsapCameraState")
                                     setGsapCameraState(false)
+                                    dispatch(initGuide())
                                 }
                                 if (isInStatueZone) {
                                     setIsInStatueZone(false);

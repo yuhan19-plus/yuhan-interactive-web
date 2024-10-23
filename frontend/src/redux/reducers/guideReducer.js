@@ -22,13 +22,13 @@ export function guideReducer(state = initialState, action) {
         case GUIDE_TV:
             return {
                 ...state,
-                valse: !state.value,
+                value: !state.value,
                 guideAreaName: 'TVZone'
             }
         case GUIDE_STATUE:
             return {
                 ...state,
-                valse: !state.value,
+                value: !state.value,
                 guideAreaName: 'StatueZone'
             }
         default:
