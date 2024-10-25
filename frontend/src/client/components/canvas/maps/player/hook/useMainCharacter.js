@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, Enter_GoldBoxArea, Leave_GoldBoxArea } from "../../../../../../redux/actions/actions"
+import { EnterCodingArea, LeaveCodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, EnterGoldBoxArea, LeaveGoldBoxArea, initCodingArea, initBusStation } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -228,20 +228,20 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (!isInBusZone) {
                         setIsInBusZone(true); // 상태 변경
                         dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
-                        console.log("버스존 1에 진입했습니다.");
+                        // console.log("버스존 1에 진입했습니다.");
                     }
                 } else if ((currentPosition.x <= 522 && currentPosition.x >= 482) && (currentPosition.z >= -257 && currentPosition.z <= -217)) {
                     handleCamera(currentPosition.x + 25, currentPosition.y + 20, currentPosition.z - 90)
                     if (!isInBusZone) {
                         setIsInBusZone(true); // 상태 변경
                         dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
-                        console.log("버스존 2에 진입했습니다.");
+                        // console.log("버스존 2에 진입했습니다.");
                     }
                 } else if (isInBusZone) {
                     setIsInBusZone(false); // 상태를 false로 변경
                     dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
                     dispatch(leaveBusStationTwo()); // 리덕스 상태를 false로 설정
-                    console.log("버스존을 벗어났습니다.");
+                    // console.log("버스존을 벗어났습니다.");
                 }
                 else {
                     if (kioskDispatchFlag.current) {
@@ -577,13 +577,13 @@ export const useMainCharacter = ({ position, myChar }) => {
                     // 영역진입체크
                     if (!isGoldBoxArea1) {
                         setisGoldBoxArea1(true)
-                        dispatch(Enter_GoldBoxArea('isZone1'));
+                        dispatch(EnterGoldBoxArea('isZone1'));
                         // console.log("유재라관 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea1) {
                         setisGoldBoxArea1(false);
-                        dispatch(Leave_GoldBoxArea('isZone1', 'hasVisitedZone1'))
+                        dispatch(LeaveGoldBoxArea('isZone1', 'hasVisitedZone1'))
                         // console.log("유재라관 보물상자 탈출")
                     }
                 }
@@ -593,13 +593,13 @@ export const useMainCharacter = ({ position, myChar }) => {
                     // 영역진입체크
                     if (!isGoldBoxArea2) {
                         setisGoldBoxArea2(true)
-                        dispatch(Enter_GoldBoxArea('isZone2'));
+                        dispatch(EnterGoldBoxArea('isZone2'));
                         // console.log("테라스 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea2) {
                         setisGoldBoxArea2(false);
-                        dispatch(Leave_GoldBoxArea('isZone2', 'hasVisitedZone2'))
+                        dispatch(LeaveGoldBoxArea('isZone2', 'hasVisitedZone2'))
                         // console.log("테라스 보물상자 탈출")
                     }
                 }
@@ -609,18 +609,18 @@ export const useMainCharacter = ({ position, myChar }) => {
                     // 영역진입체크
                     if (!isGoldBoxArea3) {
                         setisGoldBoxArea3(true)
-                        dispatch(Enter_GoldBoxArea('isZone3'));
+                        dispatch(EnterGoldBoxArea('isZone3'));
                         // console.log("나눔의 숲 보물상자 진입")
                     }
                 } else {
                     if (isGoldBoxArea3) {
                         setisGoldBoxArea3(false);
-                        dispatch(Leave_GoldBoxArea('isZone3', 'hasVisitedZone3'))
+                        dispatch(LeaveGoldBoxArea('isZone3', 'hasVisitedZone3'))
                         // console.log("나눔의 숲 보물상자 탈출")
                     }
                 }
+                dispatch(initCodingArea())
                 // 오자현 끝
-                
             } else {
                 // return
 
@@ -714,21 +714,20 @@ export const useMainCharacter = ({ position, myChar }) => {
                         handleCamera(currentPosition.x + 0, currentPosition.y, currentPosition.z - 100)
                         // 영역진입체크
                         if (isCodingArea === false) {
-                            setIsCodingArea(true); // 상태 변경
-                            dispatch(Enter_CodingArea()); // 리덕스 액션 디스패치
+                            setIsCodingArea(true);
+                            dispatch(EnterCodingArea()); // 리덕스 액션 디스패치
                             // console.log("코딩영역에 진입했습니다.");
                         }
                     } else {
                         if (isCodingArea === true) {
-                            setIsCodingArea(false); // 상태 변경
-                            dispatch(Leave_CodingArea()); // 리덕스 액션 디스패치
-                            // init_CodingArea
+                            setIsCodingArea(false);
+                            dispatch(LeaveCodingArea()); // 리덕스 액션 디스패치
+                            // dispatch(initCodingArea())
                             // console.log("코딩영역을 떠났습니다.");
                         }
                     }
                 }
-
-                
+                dispatch(initBusStation()); // 버스정류장 초기화
             }
 
             camera.lookAt(currentPosition)

@@ -25,7 +25,7 @@ export function BusStationTwo({ position, ...props }) {
   const z = position[2];
 
   useEffect(() => {
-    console.log("상태", directionsState)
+    // console.log("상태", directionsState)
     scene.traverse((obj) => {
       if (obj.isObject3D) {
         obj.castShadow = true

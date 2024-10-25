@@ -1,3 +1,7 @@
+/**
+ * 오자현
+ * 추가사항 도착했었는지 여부를 가지고 제일 먼저 찾은 녀석을 기본값으로 하도록
+ */
 import { FormControlLabel, Input, Radio, RadioGroup } from "@mui/material";
 import { Html } from "@react-three/drei";
 import React, { useEffect, useState } from 'react';
@@ -36,6 +40,17 @@ const CodingExperience = ({ onResultCode }) => {
         }
     }, [num]);
 
+    useEffect(() => {
+        // 가장 먼저 true가 된 Zone을 찾아서 언어를 설정
+        if (CZone) {
+            setSelectLanguage('C');
+        } else if (JavaZone) {
+            setSelectLanguage('Java');
+        } else if (PythonZone) {
+            setSelectLanguage('Python');
+        }
+    }, [CZone, JavaZone, PythonZone]); // CZone, JavaZone, PythonZone 값이 변경될 때마다 실행
+
     const splitCodes = CodingExperienceCode.map(code => {
         const [part1, part2] = code.split("'정수형데이터'");
         return { part1, part2 };
@@ -51,9 +66,9 @@ const CodingExperience = ({ onResultCode }) => {
                 onPointerUp={(e) => e.stopPropagation()}
             >
                 <IconContainer>
-                    {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconStyle icon={faJava} />)}
-                    {!CZone ? (<IconStyle icon={faC} />) : (<VisitedIconStyle icon={faC} />)}
-                    {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconStyle icon={faPython} />)}
+                    {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconJava icon={faJava} />)}
+                    {!CZone ? (<IconStyle icon={faC} />) : (<VisitedIconC icon={faC} />)}
+                    {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconPython icon={faPython} />)}
                 </IconContainer>
                 {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
                     <>
@@ -137,7 +152,6 @@ const GoldBoxInfo = styled.div`
     font-size: large;
     font-weight: 900;
     color: red;
-
 `
 const IconContainer = styled.div`
     position: absolute; /* 상단에 고정 */
@@ -147,15 +161,23 @@ const IconContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px; /* 아이콘과 경계 사이에 여백 추가 */
+    padding: 10px;
 `;
 
 const IconStyle = styled(FontAwesomeIcon)`
     font-size: 2rem; /* 아이콘 크기 조정 */
 `;
-const VisitedIconStyle = styled(FontAwesomeIcon)`
+const VisitedIconJava = styled(FontAwesomeIcon)`
     font-size: 2rem; /* 아이콘 크기 조정 */
-    color: red;
+    color: red; // 아이콘 색
+`;
+const VisitedIconC = styled(FontAwesomeIcon)`
+    font-size: 2rem; /* 아이콘 크기 조정 */
+    color: purple; // 아이콘 색
+`;
+const VisitedIconPython = styled(FontAwesomeIcon)`
+    font-size: 2rem; /* 아이콘 크기 조정 */
+    color: blue; // 아이콘 색
 `;
 const ChoseLan = styled.div`
     padding: 0;

@@ -17,7 +17,7 @@ const ClientIndex = () => {
   // 로딩기능부분
 
   useEffect(() => {
-    console.log('ClientIndex 컴포넌트가 마운트되었습니다.');
+    // console.log('ClientIndex 컴포넌트가 마운트되었습니다.');
 
     // YuhanMap.glb 로드 여부를 확인하는 함수
     const checkIfYuhanMapLoaded = () => {
@@ -29,7 +29,7 @@ const ClientIndex = () => {
     if (checkIfYuhanMapLoaded()) {
       // 이미 YuhanMap.glb가 로드된 경우
       setIsLoaded(true);
-      console.log('이미 YuhanMap.glb가 로드되었습니다.');
+      // console.log('이미 YuhanMap.glb가 로드되었습니다.');
     } else {
       // YuhanMap.glb를 로드하는 로직
       const loader = new GLTFLoader();

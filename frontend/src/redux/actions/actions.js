@@ -82,6 +82,7 @@ export const ENTER_STUDENTKIOSK = 'ENTER_STUDENTKIOSK';
 export const LEAVE_STUDENTKIOSK = 'LEAVE_STUDENTKIOSK';
 
 // 버스 정류장 - 자현
+export const INIT_BUS_STATION='INIT_BUS_STATION';
 export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
 export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
 export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
@@ -224,21 +225,22 @@ export const smokingAreaView = () => ({
 
 
 // 버스정류장 진입여부
+export const initBusStation = () => ({
+    type:INIT_BUS_STATION,
+})
 export const enterBusStationOne = () => ({
     type: ENTER_BUS_STATION_ONE,
 });
-
 export const leaveBusStationOne = () => ({
     type: LEAVE_BUS_STATION_ONE,
 });
-
 export const enterBusStationTwo = () => ({
     type: ENTER_BUS_STATION_TWO,
 });
-
 export const leaveBusStationTwo = () => ({
     type: LEAVE_BUS_STATION_TWO,
 });
+
 // 키오스크
 export const initKiosk = () => ({
     type: INIT_KIOSK
@@ -329,13 +331,13 @@ export const deptInfoDeptFeatures = () => ({
 })
 
 //학과체험의 코딩영역
-export const init_CodingArea = () => ({
+export const initCodingArea = () => ({
     type: INIT_CODINGAREA
 })
-export const Enter_CodingArea= () => ({
+export const EnterCodingArea= () => ({
     type:ENTER_CODINGAREA
 })
-export const Leave_CodingArea= () => ({
+export const LeaveCodingArea= () => ({
     type:LEAVE_CODINGAREA 
 })
 
@@ -343,11 +345,11 @@ export const Leave_CodingArea= () => ({
 export const init_GoldboxArea = () => ({
     type: INIT_GOLDBOXAREA
 })
-export const Enter_GoldBoxArea = (zone) => ({
+export const EnterGoldBoxArea = (zone) => ({
     type: ENTER_GOLDBOXAREA,
     zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
 });
-export const Leave_GoldBoxArea = (zone, hasVisited) => ({
+export const LeaveGoldBoxArea = (zone, hasVisited) => ({
     type: LEAVE_GOLDBOXAREA,
     zone: zone, // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
     hasVisited: hasVisited // 'hasVisitedZone1', 'hasVisitedZone2', 'hasVisitedZone3' 중 하나를 전달
