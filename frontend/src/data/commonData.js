@@ -1,3 +1,6 @@
+// fontUrl - 성준
+export const FONT_URL = 'assets/fonts/HakgyoansimWoojuR.json'
+
 // 화면 크기 - 임성준
 export const aspectRatio = window.innerWidth / window.innerHeight
 

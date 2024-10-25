@@ -1,12 +1,14 @@
-import { faBus, faPlane, faSmoking } from '@fortawesome/free-solid-svg-icons'
+import { faBus, faLocationDot, faPlane, faSmoking } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { aerialView, directionsView, initKiosk, smokingAreaView } from '../../../redux/actions/actions'
+import { aerialView, campusGuideView, directionsView, initKiosk, smokingAreaView } from '../../../redux/actions/actions'
 
 const BtnMenuGroup = () => {
     const dispatch = useDispatch()
+
+    // 미니맵 상단 버튼 handle메서드
     const handleAerialView = (e) => {
         e.stopPropagation()
         dispatch(initKiosk())
@@ -20,6 +22,11 @@ const BtnMenuGroup = () => {
         e.stopPropagation()
         dispatch(smokingAreaView())
     }
+    const handleGuideView = (e) => {
+        e.stopPropagation()
+        dispatch(campusGuideView())
+    }
+
     return (
         <BtnMenuWrapper>
             <BtnList>
@@ -31,6 +38,9 @@ const BtnMenuGroup = () => {
                 </BtnItem>
                 <BtnItem onClick={handleDirectionsView} data-tooltip='찾아오는 길'>
                     <FontAwesomeIcon icon={faBus} />
+                </BtnItem>
+                <BtnItem onClick={handleGuideView} data-tooltip='캠퍼스안내'>
+                    <FontAwesomeIcon icon={faLocationDot} />
                 </BtnItem>
             </BtnList>
         </BtnMenuWrapper>

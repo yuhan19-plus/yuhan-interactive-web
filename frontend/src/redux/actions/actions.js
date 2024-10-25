@@ -73,11 +73,14 @@ export const DEPT_INFO_LICENSE = 'DEPT_INFO_LICENSE' // 자격증
 export const DEPT_INFO_DEPT_FEATURES = 'DEPT_INFO_DEPT_FEATURES' // 학과특징
 
 // 미니맵 상단 버튼 그룹 - 성준
+// 항공뷰 버튼 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 // 찾아오는 길버튼 - 자현
 export const DIRECTIONS_VIEW = 'DIRECTIONS_VIEW'
-// 미니맵 흡연구역 버튼 - 석재
+// 흡연구역 버튼 - 석재
 export const SMOKINGAREA_VIEW = 'SMOKINGAREA_VIEW'
+// 캠퍼스안내 버튼 - 성준
+export const GUIDE_VIEW = 'GUIDE_VIEW'
 
 //입구 동상 - 정민
 export const ENTER_STATUE = 'ENTER_STATUE';
@@ -225,16 +228,21 @@ export const counselDateRegister = () => ({
 })
 
 // 미니맵 상단 버튼 그룹 - 성준
+// 미니맵 상단 항공뷰 버튼 - 성준
 export const aerialView = () => ({
     type: AERIAL_VIEW
 })
-// 미니맵 상단 찾아오는 길 버튼
+// 미니맵 상단 찾아오는 길 버튼 - 자현
 export const directionsView = () => ({
     type: DIRECTIONS_VIEW
 })
-// 미니냅 상단 흡연구역 버튼 - 석재
+// 미니맵 상단 흡연구역 버튼 - 석재
 export const smokingAreaView = () => ({
     type: SMOKINGAREA_VIEW
+})
+// 미니맵 상단 캠퍼스안내 버튼 - 성준
+export const campusGuideView = () => ({
+    type: GUIDE_VIEW
 })
 
 

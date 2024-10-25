@@ -12,13 +12,12 @@ import Swal from 'sweetalert2'
 
 const MiniMap = () => {
     const myChar = useSelector((state) => state.mChar)
-    const kioskState = useSelector((state) => state.kiosk)
     const dispatch = useDispatch()
     const player = myChar.name
     const cameraPosition = [0, 1300, 0]
 
     const handleTeleport = (teleportPosition) => {
-        console.log("Teleporting to:", teleportPosition)
+        // console.log("Teleporting to:", teleportPosition)
         dispatch(miniMapTeleport(teleportPosition))
     }
 

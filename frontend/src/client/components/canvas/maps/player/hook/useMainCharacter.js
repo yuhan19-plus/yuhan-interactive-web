@@ -30,10 +30,13 @@ export const useMainCharacter = ({ position, myChar }) => {
     const deptInfoDeptFeaturesDispatchFlag = useRef(false)
     const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
 
+    // 2~3개의 변수만 사용해서 코드 수정할 부분 - 성준
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
     const directionsState = btnValue.value && btnValue.btnMenuName === 'directionsView'
     const smokingAreaState = btnValue.value && btnValue.btnMenuName === 'smokingAreaView'
+    const campusGuideViewValue = btnValue.value
+    const campusGuideViewName = btnValue.btnMenuName
 
     // 텔레포트
     const teleportState = useSelector((state) => state.teleport)
@@ -189,6 +192,18 @@ export const useMainCharacter = ({ position, myChar }) => {
             });
         }
     }, [smokingAreaState, camera]);
+
+    useEffect(() => {
+        if (campusGuideViewValue && campusGuideViewName === 'campusGuideView') {
+            gsap.to(camera.position, {
+                x: 1000,
+                y: 1000,
+                z: -1000,
+                duration: 1,
+                ease: 'power2.inOut'
+            })
+        }
+    }, [campusGuideViewValue, campusGuideViewName])
 
     // 카메라 설정 부분
     const handleGSAPCamera = (x, y, z) => {
@@ -510,9 +525,15 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                     }
                     if (currentPosition.z <= -270) {
-                        // console.log("여긴 어디?")
+                        // console.log("자유관 근처")
                         handleCamera(currentPosition.x + 180, currentPosition.y + 300, currentPosition.z - 180)
                     }
+                }
+
+                if((currentPosition.x <= -270 && currentPosition.x > -527) &&
+                    (currentPosition.z <= -254 && currentPosition.z > -528)) {
+                        // console.log("Welcome Zone 밖")
+                        handleCamera(currentPosition.x + 300, currentPosition.y + 150, currentPosition.z)
                 }
 
                 // 나눔의 숲 큰 입구
@@ -585,10 +606,6 @@ export const useMainCharacter = ({ position, myChar }) => {
                 if((currentPosition.x >= -69 && currentPosition.x <= 58) &&
                     (currentPosition.z < -200 && currentPosition.z >= -320)) {
                         handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 50)
-                        // if ((currentPosition.x >= -69 && currentPosition.x < -30) &&
-                        //     (currentPosition.z < -200 && currentPosition.z >= -320)) {
-                        //         handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
-                        // }
                         // 흡연구역 이벤트 발생 지역
                         if ((currentPosition.x <= 58 && currentPosition.x >= 25) &&
                             (currentPosition.z <= -240 && currentPosition.z >= -280)) {
@@ -711,7 +728,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
 
                 // 1사분면 : 학과소개영역
-                if((currentPosition.x > 0 && currentPosition.x <= 250) && (currentPosition.z >= -250 && currentPosition.z <= 0)) {
+                if((currentPosition.x > 0 && currentPosition.x <= 250) &&
+                    (currentPosition.z >= -250 && currentPosition.z <= 0)) {
                     handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
                     // handleCamera(currentPosition.x + -50, currentPosition.y + 50, currentPosition.z + 50)
 

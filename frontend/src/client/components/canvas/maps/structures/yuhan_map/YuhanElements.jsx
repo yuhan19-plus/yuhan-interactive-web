@@ -32,12 +32,16 @@ import TerraceGroup from './elements/TerraceGroup'
 import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
+import GuideGroup from './elements/GuideGroup'
 
 const YuhanElements = () => {
     return (
         <>
             {/* 유한대 Welcome */}
             <Welcome />
+
+            {/* 가이드 뷰일 경우 */}
+            <GuideGroup />
 
             {/* 그룹화 */}
             <BuildingGroup />

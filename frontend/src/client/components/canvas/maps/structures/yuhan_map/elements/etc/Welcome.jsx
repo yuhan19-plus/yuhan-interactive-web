@@ -12,16 +12,17 @@ import { DesignDeptHeadCharacter } from '../../../../player/dept/DesignDeptHeadC
 import { FoodDeptHeadCharacter } from '../../../../player/dept/FoodDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter'
 import { useSelector } from 'react-redux'
+import { FONT_URL } from '../../../../../../../../data/commonData'
 
 const Welcome = () => {
     const groundMapState = useSelector((state) => state.groundMap)
     const groundMapName = groundMapState.mapName
-    const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
+    
     const targetRef = useRef()
     const lightRef = useRef(null)
     useHelper(lightRef, THREE.SpotLightHelper, 5)
     const fontStyle = {
-        font: fontUrl,
+        font: FONT_URL,
         letterSpacing: 0.01,
         height: 2,
         lineHeight: 1,
