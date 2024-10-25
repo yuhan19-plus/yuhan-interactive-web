@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { board, consultation, deptRec, food, initChar, yhMap } from '../../../../redux/actions/actions';
 import Swal from 'sweetalert2';
+import styled from 'styled-components';
 
 const MainSideBarMenu = () => {
     const dispatch = useDispatch()
@@ -43,8 +44,8 @@ const MainSideBarMenu = () => {
     const [cookies] = useCookies(['user']);
 
     return (
-        <>
-            <div>
+        <MainSideBarMenuWrapper>
+            <MainSideBarMenuItem>
                 <FontAwesomeIcon icon={faSchool} />
                 <span>
                     <a onClick={() => {
@@ -64,85 +65,118 @@ const MainSideBarMenu = () => {
                         유한대학교
                     </a>
                 </span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <AccountBalanceIcon />
                 <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3007' target='_blank'>대학소개</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <InfoIcon />
                 <span><a href='https://sky.yuhan.ac.kr/intro.html' target='_blank'>입학안내</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <CampaignIcon />
                 <span><a href='https://www.yuhan.ac.kr/bbs/data/list.do?menu_idx=3071' target='_blank'>대학홍보</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <SchoolIcon />
                 <span><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'>학과안내</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <SupportIcon />
                 <span><a href='https://www.yuhan.ac.kr/ibuilder.do?per_menu_idx=3101&menu_idx=3415' target='_blank'>학생서비스</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <AssignmentIcon />
                 <span><a onClick={handleSideMenuBoard}>게시판</a></span>
-            </div>
+            </MainSideBarMenuItem>
             {/* 쿠키가 있을 때만 상담신청 메뉴를 표시 */}
             {cookies.user && (
-                <div>
+                <MainSideBarMenuItem>
                     <FontAwesomeIcon icon={faEnvelopeOpenText} />
                     <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
-                </div>
+                </MainSideBarMenuItem>
             )}
-            <div>
+            <MainSideBarMenuItem>
                 <RestaurantMenu />
                 <span><a onClick={handleSideMenuFood}>오늘의 메뉴</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <FontAwesomeIcon icon={faLightbulb} />
                 <span><a onClick={handleDeptRec}>학부추천</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <FestivalIcon />
                 <span><a href='https://www.yuhan.ac.kr/bbs/data/list.do?menu_idx=3160' target='_blank'>유한광장</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <BusinessIcon />
                 <span><a href='https://sanhak.yuhan.ac.kr/index.do' target='_blank'>산학협력단</a></span>
-            </div>
-            <div>
+            </MainSideBarMenuItem>
+            <MainSideBarMenuItem>
                 <MuseumIcon />
                 <span><a href='https://newih.yuhan.ac.kr/index.do' target='_blank'>유일한기념관</a></span>
-            </div>
-            {/* <div>
-                <FontAwesomeIcon icon={faChalkboardTeacher}/>
-                <span><a>학과체험</a></span>
-            </div> */}
-            {/* <div>
-                <FontAwesomeIcon icon={faCode} />
-                <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
-            </div>
-            <div>
-                <FontAwesomeIcon icon={faPenRuler} />
-                <span><a onClick={handleIndustrialDesign}>산업디자인학과체험</a></span>
-            </div>
-            <div>
-                <FontAwesomeIcon icon={faBowlFood} />
-                <span><a onClick={handleFoodNutrition}>식품영양학과체험</a></span>
-            </div>
-            <div>
-                <FontAwesomeIcon icon={faDna} />
-                <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
-            </div> */}
-            {/* test용 디비 
-            <div>
-                <AssignmentIcon />
-                <span><a href='/boardtest'>디비test</a></span>
-            </div> */}
-        </>
+            </MainSideBarMenuItem>
+        </MainSideBarMenuWrapper>
     )
 }
+
+const MainSideBarMenuWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 15rem;
+    border-top: 1px solid white;
+`
+
+const MainSideBarMenuItem = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+    color: white;
+
+    svg {
+        width: 34px;
+        height: 34px;
+    }
+
+    span {
+        font-size: 12px;
+        padding-top: 8px;
+        font-weight: 500;
+    }
+
+    & > * {
+        transition: 0.2s ease-in-out;
+    }
+    
+    &:hover {
+        background-color: white;
+        color: #0F275C;
+
+        span {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        span > a {
+            color: #0F275C;
+        }
+
+        svg {
+            width: 36px;
+            height: 36px;
+        }
+    }
+`
 
 export default MainSideBarMenu

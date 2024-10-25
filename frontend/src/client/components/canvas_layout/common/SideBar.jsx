@@ -79,45 +79,56 @@ const SideBar = () => {
         <>
             <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
                 <SideBarHeader>
-                {cookies.user ? ( // 쿠키가 존재하면 로그아웃 버튼을 보여줍니다.
-                        <div>
-                            <Link to={'/'} onClick={handleLogout}><Logout /><p>로그아웃</p></Link>
-                        </div>
-                    ) : ( // 쿠키가 없으면 로그인 버튼을 보여줍니다.
-                        <>
-                        <div>
-                            <Link to={'/login'}><Login /><p>로그인</p></Link>
-                        </div>
-                        <div>
-                            <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
-                        </div>
-                        </>
-                    )}
-                        {/* 쿠키의 userType이 admin일 때만 보여주기 */}
-                        {cookies.userType === 'admin' && (
-                            <>
-                                <div>
-                                    <a onClick={handleShowAdminEnterModal}>
-                                        <AdminPanelSettings />
-                                        <p>관리자</p>
-                                    </a>
-                                </div>
-                                {/* <div>
-                                    <Link 
-                                        to={'/admin'}
-                                        state={{
-                                            title: '관리자'
-                                        }}>
-                                        <AdminPanelSettings />
-                                        <p>TEST</p>
-                                    </Link>
-                                </div> */}
-                            </>
-                        )}
+                    {/* <LogoWrapper> */}
+                        <img src='/assets/images/yuhan-logo2.png' />
+                    {/* </LogoWrapper> */}
+                    <AccountManagementWrapper>
+                        <AccountManagementList>
+                            {cookies.user ? ( // 쿠키가 존재하면 로그아웃 버튼을 보여줍니다.
+                                <AccountManagementItem>
+                                    <Link to={'/'} onClick={handleLogout}><Logout /><p>로그아웃</p></Link>
+                                </AccountManagementItem>
+                            ) : ( // 쿠키가 없으면 로그인 버튼을 보여줍니다.
+                                <>
+                                    <AccountManagementItem>
+                                        <Link to={'/login'}><Login /><p>로그인</p></Link>
+                                    </AccountManagementItem>
+                                    <AccountManagementItem>
+                                        <Link to={'/join'}><PersonAddIcon /><p>회원가입</p></Link>
+                                    </AccountManagementItem>
+                                </>
+                            )}
+                            {/* 쿠키의 userType이 admin일 때만 보여주기 */}
+                            {cookies.userType === 'admin' && (
+                                <>
+                                    <AccountManagementItem>
+                                        <a onClick={handleShowAdminEnterModal}>
+                                            <AdminPanelSettings />
+                                            <p>관리자</p>
+                                        </a>
+                                    </AccountManagementItem>
+                                    {/* <div>
+                                        <Link 
+                                            to={'/admin'}
+                                            state={{
+                                                title: '관리자'
+                                            }}>
+                                            <AdminPanelSettings />
+                                            <p>TEST</p>
+                                        </Link>
+                                    </div> */}
+                                </>
+                            )}
+                        </AccountManagementList>
+                    </AccountManagementWrapper>
                     {cookies.user && (
-                        <div>
-                            <Link to={'/membermodify'}><p>{cookies.userName}님 안녕하세요!</p></Link>
-                        </div>
+                        <WelcomeWrapper>
+                            <Link to={'/membermodify'}>
+                                <WelcomeContent>
+                                    <p>{cookies.userName}님 안녕하세요!</p>
+                                </WelcomeContent>
+                            </Link>
+                        </WelcomeWrapper>
                     )}
                 </SideBarHeader>
                 <SideBarList>
@@ -156,77 +167,66 @@ const SideBarContainer = styled.div`
 
 const SideBarHeader = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   font-size: 9px;
   justify-content: center;
   align-items: center;
+  margin-top: 35px;
+  padding: 15px;
+`
 
-  div {
-    width: 33%;
-    margin: 40px 0 5px 0;
+const AccountManagementWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    margin-top: 15px;
+`
+
+const AccountManagementList = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const AccountManagementItem = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+    }
+    
+    a:hover {
+      border-bottom: 1px solid white;
+    }
 
     svg {
       width: 20px;
       height: 20px;
     }
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    a:hover {
-      border-bottom: 1px solid white;
-    }
-  }
+`
+
+const WelcomeWrapper = styled.div`
+    width: 100%;
+    font-size: 16px;
+    padding-top: 5px;
+`
+
+const WelcomeContent = styled.span`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 const SideBarList = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
-    padding-bottom: 40px;
-    div {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 10px;
-        gap: 10px;
-        border-bottom: 1px solid white;
-        cursor: pointer;
-        color: white;
-        svg {
-            width: 38px;
-            height: 38px;
-        }
-        span {
-            font-size: 16px;
-            padding-top: 8px;
-            font-weight: 500;
-        }
-        & > * {
-            transition: 0.2s ease-in-out;
-        }
-        &:hover {
-            background-color: white;
-            color: #0F275C;
-            span {
-                font-size: 18px;
-                font-weight: 800;
-            }
-            span > a {
-                color: #0F275C;
-            }
-            svg {
-                width: 40px;
-                height: 40px;
-            }
-        }
-    }
 `
 
 const DropdownController = styled.div`

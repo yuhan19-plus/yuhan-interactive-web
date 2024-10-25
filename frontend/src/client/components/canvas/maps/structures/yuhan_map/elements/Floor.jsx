@@ -43,7 +43,15 @@ const Floor = ({onMove, ...props}) => {
                 (guideValue === true && guideAreaName === 'StatueZone') ? (
                     <></>
                 ) : (
-                    <Arrow position={[42, 15, -515]} scale={5} />
+                    <>
+                        {
+                            aerialViewStateValue ? (
+                                <></>
+                            ) : (
+                                <Arrow position={[42, 15, -515]} scale={5} />
+                            )
+                        }
+                    </>
                 )
             }
             <Zone position={[20, -15, -515]} rotation={[0, Math.PI / 3.5, 0]} scale={4} />
@@ -55,7 +63,15 @@ const Floor = ({onMove, ...props}) => {
                 (guideValue === true && guideAreaName === 'WelcomeZone') ? (
                     <></>
                 ) : (
-                    <Arrow position={[-275, 15, -433]} scale={5} />
+                    <>
+                        {
+                            aerialViewStateValue ? (
+                                <></>
+                            ) : (
+                                <Arrow position={[-275, 15, -433]} scale={5} />
+                            )
+                        }
+                    </>
                 )
             }
             <Zone position={[-286, -15, -420]} rotation={[0, 0, 0]} scale={4} />
@@ -67,7 +83,15 @@ const Floor = ({onMove, ...props}) => {
                 (guideValue === true && guideAreaName === 'TVZone') ? (
                     <></>
                 ) : (
-                    <Arrow position={[-128, 15, -430]} scale={5} />
+                    <>
+                        {
+                            aerialViewStateValue ? (
+                                <></>
+                            ) : (
+                                <Arrow position={[-128, 15, -430]} scale={5} />
+                            )
+                        }
+                    </>
                 )
             }
             <Zone position={[-140, -15, -445]} rotation={[0, 0, 0]} scale={4} />
