@@ -95,6 +95,10 @@ export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
 export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
+// 학과장 애니메이션 on - 성준
+export const DEPT_HEAD_ANI_INIT = 'DEPT_HEAD_ANI_INIT'
+export const DEPT_HEAD_ANI_MOVE = 'DEPT_HEAD_ANI_MOVE'
+
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
 export const currentStudentUserInfo = (currentStudentUserInfoData) => ({
@@ -328,4 +332,12 @@ export const Enter_CodingArea= () => ({
 })
 export const Leave_CodingArea= () => ({
     type:LEAVE_CODINGAREA 
+})
+
+export const deptHeadAniInit = () => ({
+    type: DEPT_HEAD_ANI_INIT
+})
+
+export const deptHeadAniMove = () => ({
+    type: DEPT_HEAD_ANI_MOVE
 })

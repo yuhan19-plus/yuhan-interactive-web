@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -27,6 +27,8 @@ export const useMainCharacter = ({ position, myChar }) => {
     const deptInfoLicenseDispatchFlag = useRef(false)
     const deptInfoDeptFeaturesDispatchFlag = useRef(false)
     const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
+
+    const deptHeadAniFlag = useRef(false)
 
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
@@ -643,6 +645,16 @@ export const useMainCharacter = ({ position, myChar }) => {
                     // 학과장 영역
                     if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
                         handleCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                        if(!deptHeadAniFlag.current) {
+                            deptHeadAniFlag.current = true
+                            dispatch(deptHeadAniMove())
+                        }
+                    }
+                    else {
+                        if(deptHeadAniFlag.current) {
+                            deptHeadAniFlag.current = false
+                            dispatch(deptHeadAniInit())
+                        }
                     }
                 }
                 if((currentPosition.x < 0 && currentPosition.x >= -250) && (currentPosition.z >= 0 && currentPosition.z <= 250)) {
@@ -678,7 +690,7 @@ export const useMainCharacter = ({ position, myChar }) => {
             if (distance > 0.4) {
                 // 방향을 구하고 스칼라를 곱하여 이동량을 설정
                 const direction = new Vector3().subVectors(targetPosition, currentPosition).normalize().multiplyScalar(0.5)
-
+                // console.log(targetPosition)
                 // 현재 위치에 방향을 더해 새로운 위치를 설정
                 currentPosition.add(direction)
 

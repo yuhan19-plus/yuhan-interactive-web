@@ -2,38 +2,40 @@ import React, { useEffect, useState } from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
+import { useCsDeptCharacter } from '../hook/csDeptHook/useCsDeptCharacter'
 
 export function CSDeptHeadCharacter({groundMapName, position, ...props}) {
-  const group = React.useRef()
-  const { scene, animations } = useGLTF('/assets/models/character/CSDeptHead.glb')
-  const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-  const { nodes, materials } = useGraph(clone)
-  const { actions } = useAnimations(animations, group)
-  // console.log(animations)
+  // const group = React.useRef()
+  // const { scene, animations } = useGLTF('/assets/models/character/CSDeptHead.glb')
+  // const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
+  // const { nodes, materials } = useGraph(clone)
+  // const { actions } = useAnimations(animations, group)
+  // // console.log(animations)
 
-   // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
-   const [animation, setAnimation] = useState('Typing')
+  //  // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
+  //  const [animation, setAnimation] = useState('Typing')
 
-   useEffect(() => {
-     if (actions && actions[animation]) {
-       actions[animation].reset().fadeIn(0.3).play()
-     }
+  //  useEffect(() => {
+  //    if (actions && actions[animation]) {
+  //      actions[animation].reset().fadeIn(0.3).play()
+  //    }
      
-     return () => {
-       if (actions && actions[animation]) {
-         actions[animation].fadeOut(0.3)
-       }
-     }
-   }, [actions, animation])
+  //    return () => {
+  //      if (actions && actions[animation]) {
+  //        actions[animation].fadeOut(0.3)
+  //      }
+  //    }
+  //  }, [actions, animation])
 
-   useEffect(() => {
-    if(groundMapName === 'yh_map') {
-      setAnimation('Laugh')
-    }
-  }, [groundMapName])
+  //  useEffect(() => {
+  //   if(groundMapName === 'yh_map') {
+  //     setAnimation('Laugh')
+  //   }
+  // }, [groundMapName])
+  const { nodes, materials, deptCharRef } = useCsDeptCharacter({groundMapName, position, ...props})
 
   return (
-    <group ref={group} position={position} {...props}>
+    <group ref={deptCharRef} position={position} {...props}>
       <group name="Scene">
         <group name="Armature" scale={2.032}>
           <primitive object={nodes.Hip} />
