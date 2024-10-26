@@ -1,5 +1,6 @@
 /**
  * 임성준
+ * - 테라스 오브젝트 그룹화
  */
 import React from 'react'
 import { TerraceObjectSmall } from './terrace/TerraceObjectSmall'

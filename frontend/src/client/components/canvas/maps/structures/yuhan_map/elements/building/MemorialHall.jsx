@@ -6,8 +6,12 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { MemorialHallBigEntrance } from './MemorialHallBigEntrance'
+import { MemorialHallSmallEntrance } from './MemorialHallSmallEntrance'
+import { MemorialHallEntranceBlock } from './MemorialHallEntranceBlock'
+import { SmokingArea } from '../etc/SmokingArea'
 
-export function MemorialHall({position, ...props}) {
+export function MemorialHall({position, btnMenuValue, btnMenuName, ...props}) {
   const memorialRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +25,9 @@ export function MemorialHall({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +46,10 @@ export function MemorialHall({position, ...props}) {
   return (
     <motion.group
       ref={memorialRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -71,6 +80,10 @@ export function MemorialHall({position, ...props}) {
           <mesh geometry={nodes.Text001_12.geometry} material={materials['654321 (Wood).001']} />
         </group>
       </group>
+      <MemorialHallBigEntrance position={[-263.439, 69, 192.681]} rotation={[Math.PI / 2, 0, Math.PI]} />
+      <MemorialHallSmallEntrance position={[-263.439, 69, 107.681]} rotation={[Math.PI / 2, 0, Math.PI]} />
+      <MemorialHallEntranceBlock position={[-274.439, 69, 192.681]} rotation={[Math.PI / 2, 0, Math.PI]} />
+      <SmokingArea position={[-310, 161.5, 125]} rotation={[Math.PI, 0, 0]} scale={[1.5, 13, 1.5]} />
     </motion.group>
   )
 }

@@ -1,5 +1,6 @@
 /**
- * 임성준 구현
+ * 임성준
+ * - Welcome Zone 기능 구현
  */
 import { Float, MeshDistortMaterial, Stars, Text3D, useHelper } from '@react-three/drei'
 import React, { useEffect, useRef } from 'react'
@@ -15,12 +16,18 @@ import { useSelector } from 'react-redux'
 import { FONT_URL } from '../../../../../../../../data/commonData'
 
 const Welcome = () => {
+    // 맵 상태 가져오기
     const groundMapState = useSelector((state) => state.groundMap)
     const groundMapName = groundMapState.mapName
     
+    // 무대 조명의 타켓과 빛 설정을 위한 ref
     const targetRef = useRef()
     const lightRef = useRef(null)
+
+    // 빛 설정을 도와주는 Helper
     useHelper(lightRef, THREE.SpotLightHelper, 5)
+
+    // 3D Text 폰트 스타일
     const fontStyle = {
         font: FONT_URL,
         letterSpacing: 0.01,
@@ -88,6 +95,7 @@ const Welcome = () => {
                     <boxGeometry args={[15, 15, 15]} />
                     <meshStandardMaterial color='#DEB2B3' />
                 </mesh>
+
                 <group position={[-430, 36, -350]} rotation={[0, Math.PI/2.5, 0]}>
                     <Text3D size={12} {...fontStyle}>
                         Welcome to YUHAN University
@@ -100,6 +108,7 @@ const Welcome = () => {
                         </Text3D>
                     </group>
                 </group>
+
                 <group position={[-428, 6, -447]}>
                     <Stars
                         radius={1.3}
@@ -110,36 +119,42 @@ const Welcome = () => {
                         fade
                         speed={5}
                     />
+
                     <Float position={[0, 155, 30]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh>
                             <sphereGeometry args={[10, 32, 32]} />
                             <MeshDistortMaterial color="#009484" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
+
                     <Float position={[65, 135, -70]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh>
                             <sphereGeometry args={[10, 32, 32]} />
                             <MeshDistortMaterial color="#63CAB9" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
+
                     <Float position={[30, 160, -50]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh>
                             <sphereGeometry args={[10, 32, 32]} />
                             <MeshDistortMaterial color="#80BD00" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
+
                     <Float position={[55, 150, 70]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh>
                             <sphereGeometry args={[10, 32, 32]} />
                             <MeshDistortMaterial color="#F4CE3D" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
+
                     <Float position={[-50, 140, 0]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh>
                             <sphereGeometry args={[10, 32, 32]} />
                             <MeshDistortMaterial color="#EE7421" distort={0.3} speed={2} />
                         </mesh>
                     </Float>
+
                     <Float position={[110, 0, 95]} speed={10} rotationIntensity={1.5} floatIntensity={5}>
                         <mesh rotation={[0, Math.PI / 2, 0]}>
                             <Text3D {...fontStyle} size={15} depth={1} bevelEnabled>
@@ -187,13 +202,16 @@ const Welcome = () => {
                 </group>
             </group>
 
+            {/* 무대 조명 오브젝트 */}
             <LightingObject position={[-335, -5, -340]} rotation={[0, Math.PI / 1.35, 0]} />
 
+            {/* 캐릭터 불러오기 */}
             <BioDeptHeadCharacter groundMapName={groundMapName} position={[-360, 10, -540]} rotation={[0, Math.PI / 2, 0]} />
             <CSDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -465]} rotation={[0, Math.PI / 2, 0]} />
             <DesignDeptHeadCharacter groundMapName={groundMapName} position={[-340, 10, -510]} rotation={[0, Math.PI / 2, 0]} />
             <FoodDeptHeadCharacter groundMapName={groundMapName} position={[-340, 20, -385]} rotation={[0, Math.PI / 2, 0]} />
 
+            {/* 무대 조명 */}
             <spotLight
                 // ref={lightRef}
                 target={targetRef.current}

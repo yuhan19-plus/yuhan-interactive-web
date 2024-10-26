@@ -6,8 +6,11 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { GateOfSharingEntrance } from './GateOfSharingEntrance'
+import { GateOfSharingLeftPillar } from './GateOfSharingLeftPillar'
+import { GateOfSharingRightPillar } from './GateOfSharingRightPillar'
 
-export function GateOfSharing({position, ...props}) {
+export function GateOfSharing({position, btnMenuValue, btnMenuName, ...props}) {
   const gateOfSharingRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +24,9 @@ export function GateOfSharing({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +45,10 @@ export function GateOfSharing({position, ...props}) {
   return (
     <motion.group
       ref={gateOfSharingRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -68,6 +76,9 @@ export function GateOfSharing({position, ...props}) {
           <mesh geometry={nodes.Cylinder001_9.geometry} material={materials['DCE759 & Metal (DEVName, Statue)']} />
         </group>
       </group>
+      <GateOfSharingEntrance position={[229.787, -6, 41.207]} rotation={[Math.PI, 0, Math.PI]} />
+      <GateOfSharingLeftPillar position={[205.264, 26, 20.396]} rotation={[Math.PI, 0, Math.PI]} />
+      <GateOfSharingRightPillar position={[205.264, 26, 61.894]} rotation={[Math.PI, 0, Math.PI]} />
     </motion.group>
   )
 }

@@ -6,8 +6,9 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { YujaelagwanPillar } from './YujaelagwanPillar'
 
-export function Yujaelagwan({position, ...props}) {
+export function Yujaelagwan({position, btnMenuValue, btnMenuName, ...props}) {
   const yujaelaRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +22,9 @@ export function Yujaelagwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +43,10 @@ export function Yujaelagwan({position, ...props}) {
   return (
     <motion.group
       ref={yujaelaRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -73,6 +79,8 @@ export function Yujaelagwan({position, ...props}) {
           <mesh geometry={nodes.실린더001_14.geometry} material={materials['654321 (Wood).001']} />
         </group>
       </group>
+      <YujaelagwanPillar position={[-377.9, 11, -90.8]} rotation={[-Math.PI, 0, -Math.PI]} />
+      <YujaelagwanPillar position={[-325.4, 11, -90.5]} rotation={[-Math.PI, 0, -Math.PI]} />
     </motion.group>
   )
 }

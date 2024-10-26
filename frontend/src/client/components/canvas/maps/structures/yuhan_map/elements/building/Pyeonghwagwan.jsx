@@ -2,13 +2,13 @@
  * 초기 position, scale 설정 : 이정민
  * position, scale 수정 및 그림자 설정 : 임성준
  */
-
+import React, { useEffect, useRef, useState } from 'react'
 import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
-import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { SmokingArea } from '../etc/SmokingArea'
 
-export function Pyeonghwagwan({position, ...props}) {
+export function Pyeonghwagwan({position, btnMenuValue, btnMenuName, ...props}) {
   const pyeonghwaRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -22,7 +22,9 @@ export function Pyeonghwagwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +42,10 @@ export function Pyeonghwagwan({position, ...props}) {
   return (
     <motion.group
       ref={pyeonghwaRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -69,6 +74,7 @@ export function Pyeonghwagwan({position, ...props}) {
           <mesh geometry={nodes.텍스트003_8.geometry} material={materials['0EA6EF (Leaf, Smoking Booth).001']} />
         </group>
       </group>
+      <SmokingArea position={[150, 151.3, -70]} rotation={[Math.PI, 0, 0]} scale={[1.5, 13, 1.5]} />
     </motion.group>
   )
 }

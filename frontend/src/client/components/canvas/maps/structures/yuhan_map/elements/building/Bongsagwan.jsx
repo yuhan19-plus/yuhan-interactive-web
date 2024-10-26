@@ -6,8 +6,10 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { BongsagwanEntrance } from './BongsagwanEntrance'
+import { SmokingArea } from '../etc/SmokingArea'
 
-export function Bongsagwan({position, ...props}) {
+export function Bongsagwan({position, btnMenuValue, btnMenuName, ...props}) {
   const bongsagwanRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +23,9 @@ export function Bongsagwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -39,7 +43,10 @@ export function Bongsagwan({position, ...props}) {
   return (
     <motion.group
       ref={bongsagwanRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -72,6 +79,8 @@ export function Bongsagwan({position, ...props}) {
           <mesh geometry={nodes.Text002_11.geometry} material={materials['E2E2E2(B1~9(Body,Number))']} />
         </group>
       </group>
+      <BongsagwanEntrance position={[179, 70.5, -298.787]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} />
+      <SmokingArea position={[220, 151.3, -120]} rotation={[Math.PI, Math.PI/2, 0]} scale={[1.5, 13, 1.5]} />
     </motion.group>
   )
 }

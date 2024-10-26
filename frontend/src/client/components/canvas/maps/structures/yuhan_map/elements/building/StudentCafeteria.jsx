@@ -6,8 +6,11 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { StudentCafeteriaEntrance } from './StudentCafeteriaEntrance'
+import { StudentCafeteriaEntranceTwo } from './StudentCafeteriaEntranceTwo'
+import { ProfessorCafeteria } from './ProfessorCafeteria'
 
-export function StudentCafeteria({position, ...props}) {
+export function StudentCafeteria({position, btnMenuValue, btnMenuName, ...props}) {
   const studentCafeteriaRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +24,9 @@ export function StudentCafeteria({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +45,10 @@ export function StudentCafeteria({position, ...props}) {
   return (
     <motion.group
       ref={studentCafeteriaRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -66,6 +74,9 @@ export function StudentCafeteria({position, ...props}) {
           <mesh geometry={nodes.Cube001_7.geometry} material={materials['DCE759 & Metal (DEVName, Statue).001']} />
         </group>
       </group>
+      <StudentCafeteriaEntrance position={[220.8, 26, 182.6]} rotation={[Math.PI, 0, Math.PI]} />
+      <StudentCafeteriaEntranceTwo position={[225.2, -3, 129]} rotation={[Math.PI, 0, Math.PI]} />
+      <ProfessorCafeteria position={[211.6, 20, 308.4]} rotation={[Math.PI, 0, Math.PI]} />
     </motion.group>
   )
 }

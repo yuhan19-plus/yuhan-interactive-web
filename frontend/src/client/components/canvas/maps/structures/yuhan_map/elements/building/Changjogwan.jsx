@@ -6,8 +6,10 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { ChangjogwanPillar } from './ChangjogwanPillar'
+import { SmokingArea } from '../etc/SmokingArea'
 
-export function Changjogwan({position, ...props}) {
+export function Changjogwan({position, btnMenuValue, btnMenuName, ...props}) {
   const changjoRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +23,9 @@ export function Changjogwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +44,10 @@ export function Changjogwan({position, ...props}) {
   return (
     <motion.group
       ref={changjoRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -67,6 +74,8 @@ export function Changjogwan({position, ...props}) {
           <mesh geometry={nodes.Cube013_8.geometry} material={materials['DCE759 & Metal (DEVName, Statue).004']} />
         </group>
       </group>
+      <ChangjogwanPillar position={[12.1, 81, 232.529]} />
+      <SmokingArea position={[12, 180.5, 230]} rotation={[Math.PI, 0, 0]} scale={[1.5, 13, 1.5]} />
     </motion.group>
   )
 }

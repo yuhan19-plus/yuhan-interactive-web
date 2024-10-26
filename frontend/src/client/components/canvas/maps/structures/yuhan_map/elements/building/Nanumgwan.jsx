@@ -6,8 +6,11 @@ import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
+import { NanumgwanLeftPillar } from './NanumgwanLeftPillar'
+import { NanumgwanRightPillar } from './NanumgwanRightPillar'
+import { SmokingArea } from '../etc/SmokingArea'
 
-export function Nanumgwan({position, ...props}) {
+export function Nanumgwan({position, btnMenuValue, btnMenuName, ...props}) {
   const nanumRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +24,9 @@ export function Nanumgwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +45,10 @@ export function Nanumgwan({position, ...props}) {
   return (
     <motion.group
       ref={nanumRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1
@@ -67,6 +75,9 @@ export function Nanumgwan({position, ...props}) {
           <mesh geometry={nodes.Cube009_8.geometry} material={materials['18226AA (Number Plane).002']} />
         </group>
       </group>
+      <NanumgwanLeftPillar position={[83, 78, 163]} rotation={[0, 1.571, 0]} />
+      <NanumgwanRightPillar position={[-67.348, 78, 160.355]} rotation={[0, 1.571, 0]} />
+      <SmokingArea position={[100, 168, 125]} rotation={[Math.PI, 0, 0]} scale={[1.5, 13, 1.5]} />
     </motion.group>
   )
 }

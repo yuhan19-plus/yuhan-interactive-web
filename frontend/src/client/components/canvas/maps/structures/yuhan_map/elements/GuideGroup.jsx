@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 가이드 그룹 생성
+ */
+
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Arrow } from '../../common/Arrow'
@@ -6,11 +11,12 @@ import { FONT_URL } from '../../../../../../../data/commonData'
 import { motion } from 'framer-motion-3d'
 
 const GuideGroup = () => {
-    
+    // 항공뷰 버튼 그룹 상태
     const aerialViewState = useSelector((state) => state.btnMenu)
     const aerialViewValue =  aerialViewState.value
     const aerialViewName = aerialViewState.btnMenuName
 
+    // 3D Text 폰트 스타일
     const fontStyle = {
         font: FONT_URL,
         letterSpacing: 0.01,
@@ -28,13 +34,14 @@ const GuideGroup = () => {
                         {/* 1호관 */}
                         <motion.group
                             position={[66.35, 260, -69.278]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -71,13 +78,14 @@ const GuideGroup = () => {
                         {/* 2호관 */}
                         <motion.group
                             position={[222, 260, -180]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -114,13 +122,14 @@ const GuideGroup = () => {
                         {/* 3호관 */}
                         <motion.group
                             position={[-108.5, 260, -142.3]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -157,13 +166,14 @@ const GuideGroup = () => {
                         {/* 4호관 */}
                         <motion.group
                             position={[249.5, 230, 248.3]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -200,13 +210,14 @@ const GuideGroup = () => {
                         {/* 5호관 */}
                         <motion.group
                             position={[13.651, 260, 121.584]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -243,13 +254,14 @@ const GuideGroup = () => {
                         {/* 6호관 */}
                         <motion.group
                             position={[12.86, 260, 271.937]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -286,13 +298,14 @@ const GuideGroup = () => {
                         {/* 7호관 */}
                         <motion.group
                             position={[-341.439, 260, 182.681]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -361,13 +374,14 @@ const GuideGroup = () => {
                         {/* 8호관 */}
                         <motion.group
                             position={[-380.0, 350, -186.3]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>
@@ -404,13 +418,14 @@ const GuideGroup = () => {
                         {/* 9호관 */}
                         <motion.group
                             position={[267.607, 230, 40.988]}
+                            scale={0.7}
                             animate={{
-                                scale: [0.5, 0.7, 0.5]
+                                rotateY: [0, Math.PI * 2]
                             }}
                             transition={{
-                                duration: 2.5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: 'easeInOut'
+                                ease: 'linear'
                             }}
                         >
                             <mesh>

@@ -8,6 +8,7 @@ import { Zone } from '../../common/Zone'
 import { Arrow } from '../../common/Arrow'
 
 const Floor = ({onMove, ...props}) => {
+    // redux 상태 값 가져오기
     const guideState = useSelector((state) => state.guide)
     const viewMenuState = useSelector((state) => state.btnMenu)
     const aerialViewStateValue = viewMenuState.value
@@ -17,6 +18,7 @@ const Floor = ({onMove, ...props}) => {
     const [meshRef] = useBox(
         () => ({ args: [1080, 50, 960], mass: 0, type: 'Static', rotation:[0, 0, 0], ...props})
     )
+    
     return (    
         <>
             <mesh
@@ -97,10 +99,6 @@ const Floor = ({onMove, ...props}) => {
             <Zone position={[-140, -15, -445]} rotation={[0, 0, 0]} scale={4} />
             <Zone position={[-140, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
             <Zone position={[-115, -15, -420]} rotation={[0, Math.PI / 2, 0]} scale={4} />
-            {/* <mesh position={[-278, -5, -433]}>
-                <boxGeometry args={[15, 3, 15]} />
-                <meshStandardMaterial color='red' />
-            </mesh> */}
         </>
     )
 }

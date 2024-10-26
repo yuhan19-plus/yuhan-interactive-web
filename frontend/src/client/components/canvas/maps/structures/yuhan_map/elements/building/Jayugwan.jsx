@@ -7,7 +7,7 @@ import { useGLTF } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion-3d'
 
-export function Jayugwan({position, ...props}) {
+export function Jayugwan({position, btnMenuValue, btnMenuName, ...props}) {
   const jayuRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -21,7 +21,9 @@ export function Jayugwan({position, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      setHovered(true)
+      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+          setHovered(true)
+      }
   }
   const handlePointerOut = () => {
       setHovered(false)
@@ -40,7 +42,10 @@ export function Jayugwan({position, ...props}) {
   return (
     <motion.group
       ref={jayuRef}
-      onPointerOver={handlePointerOver}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        handlePointerOver()
+      }}
       onPointerOut={handlePointerOut}
       animate={{
         scale: hovered ? 1.1 : 1

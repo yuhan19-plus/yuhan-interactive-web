@@ -22,14 +22,6 @@ export function YuhanLogo({position}) {
 
   return (
     <>
-      {/* <pointLight
-          // args={["yellow", 30, 100, 30]}
-          color='#ffffff' // 조명 색상
-          intensity={10} // 조명 세기
-          position={[-400, 0, -440]}
-          rotation-x={Math.PI / 2}
-          distance={0}
-      /> */}
       <primitive
         ref={ref}
         name={name}
