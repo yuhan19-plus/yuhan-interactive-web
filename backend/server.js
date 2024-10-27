@@ -56,7 +56,7 @@ const reportRoutes = require('./db/reportdb');
 const consultationRoutes = require('./db/consultationDB')
 const deptRecRoutes = require('./db/deptRecdb');  // 학부 추천 기능 라우트
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
-app.use('/board', boardRoutes); // testdb2 라우트를 '/board' 경로로 사용
+app.use('/board', boardRoutes); // 게시판 라우트를 '/board' 경로로 사용
 app.use('/member', memberRoutes);
 app.use('/memberAdmin', memberAdminRoutes);
 app.use('/tempboard', tempboardRoutes);

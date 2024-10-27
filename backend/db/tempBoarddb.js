@@ -32,7 +32,7 @@ router.post("/read", (req, res) => {
 
 // 임시 저장 데이터 체크
 router.post("/checkTempData", (req, res) => {
-    console.log("checkTempData");
+    // console.log("checkTempData");
     const { userId } = req.body;
 
     const checkTempDataQuery = "SELECT * FROM tempboard where board_writer = ?";
@@ -55,7 +55,7 @@ router.post("/checkTempData", (req, res) => {
 
 // 임시 저장 데이터 삭제
 router.delete("/delete", (req, res) => {
-    console.log("임시 저장 데이터 삭제 요청");
+    // console.log("임시 저장 데이터 삭제 요청");
     const { userId } = req.body;
     const deleteTempBoardQuery = "DELETE FROM tempboard WHERE board_writer = ?";
 
@@ -79,7 +79,7 @@ router.delete("/delete", (req, res) => {
 // 임시 저장 데이터 저장
 router.post("/save", (req, res) => {
     const { board_title, board_content, board_writer } = req.body;
-    console.log("req.body", req.body);
+    // console.log("req.body", req.body);
 
     // 제목과 내용이 비어있다면 저장하지 않고 응답을 반환
     if(!board_title && !board_content){

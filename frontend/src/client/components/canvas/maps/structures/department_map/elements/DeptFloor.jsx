@@ -103,9 +103,9 @@ const DeptFloor = ({onMove, ...props}) => {
             </mesh>
 
             {/* 학과체험 - 코딩경험 */}
-            <Zone position={[40, -20, 220]} rotation={[0, 0, 0]} scale={4} />
-            <Zone position={[40, -20, 220]} rotation={[0,  Math.PI / +2, 0]} scale={4} />
-            <Zone position={[65, -20, 220]} rotation={[0,  Math.PI / +2, 0]} scale={4} />
+            <Zone position={[39.5, -20, 220]} rotation={[0, 0, 0]} scale={4} />
+            <Zone position={[37, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
+            <Zone position={[67, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
         </>
     )
 }

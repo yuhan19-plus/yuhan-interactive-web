@@ -9,7 +9,7 @@ const mysqlconnection = require("../server");
 
 // 좋아요 여부를 저장하고 게시판의 좋아요를 1 증가/감소시키는 동작
 router.post("/", (req, res) => {
-    console.log("req.body", req.body);
+    // console.log("req.body", req.body);
     const { userId, boardId } = req.body;
 
     const checkLikedQuery = `SELECT like_status FROM board_likes WHERE user_id = ? AND board_id = ?`;

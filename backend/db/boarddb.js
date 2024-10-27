@@ -52,27 +52,14 @@ router.post("/", (req, res) => {
 // 게시판목록
 router.get("/", (req, res) => {
     const selectQuery = "SELECT * FROM board";
-    const checkTableQuery = "SHOW TABLES LIKE 'board'";
-    // 테이블이 존재하는지 확인 후 있으면 실행 없으면 없다고 알림
-    mysqlconnection.query(checkTableQuery, (err, results) => {
+    mysqlconnection.query(selectQuery, (err, results) => {
         if (err) {
-            console.error("테이블 확인 중 에러 발생:", err);
-            return res.status(500).json({ message: "테이블 확인 중 오류가 발생했습니다." });
+            console.error("테이블 검색 중 에러 발생:", err);
+            return res.status(500).json({ message: "테이블 검색 중 오류가 발생했습니다." });  // 500 상태 코드와 함께 오류 메시지 반환
         }
-        if (results.length === 0) {
-            console.log("테이블이 없습니다.");
-            return res.status(404).send("테이블이 존재하지 않습니다."); // 404에러 반환
-        } else {
-            mysqlconnection.query(selectQuery, (err, results) => {
-                if (err) {
-                    console.error("테이블 검색 중 에러 발생:", err);
-                    return res.status(500).json({ message: "테이블 검색 중 오류가 발생했습니다." });  // 500 상태 코드와 함께 오류 메시지 반환
-                }
-                // console.log("테이블이 검색되었습니다.", results);
-                console.log("테이블이 검색되었습니다.");
-                res.json(results); // 클라이언트에게 쿼리 결과를 JSON 형식으로 반환
-            });
-        }
+        // console.log("테이블이 검색되었습니다.", results);
+        console.log("테이블이 검색되었습니다.");
+        res.json(results); // 클라이언트에게 쿼리 결과를 JSON 형식으로 반환
     });
 });
 
@@ -166,9 +153,9 @@ router.delete("/delete/:board_id", (req, res) => {
 
 // 게시판 업데이트
 router.put("/update/:board_id", (req, res) => {
+    // console.log("수정요청 들어옴 board_id", board_id);
     const board_id = req.params.board_id;
     const { board_title, board_content, files } = req.body;
-    console.log("수정요청 들어옴 board_id", board_id);
 
     const updateBoardQuery = "UPDATE board SET board_title = ?, board_content = ? WHERE board_id = ?";
     const updateAttachmentQuery = "UPDATE attachment SET file_name = ?, file_data = ?, file_size = ?, file_type = ? WHERE attachment_id = ?";

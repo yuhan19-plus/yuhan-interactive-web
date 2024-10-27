@@ -9,7 +9,7 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 // 댓글 저장
 router.post("/save", (req, res) => {
     const { boardID, userId, comment_content } = req.body;  // URL에서 boardID와 userId를 추출
-    console.log("댓글저장 게시판id", boardID, "회원id", userId, "댓글내용", comment_content)
+    // console.log("댓글저장 게시판id", boardID, "회원id", userId, "댓글내용", comment_content)
     const commentSaveQuery = "INSERT INTO comment (board_id, comment_writer, comment_content, comment_date) VALUES (?, ?, ?, NOW())";
 
     mysqlconnection.query(commentSaveQuery, [boardID, userId, comment_content], (err, result) => {
@@ -25,7 +25,7 @@ router.post("/save", (req, res) => {
 // 댓글 불러오기
 router.get("/List/:boardID", (req, res) => {
     const { boardID } = req.params;  // URL에서 boardID를 추출
-    console.log("댓글 불러오기 게시판 id:", boardID);
+    // console.log("댓글 불러오기 게시판 id:", boardID);
 
     const commentListQuery = "SELECT * from comment where board_id = ?";
 
@@ -42,7 +42,7 @@ router.get("/List/:boardID", (req, res) => {
 // 댓글 삭제
 router.delete("/delete", (req, res) => {
     const { userId, commentId } = req.query;
-    console.log("요청진입체크 commentId", commentId)
+    // console.log("요청진입체크 commentId", commentId)
     // console.log("req.params",req)
     const commentDeleteQuery = "DELETE FROM comment WHERE comment_id =?;"
     mysqlconnection.query(commentDeleteQuery, [commentId], (err, result) => {
