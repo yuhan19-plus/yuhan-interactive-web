@@ -334,6 +334,7 @@ export const Leave_CodingArea= () => ({
     type:LEAVE_CODINGAREA 
 })
 
+// 학과장 소개 - 성준
 export const deptHeadAniInit = () => ({
     type: DEPT_HEAD_ANI_INIT
 })

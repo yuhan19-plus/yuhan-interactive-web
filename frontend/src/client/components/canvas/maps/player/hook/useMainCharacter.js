@@ -644,7 +644,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                     // 학과장 영역
                     if((currentPosition.x >= -165 && currentPosition.x <= -85) && (currentPosition.z >= -165 && currentPosition.z <= -85)) {
-                        handleCamera(currentPosition.x + 30, currentPosition.y + 30, currentPosition.z + 30)
+                        handleCamera(currentPosition.x + 50, currentPosition.y + 50, currentPosition.z + 50)
                         if(!deptHeadAniFlag.current) {
                             deptHeadAniFlag.current = true
                             dispatch(deptHeadAniMove())
@@ -690,7 +690,7 @@ export const useMainCharacter = ({ position, myChar }) => {
             if (distance > 0.4) {
                 // 방향을 구하고 스칼라를 곱하여 이동량을 설정
                 const direction = new Vector3().subVectors(targetPosition, currentPosition).normalize().multiplyScalar(0.5)
-                // console.log(targetPosition)
+                // console.log('targetPosition', targetPosition)
                 // 현재 위치에 방향을 더해 새로운 위치를 설정
                 currentPosition.add(direction)
 

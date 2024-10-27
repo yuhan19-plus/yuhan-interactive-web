@@ -53,7 +53,7 @@ const DeptMap = () => {
                     // <BioDeptHeadCharacter groundMapName={groundMapName} position={[-100, 0, 42.5]} scale={0.7} />
                 )}
                 {groundMapName === 'computer_sw_map' && (
-                    <CSDeptHeadCharacter groundMapName={groundMapName} position={[-125, 0.7, -127]} scale={0.7} />
+                    <CSDeptHeadCharacter myChar={myChar} groundMapName={groundMapName} position={[-100, 0, -127]} scale={0.7} />
                 )}
                 {groundMapName === 'food_nutrition_map' && (
                     <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0.7, -100]} scale={0.7} />
