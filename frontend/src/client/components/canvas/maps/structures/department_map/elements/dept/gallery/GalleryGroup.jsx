@@ -1,13 +1,30 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { GalleryBoard } from './Galleryboard'
 import { Zone } from '../etc/Zone'
 import { Plane } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import axios from 'axios'
+import GalleryModal from '../modal/GalleryModal';
 
 const GalleryGroup = () => {
     const [pictures, setPictures] = useState([]);
+    const [workInfo, setWorkInfo] = useState([]);
+
+    // 작품 영역 상태 가져오기
+    const isInFirstWork = useSelector((state) => state.galleryArea.inFirstWork);
+    useEffect(()=>{
+        console.log("1등 작품",isInFirstWork)
+    },[isInFirstWork])
+    const isInSecondWork = useSelector((state) => state.galleryArea.inSecondWork);
+    useEffect(()=>{
+        console.log("2등 작품",isInSecondWork)
+    },[isInSecondWork])
+    const isInThirdWork = useSelector((state) => state.galleryArea.inThirdWork);
+    useEffect(()=>{
+        console.log("3등 작품",)
+    },[isInThirdWork])
 
     useEffect(() => {
         // 백엔드에서 사진 데이터를 가져오는 함수
@@ -21,6 +38,20 @@ const GalleryGroup = () => {
             }
         };
         fetchPictures();
+    }, []);
+
+    useEffect(() => {
+        // 백엔드에서 전체 작품 정보를 가져오는 함수
+        const fetchWorkInfo = async () => {
+            try {
+                const response = await axios.get('/api/gallery/fetchAllWorkInfo');
+                setWorkInfo(response.data);
+                console.log("전체 작품 데이터 가져오기 완료!");
+            } catch (error) {
+                console.error("Error fetching all work details:", error);
+            }
+        };
+        fetchWorkInfo();
     }, []);
 
     // 각 Box에 이미지 텍스처 적용
@@ -69,6 +100,26 @@ const GalleryGroup = () => {
             <Zone position={[-135, -25, 52]} rotation={[0, Math.PI * -2, 0]} scale={5} />
             <Zone position={[-135, -25, 10]} rotation={[0, Math.PI * -2, 0]} scale={5} />
 
+
+            {/* GalleryModal 조건부 렌더링 */}
+            {isInFirstWork && (
+                <GalleryModal
+                    data={workInfo[0]}
+                    position={[-130, 0, 50]} // 모달의 위치를 설정하세요
+                />
+            )}
+            {isInSecondWork && (
+                <GalleryModal
+                    data={workInfo[1]}
+                    position={[-130, 0, -20]} // 모달의 위치를 설정하세요
+                />
+            )}
+            {isInThirdWork && (
+                <GalleryModal
+                    data={workInfo[2]}
+                    position={[-130, 0, 120]} // 모달의 위치를 설정하세요
+                />
+            )}
         </>
 
     )

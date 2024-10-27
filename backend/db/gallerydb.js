@@ -32,4 +32,28 @@ router.get("/fetchPicture", (req, res) => {
     });
 });
 
+// 모든 작품의 상세 정보를 가져오는 기능
+router.get("/fetchAllWorkInfo", (req, res) => {
+    const query = "SELECT * FROM gallerywork"; // 모든 열을 가져오기 위한 쿼리
+
+    mysqlconnection.query(query, (error, results) => {
+        if (error) {
+            console.error("Error fetching all details:", error);
+            return res.status(500).json({ message: "작품 데이터를 가져오는 중 오류가 발생했습니다." });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "작품 데이터가 없습니다." });
+        }
+
+        const encodedResults = results.map(row => ({
+            ...row,
+            work_picture: `data:image/png;base64,${row.work_picture.toString('base64')}`
+        }));
+
+        res.status(200).json(encodedResults);
+    });
+});
+
+
 module.exports = router; // 라우터 객체 내보내기
