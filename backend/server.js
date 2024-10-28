@@ -1,12 +1,15 @@
 /** 파일 생성자 : 임성준
+ * 임성준
+ * - 상담신청 라우트 연결
  *
- * 초기 연결셋팅 : 오자현
- * 시작방법 터미널에 node server.js 입력
+ * 오자현
+ * - 데이터베이스 연동
+ * - 게시판 관련 라우트 연결
  *
  * 이석재
- *   - nas의 mysql 컨테이너와 연결 설정 및 회원 라우트 연결
- *   - 회원관리 라우트 연결
- *   - 학부 추천 관리 라우트 연결
+ * - nas의 mysql 컨테이너와 연결 설정 및 회원 라우트 연결
+ * - 회원관리 라우트 연결
+ * - 학부 추천 관리 라우트 연결
  * */
 const express = require("express");
 const http = require("http");
@@ -43,6 +46,7 @@ mysqlconnection.connect((err) => {
 // mysqlconnection 객체를 모듈로 내보내기
 module.exports = mysqlconnection;
 
+const memberInfoRoutes = require('./db/counsel/memberInfoDB')
 const testdbRoutes = require('./db/testdb'); 
 const todaymenuRoutes = require('./db/todaymenudb');
 const memberRoutes = require('./db/memberdb');
@@ -53,7 +57,7 @@ const boardLikeRoutes = require('./db/boardLikeddb');
 const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학부 추천 관리 라우터
 const commentRoutes = require('./db/commentdb'); 
 const reportRoutes = require('./db/reportdb'); 
-const consultationRoutes = require('./db/consultationDB')
+const consultationRoutes = require('./db/counsel/consultationDB')
 const deptRecRoutes = require('./db/deptRecdb');  // 학부 추천 기능 라우트
 const galleryRoutes = require('./db/gallerydb');
 const galleryAdminRoutes = require('./db/galleryAdmindb');
@@ -71,6 +75,7 @@ app.use('/consultation', consultationRoutes)
 app.use('/deptrec', deptRecRoutes);  // 학부 추천 기능 라우트를 '/deptrec' 경로로 사용
 app.use('/gallery', galleryRoutes);
 app.use('/galleryAdmin', galleryAdminRoutes);
+app.use('/memberInfo', memberInfoRoutes)
 
 
 // 서버 시작

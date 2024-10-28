@@ -39,7 +39,7 @@ const SideMenuLayout = (props) => {
     // 현재 학생정보 가져오기
     const CurrentStudentData = async () => {
         try {
-            const response = await axios.get('/api/consultation/current-student-info', {
+            const response = await axios.get('/api/memberInfo/current-student-info', {
                 params: {
                     studentId: userId
                 }
@@ -64,7 +64,7 @@ const SideMenuLayout = (props) => {
     // 현재 교수정보 가져오기
     const CurrentProfessorData = async () => {
         try {
-            const response = await axios.get('/api/consultation/current-professor-info', {
+            const response = await axios.get('/api/memberInfo/current-professor-info', {
                 params: {
                     professorId: userId
                 }

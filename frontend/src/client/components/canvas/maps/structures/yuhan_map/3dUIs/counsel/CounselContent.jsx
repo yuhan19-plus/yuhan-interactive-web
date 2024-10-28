@@ -26,7 +26,7 @@ const CounselContent = () => {
     // 나의 교수정보 가져오기 (학생일경우)
     const MyProfessorData = async () => {
         try {
-            const response = await axios.get('/api/consultation/get-my-professor-info', {
+            const response = await axios.get('/api/memberInfo/get-my-professor-info', {
                 params: {
                     studentMajor: studentMajor
                 }
