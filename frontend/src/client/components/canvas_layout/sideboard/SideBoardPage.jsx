@@ -12,7 +12,6 @@ import { useBoardData } from "./hooks/useBoardData";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
 
-// 코드가 너무 길어져서 훅과 ui로 분리
 const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
     const { boardData, attachments, loading, error, liked, comment, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardData(boardId);
@@ -23,7 +22,6 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
 
     return (
         <BoardLayout>
-            {/* background 맨뒤 cc는 투명도 */}
             <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">

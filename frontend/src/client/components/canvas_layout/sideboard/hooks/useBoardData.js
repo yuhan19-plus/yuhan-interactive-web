@@ -28,7 +28,7 @@ export const useBoardData = (boardId) => {
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
     
-    // 게시판에 좋아요를 클릭하면 동작
+    // 좋아요핸들러
     const handleLikeToggle = async () => {
         if (!cookies.user) {
             Swal.fire({
@@ -57,7 +57,7 @@ export const useBoardData = (boardId) => {
 
             // 서버에서 성공 응답을 받은 후 상태를 변경
             setLiked(!liked);
-            // 좋아요 누르고 해당페이지에서 바로 좋아요 올라간 것을 확인 가능하도록 수정
+            // 데이터를 불러와 변경된 좋아요수 반영
             fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
@@ -65,7 +65,7 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 첨부파일다운로드 
+    // 첨부파일다운로드핸들러
     const handleDownload = (fileName, fileData, fileType) => {
         try {
             // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
@@ -106,7 +106,7 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 현재 게시물에 대한 사용자의 좋아요 여부 
+    // 현재 게시물에 대한 사용자의 좋아요 여부 체크
     const checkLiked = async () => {
         try {
             const response = await fetch(`/api/boardlike/${boardId}/${cookies.user}`, {

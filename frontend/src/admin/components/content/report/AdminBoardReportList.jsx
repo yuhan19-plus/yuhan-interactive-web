@@ -49,7 +49,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                 return a.report_type.localeCompare(b.report_type);
             }
 
-
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
@@ -60,7 +59,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
     };
-
 
     const fetchData = async () => {
         try {
@@ -76,7 +74,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
             console.error("데이터 불러오는 중 에러 발생:", error);
         }
     };
-
 
     useEffect(() => {
         fetchData();
@@ -128,7 +125,7 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                     </Typography>
                                 </Box>
 
-                                {/* 신고 내용 리스트에선 25자만 보여지고 들어가면 전부 보여짐*/}
+                                {/* 신고 내용 25자만 출력 */}
                                 <Box sx={{ width: '60%', textAlign: 'left' }}>
                                     <ListItemText
                                         primary={item.report_content.substring(0, 25)}

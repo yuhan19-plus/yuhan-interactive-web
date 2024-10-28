@@ -47,6 +47,7 @@ router.post("/", (req, res) => {
 
                     // 게시판의 좋아요 수 증가
                     mysqlconnection.query(boardlikePlusQuery, [boardId], (err, results) => {
+                        // 에러체크
                         if (err) {
                             console.error("게시판에서 좋아요 증가 중 에러 발생:", err);
                             return mysqlconnection.rollback(() => {
@@ -67,8 +68,8 @@ router.post("/", (req, res) => {
                     });
                 });
             } else {
-                // 이미 좋아요를 누른 경우 (like_status 체크)
                 const currentStatus = results[0].like_status;
+                // 이미 좋아요를 누른 경우 (like_status 체크)
                 if (currentStatus === 0) {
                     // 좋아요 상태로 변경
                     mysqlconnection.query(updateLikeStatusToLikedQuery, [userId, boardId], (err, results) => {
@@ -140,8 +141,9 @@ router.post("/", (req, res) => {
 
 // 게시글에 대한 좋아요 여부를 알려준다.
 router.post("/:boardID/:userId", (req, res) => {
-    const { boardID, userId } = req.params;  // URL에서 boardID와 userId를 추출
     // console.log("게시글에 대한 좋아요여부 체크요청 들어옴")
+    const { boardID, userId } = req.params;  // URL에서 boardID와 userId를 추출
+    
     const checkQuery = `SELECT like_status FROM board_likes where board_id = ? and user_id = ?`
 
     mysqlconnection.query(checkQuery, [boardID, userId], (err, results) => {

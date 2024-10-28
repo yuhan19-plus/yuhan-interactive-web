@@ -10,6 +10,7 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 router.post("/save", (req, res) => {
     const { boardID, userId, comment_content } = req.body;  // URL에서 boardID와 userId를 추출
     // console.log("댓글저장 게시판id", boardID, "회원id", userId, "댓글내용", comment_content)
+
     const commentSaveQuery = "INSERT INTO comment (board_id, comment_writer, comment_content, comment_date) VALUES (?, ?, ?, NOW())";
 
     mysqlconnection.query(commentSaveQuery, [boardID, userId, comment_content], (err, result) => {
@@ -41,9 +42,10 @@ router.get("/List/:boardID", (req, res) => {
 
 // 댓글 삭제
 router.delete("/delete", (req, res) => {
+    // console.log("req.params",req)
     const { userId, commentId } = req.query;
     // console.log("요청진입체크 commentId", commentId)
-    // console.log("req.params",req)
+
     const commentDeleteQuery = "DELETE FROM comment WHERE comment_id =?;"
     mysqlconnection.query(commentDeleteQuery, [commentId], (err, result) => {
         if (err) {
@@ -53,6 +55,5 @@ router.delete("/delete", (req, res) => {
         res.json({ message: "댓글목록 불러오기 성공" })
     })
 })
-
 
 module.exports = router; // 라우터 객체 내보내기

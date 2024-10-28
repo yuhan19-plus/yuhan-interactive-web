@@ -12,6 +12,7 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 router.post("/read", (req, res) => {
     // console.log("임시저장 읽기 요청");
     const { userId } = req.body;
+
     const readTempDataQuery = "SELECT * FROM tempboard WHERE board_writer = ?";
 
     mysqlconnection.query(readTempDataQuery, [userId], (err, result) => {
@@ -57,6 +58,7 @@ router.post("/checkTempData", (req, res) => {
 router.delete("/delete", (req, res) => {
     // console.log("임시 저장 데이터 삭제 요청");
     const { userId } = req.body;
+    
     const deleteTempBoardQuery = "DELETE FROM tempboard WHERE board_writer = ?";
 
     mysqlconnection.query(deleteTempBoardQuery, [userId], (err, result) => {

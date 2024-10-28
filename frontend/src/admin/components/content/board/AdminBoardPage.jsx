@@ -3,14 +3,11 @@
  * 기능 구현- 오자현
  * 게시판상세페이지 ui
  * 좋아요, 수정, 삭제, 신고 기능
- * 
- * 추가사항
- * - 신고로 삭제된 경우 삭제사유를 보여지게 
- * 
+ *  
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
-import {Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
@@ -27,7 +24,6 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 
     return (
         <BoardLayout>
-            {/* background 맨뒤 cc는 투명도 */}
             <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
@@ -202,10 +198,9 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                     </Button>
                 </Grid>
                 <Divider />
-                {/* 댓글 컴포넌츠로 추출 */}
+                {/* 댓글 컴포넌츠 */}
                 <YuhanBoardComment boardData={boardData} />
             </Box>
-
 
             {/* 처리 사유 영역 */}
             {reportData && (

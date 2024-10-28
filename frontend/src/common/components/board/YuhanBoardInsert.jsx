@@ -20,7 +20,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         writer_type: cookies.userType,
         files: []  // 파일 데이터를 저장하는 배열
     });
-    const shouldSkipCleanup = useRef(false);// shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
+    const shouldSkipCleanup = useRef(false);// shouldSkipCleanup을 useRef로 관리
     const boardDataRef = useRef(boardData); // useRef로 boardData 참조값 유지
 
     // 파일드랍
@@ -55,16 +55,16 @@ const YuhanBoardInsert = ({ onCancel }) => {
         });
     }, []);
 
-    // 드래그앤 드랍
+    // 드래그앤 드랍 onDrop 때문에 onDrop함수 다음에 배치
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-    // 입력창에서 value가 변경하면 즉시 boardData에 저장하는 함수
+    // 입력값변경핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setBoardData({ ...boardData, [name]: value });
     };
 
-    // 게시판저장
+    // 게시판저장핸들러
     const handleAddData = async () => {
         // 제목과 내용이 비어있는지 확인
         if (!boardData.board_title.trim() || !boardData.board_content.trim()) {
@@ -96,7 +96,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
             setBoardData({ board_title: "", board_content: "", board_writer: "", files: [] });
 
             // 상태가 반영된 후에 언마운트 (onCancel 호출)
-            // 성공 메시지 표시
             Swal.fire({
                 icon: 'success',
                 title: '성공',
@@ -115,6 +114,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         }
     };
 
+    // 파일삭제핸들러
     const handleDeleteFile = (index) => {
         // 기존 파일 배열에서 해당 인덱스를 제외한 새로운 배열 생성
         const updatedFiles = boardData.files.filter((_, i) => i !== index);
@@ -124,7 +124,8 @@ const YuhanBoardInsert = ({ onCancel }) => {
             files: updatedFiles // 새로운 파일 목록으로 업데이트
         }));
     };
-    // 임시저장부분
+
+    // 임시저장함수
     const saveTempBoard = async () => {
         try {
             // console.log("boardData", boardDataRef.current); // boardDataRef를 사용한 상태 확인
@@ -157,7 +158,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         }
     };
 
-    // 임시 저장 데이터를 삭제하는 함수
+    // 임시 저장 데이터를 삭제함수
     const deleteTempData = async () => {
         try {
             const response = await fetch("/api/tempboard/delete", {
@@ -291,7 +292,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
     // 이 컴포넌트가 실행될 때 임시저장여부확인 
     useEffect(() => {
-        // 임시저장데이터여부를 알려주고 원하면 불러오도록 처리 거부하면 임시저장데이터를 삭제한다고 알려주고 삭제예정
         checkTempData();
     }, []); // 빈 배열로 첫 렌더링 시에만 실행
 

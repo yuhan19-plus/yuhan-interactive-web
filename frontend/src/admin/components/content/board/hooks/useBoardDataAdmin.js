@@ -10,35 +10,35 @@ import Swal from "sweetalert2";
 
 export const useBoardDataAdmin = (boardId) => {
     const [boardData, setBoardData] = useState({
-    board_id: "",
-    board_title: "",
-    board_content: "",
-    board_writer: "",
-    board_date: "",
-    board_last_modified: "",
-    board_status: "",
-    board_view: 0,
-    board_like: 0,
-    board_comments_count: 0,
-    files: [],
-});
-const [reportData, setReportData] = useState({
-    report_id: null,
-    report_writer: '',
-    report_content: '',
-    report_type: '',
-    report_status: 'Waiting',
-    report_date: '',
-    board_id: null,
-    resolved_at: '',
-    report_resolution: ''
-});
+        board_id: "",
+        board_title: "",
+        board_content: "",
+        board_writer: "",
+        board_date: "",
+        board_last_modified: "",
+        board_status: "",
+        board_view: 0,
+        board_like: 0,
+        board_comments_count: 0,
+        files: [],
+    });
+    const [reportData, setReportData] = useState({
+        report_id: null,
+        report_writer: '',
+        report_content: '',
+        report_type: '',
+        report_status: 'Waiting',
+        report_date: '',
+        board_id: null,
+        resolved_at: '',
+        report_resolution: ''
+    });
     const [cookies] = useCookies(["user"]);
     const [attachments, setAttachments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
-    
+
 
     // 게시판에 좋아요를 클릭하면 동작
     const handleLikeToggle = async () => {

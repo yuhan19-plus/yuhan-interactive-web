@@ -47,7 +47,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                 text: '신고가 성공적으로 접수되었습니다.',
                 confirmButtonColor: '#3085d6',
             }).then(() => {
-                // 성공 후 페이지 이동 or 리스트로 돌아가기
+                // 리스트로 돌아가기
                 onCancel();
             });
             // console.log("신고 성공");
@@ -62,7 +62,6 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
         }
     }
 
-    // 게시글 작성내용을 저장하는 함수 저장이 완료되면 다시 리스트로 돌아가도록 onCancle를 호출하기
     return (
         <>
             <Box sx={{

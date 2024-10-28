@@ -37,13 +37,13 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         resolved_at: ""          // 신고가 처리된 날짜 (처리 완료 시점)
     });
 
-    // 입력창에서 value가 변경되면 totalData에 저장하는 함수
+    // 입력값 변동시 저장하는 핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTotalData({ ...totalData, [name]: value });
     };
 
-    // 게시글 삭제 함수
+    // 게시글 삭제핸들러
     const handleDelete = async () => {
         // 처리 사유가 없으면 동작하지 않도록 유효성 검사
         if (!totalData.report_resolution) {
@@ -63,7 +63,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 },
                 body: JSON.stringify({
                     ...totalData,  // totalData에 포함된 처리 사유와 기타 정보 전송
-                    action: 'delete'  // 삭제를 명시하는 플래그를 보낼 수 있음
+                    action: 'delete'  // 삭제를 명시
                 })
             });
             if (!response.ok) {
@@ -89,7 +89,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         }
     }
 
-    // 신고 무시 함수
+    // 신고 무시핸들러
     const handleIgnore = async () => {
         // 처리 사유가 없으면 동작하지 않도록 유효성 검사
         if (!totalData.report_resolution) {
@@ -109,7 +109,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
                 },
                 body: JSON.stringify({
                     ...totalData,  // totalData에 포함된 처리 사유와 기타 정보 전송
-                    action: 'ignore'  // 무시를 명시하는 플래그를 보낼 수 있음
+                    action: 'ignore'  // 무시를 명시
                 })
             });
             if (!response.ok) {

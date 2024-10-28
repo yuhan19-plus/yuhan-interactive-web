@@ -21,18 +21,19 @@ export const YuhanBoardComment = ({ boardData }) => {
     const pageNum = 8; // 한 페이지에서 볼 댓글의 수
     const [commentList, setCommentList] = useState([]);
     const [comment, setComment] = useState({
-        comment_id: "", // 백엔드쿼리에서 추가
+        comment_id: "",
         board_id: boardID, // 진입시들어온 boardData로 게시판id 연결
         comment_writer: cookies.user, // 쿠키로 로그인중인 사용자 id 잡음
-        comment_content: "", // onChange이벤트로 입력
+        comment_content: "",
     });
 
+    // 입력값변경핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setComment({ ...comment, [name]: value });
     };
 
-    // 댓글 저장
+    // 댓글 저장핸들러
     const handleSaveComment = async () => {
         // console.log("댓글데이터체크", comment.comment_content)
         if (!comment.comment_content.trim()) {
@@ -73,7 +74,7 @@ export const YuhanBoardComment = ({ boardData }) => {
         }
     };
 
-    // 댓글 삭제 
+    // 댓글 삭제 핸들러
     const handleDeleteComment = async (comment_id) => {
         const commentId = comment_id;
         try {
@@ -98,11 +99,12 @@ export const YuhanBoardComment = ({ boardData }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
-    // 댓글 페이지게이션을 위해 정렬하는 함수
+    // 댓글 정렬 함수
     const getCurrentPageData = () => {
         const targetWriter = 'admin'; // 관리자 또는 특정 유저 우선순위
         const sortedData = [...commentList].sort((a, b) => {
@@ -180,8 +182,7 @@ export const YuhanBoardComment = ({ boardData }) => {
 
     return (
         <>
-            {/* 읽어들인 댓들이 보여지는 영역 */}
-
+            {/* 읽어들인 댓글이 보여지는 영역 */}
             <Grid item xs={12} sx={{ marginTop: "2vh" }}>
                 <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                     댓글 {commentList.length}
@@ -249,7 +250,7 @@ export const YuhanBoardComment = ({ boardData }) => {
             ) : (
                 <></>
             )}
-            {/* 로그인시에만 댓글작성이 가능하도록 */}
+            {/* 로그인시 댓글작성영역 */}
             {cookies.user && (
                 <Grid item xs={12} sx={{ marginTop: "2vh" }}>
                     <Grid container alignItems="center" spacing={0.5}>

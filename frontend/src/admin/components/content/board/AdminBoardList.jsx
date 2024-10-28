@@ -23,10 +23,9 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
     const pageNum = 8;
 
-    // 삭제는 리스트에서 관리자라면 가능하게 하는 식으로 처리하면 될듯
+    // 삭제핸들러
     const handleDeleteItem = async (boardId) => {
         // console.log("삭제요청헨들러 진입, board_id", boardId);
-        // 삭제하는 것으로 동작하게 백엔드와 연결하기 
         try {
             const response = await fetch(`/api/board/delete/${boardId}`, {
                 method: "DELETE",
@@ -41,6 +40,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         fetchData();
     }
 
+    // 검색핸들러
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
         if (searchQuery === '') {
@@ -70,10 +70,12 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
+    // 아이템선택핸들러
     const handleSelectItem = (boardId) => {
         onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };

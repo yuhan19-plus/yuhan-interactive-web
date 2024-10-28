@@ -11,14 +11,13 @@ const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 �
 router.post("/", (req, res) => {
     const { board_title, board_content, board_writer, writer_type, files } = req.body;
 
+    const insertBoardQuery = `INSERT INTO board (board_title, board_content, board_writer, writer_type, board_date) VALUES (?, ?, ?, ?, NOW())`;
+    const insertAttachmentQuery = `INSERT INTO attachment (board_id, file_name, file_data, upload_date, file_size, file_type) VALUES (?, ?, ?, NOW(), ?, ?)`;
+    
     // 필수 필드 체크
     if (!board_title || !board_content || !board_writer) {
         return res.status(400).send("board_title, board_content, board_writer 값이 필요합니다.");
     }
-
-    const insertBoardQuery = `INSERT INTO board (board_title, board_content, board_writer, writer_type, board_date) VALUES (?, ?, ?, ?, NOW())`;
-    const insertAttachmentQuery = `INSERT INTO attachment (board_id, file_name, file_data, upload_date, file_size, file_type) VALUES (?, ?, ?, NOW(), ?, ?)`;
-
     mysqlconnection.query(insertBoardQuery, [board_title, board_content, board_writer, writer_type], (err, results) => {
         if (err) {
             console.error("게시물 삽입 중 에러 발생:", err);
@@ -67,6 +66,7 @@ router.get("/", (req, res) => {
 router.get("/search/:searchQuery", (req, res) => {
     // console.log("검색요청 진입")
     const searchData = `%${req.params.searchQuery}%`; // 부분 일치를 위해 '%'를 추가
+
     const searchQuery = "SELECT * FROM board WHERE board_title LIKE ? OR board_writer LIKE ?";
 
     mysqlconnection.query(searchQuery, [searchData, searchData], (err, results) => {
@@ -90,8 +90,9 @@ router.get("/search/:searchQuery", (req, res) => {
 // 게시물 하나
 router.get("/:board_id", (req, res) => {
     // console.log("board_id 진입")    
-    const board_id = req.params.board_id; // URL에서 board_id 추출
     // console.log("req.params 데이터",  req.params)
+    const board_id = req.params.board_id; // URL에서 board_id 추출
+
     const selectIdQuery = "SELECT * FROM board where board_id = ?";
     const checkAttachmentQuery = "SELECT * FROM attachment where board_id = ?";
     // 조회수증가쿼리
@@ -134,10 +135,10 @@ router.get("/:board_id", (req, res) => {
 });
 
 // 프론트에서 삭제요청이 들어오면 게시판 테이블의 상태속성을 비활성화로 변경
-// 추가아이디어 관리자가 게시판을 다시 복구하게 하는 기능
 router.delete("/delete/:board_id", (req, res) => {
-    const board_id = req.params.board_id; // URL에서 board_id 추출
     // console.log("삭제요청 들어옴 board_id:", board_id)
+    const board_id = req.params.board_id; // URL에서 board_id 추출
+
     const deleteQuery = "UPDATE board set board_status = 'delete' where board_id = ?"
 
     mysqlconnection.query(deleteQuery, [board_id], (err, results) => {

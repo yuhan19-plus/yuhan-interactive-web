@@ -69,16 +69,17 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
+    // 게시글선택핸들러
     const handleSelectItem = (boardId) => {
         onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };
 
-
-    // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
+    // 현재 페이지 데이터 정렬 함수
     const getCurrentPageData = () => {
         const targetWriter = 'admin';
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
@@ -114,6 +115,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
         return sortedData.slice(startIndex, endIndex);
     };
 
+    // 데이터 패치 함수
     const fetchData = async () => {
         try {
             const response = await fetch("/api/board");
