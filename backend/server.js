@@ -55,6 +55,8 @@ const commentRoutes = require('./db/commentdb');
 const reportRoutes = require('./db/reportdb'); 
 const consultationRoutes = require('./db/consultationDB')
 const deptRecRoutes = require('./db/deptRecdb');  // 학부 추천 기능 라우트
+const galleryRoutes = require('./db/gallerydb');
+const galleryAdminRoutes = require('./db/galleryAdmindb');
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/board', boardRoutes); // 게시판 라우트를 '/board' 경로로 사용
 app.use('/member', memberRoutes);
@@ -67,6 +69,8 @@ app.use('/report', reportRoutes);
 app.use('/food', todaymenuRoutes);
 app.use('/consultation', consultationRoutes)
 app.use('/deptrec', deptRecRoutes);  // 학부 추천 기능 라우트를 '/deptrec' 경로로 사용
+app.use('/gallery', galleryRoutes);
+app.use('/galleryAdmin', galleryAdminRoutes);
 
 
 // 서버 시작

@@ -89,6 +89,9 @@ function App() {
               </Route>
               <Route path='/admin/report' element={<AdminMain />}>
                 {/* 경로설정 */}
+              </Route>
+              <Route path='/admin/gallery' element={<AdminMain />}>
+                {/* 경로설정 */}
               </Route>            
             </Route>
             <Route path='/error' element={<ErrorPage />} />

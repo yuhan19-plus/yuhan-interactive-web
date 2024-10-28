@@ -8,6 +8,7 @@ import BioGroup from './dept/bio/BioGroup'
 import EtcGroup from './dept/etc/EtcGroup'
 import DeptInfoGroup from './dept/info/DeptInfoGroup'
 import MiniGame2048Group from '../../minigame_map/MiniGame2048Group'
+import GalleryGroup from './dept/gallery/GalleryGroup'
 
 const DeptElements = ({ groundMapName }) => {
     return (
@@ -16,6 +17,7 @@ const DeptElements = ({ groundMapName }) => {
                 <>
                     <DeptInfoGroup groundMapName={groundMapName} />
                     <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
+                    <GalleryGroup />
                     {groundMapName === 'yuhan_bio_map' && (
                         // 바이오
                         <BioGroup />
@@ -24,6 +26,8 @@ const DeptElements = ({ groundMapName }) => {
                         // 컴소
                         <>
                             <CodingGroup />
+                             {/* 미니게임 */}
+                            <MiniGame2048Group/>
                         </>
                     )}
                     {groundMapName === 'food_nutrition_map' && (
@@ -35,8 +39,8 @@ const DeptElements = ({ groundMapName }) => {
                         <></>
                     )}
                     {groundMapName === 'mini_game_map' && (
-                        // 미니게임
-                        <MiniGame2048Group/>
+                        <>
+                        </>
                     )}
                 </>
             )}
