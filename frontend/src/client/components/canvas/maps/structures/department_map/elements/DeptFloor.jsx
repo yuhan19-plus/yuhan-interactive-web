@@ -27,7 +27,7 @@ const DeptFloor = ({onMove, ...props}) => {
                 {...props}
             >
                 <boxGeometry args={[500, 7, 500]} />
-                <meshStandardMaterial color='#333333' />
+                <meshStandardMaterial color='#000000' />
             </mesh>
             {/* <mesh position={[125, -10, 125]}>
                 <boxGeometry args={[250, 7, 250]} />

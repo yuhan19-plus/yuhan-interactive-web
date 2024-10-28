@@ -23,13 +23,13 @@ export function CSDeptHeadCharacter({myChar, groundMapName, position, ...props})
       {groundMapName === 'computer_sw_map' && (
         <>
           <TextBoard
-              ref={chatRef}
-              text={displayText}
-          />
-          <TextBoard
               ref={nameRef}
               text={"학과장"}
               isNpc
+          />
+          <TextBoard
+              ref={chatRef}
+              text={displayText}
           />
         </>
       )}
