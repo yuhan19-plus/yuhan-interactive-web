@@ -47,6 +47,7 @@ export const INIT_GUIDE = 'INIT_GUIDE'
 export const GUIDE_WELCOME = 'GUIDE_WELCOME'
 export const GUIDE_TV = 'GUIDE_TV'
 export const GUIDE_STATUE = 'GUIDE_STATUE'
+export const MINI_GAME_MAP = 'MINI_GAME_MAP'
 
 // 모달 - 성준
 export const ADMIN_ENTER_MODAL = 'ADMIN_ENTER_MODAL'
@@ -169,6 +170,10 @@ export const foodNutritionMap = (pathData) => ({
 })
 export const yuhanBioMap = (pathData) => ({
     type: YUHAN_LIFE_BIO_MAP,
+    payload: pathData
+})
+export const miniGameMap = (pathData) => ({
+    type: MINI_GAME_MAP,
     payload: pathData
 })
 

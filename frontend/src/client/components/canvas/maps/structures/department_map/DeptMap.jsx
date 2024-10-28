@@ -2,16 +2,16 @@
  * 임성준 : 프론트엔드 개발
  */
 import React, { useEffect, useState } from 'react'
-import DeptElements from './elements/DeptElements'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { mainCharDept } from '../../../../../../redux/actions/actions'
-import DeptFloor from './elements/DeptFloor'
-import { MainCharacter } from '../../player/main/MainCharacter'
 import { BioDeptHeadCharacter } from '../../player/dept/BioDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../player/dept/CSDeptHeadCharacter'
 import { DesignDeptHeadCharacter } from '../../player/dept/DesignDeptHeadCharacter'
 import { FoodDeptHeadCharacter } from '../../player/dept/FoodDeptHeadCharacter'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { MainCharacter } from '../../player/main/MainCharacter'
+import DeptElements from './elements/DeptElements'
+import DeptFloor from './elements/DeptFloor'
 
 const DeptMap = () => {
     const navigate = useNavigate()
@@ -60,6 +60,9 @@ const DeptMap = () => {
                 )}
                 {groundMapName === 'industrial_design_map' && (
                     <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, -6.3, -100]} scale={0.7} />
+                )}
+                {groundMapName === 'mini_game_map' && (
+                    <></>
                 )}
             </React.Fragment>
             

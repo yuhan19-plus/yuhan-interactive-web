@@ -7,7 +7,7 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
-import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
+import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, miniGameMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 
 const dataKiosk = {
     PEACE_HALL,
@@ -92,6 +92,11 @@ const KioskModal = ({kioskName, position, ...props}) => {
         navigate('/department/bio')
     }
 
+    const handleMiniGame = () => {
+        dispatch(miniGameMap())
+        navigate('/department/mini')
+    }
+    
     return (
         <>
             <Html 
@@ -155,6 +160,7 @@ const KioskModal = ({kioskName, position, ...props}) => {
                                                     <div style={{margin: '5px 0px'}}>
                                                         <FontAwesomeIcon icon={faCode} size='lg' style={{marginRight: '5px'}} />
                                                         <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
+                                                        <span><a onClick={handleMiniGame}>미니게임</a></span>
                                                     </div>
                                                 </>
                                             )

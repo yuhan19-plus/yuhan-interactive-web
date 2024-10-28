@@ -3,10 +3,11 @@
  * 
  */
 import React from 'react'
+import CodingGroup from './CodingGroup'
 import BioGroup from './dept/bio/BioGroup'
 import EtcGroup from './dept/etc/EtcGroup'
 import DeptInfoGroup from './dept/info/DeptInfoGroup'
-import CodingGroup from './CodingGroup'
+import MiniGame2048Group from '../../minigame_map/MiniGame2048Group'
 
 const DeptElements = ({ groundMapName }) => {
     return (
@@ -22,6 +23,7 @@ const DeptElements = ({ groundMapName }) => {
                     {groundMapName === 'computer_sw_map' && (
                         // 컴소
                         <></>
+                        
                     )}
                     {groundMapName === 'food_nutrition_map' && (
                         // 식품영양
@@ -30,6 +32,10 @@ const DeptElements = ({ groundMapName }) => {
                     {groundMapName === 'industrial_design_map' && (
                         // 산디
                         <></>
+                    )}
+                    {groundMapName === 'mini_game_map' && (
+                        // 미니게임
+                        <MiniGame2048Group/>
                     )}
                 </>
             )}

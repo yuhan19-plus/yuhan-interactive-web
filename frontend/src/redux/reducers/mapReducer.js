@@ -2,7 +2,7 @@
  * 맵 리듀서
  */
 
-import { COMPUTER_SOFTWARE_MAP, DEPT_MAP, FOOD_NUTRITION_MAP, INDUSTRIAL_DESIGN_MAP, YH_MAP, YUHAN_LIFE_BIO_MAP } from "../actions/actions";
+import { COMPUTER_SOFTWARE_MAP, DEPT_MAP, FOOD_NUTRITION_MAP, INDUSTRIAL_DESIGN_MAP, YH_MAP, YUHAN_LIFE_BIO_MAP,MINI_GAME_MAP } from "../actions/actions";
 
 const initialState = {
     mapName: '',
@@ -47,6 +47,12 @@ export function mapReducer(state = initialState, action) {
                 mapName: 'yuhan_bio_map',
                 pathData: action.payload
             }
+        case MINI_GAME_MAP:
+            return {
+                ...state,
+                mapName: 'mini_game_map',
+                pathData: state
+            }    
         default:
             return state
     }
