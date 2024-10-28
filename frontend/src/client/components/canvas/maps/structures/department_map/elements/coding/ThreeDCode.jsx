@@ -1,3 +1,6 @@
+/**
+ * 오자현
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
@@ -10,7 +13,7 @@ const ThreeDCode = ({ resultCode }) => {
     const finalMeshRef = useRef();
     const colorArray = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#A833FF"];
     const [codeResult, setCodeResult] = useState([]);
-    const [randomColor, setRandomColor] = useState("#FFFFFF"); // 색상을 상태로 관리
+    const [randomColor, setRandomColor] = useState("#33FF57");
     const [font, setFont] = useState(null); // 로드된 폰트를 상태로 저장
 
     useEffect(() => {
@@ -19,7 +22,7 @@ const ThreeDCode = ({ resultCode }) => {
         loader.load('/assets/fonts/HakgyoansimWoojuR.json', (loadedFont) => {
             setFont(loadedFont); // 폰트가 로드되면 상태에 저장
         });
-    }, []); // 처음에만 실행하도록 설정
+    }, []);
 
     useEffect(() => {
         if (!font || !firstmMshRef.current || !staticMeshRef.current || !finalMeshRef.current) return;
@@ -44,7 +47,7 @@ const ThreeDCode = ({ resultCode }) => {
             finalMeshRef.current.clear();
 
             resultArray.forEach((line, index) => {
-                // 첫숫자
+                // fistPart: 2*3=6에서 "2" 부분  
                 const FirstGeometry = new TextGeometry(line.firstPart, {
                     font: font,
                     size: 5,
@@ -53,7 +56,7 @@ const ThreeDCode = ({ resultCode }) => {
                     bevelEnabled: false,
                 });
 
-                // numberPart: " * 1 =" 부분
+                // numberPart: 2*3=6에서 " * 3 =" 부분
                 const StaticGeometry = new TextGeometry(line.StaticPart, {
                     font: font,
                     size: 5,
@@ -62,7 +65,7 @@ const ThreeDCode = ({ resultCode }) => {
                     bevelEnabled: false,
                 });
 
-                // resultPart: "2" 같은 부분
+                // resultPart: 2*3=6에서 "6" 부분
                 const resultGeometry = new TextGeometry(line.resultPart, {
                     font: font,
                     size: 5,
@@ -94,19 +97,19 @@ const ThreeDCode = ({ resultCode }) => {
         } else {
             setCodeResult([]);
         }
-    }, [resultCode, font]); // 폰트가 로드된 후에만 이 효과 실행
+    }, [resultCode, font]); // 폰트가 로드된 후 실행
 
     return (
-        <group position={[75, 35, 240]} rotation={[0, Math.PI, 0]}>
+        <group position={[120, 60, 250]} rotation={[0, Math.PI, 0]}>
             <motion.group
-                animate={{scale: [1, 1.125, 1] }}
+                animate={{ scale: [1, 1.125, 1], y: [0, 5, 0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
             >
                 <group ref={firstmMshRef}></group>
             </motion.group>
             <group ref={staticMeshRef}></group>
             <motion.group
-                animate={{scale: [1, 1.125, 1] }}
+                animate={{ scale: [1, 1.125, 1], y: [0, 5, 0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
             >
                 <group ref={finalMeshRef}></group>

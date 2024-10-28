@@ -1,4 +1,7 @@
-import { ENTER_CODINGAREA, LEAVE_CODINGAREA } from "../actions/actions"
+/**
+ * 오자현 코딩영역 여부 리듀서
+ */
+import { ENTER_CODINGAREA, INIT_CODINGAREA, LEAVE_CODINGAREA } from "../actions/actions"
 
 const initialState = {
     value: false,
@@ -7,6 +10,12 @@ const initialState = {
 
 export function codingAreaReducer(state = initialState, action) {
     switch (action.type) {
+        case INIT_CODINGAREA:
+            return {
+                ...state,
+                value: false,
+                name: ''
+            }
         case ENTER_CODINGAREA:
             return {
                 ...state,

@@ -22,12 +22,13 @@ const DeptElements = ({ groundMapName }) => {
                     )}
                     {groundMapName === 'computer_sw_map' && (
                         // 컴소
-                        <></>
-                        
+                        <>
+                            <CodingGroup />
+                        </>
                     )}
                     {groundMapName === 'food_nutrition_map' && (
                         // 식품영양
-                        <CodingGroup />
+                        <></>
                     )}
                     {groundMapName === 'industrial_design_map' && (
                         // 산디
@@ -39,7 +40,7 @@ const DeptElements = ({ groundMapName }) => {
                     )}
                 </>
             )}
-            
+
         </>
     )
 }

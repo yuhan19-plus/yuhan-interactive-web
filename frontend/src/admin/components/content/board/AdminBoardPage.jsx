@@ -10,11 +10,7 @@
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
-import {
-    Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon,
-    CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon,
-    NoteAlt
-} from '@mui/icons-material';
+import {Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";

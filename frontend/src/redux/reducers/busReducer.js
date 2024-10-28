@@ -2,7 +2,7 @@
  * 버스정류장 여부 리듀서
  */
 
-import { ENTER_BUS_STATION_ONE, ENTER_BUS_STATION_TWO, LEAVE_BUS_STATION_ONE, LEAVE_BUS_STATION_TWO } from "../actions/actions";
+import { ENTER_BUS_STATION_ONE, ENTER_BUS_STATION_TWO, INIT_BUS_STATION, LEAVE_BUS_STATION_ONE, LEAVE_BUS_STATION_TWO } from "../actions/actions";
 
 const initialState = {
     inBusStationOne: false, // 첫 번째 버스 정류장에 있는지 여부
@@ -11,6 +11,12 @@ const initialState = {
 
 export function busReducer(state = initialState, action) {
     switch (action.type) {
+        case INIT_BUS_STATION:
+            return {
+                ...state,
+                inBusStationOne: false,
+                inBusStationTwo: false,
+            };
         case ENTER_BUS_STATION_ONE:
             return {
                 ...state,

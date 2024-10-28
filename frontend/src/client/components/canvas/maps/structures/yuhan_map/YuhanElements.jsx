@@ -13,6 +13,7 @@ import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
 import GuideGroup from './elements/GuideGroup'
 import NpcGroup from './elements/NpcGroup'
+import GoldBoxGroup from './elements/GoldBoxGroup'
 
 const YuhanElements = () => {
     return (
@@ -28,6 +29,7 @@ const YuhanElements = () => {
             <SmokingGroup />
             <EtcGroup />
             <StreetLampGroup/>
+            <GoldBoxGroup/>
             {/* <NpcGroup /> */}
         </>
     )

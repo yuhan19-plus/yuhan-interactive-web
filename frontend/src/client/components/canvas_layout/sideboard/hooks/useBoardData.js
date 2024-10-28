@@ -9,7 +9,6 @@ import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
 export const useBoardData = (boardId) => {
-    const [cookies] = useCookies(["user"]);
     const [boardData, setBoardData] = useState({
         board_id: "",
         board_title: "",
@@ -23,12 +22,12 @@ export const useBoardData = (boardId) => {
         board_comments_count: 0,
         files: [],
     });
-
+    const [cookies] = useCookies(["user"]);
     const [attachments, setAttachments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
-
+    
     // 게시판에 좋아요를 클릭하면 동작
     const handleLikeToggle = async () => {
         if (!cookies.user) {
@@ -66,6 +65,47 @@ export const useBoardData = (boardId) => {
         }
     };
 
+    // 첨부파일다운로드 
+    const handleDownload = (fileName, fileData, fileType) => {
+        try {
+            // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
+            const arrayBufferView = new Uint8Array(fileData.data);
+            const blob = new Blob([arrayBufferView], { type: fileType });
+            // console.log("Blob 생성:", blob);
+
+            // Blob을 다운로드 가능한 URL로 변환
+            const url = URL.createObjectURL(blob);
+
+            // a 태그를 생성하고 클릭하여 파일 다운로드
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // URL 해제
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("파일 다운로드 중 에러 발생:", error);
+        }
+    };
+
+    // 삭제 핸들러
+    const handleDeleteItem = async () => {
+        try {
+            const response = await fetch(`/api/board/delete/${boardId}`, { method: "DELETE" });
+            if (!response.ok) {
+                throw new Error("데이터를 삭제하는 것에 실패했습니다.");
+                return false;
+            } else {
+                return true;
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     // 현재 게시물에 대한 사용자의 좋아요 여부 
     const checkLiked = async () => {
         try {
@@ -95,7 +135,6 @@ export const useBoardData = (boardId) => {
         }
     };
 
-
     // 데이터 가져오기 함수
     const fetchData = async () => {
         try {
@@ -113,32 +152,6 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 첨부파일다운로드 
-    const handleDownload = (fileName, fileData, fileType) => {
-        try {
-            // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
-            const arrayBufferView = new Uint8Array(fileData.data);
-            const blob = new Blob([arrayBufferView], { type: fileType });
-            // console.log("Blob 생성:", blob);
-
-            // Blob을 다운로드 가능한 URL로 변환
-            const url = URL.createObjectURL(blob);
-
-            // a 태그를 생성하고 클릭하여 파일 다운로드
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // URL 해제
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("파일 다운로드 중 에러 발생:", error);
-        }
-    };
-
     useEffect(() => {
         const fetchDataAndCheckLiked = async () => {
             await checkLiked(); // 좋아요 여부 체크
@@ -147,22 +160,6 @@ export const useBoardData = (boardId) => {
 
         fetchDataAndCheckLiked();
     }, [boardId]);
-
-    // 삭제 핸들러
-    const handleDeleteItem = async () => {
-        try {
-            const response = await fetch(`/api/board/delete/${boardId}`, { method: "DELETE" });
-            if (!response.ok) {
-                throw new Error("데이터를 삭제하는 것에 실패했습니다.");
-                return false;
-            } else {
-                return true;
-            }
-        } catch (error) {
-            setError(error.message);
-        }
-    };
-
 
     return { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle, handleDownload };
 };

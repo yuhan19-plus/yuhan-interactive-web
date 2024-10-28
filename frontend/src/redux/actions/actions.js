@@ -92,6 +92,7 @@ export const ENTER_STUDENTKIOSK = 'ENTER_STUDENTKIOSK';
 export const LEAVE_STUDENTKIOSK = 'LEAVE_STUDENTKIOSK';
 
 // 버스 정류장 - 자현
+export const INIT_BUS_STATION='INIT_BUS_STATION';
 export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
 export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
 export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
@@ -101,13 +102,18 @@ export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
 export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
-// 코딩경험영역 - 자현
+// 코딩경험영역 - 자현 INIT_CODINGAREA
+export const INIT_CODINGAREA = 'INIT_CODINGAREA';
 export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
 export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
 // 학과장 애니메이션 on - 성준
 export const DEPT_HEAD_ANI_INIT = 'DEPT_HEAD_ANI_INIT'
 export const DEPT_HEAD_ANI_MOVE = 'DEPT_HEAD_ANI_MOVE'
+// 보물상자영역 - 자현
+export const INIT_GOLDBOXAREA = 'INIT_GOLDBOXAREA';
+export const ENTER_GOLDBOXAREA = 'ENTER_GOLDBOXAREA';
+export const LEAVE_GOLDBOXAREA = 'LEAVE_GOLDBOXAREA';
 
 /* 액션 생성자 정의영역 - 성준 */
 // 현재 사용자 정보 - 성준
@@ -256,21 +262,22 @@ export const campusGuideView = () => ({
 
 
 // 버스정류장 진입여부
+export const initBusStation = () => ({
+    type:INIT_BUS_STATION,
+})
 export const enterBusStationOne = () => ({
     type: ENTER_BUS_STATION_ONE,
 });
-
 export const leaveBusStationOne = () => ({
     type: LEAVE_BUS_STATION_ONE,
 });
-
 export const enterBusStationTwo = () => ({
     type: ENTER_BUS_STATION_TWO,
 });
-
 export const leaveBusStationTwo = () => ({
     type: LEAVE_BUS_STATION_TWO,
 });
+
 // 키오스크
 export const initKiosk = () => ({
     type: INIT_KIOSK
@@ -361,10 +368,13 @@ export const deptInfoDeptFeatures = () => ({
 })
 
 //학과체험의 코딩영역
-export const Enter_CodingArea= () => ({
+export const initCodingArea = () => ({
+    type: INIT_CODINGAREA
+})
+export const EnterCodingArea= () => ({
     type:ENTER_CODINGAREA
 })
-export const Leave_CodingArea= () => ({
+export const LeaveCodingArea= () => ({
     type:LEAVE_CODINGAREA 
 })
 
@@ -376,3 +386,16 @@ export const deptHeadAniInit = () => ({
 export const deptHeadAniMove = () => ({
     type: DEPT_HEAD_ANI_MOVE
 })
+//보물상자 영역
+export const init_GoldboxArea = () => ({
+    type: INIT_GOLDBOXAREA
+})
+export const EnterGoldBoxArea = (zone) => ({
+    type: ENTER_GOLDBOXAREA,
+    zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+});
+export const LeaveGoldBoxArea = (zone, hasVisited) => ({
+    type: LEAVE_GOLDBOXAREA,
+    zone: zone, // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+    hasVisited: hasVisited // 'hasVisitedZone1', 'hasVisitedZone2', 'hasVisitedZone3' 중 하나를 전달
+});

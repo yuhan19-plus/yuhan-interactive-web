@@ -134,6 +134,11 @@ const DeptFloor = ({onMove, ...props}) => {
                 <boxGeometry args={[80, 3, 80]} />
                 <meshStandardMaterial color={'#f0e16d'} />
             </mesh>
+
+            {/* 학과체험 - 코딩경험 */}
+            <Zone position={[39.5, -20, 220]} rotation={[0, 0, 0]} scale={4} />
+            <Zone position={[37, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
+            <Zone position={[67, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
         </>
     )
 }

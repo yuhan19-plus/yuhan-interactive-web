@@ -20,8 +20,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         writer_type: cookies.userType,
         files: []  // 파일 데이터를 저장하는 배열
     });
-    // shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
-    const shouldSkipCleanup = useRef(false);
+    const shouldSkipCleanup = useRef(false);// shouldSkipCleanup을 useRef로 관리 (useRef는 값이 변해도 컴포넌트 리렌더링을 발생시키지 않음)
     const boardDataRef = useRef(boardData); // useRef로 boardData 참조값 유지
 
     // 파일드랍
@@ -125,12 +124,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
             files: updatedFiles // 새로운 파일 목록으로 업데이트
         }));
     };
-
-    useEffect(() => {
-        boardDataRef.current = boardData; // 상태가 변경될 때마다 참조값을 업데이트
-        // console.log("boardData", boardData)
-    }, [boardData]);
-
     // 임시저장부분
     const saveTempBoard = async () => {
         try {
@@ -161,46 +154,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
             }
         } catch (error) {
             console.error("임시 저장 중 오류 발생:", error);
-        }
-    };
-
-    // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
-    const checkTempData = async () => {
-        try {
-            const response = await fetch("/api/tempboard/checkTempData", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: cookies.user, // 현재 사용자 ID
-                }),
-            });
-            const data = await response.json();
-
-            if (data.hasTempData) {
-                // 임시 저장 데이터가 있으면 확인 메시지 표시
-                Swal.fire({
-                    title: '임시 저장된 데이터가 있습니다.',
-                    text: '사용하시겠습니까?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '사용',
-                    cancelButtonText: '삭제'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // "사용"을 선택하면 임시 저장된 데이터를 불러옴
-                        fetchTempData();
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        // "삭제"를 선택하면 데이터를 삭제
-                        deleteTempData();
-                    }
-                });
-            } else {
-                console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
-            }
-        } catch (error) {
-            console.error("Error checking temp data:", error);
         }
     };
 
@@ -262,6 +215,45 @@ const YuhanBoardInsert = ({ onCancel }) => {
             console.error("Error fetching draft data:", error);
         }
     };
+    // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
+    const checkTempData = async () => {
+        try {
+            const response = await fetch("/api/tempboard/checkTempData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: cookies.user, // 현재 사용자 ID
+                }),
+            });
+            const data = await response.json();
+
+            if (data.hasTempData) {
+                // 임시 저장 데이터가 있으면 확인 메시지 표시
+                Swal.fire({
+                    title: '임시 저장된 데이터가 있습니다.',
+                    text: '사용하시겠습니까?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '사용',
+                    cancelButtonText: '삭제'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // "사용"을 선택하면 임시 저장된 데이터를 불러옴
+                        fetchTempData();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // "삭제"를 선택하면 데이터를 삭제
+                        deleteTempData();
+                    }
+                });
+            } else {
+                console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
+            }
+        } catch (error) {
+            console.error("Error checking temp data:", error);
+        }
+    };
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
@@ -302,6 +294,11 @@ const YuhanBoardInsert = ({ onCancel }) => {
         // 임시저장데이터여부를 알려주고 원하면 불러오도록 처리 거부하면 임시저장데이터를 삭제한다고 알려주고 삭제예정
         checkTempData();
     }, []); // 빈 배열로 첫 렌더링 시에만 실행
+
+    useEffect(() => {
+        boardDataRef.current = boardData; // 상태가 변경될 때마다 참조값을 업데이트
+        // console.log("boardData", boardData)
+    }, [boardData]);
 
 
     return (

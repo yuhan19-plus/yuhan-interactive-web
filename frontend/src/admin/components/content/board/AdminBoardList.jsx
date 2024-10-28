@@ -19,10 +19,9 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
-    const pageNum = 8;
-    // 전체화면이 화면크기에 따라 제목의 내용 글자수 제한 -> 못생김방지
-    const fullScreenWinth = window.screen.width;
+    const fullScreenWinth = window.screen.width; // 전체화면이 화면크기
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
+    const pageNum = 8;
 
     // 삭제는 리스트에서 관리자라면 가능하게 하는 식으로 처리하면 될듯
     const handleDeleteItem = async (boardId) => {
@@ -71,18 +70,12 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/board");
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-            setDataList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
+    const handleSelectItem = (boardId) => {
+        onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
@@ -133,13 +126,18 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         return sortedData.slice(startIndex, endIndex);
     };
 
-
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
-    };
-
-    const handleSelectItem = (boardId) => {
-        onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/board");
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
     };
 
     useEffect(() => {
