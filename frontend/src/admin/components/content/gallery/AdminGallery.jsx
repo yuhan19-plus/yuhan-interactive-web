@@ -124,6 +124,8 @@ const AdminGallery = () => {
                                 value={work.work_desc || ''}
                                 onChange={(e) => handleChange(index, 'work_desc', e.target.value)}
                                 sx={{ mb: 2 }}
+                                multiline
+                                rows={10} // 원하는 기본 줄 수로 설정
                             />
                             <TextField
                                 fullWidth
@@ -138,7 +140,7 @@ const AdminGallery = () => {
                                     <img
                                         src={work.work_picture}
                                         alt="작품 이미지"
-                                        style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', marginBottom: '1rem' }}
+                                        style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', marginBottom: '1rem' }}
                                     />
                                 )}
                                 <input
