@@ -33,7 +33,7 @@ const DeptFloor = ({onMove, ...props}) => {
                 {...props}
             >
                 <boxGeometry args={[500, 7, 500]} />
-                <meshStandardMaterial color='#333333' />
+                <meshStandardMaterial color='#000000' />
             </mesh>
 
             {/* 학과소개 벽면 1 */}

@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, welcomeGuide, initGuide, tvGuide, statueGuide } from "../../../../../../redux/actions/actions"
+import { Enter_CodingArea, Leave_CodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 
 export const useMainCharacter = ({ position, myChar }) => {
@@ -31,6 +31,8 @@ export const useMainCharacter = ({ position, myChar }) => {
     const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
 
     // 2~3개의 변수만 사용해서 코드 수정할 부분 - 성준
+    const deptHeadAniFlag = useRef(false)
+
     const btnValue = useSelector((state) => state.btnMenu)
     const aerialViewState = btnValue.value
     const directionsState = btnValue.value && btnValue.btnMenuName === 'directionsView'
@@ -840,11 +842,19 @@ export const useMainCharacter = ({ position, myChar }) => {
                             setGsapCameraState(true)
                             handleGSAPCamera(-125, 50, -50)
                         }
+                        if(!deptHeadAniFlag.current) {
+                            deptHeadAniFlag.current = true
+                            dispatch(deptHeadAniMove())
+                        }
                     }
                     else {
                         if(gsapCameraState) {
                             console.log("학과장 setGsapCameraState")
                             setGsapCameraState(false)
+                        }
+                        if(deptHeadAniFlag.current) {
+                            deptHeadAniFlag.current = false
+                            dispatch(deptHeadAniInit())
                         }
                     }
                 }
@@ -879,7 +889,7 @@ export const useMainCharacter = ({ position, myChar }) => {
             if (distance > 0.4) {
                 // 방향을 구하고 스칼라를 곱하여 이동량을 설정
                 const direction = new Vector3().subVectors(targetPosition, currentPosition).normalize().multiplyScalar(0.5)
-
+                // console.log('targetPosition', targetPosition)
                 // 현재 위치에 방향을 더해 새로운 위치를 설정
                 currentPosition.add(direction)
 
