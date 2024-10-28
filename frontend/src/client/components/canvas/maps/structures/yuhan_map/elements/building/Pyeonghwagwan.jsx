@@ -48,7 +48,7 @@ export function Pyeonghwagwan({position, btnMenuValue, btnMenuName, ...props}) {
       }}
       onPointerOut={handlePointerOut}
       animate={{
-        scale: hovered ? 1.1 : 1
+        y: hovered ? 25 : -1
       }}
       transition={{
         duration: 1,
