@@ -11,6 +11,7 @@ import AdminFood from './foodMenu/AdminFood'
 import AdminMember from './member/AdminMember'
 import AdminMenuPreview from './AdminMenuPreview'
 import AdminReport from './report/AdminReport'
+import AdminGallery from './gallery/AdminGallery'
 
 const AdminMain = () => {
     const title = useLocation()
@@ -36,6 +37,9 @@ const AdminMain = () => {
                 }
                 {
                     titleValue === '신고내역' && <AdminReport />
+                }
+                {
+                    titleValue === '갤러리' && <AdminGallery />
                 }
             </div>
         </>

@@ -119,6 +119,13 @@ const AdminNav = () => {
                     }}>
                         <AdminButton>학부추천</AdminButton>
                     </Link>
+                <Link 
+                    to={'/admin/gallery'}
+                    state={{
+                        title: '갤러리'
+                    }}>
+                        <AdminButton>갤러리</AdminButton>
+                    </Link>
                     
                 <Link 
                     to={'/admin/report'}
