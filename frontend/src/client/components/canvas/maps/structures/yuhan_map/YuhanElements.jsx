@@ -12,6 +12,7 @@ import BuildingGroup from './elements/BuildingGroup'
 import EtcGroup from './elements/EtcGroup'
 import StreetLampGroup from './elements/StreetLampGroup'
 import GuideGroup from './elements/GuideGroup'
+import NpcGroup from './elements/NpcGroup'
 
 const YuhanElements = () => {
     return (
@@ -27,6 +28,7 @@ const YuhanElements = () => {
             <SmokingGroup />
             <EtcGroup />
             <StreetLampGroup/>
+            {/* <NpcGroup /> */}
         </>
     )
 }
