@@ -5,7 +5,7 @@ import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_
 import { useNavigate } from 'react-router-dom'
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBowlFood, faCode, faDna, faPenRuler } from '@fortawesome/free-solid-svg-icons'
+import { faBowlFood, faCode, faDna, faGamepad, faPenRuler } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, miniGameMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 
@@ -145,11 +145,11 @@ const KioskModal = ({kioskName, position, ...props}) => {
                                         {
                                             (kioskName === '평화관 정문' || kioskName === '평화관 후문') && (
                                                 <>
-                                                    <p>학과체험하러가기</p>
-                                                    <div style={{margin: '5px 0px'}}>
-                                                        <FontAwesomeIcon icon={faBowlFood} size='lg' style={{marginRight: '5px'}} />
-                                                        <span><a onClick={handleFoodNutrition}>식품영양학과체험</a></span>
-                                                    </div>
+                                                    {/* <p>학과체험하러가기</p>
+                                                    <KioskLinkContent>
+                                                        <p><FontAwesomeIcon icon={faBowlFood} /></p>
+                                                        <p><a onClick={handleFoodNutrition}>식품영양학과체험</a></p>
+                                                    </KioskLinkContent> */}
                                                 </>
                                             )
                                         }
@@ -157,33 +157,38 @@ const KioskModal = ({kioskName, position, ...props}) => {
                                             kioskName === '유일한기념관' && (
                                                 <>
                                                     <p>학과체험하러가기</p>
-                                                    <div style={{margin: '5px 0px'}}>
-                                                        <FontAwesomeIcon icon={faCode} size='lg' style={{marginRight: '5px'}} />
-                                                        <span><a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a></span>
-                                                        <span><a onClick={handleMiniGame}>미니게임</a></span>
-                                                    </div>
+                                                    <KioskLinkContent>
+                                                        <p>
+                                                            <FontAwesomeIcon icon={faCode} />
+                                                            <a onClick={handleComputerSW}>컴퓨터소프트웨어공학과체험</a>
+                                                        </p>
+                                                        <p>
+                                                            <FontAwesomeIcon icon={faGamepad} />
+                                                            <a onClick={handleMiniGame}>미니게임</a>
+                                                        </p>
+                                                    </KioskLinkContent>
                                                 </>
                                             )
                                         }
                                         {
                                             kioskName === '나눔관' && (
                                                 <>
-                                                    <p>학과체험하러가기</p>
-                                                    <div style={{margin: '5px 0px'}}>
+                                                    {/* <p>학과체험하러가기</p>
+                                                    <div >
                                                         <FontAwesomeIcon icon={faDna} size='lg' style={{marginRight: '5px'}} />
                                                         <span><a onClick={handleYuhanBio}>유한생명바이오학과체험</a></span>
-                                                    </div>
+                                                    </div> */}
                                                 </>
                                             )
                                         }
                                         {
                                             kioskName === '창조관' && (
                                                 <>
-                                                    <p>학과체험하러가기</p>
-                                                    <div style={{margin: '5px 0px'}}>
+                                                    {/* <p>학과체험하러가기</p>
+                                                    <div >
                                                         <FontAwesomeIcon icon={faPenRuler} size='lg' style={{marginRight: '5px'}} />
                                                         <span><a onClick={handleIndustrialDesign}>산업디자인학과체험</a></span>
-                                                    </div>
+                                                    </div> */}
                                                 </>
                                             )
                                         }
@@ -191,28 +196,30 @@ const KioskModal = ({kioskName, position, ...props}) => {
                                 )
                             }
                         </KioskLink>
-                        {
-                            kioskName === '유재라관' ? (
-                                <p><a href='https://sanhak.yuhan.ac.kr/index.do' target='_blank'><b>산학협력단</b></a> 페이지 가기</p>
-                            ) : (
-                                <>
-                                    {
-                                        kioskName === '유일한기념관' && (
-                                            <>
-                                                <p><a href='https://newih.yuhan.ac.kr/index.do' target='_blank'><b>유일한기념관</b></a> 페이지 가기</p>
-                                            </>
-                                        )
-                                    }
-                                    {
-                                        kioskName !== '학생회관' && (
-                                            <>
-                                                <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'><b>학과안내</b></a> 페이지 가기</p>
-                                            </>
-                                        )
-                                    }
-                                </>
-                            )
-                        }
+                        <PageLink>
+                            {
+                                kioskName === '유재라관' ? (
+                                    <p><a href='https://sanhak.yuhan.ac.kr/index.do' target='_blank'><b>산학협력단</b></a> 페이지 가기</p>
+                                ) : (
+                                    <>
+                                        {
+                                            kioskName === '유일한기념관' && (
+                                                <>
+                                                    <p><a href='https://newih.yuhan.ac.kr/index.do' target='_blank'><b>유일한기념관</b></a> 페이지 가기</p>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            kioskName !== '학생회관' && (
+                                                <>
+                                                    <p><a href='https://www.yuhan.ac.kr/ibuilder.do?menu_idx=3091' target='_blank'><b>학과안내</b></a> 페이지 가기</p>
+                                                </>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
+                        </PageLink>
                     </KioskFooter>
                 </KioskWrapper>
             </Html>
@@ -222,15 +229,15 @@ const KioskModal = ({kioskName, position, ...props}) => {
 
 const KioskWrapper = styled.div`
     width: 250px;
-    border: 3px solid white;
+    border: 0.15rem solid var(--sub-color);
     height: auto;
     display: flex;
-    border-radius: 25px;
+    border-radius: 1rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--main-opacity-color);
-    padding: 15px;
+    padding: 0.9rem;
 `
 
 const KioskHeader = styled.div`
@@ -238,17 +245,16 @@ const KioskHeader = styled.div`
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
-    border-radius: 15px;
-    padding: 3px;
-    font-size: 34px;
+    padding: 0.1rem;
+    font-size: 2rem;
     text-align: center;
     color: var(--sub-color);
 `
 
 const KioskContent = styled.div`
     width: 100%;
-    border-radius: 15px;
-    padding: 3px;
+    border-radius: 1rem;
+    padding: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -266,10 +272,10 @@ const PageBtn = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--sub-color);
     cursor: pointer;
-    border-radius: 50%;
-    border: 1px solid white;
+    border-radius: 1rem;
+    border: 0.1rem solid var(--sub-color);
 `
 
 const KioskItem = styled.div`
@@ -277,18 +283,23 @@ const KioskItem = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
-    font-size: 15px;
-    margin-bottom: 3px;
-    border-radius: 15px;
-    border: 1px solid white;
-    padding: 7px;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+    border-radius: 1rem;
+    border-bottom: 0.1rem solid var(--sub-color);
+    padding: 0.7rem;
     color: var(--sub-color);
+
+    &:hover {
+        color: var(--yuhan-yellow-color);
+        border-color: var(--yuhan-yellow-color);
+    }
 `
 
 const KioskFooter = styled.div`
     width: 100%;
     height: 15%;
-    padding: 3px;
+    padding: 0.1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -301,10 +312,46 @@ const KioskLink = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 0.7rem;
+`
 
-    div {
-        cursor: pointer;
+const KioskLinkContent = styled.div`
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        width: 100%;
+        padding: 0.3rem;
+        border-bottom: 0.1rem solid var(--sub-color);
+
+        &:hover {
+            color: var(--yuhan-yellow-color);
+            border-color: var(--yuhan-yellow-color);
+            a {
+                color: var(--yuhan-yellow-color);
+                border-color: var(--yuhan-yellow-color);
+            }
+        }
+    }
+
+    svg {
+        margin-right: 0.7rem;
+    }
+`
+
+const PageLink = styled.div`
+    p {
+        width: 100%;
+
+        &:hover {
+            b {
+                color: var(--yuhan-yellow-color);
+                border-color: var(--yuhan-yellow-color);
+            }
+        }
     }
 `
 

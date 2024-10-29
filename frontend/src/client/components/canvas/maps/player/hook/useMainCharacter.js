@@ -629,17 +629,17 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     dispatch(Enter_SmokingArea());
                                     console.log("흡연구역 입장", isInSmokingArea);
                                 }
-                    }
-                    else{
-                        if(gsapCameraState) {
-                            setGsapCameraState(false)
                         }
-                        if (isInSmokingArea) {
-                            setIsInSmokingArea(false);
-                            dispatch(Leave_SmokingArea());
-                            console.log("흡연구역 퇴장", isInSmokingArea);
+                        else{
+                            if(gsapCameraState) {
+                                setGsapCameraState(false)
+                            }
+                            if (isInSmokingArea) {
+                                setIsInSmokingArea(false);
+                                dispatch(Leave_SmokingArea());
+                                console.log("흡연구역 퇴장", isInSmokingArea);
+                            }
                         }
-                    }
                 }
 
                 // 학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이
@@ -704,7 +704,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 if(!yuhanStatueCameraFlag.current) {
                                     yuhanStatueCameraFlag.current = true
                                     setGsapCameraState(true)
-                                    handleGSAPCamera(172, 30, -385)
+                                    handleGSAPCamera(200, 75, -385)
                                     dispatch(statueGuide())
                                 }
                                 if (!isInStatueZone) {
@@ -721,18 +721,25 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(false)
                                     dispatch(initGuide())
                                 }
-                                if (isInStatueZone) {
-                                    setIsInStatueZone(false);
-                                    dispatch(Leave_Statue());
-                                    console.log("동상 퇴장", isInStatueZone);
-                                }
+                            }
+                            if (isInStatueZone) {
+                                setIsInStatueZone(false);
+                                dispatch(Leave_Statue());
+                                console.log("동상 퇴장", isInStatueZone);
                             }
                         }
+                }
+                else {
+                    if (isInStatueZone) {
+                        setIsInStatueZone(false);
+                        dispatch(Leave_Statue());
+                        console.log("동상 퇴장", isInStatueZone);
+                    }
                 }
                 
                 // 유재라관
                 if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
-                    handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
+                    // handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
                     // 영역진입체크
                     if (!isGoldBoxArea1) {
                         setisGoldBoxArea1(true)
@@ -748,7 +755,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
                 // 테라스
                 if ((currentPosition.x >= -140 && currentPosition.x <= -100) && (currentPosition.z >= 180 && currentPosition.z <= 220)) {
-                    handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
+                    // handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
                     // 영역진입체크
                     if (!isGoldBoxArea2) {
                         setisGoldBoxArea2(true)
@@ -764,7 +771,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
                 // 나눔의 숲
                 if ((currentPosition.x >= -75 && currentPosition.x <= 115) && (currentPosition.z >= -220 && currentPosition.z <= -180)) {
-                    handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
+                    // handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
                     // 영역진입체크
                     if (!isGoldBoxArea3) {
                         setisGoldBoxArea3(true)

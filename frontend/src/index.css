@@ -7,6 +7,7 @@
     --main-opacity-color: #0F275CDD;
     --sub-color: #FFFFFF;
     --sub-opacity-color: #FFFFFF00;
+    --sub-opacity-color2: #FFFFFFDD;
     --yuhan-yellow-color: #F4CE3D;
     --yuhan-orange-color: #EF7421;
     --main-dark-color: #1C293A;
@@ -65,7 +66,7 @@ a {
 }
 
 /* 상담신청 */
-.saturday {
+.font-color-blue {
     color: blue;
 }
 

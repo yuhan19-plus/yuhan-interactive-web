@@ -93,7 +93,7 @@ const RootMap = () => {
                     {/* 동상 모달창 위치 */}
                     {isInStatue &&(
                         <>
-                            <StatueModal position={[50, 40, -650]}/>
+                            <StatueModal position={[35, 0, -650]}/>
                         </>
                     )}
                     

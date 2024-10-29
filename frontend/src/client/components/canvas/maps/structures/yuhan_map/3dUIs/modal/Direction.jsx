@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { Subway, DirectionsBus, DirectionsCar, LocalParking } from '@mui/icons-material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { kakaoApiKey } from '../../../../../../../../appkey';
+import styled from 'styled-components';
 
 const Direction = ({ position }) => {
     const [openSection, setOpenSection] = useState(null); // 열려 있는 섹션을 관리하는 상태
@@ -69,8 +70,10 @@ const Direction = ({ position }) => {
             onPointerMove={(e) => e.stopPropagation()}
             onPointerUp={(e) => e.stopPropagation()}
         >
-            <div style={{ borderRadius: '20px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)', overflow: 'hidden' }}>
-                <div id="map" style={{ width: mapSize.width, height: mapSize.height }}
+            <DirectionWrapper>
+                <div
+                    id="map"
+                    style={{ width: mapSize.width, height: mapSize.height }}
                     onPointerUp={(e) => {
                         // 마우스가 지도 내에서 올라오면 이벤트를 막음
                         if (e.currentTarget.id === 'map') {
@@ -81,85 +84,146 @@ const Direction = ({ position }) => {
                     onPointerDown={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
                     onPointerMove={(e) => e.stopPropagation()}  // 드래그 이벤트 전파 차단
                 ></div>
-                <div style={{ backgroundColor: 'white', padding: '10px' }}>
-                    <h3>찾아오시는 길</h3>
-                    <p>주소: 경기도 부천시 경인로 590</p>
+                <DirectionHeader>
+                    <DirectionTitle>
+                        <p>찾아오시는 길</p>
+                    </DirectionTitle>
+                    <DirectionContent>
+                        <p>주소: 경기도 부천시 경인로 590</p>
+                        
+                        <DirectionContentTitle onClick={() => toggleDropdown('subway')}>
+                            <Subway />
+                            <p>지하철 타고 오실 때</p>
+                        </DirectionContentTitle>
+                        {openSection === 'subway' && (
+                            <DirectionContentList>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    1호선, 7호선 (온수역 하차 ①,②번 출구- 도보로 10분거리)
+                                </DirectionContentItem>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    1호선 (역곡역 하차 ①번 출구- 도보로 10분거리)
+                                </DirectionContentItem>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    서해선(소사역 하차 ⑤번 출구 - 83번, 88번 버스환승, 정문하차)
+                                </DirectionContentItem>
+                            </DirectionContentList>
+                        )}
 
-                    {/* 지하철 타고 오실 때 (드롭다운) */}
-                    <p
-                        style={{ cursor: 'pointer', color: '#0F275C' }}
-                        onClick={() => toggleDropdown('subway')}
-                    >
-                        <Subway style={{ marginRight: '8px' }} />
-                        <strong>지하철 타고 오실 때</strong>
-                    </p>
-                    {openSection === 'subway' && (
-                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />
-                                1호선, 7호선 (온수역 하차 ①,②번 출구- 도보로 10분거리)
-                            </li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />1호선 (역곡역 하차 ①번 출구- 도보로 10분거리)</li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />서해선(소사역 하차 ⑤번 출구 - 83번, 88번 버스환승, 정문하차)</li>
-                        </ul>
-                    )}
+                        {/* 버스 타고 오실 때 (드롭다운) */}
+                        <DirectionContentTitle onClick={() => toggleDropdown('bus')}>
+                            <DirectionsBus />
+                            <p>버스 타고 오실 때 (유한대학교 하차)</p>
+                        </DirectionContentTitle>
+                        {openSection === 'bus' && (
+                            <DirectionContentList>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    부천시내버스 : 10번, 12번, 52번, 57번, 57-1번, 75번, 83번, 88번
+                                </DirectionContentItem>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    서울시내버스 : 6614번
+                                </DirectionContentItem>
+                            </DirectionContentList>
+                        )}
 
-                    {/* 버스 타고 오실 때 (드롭다운) */}
-                    <p
-                        style={{ cursor: 'pointer', color: '#0F275C' }}
-                        onClick={() => toggleDropdown('bus')}
-                    >
-                        <DirectionsBus style={{ marginRight: '8px' }} />
-                        <strong>버스 타고 오실 때 (유한대학교 하차)</strong>
-                    </p>
-                    {openSection === 'bus' && (
-                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />부천시내버스 : 10번, 12번, 52번, 57번, 57-1번, 75번, 83번, 88번</li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />서울시내버스 : 6614번</li>
-                        </ul>
-                    )}
+                        {/* 승용차 타고 오실 때 (드롭다운) */}
+                        <DirectionContentTitle onClick={() => toggleDropdown('car')}>
+                            <DirectionsCar />
+                            <p>승용차 타고 오실 때</p>
+                        </DirectionContentTitle>
+                        {openSection === 'car' && (
+                            <DirectionContentList>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    남부순환도로 이용 시 : 오류IC에서 부천방향으로 나와서 약 3KM(경인국도변 좌측)
+                                </DirectionContentItem>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    경인국도 이용 시 : 서울방향 - 인천, 부천방향으로 동부제강 지나서 약1.5KM (경인국도변 좌측)
+                                </DirectionContentItem>
+                                <DirectionContentItem>
+                                    <ArrowRightIcon />
+                                    서울외곽고속도로 이용 시 : 시흥IC에서 부천방향으로 빠져 고개넘어 범박동방향으로 우회전 후 직진 온수 사거리우회전 100M
+                                </DirectionContentItem>
+                            </DirectionContentList>
+                        )}
 
-                    {/* 승용차 타고 오실 때 (드롭다운) */}
-                    <p
-                        style={{ cursor: 'pointer', color: '#0F275C' }}
-                        onClick={() => toggleDropdown('car')}
-                    >
-                        <DirectionsCar style={{ marginRight: '8px' }} />
-                        <strong>승용차 타고 오실 때</strong>
-                    </p>
-                    {openSection === 'car' && (
-                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />남부순환도로 이용 시 : 오류IC에서 부천방향으로 나와서 약 3KM(경인국도변 좌측)</li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />경인국도 이용 시 : 서울방향 - 인천, 부천방향으로 동부제강 지나서 약1.5KM (경인국도변 좌측)</li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <ArrowRightIcon style={{ color: '#0F275C' }} />서울외곽고속도로 이용 시 : 시흥IC에서 부천방향으로 빠져 고개넘어 범박동방향으로 우회전 후 직진 온수 사거리우회전 100M</li>
-                        </ul>
-                    )}
-
-                    {/* 주차 안내 (드롭다운) */}
-                    <p
-                        style={{ cursor: 'pointer', color: '#0F275C' }}
-                        onClick={() => toggleDropdown('parking')}
-                    >
-                        <LocalParking style={{ marginRight: '8px' }} />
-                        <strong>주차안내</strong>
-
-                    </p>
-                    {openSection === 'parking' && (
-                        <p>
-                            본 대학의 주차장은 교직원 및 학생, 방문객의 입출입 시 불편함을 없애고 편안한 방문을 위해 무료로 이용할 수 있는 공간입니다.
-                        </p>
-                    )}
-                </div>
-            </div>
+                        {/* 주차 안내 (드롭다운) */}
+                        <DirectionContentTitle onClick={() => toggleDropdown('parking')}>
+                            <LocalParking  />
+                            <p>주차안내</p>
+                        </DirectionContentTitle>
+                        {openSection === 'parking' && (
+                            <DirectionContentItem>
+                                본 대학의 주차장은 교직원 및 학생, 방문객의 입출입 시 불편함을 없애고 편안한 방문을 위해 무료로 이용할 수 있는 공간입니다.
+                            </DirectionContentItem>
+                        )}
+                    </DirectionContent>
+                </DirectionHeader>
+            </DirectionWrapper>
         </Html>
     );
 };
+
+const DirectionWrapper = styled.div`
+    border-radius: 1.3rem;
+    box-shadow: 0px 0px 10px rgba(177, 138, 138, 0.5);
+    overflow: hidden;
+`
+
+const DirectionHeader = styled.div`
+    width: 100%;
+    height: 100%;
+    background-color: var(--sub-color);
+    padding: 1rem;
+`
+
+const DirectionTitle = styled.div`
+    font-size: 1.3rem;
+    font-weight: 900;
+`
+
+const DirectionContent = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`
+
+const DirectionContentTitle = styled.div`
+    display: flex;
+    align-items: center;
+    font-weight: 900;
+
+    p {
+        font-size: 1rem;
+        color: var(--main-color);
+        cursor: pointer;
+    }
+
+    svg {
+        color: var(--main-color);
+        margin-right: 0.5rem;
+    }
+`
+
+const DirectionContentList = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--main-color);
+`
+
+const DirectionContentItem = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 0.3rem;
+`
 
 export default Direction;

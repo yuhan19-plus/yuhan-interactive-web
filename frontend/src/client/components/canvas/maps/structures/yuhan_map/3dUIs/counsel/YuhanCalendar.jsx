@@ -186,7 +186,7 @@ const YuhanCalendar = () => {
                     tileClassName={({ date, view }) => {
                         // view는 달력의 현재 보기 모드를 나타냅니다. 'month', 'year', 'decade' 중 하나
                         if (view === 'month' && moment(date).day() === 6) { // 토요일을 확인 (day() === 6이면 토요일)
-                          return 'saturday'
+                          return 'font-color-blue'
                         }
                     }}
                     tileContent={({date, view}) => {

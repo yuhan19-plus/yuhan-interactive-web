@@ -78,6 +78,8 @@ const BtnItem = styled.button`
         scale: 1.1;
         transition: .2s ease-in-out;
         position: relative;
+        color: var(--yuhan-yellow-color);
+        border-color: var(--yuhan-yellow-color);
     }
 
     &:hover::after {
@@ -87,7 +89,6 @@ const BtnItem = styled.button`
         left: 50%;
         transform: translateX(-50%);
         background-color: var(--main-color);
-        color: var(--sub-color);
         padding: 5px 10px;
         border-radius: 5px;
         white-space: nowrap;
@@ -95,6 +96,7 @@ const BtnItem = styled.button`
         font-weight: 900;
         opacity: 1;
         visibility: visible;
+        color: var(--yuhan-yellow-color);
     }
 
     &::after {

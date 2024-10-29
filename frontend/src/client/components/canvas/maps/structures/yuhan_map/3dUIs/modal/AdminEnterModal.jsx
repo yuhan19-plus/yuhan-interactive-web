@@ -89,7 +89,6 @@ const AdminEnterModal = () => {
 
     return (
         <>
-        {/* Form 넣어서 작업 진행할 것 */}
             <AdminEnterModalWrapper>
                 <AdminEnterModalHeader>
                     <p>유한대 관리자</p>
@@ -113,8 +112,8 @@ const AdminEnterModalWrapper = styled.div`
     top: 30%;
     width: 350px;
     height: 200px;
-    background-color: #ffffffdd;
-    color: white;
+    background-color: var(--sub-opacity-color);
+    color: var(--sub-color);
     border-radius: 15px;
 `
 const AdminEnterModalHeader = styled.div`
@@ -122,12 +121,13 @@ const AdminEnterModalHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0 5px;
-    background-color: #0F275C;
+    background-color: var(--main-color);
     width: 100%;
     font-size: 24px;
     font-weight: 900;
     height: 25%;
     border-radius: 15px 15px 0 0;
+
     svg {
         &:hover {
             cursor: pointer;
@@ -146,7 +146,7 @@ const AdminEnterModalFooter = styled.div`
 `
 
 const EnterButton = styled.div`
-    background-color: #0F275C;
+    background-color: var(--main-color);
     text-align: center;
     padding: 10px;
     border-radius: 15px;

@@ -44,10 +44,9 @@ const DetailHeader = (props) => {
 const DetailHeaderLayout = styled.div`
     width: 100%;
     height: 15%;
-    background-color: #0F275C;
-    color: white;
-    padding: 15px;
-    border-bottom: 3px solid #0F275C;
+    background-color: var(--main-color);
+    color: var(--sub-color);
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,8 +58,9 @@ const HeaderMenu = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
+
     p {
-        margin-left: 25px;
+        margin-left: 1rem;
     }
 `
 
@@ -72,18 +72,18 @@ const HeaderMain = styled.div`
 `
 
 const ContentTitle = styled.div`
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 900;
-    border-left: 10px solid white;
-    padding: 15px;
+    border-left: 0.7rem solid var(--sub-color);
+    padding: 1rem;
 `
 
 const MenuClose = styled.div`
     cursor: pointer;
 
     svg {
-        width: 32px;
-        height: 32px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 `
 

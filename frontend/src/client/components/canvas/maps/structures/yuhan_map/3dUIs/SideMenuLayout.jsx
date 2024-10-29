@@ -44,9 +44,11 @@ const SideMenuLayout = (props) => {
                     studentId: userId
                 }
             })
+
             const data = response.data
             // console.log("data", data)
             dispatch(currentStudentUserInfo(data.student))
+
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -69,9 +71,11 @@ const SideMenuLayout = (props) => {
                     professorId: userId
                 }
             })
+
             const data = response.data
             // console.log("data", data)
             dispatch(currentProfessorUserInfo(data.professor))
+
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -92,6 +96,7 @@ const SideMenuLayout = (props) => {
                 CurrentStudentData()
                 dispatch(myCounsel())
             }
+
             if(userType === 'professor') {
                 CurrentProfessorData()
                 dispatch(reqForConsultation())
@@ -105,7 +110,6 @@ const SideMenuLayout = (props) => {
                 <>
                     <DetailHeader title={title} />
                     <DetailContent>
-                        {/* 내용작성 */}
                         {title === '유한게시판' &&
                             <SideBoard />
                         }
@@ -137,7 +141,7 @@ const DetailContent = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: #ffffffdd;
+    background-color: var(--sub-color);
     padding: 15px;
 `
 

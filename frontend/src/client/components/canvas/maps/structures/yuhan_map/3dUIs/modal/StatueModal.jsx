@@ -30,6 +30,9 @@ const StatueModal = ({ position }) => {
                         <p>설립자 유일한, <StatueTitle>유일한은 누구인가!</StatueTitle></p>
                     </StatueHeader>
                     <StatueContent>
+                        <PhotoContainer>
+                            <PhotoContent src="assets/images/Yu_ilhan.png" />
+                        </PhotoContainer>
                         <p>
                             <strong style={{ color: "#04b45f" }}>유일한 박사</strong>는 새로운 기업 윤리를 이 땅에 남긴
                             <strong style={{ color: "#04b45f" }}>모범적인 기업가</strong>이며,
@@ -58,10 +61,6 @@ const StatueModal = ({ position }) => {
                         </a>
                     </StatueContent>
                 </StatueContainer>
-
-                <PhotoContainer>
-                    <PhotoContent src="assets/images/Yu_ilhan.png" />
-                </PhotoContainer>
             </StatueWrapper>
         </Html>
     );
@@ -71,21 +70,17 @@ export default StatueModal;
 
 const StatueWrapper = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 500px;
-    height: 350px;
+    width: 350px;
 `
 
 const StatueContainer = styled.div`
-    width: 70%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 25px;
-    margin-right: 15px;
-    padding: 10px;
+    border-radius: 1rem;
+    padding: 0.5rem;
     background: var(--sub-color);
 `
 
@@ -93,20 +88,13 @@ const StatueHeader = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    /* background-color: #333; */
-    box-shadow: 2px;
-    padding: 15px;
-    border-radius: 25px;
-
-    p {
-        font-size: 24px;
-        font-weight: 900;
-    }
+    justify-content: center;
+    padding: 1rem;
+    font-size: 1.3rem;
 `
 
 const StatueTitle = styled.p`
-    font-size: 20px;
+    font-size: 1.5rem;
     font-weight: 900;
     color: var(--main-color);
 `
@@ -117,10 +105,12 @@ const StatueContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 5px;
-    font-size: 16px;
+    padding: 0.5rem;
+    font-size: 1rem;
+
     p {
-        margin-bottom: 7px;
+        margin-bottom: 0.7rem;
+        line-height: 1.3rem;
     }
 `
 
@@ -128,11 +118,10 @@ const StatueButton = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
     color: var(--sub-color);
-    padding: 5px;
+    padding: 0.5rem;
     background: var(--main-color);
-    border-radius: 12px;
+    border-radius: 1rem;
 
     P {
         margin: 0px;
@@ -146,19 +135,11 @@ const StatueButton = styled.div`
 
 const PhotoContainer = styled.div`
     width: 30%;
-    background-color: var(--sub-color);
-    display: flex;
-    justify-content: center;
-    height: 40%;
-    padding: 5px;
-    box-shadow: 2px;
-    margin-top: 10px;
-    border-radius: 15px;
 `
 
 const PhotoContent = styled.img`
-    box-shadow: 1px;
     border-radius: 7px;
     width: 100%;
     height: 100%;
+    border: 0.3rem solid var(--yuhan-orange-color)
 `
