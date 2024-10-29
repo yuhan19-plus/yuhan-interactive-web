@@ -1,21 +1,18 @@
 /** 
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
- * 게시판 상세페이지의 기능을 관리하는 커스텀 훅
+ * 게시판상세페이지의 기능을 관리하는 커스텀 훅
+ * 
+ * 기능 구현 - 오자현
+ * - 좋아요, 첨부파일 다운로드, 게시글 수정, 게시글 삭제
  */
 
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
-export const useBoardDataAdmin = (boardId) => {
-
+export const useSideBoardData = (boardId) => {
     const [cookies] = useCookies(["user"]);
-
-    const [attachments, setAttachments] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [liked, setLiked] = useState(false);
+    
     const [boardData, setBoardData] = useState({
         board_id: "",
         board_title: "",
@@ -29,19 +26,12 @@ export const useBoardDataAdmin = (boardId) => {
         board_comments_count: 0,
         files: [],
     });
-    const [reportData, setReportData] = useState({
-        report_id: null,
-        report_writer: '',
-        report_content: '',
-        report_type: '',
-        report_status: 'Waiting',
-        report_date: '',
-        board_id: null,
-        resolved_at: '',
-        report_resolution: ''
-    });
-
-    // 게시판에 좋아요를 클릭하면 동작
+    const [attachments, setAttachments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [liked, setLiked] = useState(false);
+    
+    // 좋아요 핸들러
     const handleLikeToggle = async () => {
         if (!cookies.user) {
             Swal.fire({
@@ -70,7 +60,7 @@ export const useBoardDataAdmin = (boardId) => {
 
             // 서버에서 성공 응답을 받은 후 상태를 변경
             setLiked(!liked);
-            // 좋아요 누르고 해당페이지에서 바로 좋아요 올라간 것을 확인 가능하도록 수정
+            // 데이터를 불러와 변경된 좋아요수 반영
             fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
@@ -78,7 +68,7 @@ export const useBoardDataAdmin = (boardId) => {
         }
     };
 
-    // 첨부파일다운로드 
+    // 첨부파일다운로드핸들러
     const handleDownload = (fileName, fileData, fileType) => {
         try {
             // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
@@ -119,7 +109,7 @@ export const useBoardDataAdmin = (boardId) => {
         }
     };
 
-    // 현재 게시물에 대한 사용자의 좋아요 여부 
+    // 현재 게시물에 대한 사용자의 좋아요 여부 체크
     const checkLiked = async () => {
         try {
             const response = await fetch(`/api/boardLike/${boardId}/${cookies.user}`, {
@@ -151,7 +141,6 @@ export const useBoardDataAdmin = (boardId) => {
     // 데이터 가져오기 함수
     const fetchData = async () => {
         try {
-            // console.log("데이터 가져오기 함수의 boardId",boardId)
             const response = await fetch(`/api/board/${boardId}`);
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
@@ -175,5 +164,5 @@ export const useBoardDataAdmin = (boardId) => {
         fetchDataAndCheckLiked();
     }, [boardId]);
 
-    return { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload };
+    return { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle, handleDownload };
 };

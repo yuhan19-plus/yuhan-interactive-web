@@ -1,6 +1,6 @@
 /** 파일 생성자 : 임성준
  * 오브젝트 담당 : 이정민
- * 기능구현 : 오자현
+ * 기능 구현 : 오자현
  */
 import { Canvas } from '@react-three/fiber';
 import React, { useEffect, useState } from 'react';

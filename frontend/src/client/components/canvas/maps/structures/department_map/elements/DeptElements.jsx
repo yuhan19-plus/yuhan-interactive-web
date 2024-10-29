@@ -3,7 +3,7 @@
  * 
  */
 import React from 'react'
-import CodingGroup from './CodingGroup'
+import CodingGroup from './dept/coding/CodingGroup'
 import BioGroup from './dept/bio/BioGroup'
 import EtcGroup from './dept/etc/EtcGroup'
 import DeptInfoGroup from './dept/info/DeptInfoGroup'

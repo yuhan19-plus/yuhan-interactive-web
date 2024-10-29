@@ -1,7 +1,10 @@
-/** 파일 생성자 : 오자현
- *  좋아요 관리
- *  저장, 수정, 삭제 기능
- * */
+/** 
+ * 파일 생성자 : 오자현
+ * 좋아요 백엔드 코드
+ * 
+ * 기능 구현 - 오자현
+ * - 저장, 수정, 삭제 기능
+ */
 const express = require("express");
 const router = express.Router();
 const mysqlconnection = require("../../server");
@@ -68,7 +71,7 @@ router.post("/", (req, res) => {
                 });
             } else {
                 const currentStatus = results[0].like_status;
-                // 좋아요가 안눌린 경우 (like_status 체크)
+                // 취소한 좋아요를 다시하는 경우
                 if (currentStatus === 0) {
                     // 좋아요 상태로 변경
                     mysqlconnection.query(updateLikeStatusToLikedQuery, [userId, boardId], (err, results) => {
@@ -101,7 +104,7 @@ router.post("/", (req, res) => {
                         });
                     });
                 }
-                // 좋아요가 이미 눌린 경우 
+                // 좋아요를 취소하는 경우 
                 else {
                     // 좋아요 취소 (like_status = 0)
                     mysqlconnection.query(updateLikeStatusToUnlikedQuery, [userId, boardId], (err, results) => {
@@ -149,7 +152,7 @@ router.post("/:boardID/:userId", (req, res) => {
 
     mysqlconnection.query(checkQuery, [boardID, userId], (err, results) => {
         if (err) {
-            console.error("졿아요 여부 체크 중 에러 발생:", err);
+            // console.error("졿아요 여부 체크 중 에러 발생:", err);
             return res.status(500).send("좋아요 여부 체크 중 오류가 발생했습니다.");
         }
 

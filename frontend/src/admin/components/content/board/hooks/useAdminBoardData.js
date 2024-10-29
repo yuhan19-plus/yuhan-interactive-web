@@ -1,14 +1,23 @@
 /** 
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
- * 게시판상세페이지의 기능을 관리하는 커스텀 훅
+ * 게시판 상세페이지의 기능을 관리하는 커스텀 훅
+ * 
+ * 기능 구현 - 오자현
+ * - 게시글 좋아요, 첨부파일 다운로드, 게시글 삭제, 삭제사유조회
  */
 
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
-export const useBoardData = (boardId) => {
+export const useAdminBoardData = (boardId) => {
+
+    const [cookies] = useCookies(["user"]);
+
+    const [attachments, setAttachments] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [liked, setLiked] = useState(false);
     const [boardData, setBoardData] = useState({
         board_id: "",
         board_title: "",
@@ -22,12 +31,18 @@ export const useBoardData = (boardId) => {
         board_comments_count: 0,
         files: [],
     });
-    const [cookies] = useCookies(["user"]);
-    const [attachments, setAttachments] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [liked, setLiked] = useState(false);
-    
+    const [reportData, setReportData] = useState({
+        report_id: null,
+        report_writer: '',
+        report_content: '',
+        report_type: '',
+        report_status: 'Waiting',
+        report_date: '',
+        board_id: null,
+        resolved_at: '',
+        report_resolution: ''
+    });
+
     // 좋아요핸들러
     const handleLikeToggle = async () => {
         if (!cookies.user) {
@@ -57,7 +72,7 @@ export const useBoardData = (boardId) => {
 
             // 서버에서 성공 응답을 받은 후 상태를 변경
             setLiked(!liked);
-            // 데이터를 불러와 변경된 좋아요수 반영
+            // 좋아요 누르고 해당페이지에서 바로 좋아요 올라간 것을 확인 가능하도록 수정
             fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
@@ -65,7 +80,7 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 첨부파일다운로드핸들러
+    // 첨부파일 다운로드 핸들러
     const handleDownload = (fileName, fileData, fileType) => {
         try {
             // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
@@ -106,7 +121,7 @@ export const useBoardData = (boardId) => {
         }
     };
 
-    // 현재 게시물에 대한 사용자의 좋아요 여부 체크
+    // 사용자의 좋아요 여부 체크 함수
     const checkLiked = async () => {
         try {
             const response = await fetch(`/api/boardLike/${boardId}/${cookies.user}`, {
@@ -135,9 +150,25 @@ export const useBoardData = (boardId) => {
         }
     };
 
+    // 신고로 삭제된 경우 이유를 보여주는 함수
+    const deleteCheckReport = async () => {
+        // console.log("deleteCheck진입 게시판번호", boardId);
+        try {
+            const response = await fetch(`/api/boardReport/check/${boardId}`, { method: "POST" });
+            const data = await response.json();
+
+            setReportData(data.reportData);
+
+        } catch (error) {
+            setError(error.message);
+        }
+
+    }
+
     // 데이터 가져오기 함수
     const fetchData = async () => {
         try {
+            // console.log("데이터 가져오기 함수의 boardId",boardId)
             const response = await fetch(`/api/board/${boardId}`);
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
@@ -156,10 +187,11 @@ export const useBoardData = (boardId) => {
         const fetchDataAndCheckLiked = async () => {
             await checkLiked(); // 좋아요 여부 체크
             await fetchData();  // 게시물 데이터 가져오기
+            await deleteCheckReport(); // 신고삭제사유 가져오기
         };
 
         fetchDataAndCheckLiked();
     }, [boardId]);
 
-    return { boardData, attachments, loading, error, liked, handleDeleteItem, handleLikeToggle, handleDownload };
+    return { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload, deleteCheckReport };
 };

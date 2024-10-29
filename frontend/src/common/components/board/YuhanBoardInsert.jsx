@@ -1,8 +1,9 @@
 /** 
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 게시판 글작성페이지
- * 임시저장 기능 추가
+ * 
+ * 기능 구현 - 오자현
+ * - 게시글저장, 파일드랍, 파일삭제, 임시저장
  */
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
@@ -12,7 +13,8 @@ import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
 const YuhanBoardInsert = ({ onCancel }) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies] = useCookies(['user']);
+
     const [boardData, setBoardData] = useState({
         board_title: "",
         board_content: "",
@@ -20,7 +22,8 @@ const YuhanBoardInsert = ({ onCancel }) => {
         writer_type: cookies.userType,
         files: []  // 파일 데이터를 저장하는 배열
     });
-    const shouldSkipCleanup = useRef(false);// shouldSkipCleanup을 useRef로 관리
+
+    const skipTempSaveOnUnmount = useRef(false);// 언마운트시 임시저장을 스킵할지 여부
     const boardDataRef = useRef(boardData); // useRef로 boardData 참조값 유지
 
     // 파일드랍
@@ -49,7 +52,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             // 6. setBoardData로 상태를 업데이트
             // 기존의 boardData 상태를 유지하면서, files 배열에 새로 업로드된 파일 정보를 추가
             setBoardData((prevState) => ({
-                ...prevState,  // 기존의 boardData 상태를 유지 (board_title, board_content 등)
+                ...prevState,
                 files: [...prevState.files, ...uploadedFiles],  // 기존 files 배열에 새로운 파일들을 추가
             }));
         });
@@ -90,7 +93,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             // console.log(result);
 
             // 저장 완료 후 cleanup 스킵을 설정
-            shouldSkipCleanup.current = true;
+            skipTempSaveOnUnmount.current = true;
 
             // boardData 초기화
             setBoardData({ board_title: "", board_content: "", board_writer: "", files: [] });
@@ -125,11 +128,19 @@ const YuhanBoardInsert = ({ onCancel }) => {
         }));
     };
 
-    // 임시저장함수
+    // 임시저장
     const saveTempBoard = async () => {
+        // 유효성 검사
+        if ((boardData.board_content === '') || (boardData.board_title === '')) {
+            Swal.fire({
+                icon: "error",
+                text: "저장할 데이터가 없습니다."
+            })
+            return;
+        }
         try {
             // console.log("boardData", boardDataRef.current); // boardDataRef를 사용한 상태 확인
-            // files 배열을 제외한 데이터만 tempData 설정
+            // 파일을 제외한 데이터만 tempData로 설정
             const tempData = {
                 board_title: boardDataRef.current.board_title,
                 board_content: boardDataRef.current.board_content,
@@ -145,9 +156,8 @@ const YuhanBoardInsert = ({ onCancel }) => {
             if (response.ok) {
                 // console.log("임시저장성공");
             } else {
-                // 응답이 성공하지 않았을 때
                 const message = await response.text();
-                console.log("백엔드에서 온 내용:", message);
+                // console.log("백엔드에서 온 내용:", message);
                 Swal.fire({
                     icon: "error",
                     text: message
@@ -165,7 +175,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 method: 'DELETE',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    userId: cookies.user, // 현재 사용자 ID
+                    userId: cookies.user,
                 }),
             });
             if (response.ok) {
@@ -199,12 +209,12 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 if (data.tempData) {
                     // console.log("읽어온 데이터", data.tempData);
 
-                    // 데이터를 상태에 반영 (필요한 부분에서 반영)
+                    // 데이터를 상태에 반영
                     setBoardData({
                         board_title: data.tempData.board_title,
                         board_content: data.tempData.board_content,
                         board_writer: cookies.user,
-                        files: [],  // 파일 데이터는 제외
+                        files: [],  // 파일 데이터는 없으니 빈값
                     });
                 } else {
                     console.log(data.message);  // 임시 저장 데이터가 없는 경우 메시지 출력
@@ -216,6 +226,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
             console.error("Error fetching draft data:", error);
         }
     };
+
     // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
     const checkTempData = async () => {
         try {
@@ -256,22 +267,26 @@ const YuhanBoardInsert = ({ onCancel }) => {
         }
     };
 
+    const handleBeforeUnload = (event) => {
+        saveTempBoard();
+    };
+
     useEffect(() => {
-        const handleBeforeUnload = (event) => {
-            saveTempBoard();
-        };
-        // 브라우저 종료 시 (beforeunload 이벤트)
+
+        // 페이지를 떠나기 전, 임시 저장 여부를 확인하기 위해 beforeunload 이벤트 리스너 추가
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
+            // 컴포넌트 언마운트 시 beforeunload 이벤트 리스너 제거
             window.removeEventListener('beforeunload', handleBeforeUnload); // 이벤트 리스너 제거
 
-            // 클린업을 스킵할 경우 처리
-            if (shouldSkipCleanup.current) {
+            // skipTempSaveOnUnmount가 true면 임시 저장을 건너뜀
+            if (skipTempSaveOnUnmount.current) {
                 // console.log("클린업 로직이 스킵되었습니다.");
                 return;
             }
             else {
+                // 임시 저장을 물어보고 사용자가 확인하면 saveTempBoard 함수 호출
                 Swal.fire({
                     title: '임시 저장하시겠습니까?',
                     text: "임시 저장을 진행하시려면 확인을 눌러주세요.",
@@ -283,23 +298,22 @@ const YuhanBoardInsert = ({ onCancel }) => {
                     cancelButtonText: '취소'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        saveTempBoard(); // 임시 저장 함수 호출
+                        saveTempBoard();
                     }
                 });
             }
         };
     }, []);
 
-    // 이 컴포넌트가 실행될 때 임시저장여부확인 
+    // 이 컴포넌트가 처음 실행될 때 임시저장여부확인 
     useEffect(() => {
         checkTempData();
-    }, []); // 빈 배열로 첫 렌더링 시에만 실행
+    }, []);
 
     useEffect(() => {
         boardDataRef.current = boardData; // 상태가 변경될 때마다 참조값을 업데이트
         // console.log("boardData", boardData)
     }, [boardData]);
-
 
     return (
         <BoardLayout>

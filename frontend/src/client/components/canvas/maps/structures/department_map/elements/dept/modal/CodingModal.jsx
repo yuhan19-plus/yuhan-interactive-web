@@ -1,18 +1,22 @@
 /**
  * 오자현
+ * 코딩경험 모달 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 언어선택, 숫자입력
  */
 import { FormControlLabel, Input, Radio, RadioGroup } from "@mui/material";
 import { Html } from "@react-three/drei";
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import { CodingExperienceCode } from "../../../../../../../../data/commonData";
+import { CodingExperienceCode } from "../../../../../../../../../data/commonData";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faJava } from "@fortawesome/free-brands-svg-icons";
 import { faC } from "@fortawesome/free-solid-svg-icons";
 import { faPython } from "@fortawesome/free-brands-svg-icons";
 
-const CodingExperience = ({ onResultCode }) => {
+const CodingModal = ({ inputNumber }) => {
     const CZone = useSelector((state) => state.goldBox.hasVisitedZone1);// 1번 진입했었는지 여부
     const JavaZone = useSelector((state) => state.goldBox.hasVisitedZone2);// 2번 진입했었는지 여부
     const PythonZone = useSelector((state) => state.goldBox.hasVisitedZone3);// 3번 진입했었는지 여부
@@ -43,7 +47,7 @@ const CodingExperience = ({ onResultCode }) => {
 
     useEffect(() => {
         if ((CZone || JavaZone || PythonZone) && selectLanguage) {
-            onResultCode(num); // ThreeDCode.jsx로 값을 전달 
+            inputNumber(num); // ResultTextObject.jsx로 값을 전달 
         }
     }, [num]);
 
@@ -124,7 +128,7 @@ const CodingExperience = ({ onResultCode }) => {
     );
 };
 
-export default CodingExperience;
+export default CodingModal;
 
 const MainContainer = styled.div`
     background-color: white;

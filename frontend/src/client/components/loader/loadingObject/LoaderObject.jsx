@@ -1,18 +1,22 @@
-/** 파일 생성자 : 오자현
+/** 
+ * 파일 생성자 : 오자현
  * 오브젝트, 애니매이션 담당 : 이정민
  * 크기,위치조정 : 오자현
  */
 
 import React, { useEffect } from 'react'
-import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
 export function LoadingAnimation(props) {
   const group = React.useRef()
+  
   const { scene, nodes, materials, animations } = useGLTF('/assets/models/etc/LoadingAnimation.glb');
+
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
+
   const { actions } = useAnimations(animations, group)
+
   useEffect(() => {
     if (actions) {
       // 애니메이션 활성화

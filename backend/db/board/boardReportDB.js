@@ -1,6 +1,10 @@
-/** 파일 생성자 : 오자현
- *  신고 저장, 수정, 삭제(상태업데이트)기능
- * */
+/** 
+ * 파일 생성자 - 오자현
+ * 게시글 신고 백엔드 코드
+ * 
+ * 기능 구현 - 오자현
+ * - 신고 저장, 수정, 삭제(상태업데이트)기능
+ */
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
 const mysqlconnection = require("../../server"); // server.js에서 MySQL 연결 객체 가져오기
@@ -36,6 +40,7 @@ router.get("/fetch", (req, res) => {
 // 신고조회
 router.get("/fetch/:reportID", (req, res) => {
     const report_id = req.params.reportID;
+    
     const reportAndBoardQuery = "SELECT r.*, b.* FROM board_report r JOIN board b ON r.board_id = b.board_id WHERE r.report_id = ?";
 
     mysqlconnection.query(reportAndBoardQuery, [report_id], (err, results) => {
@@ -94,6 +99,41 @@ router.post("/ignore", (req, res) => {
     });
 })
 
+
+// 신고로 삭제된 경우 사유
+router.post("/check/:boardId", (req, res) => {
+    const { boardId } = req.params;  // URL에서 boardID를 추출
+    // console.log("삭제여부확인 요청 진입, boardId", boardId)
+    
+    const checkBoardDeleteQuery = "select board_status from board where board_id = ?"
+    const checkReportQuery = "select * from board_report where board_id = ? AND report_status = 'delete'"
+
+    mysqlconnection.query(checkBoardDeleteQuery, [boardId], (err, result) => {
+        if (err) {
+            // console.error("게시판 상태 확인 중 에러 발생:", err);
+            return res.status(500).json({ message: "게시판 상태 확인 중 오류가 발생했습니다." }); // 500 상태 코드와 함께 오류 메시지 반환
+        }
+        if (result[0].board_status === 'delete') {
+            // console.log("게시글이 삭제된 상태")
+            mysqlconnection.query(checkReportQuery, [boardId], (err, results) => {
+                if (err) {
+                    // console.error("게시판 신고 후 삭제 확인 중 에러 발생:", err);
+                    return res.status(500).json({ message: "게시판 신고 후 삭제 확인 중 오류가 발생했습니다." }); // 500 상태 코드와 함께 오류 메시지 반환
+                }
+                res.status(200).json({
+                    reportData: results[0], // 결과를 JSON으로 응답
+                });
+
+                // console.log(results)
+            })
+        }
+        else {
+            res.status(200).json({ message: "게시판이 삭제상태가 아닙니다." })
+        }
+    })
+})
+
+// 뱃지
 router.get("/fetchBadge", (req, res) => {
     const badgeNumQuery = "SELECT COUNT(*) AS badge_count FROM board_report WHERE report_status = 'Waiting'";
 

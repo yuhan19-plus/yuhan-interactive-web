@@ -1,20 +1,18 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
- * 게시판상세페이지 ui
- * 좋아요, 수정, 삭제, 신고 기능
+ * 게시판 상세페이지 ui
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
 import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
-import { useBoardData } from "./hooks/useBoardData";
+import { useSideBoardData } from "./hooks/useSideBoardData";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
 
 const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
-    const { boardData, attachments, loading, error, liked, comment, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardData(boardId);
+    const { boardData, attachments, loading, error, liked, comment, handleDeleteItem, handleLikeToggle, handleDownload } = useSideBoardData(boardId);
 
     // 로딩 또는 에러 상태 처리
     if (loading) return <Typography>로딩 중...</Typography>;
@@ -197,7 +195,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                     </Button>
                 </Grid>
                 <Divider />
-                {/* 댓글 컴포넌츠로 추출 */}
+                {/* 댓글 */}
                 <YuhanBoardComment boardData={boardData} />
             </Box>
         </BoardLayout >

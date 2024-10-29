@@ -1,5 +1,5 @@
 /**
- * 오자현 코딩영역 여부 리듀서
+ * 오자현 코딩영역 리듀서
  */
 import { ENTER_CODINGAREA, INIT_CODINGAREA, LEAVE_CODINGAREA } from "../actions/actions"
 

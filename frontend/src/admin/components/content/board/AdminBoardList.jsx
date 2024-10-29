@@ -1,27 +1,29 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 보는 게시판 목록 컴포넌트
  * 
+ * 기능 구현- 오자현
+ * - 게시글 삭제, 검색, 패치, 페이지게이션
  */
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, ListItemText, MenuItem, Pagination, Select, Typography } from '@mui/material';
+import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, MenuItem, Pagination, Select, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import Swal from "sweetalert2";
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies] = useCookies(['user']);
     
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
-    const fullScreenWinth = window.screen.width; // 전체화면이 화면크기
+    const fullScreenWinth = window.screen.width; // 전체화면너비
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
+
     const pageNum = 8;
 
     // 삭제핸들러
@@ -303,8 +305,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                         </>
                     ))}
                 </List>
-
-
+                
                 <FooterContainer >
                     <Pagination
                         count={totalPages}

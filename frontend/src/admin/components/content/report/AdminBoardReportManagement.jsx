@@ -1,11 +1,9 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 신고글을 처리하는 컴포넌트
  * 
- * 신고 처리 순서
- * 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
- * 2. 처리 내역 작성 후 처리 완료
+ * 기능 구현- 오자현
+ * - 신고글 패치, 삭제처리, 무시처리 기능
  */
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
@@ -37,7 +35,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         resolved_at: ""
     });
 
-    // 입력값 변동시 저장하는 핸들러
+    // 입력값 핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTotalData({ ...totalData, [name]: value });

@@ -1,5 +1,5 @@
 /** 오자현
- * 버스정류장 여부 리듀서
+ * 버스정류장 리듀서
  */
 
 import { ENTER_BUS_STATION_ONE, ENTER_BUS_STATION_TWO, INIT_BUS_STATION, LEAVE_BUS_STATION_ONE, LEAVE_BUS_STATION_TWO } from "../actions/actions";

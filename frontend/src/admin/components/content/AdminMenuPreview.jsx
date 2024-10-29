@@ -1,7 +1,14 @@
 /**
  * 파일생성자 - 오자현 
  * 관리자 메인페이지
- * 각 항목을 미리 약간씩 보는 형태 기능은 없이 보여주기만
+ * 
+ * 기능 구현 - 이석재, 이정민, 오자현
+ * 이석재
+ * - 학과랭킹 패치
+ * 이정민
+ * - 오늘의 메뉴 패치
+ * 오자현
+ * - 게시판정보, 신고데이터 패치, 우선순위에 따른 데이터 5개 미리보기 기능
  */
 import { ListItem, ListItemText, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -34,7 +41,7 @@ const AdminMenuPreview = () => {
         }
     };
 
-    // 학과랭킹패치
+    // 학과랭킹 패치
     const fetchRankings = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
@@ -45,7 +52,7 @@ const AdminMenuPreview = () => {
         }
     };
 
-    // 신고데이터패치
+    // 신고데이터 패치
     const fetchReportData = async () => {
         try {
             const response = await fetch("/api/boardReport/fetch");
@@ -60,7 +67,7 @@ const AdminMenuPreview = () => {
         }
     };
 
-    // 게시글 5개 추출 함수
+    // 게시글 5개 로드 함수
     const getAdminAndRecentPosts = () => {
         const adminPosts = boardData.filter(item => item.writer_type === 'admin');
 
@@ -69,7 +76,7 @@ const AdminMenuPreview = () => {
         return combinedPosts;
     };
     
-    // 신고 5개 추출 
+    // 신고 5개 로드 함수 
     const getAdminReportData = () => {
         // Waiting인 것 중 최신 5개 (만약 부족하면 최신순서로 채움)
         const WaitingReports = reportData.filter(item => item.report_status === 'Waiting');
@@ -81,7 +88,7 @@ const AdminMenuPreview = () => {
         return combinedReports;
     };
 
-    // 관리자 음식정보 5개 추출
+    // 관리자 음식정보 5개 로드 함수
     const getAdminFoodData = () => {
         const finalFoodData = menuData.slice(0, 5);
         return finalFoodData;

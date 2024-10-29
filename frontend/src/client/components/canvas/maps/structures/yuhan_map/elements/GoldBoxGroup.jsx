@@ -1,5 +1,6 @@
 /*
-* 오자현 
+* 파일생성자 오자현
+* 보물상자 그룹화 컴포넌트
 */
 
 import React from 'react'
@@ -14,10 +15,9 @@ const GoldBoxGroup = () => {
     const isZone1 = useSelector((state) => state.goldBox.hasVisitedZone1);
     const isZone2 = useSelector((state) => state.goldBox.hasVisitedZone2);
     const isZone3 = useSelector((state) => state.goldBox.hasVisitedZone3);
+
     return (
         <>
-            {/* 동상 */}
-            {/* <GoldBox position={[120, 0, -520]} rotation={[0, 0, 0]} /> */}
             {/* 유재라관 */}
             {!isZone1 && (
                 <>

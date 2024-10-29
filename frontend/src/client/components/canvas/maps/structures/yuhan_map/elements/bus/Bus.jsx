@@ -7,14 +7,13 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function Bus({ position }) {
-  // Redux 상태에서 버스존 1과 2에 있는지 여부 가져오기
-  const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
-  const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
-  // 찾아오는 길버튼의 클릭여부를 확인
-  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+  // Redux 상태관리
+  const isInBusStationOne = useSelector(state => state.bus.inBusStationOne); // 1번 버스영역 여부
+  const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo); // 2번 버스영역 여부
+  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView'); // 찾아오는 길 버튼 여부
 
-  const groupOne = React.useRef(); // 버스 1 그룹 레퍼런스
-  const groupTwo = React.useRef(); // 버스 2 그룹 레퍼런스
+  const groupOne = React.useRef(); 
+  const groupTwo = React.useRef(); 
 
   const { nodes, materials, animations } = useGLTF('/assets/models/bus/bus.glb');
 

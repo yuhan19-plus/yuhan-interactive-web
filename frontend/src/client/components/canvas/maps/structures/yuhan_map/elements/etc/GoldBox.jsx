@@ -1,7 +1,7 @@
 /**
- * 오자현
+ * 파일생성자 오자현
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';

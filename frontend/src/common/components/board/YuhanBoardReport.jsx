@@ -1,8 +1,9 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
- * 신고컴포넌트 
  * 사용자가 신고정보를 입력하고 신고를 하는 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 신고글 저장기능
  */
 import React, { useState } from "react";
 import { Grid, Typography, Select, MenuItem, TextField, Box, Button } from '@mui/material';
@@ -13,11 +14,12 @@ import styled from "styled-components";
 // 신고글을 작성하는 컴포넌트 
 const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     const [cookies] = useCookies(["user"]);
+    
     const [reportData, setReportData] = useState({
         board_id: boardId,
         report_writer: cookies.user,
         report_content: "",
-        report_type: "etc", // 기본값을 기타로 설정 
+        report_type: "etc",
 
     });
 

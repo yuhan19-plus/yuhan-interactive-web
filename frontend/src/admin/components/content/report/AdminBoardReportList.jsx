@@ -1,17 +1,15 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 신고목록을 확인하는 컴포넌트
  * 
+ * 기능 구현- 오자현
+ * - 데이터 패치, 데이터 정렬, 페이지게이션 기능
  */
 import React, { useEffect, useState } from "react";
 import { Box, List, ListItem, ListItemText, Typography, Pagination, FormControl, Select, MenuItem, Grid } from '@mui/material';
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 
-// 신고 처리 순서
-// 1.신고내역을 클릭으로 처리페이지 진입
-// 2.처리사유 작성 후 처리완료
 const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
     
@@ -19,6 +17,7 @@ const AdminBoardReportList = ({ onReportManagement }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
+    
     const pageNum = 8;
 
     const handlePageChange = (event, value) => {
@@ -147,7 +146,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                         {item.report_status === 'Waiting' ? '대기중' : item.report_status === 'ignore' ? '무시됨' : '삭제됨'}
                                     </Typography>
                                 </Box>
-
 
                             </Box>
                         </ListItem>

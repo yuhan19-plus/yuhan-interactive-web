@@ -1,5 +1,5 @@
 /**
- * 오자현 
+ * 파일생성자 오자현
  */
 
 import React from 'react'

@@ -1,11 +1,14 @@
-/**파일 생성자 : 오자현
- *  게시판 임시저장 등록, 읽기, 삭제기능 
+/**
+ * 파일 생성자 - 오자현
+ * 게시글 임시저장 백엔드 코드
+ * 
+ * 기능 구현 - 오자현
+ * - 게시판 임시저장 등록, 읽기, 삭제기능 
 */
 
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
 const mysqlconnection = require("../../server"); // server.js에서 MySQL 연결 객체 가져오기
-
 
 // 임시 저장 데이터 읽기
 router.post("/read", (req, res) => {
@@ -36,6 +39,7 @@ router.post("/checkTempData", (req, res) => {
     const { userId } = req.body;
 
     const checkTempDataQuery = "SELECT * FROM board_temp where board_writer = ?";
+    
     mysqlconnection.query(checkTempDataQuery, [userId], (err, result) => {
         if (err) {
             // console.error("체크 중 에러", err);
@@ -57,7 +61,7 @@ router.post("/checkTempData", (req, res) => {
 router.delete("/delete", (req, res) => {
     // console.log("임시 저장 데이터 삭제 요청");
     const { userId } = req.body;
-    
+
     const deleteboard_tempQuery = "DELETE FROM board_temp WHERE board_writer = ?";
 
     mysqlconnection.query(deleteboard_tempQuery, [userId], (err, result) => {
@@ -82,13 +86,14 @@ router.post("/save", (req, res) => {
     const { board_title, board_content, board_writer } = req.body;
     // console.log("req.body", req.body);
 
-    // 제목과 내용이 비어있다면 저장하지 않고 응답을 반환
-    if(!board_title && !board_content){
-        return res.status(400).send("저장할 데이터가 없습니다.") 
-    }
-
-    // 먼저 데이터가 존재하는지 확인하는 쿼리
+    const updateboard_tempQuery = `UPDATE board_temp SET board_title = ?, board_content = ? WHERE board_writer = ?`;
+    const insertboard_tempQuery = `INSERT INTO board_temp (board_title, board_content, board_writer) VALUES (?, ?, ?)`;
     const checkboard_tempQuery = `SELECT * FROM board_temp WHERE board_writer = ?`;
+
+    // 제목과 내용이 비어있다면 저장하지 않고 응답을 반환
+    if (!board_title && !board_content) {
+        return res.status(400).send("저장할 데이터가 없습니다.")
+    }
 
     mysqlconnection.query(checkboard_tempQuery, [board_writer], (err, result) => {
         if (err) {
@@ -98,11 +103,6 @@ router.post("/save", (req, res) => {
 
         if (result.length > 0) {
             // 데이터가 존재하면 UPDATE
-            const updateboard_tempQuery = `
-                UPDATE board_temp 
-                SET board_title = ?, board_content = ? 
-                WHERE board_writer = ?`;
-
             mysqlconnection.query(updateboard_tempQuery, [board_title, board_content, board_writer], (err, result) => {
                 if (err) {
                     // console.error("임시저장 중 에러", err);
@@ -113,10 +113,6 @@ router.post("/save", (req, res) => {
             });
         } else {
             // 데이터가 없으면 INSERT
-            const insertboard_tempQuery = `
-                INSERT INTO board_temp (board_title, board_content, board_writer) 
-                VALUES (?, ?, ?)`;
-
             mysqlconnection.query(insertboard_tempQuery, [board_title, board_content, board_writer], (err, result) => {
                 if (err) {
                     // console.error("임시저장 중 에러", err);
