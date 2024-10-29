@@ -86,7 +86,7 @@ const StatueContainer = styled.div`
     border-radius: 25px;
     margin-right: 15px;
     padding: 10px;
-    background: white;
+    background: var(--sub-color);
 `
 
 const StatueHeader = styled.div`
@@ -108,7 +108,7 @@ const StatueHeader = styled.div`
 const StatueTitle = styled.p`
     font-size: 20px;
     font-weight: 900;
-    color: #0F275C;
+    color: var(--main-color);
 `
 
 const StatueContent = styled.div`
@@ -129,9 +129,9 @@ const StatueButton = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    color: white;
+    color: var(--sub-color);
     padding: 5px;
-    background: #0F275C;
+    background: var(--main-color);
     border-radius: 12px;
 
     P {
@@ -146,7 +146,7 @@ const StatueButton = styled.div`
 
 const PhotoContainer = styled.div`
     width: 30%;
-    background-color: white;
+    background-color: var(--sub-color);
     display: flex;
     justify-content: center;
     height: 40%;

@@ -229,7 +229,7 @@ const KioskWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #0F275Cdd;
+    background-color: var(--main-opacity-color);
     padding: 15px;
 `
 
@@ -242,7 +242,7 @@ const KioskHeader = styled.div`
     padding: 3px;
     font-size: 34px;
     text-align: center;
-    color: white;
+    color: var(--sub-color);
 `
 
 const KioskContent = styled.div`
@@ -261,6 +261,7 @@ const KioskList = styled.div`
     align-items: center;
     justify-content: space-between;
 `
+
 const PageBtn = styled.div`
     display: flex;
     align-items: center;
@@ -281,7 +282,7 @@ const KioskItem = styled.div`
     border-radius: 15px;
     border: 1px solid white;
     padding: 7px;
-    color: white;
+    color: var(--sub-color);
 `
 
 const KioskFooter = styled.div`
@@ -292,7 +293,7 @@ const KioskFooter = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--sub-color);
 `
 
 const KioskLink = styled.div`
@@ -301,6 +302,7 @@ const KioskLink = styled.div`
     flex-direction: column;
     align-items: center;
     margin-bottom: 5px;
+
     div {
         cursor: pointer;
     }

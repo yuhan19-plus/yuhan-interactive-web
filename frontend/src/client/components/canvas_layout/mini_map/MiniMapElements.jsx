@@ -1,5 +1,4 @@
 import React from 'react'
-import Welcome from '../../canvas/maps/structures/yuhan_map/elements/etc/Welcome'
 import BuildingGroup from '../../canvas/maps/structures/yuhan_map/elements/BuildingGroup'
 import TreeGroup from '../../canvas/maps/structures/yuhan_map/elements/park/tree/TreeGroup'
 import GrassGroup from '../../canvas/maps/structures/yuhan_map/elements/park/grass/GrassGroup'
@@ -13,9 +12,6 @@ import { YuhanEntrance } from '../../canvas/maps/structures/yuhan_map/elements/e
 const MiniMapElements = () => {
     return (
         <>
-            {/* 유한대 Welcome */}
-            {/* <Welcome /> */}
-
             {/* 그룹화 */}
             <BuildingGroup />
             <TreeGroup />

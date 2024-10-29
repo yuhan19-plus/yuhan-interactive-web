@@ -192,15 +192,16 @@ const Teleport = styled.div`
     position: absolute;
     width: 5%;
     height: 5%;
-    background-color: #0F275C;
+    background-color: var(--main-color);
     font-weight: 900;
     border-radius: 50%;
-    border: 2px solid #F4CE3D;
+    border: 2px solid var(--yuhan-yellow-color);
     display : flex;
     justify-content : center;
     align-items : center;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+
     &:hover {
         width: 6%;
         height: 6%;
@@ -212,8 +213,8 @@ const Teleport = styled.div`
             bottom: 200%; 
             left: 50%;
             transform: translateX(-50%);
-            background-color: #0F275C;
-            color: #F4CE3D;
+            background-color: var(--main-color);
+            color: var(--yuhan-yellow-color);
             font-size: 17px;
             padding: 5px 10px;
             border-radius: 5px;
@@ -232,7 +233,7 @@ const Teleport = styled.div`
             transform: translateX(-50%);
             border-width: 10px;
             border-style: solid;
-            border-color: #0F275C transparent transparent transparent;
+            border-color: var(--main-color) transparent transparent transparent;
             z-index: 10;
         }
     }
@@ -262,7 +263,7 @@ const MiniMapContentWrapper = styled.div`
     height: 100%;
     background: black;
     border-radius: 7px 7px 0px 7px;
-    border: 5px solid #0F275C;
+    border: 5px solid var(--main-color);
     padding-top: 15px;
     padding-left: 5px;
 `

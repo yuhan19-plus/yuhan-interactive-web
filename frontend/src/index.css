@@ -1,6 +1,19 @@
 #root {
     width: 100vw;
     height: 100vh;
+    
+    /* 색상 */
+    --main-color: #0F275C;
+    --main-opacity-color: #0F275CDD;
+    --sub-color: #FFFFFF;
+    --sub-opacity-color: #FFFFFF00;
+    --yuhan-yellow-color: #F4CE3D;
+    --yuhan-orange-color: #EF7421;
+    --main-dark-color: #1C293A;
+    --sub-dark-color: #8C9292;
+    --yuhan-light-green: #64C9B9;
+
+    --error-color: #FF0000;
 }
 
 @font-face {

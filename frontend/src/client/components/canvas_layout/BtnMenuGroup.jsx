@@ -63,10 +63,10 @@ const BtnList = styled.div`
 const BtnItem = styled.button`
     width: 50px;
     height: 50px;
-    background-color: #0F275C;
+    background-color: var(--main-color);
     border-radius: 25px;
     border: none;
-    color: white;
+    color: var(--sub-color);
     padding: 10px;
     svg {
         width: 100%;
@@ -86,8 +86,8 @@ const BtnItem = styled.button`
         bottom: 60px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #0F275C;
-        color: white;
+        background-color: var(--main-color);
+        color: var(--sub-color);
         padding: 5px 10px;
         border-radius: 5px;
         white-space: nowrap;
@@ -103,8 +103,8 @@ const BtnItem = styled.button`
         bottom: 60px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #0F275C;
-        color: white;
+        background-color: var(--main-color);
+        color: var(--sub-color);
         padding: 5px 10px;
         border-radius: 5px;
         white-space: nowrap;

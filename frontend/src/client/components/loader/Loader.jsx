@@ -61,43 +61,43 @@ const Progressing = styled.div`
   width: 60%;
   max-width: 40vw; 
   height: 5vh;
-  background-color: white;
+  background-color: var(--sub-color);
   border-radius: 2.5vh; 
   overflow: hidden;
   box-shadow: 0vw 0.4vh 1.5vh rgba(0, 0, 0, 0.2); 
   position: relative;
   z-index: 1;
-  margin-top: 45vh; /* margin-top을 vh 단위로 유지 */
+  margin-top: 45vh;
 `;
 
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
-  background: #F58220;
+  background: var(--yuhan-orange-color);
   border-radius: 2.5vh 0 0 2.5vh; 
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5vw;
   font-weight: bold;
-  color: #FDF6E3 ;
+  color: var(--sub-color);
   transition: width 0.3s ease;
-  box-shadow: inset 0vw 0.2vh 0.5vh rgba(0, 0, 0, 0.1); /* 안쪽 그림자도 vh 단위로 조정 */
+  box-shadow: inset 0vw 0.2vh 0.5vh rgba(0, 0, 0, 0.1);
 `;
 
 const BubbleChat = styled.div`
-  background-color: #fff;
+  background-color: var(--sub-color);
   padding: 2vw 4vh;
   border-radius: 1vw;
   position: relative;
   font-size: 1.5vw;
   font-weight: bold;
-  color: #2C3E50 ;
+  color: #2C3E50;
   margin-top: -10vh;
   margin-left: 20vw; 
   box-shadow: 0vw 0.4vw 1vw rgba(0, 0, 0, 0.2);
   white-space: pre-line;
-  
+
   /* 말풍선 꼬리 부분 */
   &:after {
     content: '';
@@ -106,8 +106,8 @@ const BubbleChat = styled.div`
     left: -4vh;
     width: 0;
     height: 0;
-    border-width: 1.5vh 5vh 1.5vh 0; /* 꼬리 크기를 더 자연스럽게 조정 */
+    border-width: 1.5vh 5vh 1.5vh 0;
     border-style: solid;
-    border-color: transparent #fff transparent transparent; /* 오른쪽을 흰색으로 설정 */
+    border-color: transparent #FFFFFF transparent transparent;
   }
 `;

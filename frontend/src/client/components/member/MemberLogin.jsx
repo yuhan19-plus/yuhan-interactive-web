@@ -170,14 +170,16 @@ const MemberLogin = () => {
 const MemberJoinContent = styled.div`
     width: 100%;
     height: 100%;
+    
     div {
         width: 100%;
         margin: 7px 0;
         padding: 0 15px;
-        background-color: #ffffff00;
+        background-color: var(--sub-opacity-color);
         border-radius: 15px;
+
         &:hover {
-            background-color: #ffffff00;
+            background-color: var(--sub-opacity-color);
         }
     }
 `
@@ -185,11 +187,11 @@ const MemberJoinContent = styled.div`
 const JoinButton = styled.button`
     width: 100%;
     border-radius: 15px;
-    color: white;
+    color: var(--sub-color);
     border: none;
     padding: 15px;
     font-size: 24px;
-    background: #0F275C;
+    background: var(--main-color);
     box-shadow: 2px 2px 4px #d9d9d9,
                 -2px -2px 4px #ffffff;
     &:hover {

@@ -79,9 +79,18 @@ const SideBar = () => {
         <>
             <SideBarContainer className={isDropdownOpen ? "opened" : "closed"}>
                 <SideBarHeader>
-                    {/* <LogoWrapper> */}
-                        <img src='/assets/images/yuhan-logo2.png' />
-                    {/* </LogoWrapper> */}
+                    <img src='/assets/images/yuhan-logo2.png' />
+                    
+                    {cookies.user && (
+                        <WelcomeWrapper>
+                            <Link to={'/membermodify'}>
+                                <WelcomeContent>
+                                    <p>{cookies.userName}님 안녕하세요!</p>
+                                </WelcomeContent>
+                            </Link>
+                        </WelcomeWrapper>
+                    )}
+                    
                     <AccountManagementWrapper>
                         <AccountManagementList>
                             {cookies.user ? ( // 쿠키가 존재하면 로그아웃 버튼을 보여줍니다.
@@ -107,29 +116,10 @@ const SideBar = () => {
                                             <p>관리자</p>
                                         </a>
                                     </AccountManagementItem>
-                                    {/* <div>
-                                        <Link 
-                                            to={'/admin'}
-                                            state={{
-                                                title: '관리자'
-                                            }}>
-                                            <AdminPanelSettings />
-                                            <p>TEST</p>
-                                        </Link>
-                                    </div> */}
                                 </>
                             )}
                         </AccountManagementList>
                     </AccountManagementWrapper>
-                    {cookies.user && (
-                        <WelcomeWrapper>
-                            <Link to={'/membermodify'}>
-                                <WelcomeContent>
-                                    <p>{cookies.userName}님 안녕하세요!</p>
-                                </WelcomeContent>
-                            </Link>
-                        </WelcomeWrapper>
-                    )}
                 </SideBarHeader>
                 <SideBarList>
                     {
@@ -141,7 +131,7 @@ const SideBar = () => {
                 e.stopPropagation()
                 setIsDropdownOpen((prev) => !prev)
             }}>
-                {isDropdownOpen ? <Close className="side-icon-white" /> : <Menu className="side-icon" /> }
+                {isDropdownOpen ? <Close /> : <Menu /> }
             </DropdownController>
         </>
     )
@@ -151,15 +141,16 @@ const SideBarContainer = styled.div`
     position: fixed;
     left: 0;
     bottom: 0;
-    background-color: #0F275Cdd;
+    background-color: var(--main-opacity-color);
     width: 220px;
     height: 100%;
     transition: 0.3s ease-in-out;
-    padding: 0px 0px 40px 0px;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 1rem 0 0;
+
     &.opened {
         transform: translateX(0);
     }
+
     &.closed {
         transform: translateX(-100%)
     }
@@ -168,17 +159,16 @@ const SideBarContainer = styled.div`
 const SideBarHeader = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 9px;
   justify-content: center;
   align-items: center;
-  margin-top: 35px;
-  padding: 15px;
+  margin-top: 1.5rem;
+  padding: 1rem;
 `
 
 const AccountManagementWrapper = styled.div`
     width: 100%;
     display: flex;
-    margin-top: 15px;
+    margin-top: 1rem;
 `
 
 const AccountManagementList = styled.div`
@@ -196,26 +186,27 @@ const AccountManagementItem = styled.div`
     justify-content: center;
 
     a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
     }
     
     a:hover {
-      border-bottom: 1px solid white;
+      border-bottom: 0.01rem solid white;
     }
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.3rem;
     }
 `
 
 const WelcomeWrapper = styled.div`
     width: 100%;
-    font-size: 16px;
-    padding-top: 5px;
+    font-size: 1.2rem;
+    margin-top: 1rem;
 `
 
 const WelcomeContent = styled.span`
@@ -234,11 +225,15 @@ const DropdownController = styled.div`
     top: 0;
     display: flex;
     align-items: center;
-    color: #340070;
     cursor: pointer;
+    background-color: var(--main-color);
+    color: var(--sub-color);
+    border-radius: 2.5rem;
+    padding: 0.1rem;
+
     svg {
-        width: 42px;
-        height: 42px;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 `
 
