@@ -19,7 +19,6 @@ const AdminReport = () => {
     // 신고처리로 진입
     const handleReportManagement = (reportID) => {
         setselectReportID(reportID);
-        // console.log(reportID);
         setCurrentView('reportManagement');
     };
 

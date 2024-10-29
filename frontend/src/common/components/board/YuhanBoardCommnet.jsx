@@ -22,7 +22,7 @@ export const YuhanBoardComment = ({ boardData }) => {
     const [commentList, setCommentList] = useState([]);
     const [comment, setComment] = useState({
         comment_id: "",
-        board_id: boardID, // 진입시들어온 boardData로 게시판id 연결
+        board_id: boardID, // 진입시 들어온 boardData로 게시판id 연결
         comment_writer: cookies.user, // 쿠키로 로그인중인 사용자 id 잡음
         comment_content: "",
     });
@@ -46,7 +46,7 @@ export const YuhanBoardComment = ({ boardData }) => {
             return;
         }
         try {
-            const response = await fetch("/api/comment/save", {
+            const response = await fetch("/api/boardComment/save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export const YuhanBoardComment = ({ boardData }) => {
     const handleDeleteComment = async (comment_id) => {
         const commentId = comment_id;
         try {
-            const response = await fetch(`/api/comment/delete?commentId=${commentId}`, {
+            const response = await fetch(`/api/boardComment/delete?commentId=${commentId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export const YuhanBoardComment = ({ boardData }) => {
     // 목록 불러오기
     const fetchComment = async () => {
         try {
-            const response = await fetch(`/api/comment/List/${boardID}`, {
+            const response = await fetch(`/api/boardComment/List/${boardID}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

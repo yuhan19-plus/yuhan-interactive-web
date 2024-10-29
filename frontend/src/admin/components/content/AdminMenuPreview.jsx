@@ -3,7 +3,7 @@
  * 관리자 메인페이지
  * 각 항목을 미리 약간씩 보는 형태 기능은 없이 보여주기만
  */
-import { Table, TableCell, TableContainer, TableHead, TableRow, Paper, TableBody, ListItem, ListItemText, Box, Typography } from '@mui/material';
+import { ListItem, ListItemText, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -13,20 +13,14 @@ const AdminMenuPreview = () => {
     const [reportData, setReportData] = useState([]);
     const [rankings, setRankings] = useState([]);
 
-    useEffect(() => {
-        // 백엔드에서 각 데이터 가져오기
-        fetchMenuData();
-        fetchBoardData();
-        fetchRankings();
-        fetchReportData();
-    }, []);
-
+    // 오늘의 메뉴 패치
     const fetchMenuData = async () => {
         const response = await fetch("/api/food");
         const data = await response.json();
         setMenuData(data);
     };
 
+    // 게시판 정보 패치
     const fetchBoardData = async () => {
         try {
             const response = await fetch("/api/board");
@@ -40,6 +34,7 @@ const AdminMenuPreview = () => {
         }
     };
 
+    // 학과랭킹패치
     const fetchRankings = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
@@ -50,9 +45,10 @@ const AdminMenuPreview = () => {
         }
     };
 
+    // 신고데이터패치
     const fetchReportData = async () => {
         try {
-            const response = await fetch("/api/report/fetch");
+            const response = await fetch("/api/boardReport/fetch");
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }
@@ -64,29 +60,40 @@ const AdminMenuPreview = () => {
         }
     };
 
-    // 관리자가 작성한 글을 우선으로 최대 5개의 게시글을 가져오는 함수
+    // 게시글 5개 추출 함수
     const getAdminAndRecentPosts = () => {
         const adminPosts = boardData.filter(item => item.writer_type === 'admin');
 
-        // 관리자가 작성한 글이 5개 미만으로 보이도록
+        // 관리자 글이 5개 미만으로 보이도록
         const combinedPosts = adminPosts.slice(0, 5);
         return combinedPosts;
     };
-    // 신고에서 Waiting인 것 중 최신 5개만 보여줌 (만약 부족하면 최신 신고내역으로 채움)
+    
+    // 신고 5개 추출 
     const getAdminReportData = () => {
+        // Waiting인 것 중 최신 5개 (만약 부족하면 최신순서로 채움)
         const WaitingReports = reportData.filter(item => item.report_status === 'Waiting');
         const nonWaitingReports = reportData.filter(item => item.report_status !== 'Waiting');
 
-        // 관리자가 작성한 글이 5개 미만이면 최신 글을 추가
+        // 대기중인 신고가 5개 미만이면 최신 글을 추가
         const combinedReports = WaitingReports.concat(nonWaitingReports).slice(0, 5);
 
         return combinedReports;
     };
 
+    // 관리자 음식정보 5개 추출
     const getAdminFoodData = () => {
         const finalFoodData = menuData.slice(0, 5);
         return finalFoodData;
     }
+
+    useEffect(() => {
+        // 백엔드에서 각 데이터 가져오기
+        fetchMenuData();
+        fetchBoardData();
+        fetchRankings();
+        fetchReportData();
+    }, []);
     return (
         <>
             <Part>

@@ -36,36 +36,34 @@ mysqlconnection.connect((err) => {
   if (err) {
     console.error("MySQL 연결 실패:", err.message);
   } else {
-    console.log("MySQL 연결 성공");
+    console.log("MySQL connection successful");
   }
 });
 
 // mysqlconnection 객체를 모듈로 내보내기
 module.exports = mysqlconnection;
 
-const testdbRoutes = require('./db/testdb'); 
 const todaymenuRoutes = require('./db/todaymenudb');
 const memberRoutes = require('./db/memberdb');
 const memberAdminRoutes = require('./db/memberAdmindb');
-const boardRoutes = require('./db/boarddb');
-const tempboardRoutes = require('./db/boardTempBoardDB'); 
-const boardLikeRoutes = require('./db/boardLikedDB'); 
+const boardRoutes = require('./db/board/boardDB');
+const boardTempRoutes = require('./db/board/boardTempBoardDB'); 
+const boardLikeRoutes = require('./db/board/boardLikedDB'); 
 const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학부 추천 관리 라우터
-const commentRoutes = require('./db/boardCommentDB'); 
-const reportRoutes = require('./db/boardReportDB'); 
+const boardCommentRoutes = require('./db/board/boardCommentDB'); 
+const boardReportRoutes = require('./db/board/boardReportDB'); 
 const consultationRoutes = require('./db/consultationDB')
 const deptRecRoutes = require('./db/deptRecdb');  // 학부 추천 기능 라우트
 const galleryRoutes = require('./db/gallerydb');
 const galleryAdminRoutes = require('./db/galleryAdmindb');
-app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
-app.use('/board', boardRoutes); // 게시판 라우트를 '/board' 경로로 사용
+app.use('/board', boardRoutes);
 app.use('/member', memberRoutes);
 app.use('/memberAdmin', memberAdminRoutes);
-app.use('/tempboard', tempboardRoutes);
-app.use('/boardlike', boardLikeRoutes);
+app.use('/boardTemp', boardTempRoutes);
+app.use('/boardLike', boardLikeRoutes);
 app.use('/deptrecadmin', deptRecAdminRoutes);  // 학부 추천 관리 라우트를 '/deptrec' 경로로 사용
-app.use('/comment', commentRoutes);
-app.use('/report', reportRoutes);
+app.use('/boardComment', boardCommentRoutes);
+app.use('/boardReport', boardReportRoutes);
 app.use('/food', todaymenuRoutes);
 app.use('/consultation', consultationRoutes)
 app.use('/deptrec', deptRecRoutes);  // 학부 추천 기능 라우트를 '/deptrec' 경로로 사용
@@ -75,11 +73,11 @@ app.use('/galleryAdmin', galleryAdminRoutes);
 
 // 서버 시작
 server.listen(4000, () => {
-  console.log("서버가 4000번 포트에서 실행 중입니다.");
+  // console.log("서버가 4000번 포트에서 실행 중입니다.");
 });
 
 // 서버와 프론트 연결체크
-app.get('/healthcheck', (req, res) => {  // 경로를 절대 경로가 아닌 상대 경로로 설정
-  console.log("프론트와 연결에 성공했습니다.");
+app.get('/healthCheck', (req, res) => {
+  console.log("Connected to Frontend: Health Check Success");
   res.status(200).json({ message: '서버가 정상적으로 작동 중입니다!' });
 });

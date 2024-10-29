@@ -5,14 +5,16 @@
  * 
  */
 import React, { useEffect, useState } from "react";
-import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, Select, MenuItem, Grid } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, Pagination, FormControl, Select, MenuItem, Grid } from '@mui/material';
 import { useCookies } from "react-cookie";
+import styled from "styled-components";
 
 // 신고 처리 순서
 // 1.신고내역을 클릭으로 처리페이지 진입
 // 2.처리사유 작성 후 처리완료
 const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
+    
     const [dataList, setDataList] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
@@ -62,7 +64,7 @@ const AdminBoardReportList = ({ onReportManagement }) => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("/api/report/fetch");
+            const response = await fetch("/api/boardReport/fetch");
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }
@@ -97,13 +99,13 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                 </Grid>
                 <List>
                     {/* 테이블 헤더 */}
-                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
+                    <TableHeader>
                         <Box sx={{ width: '5%', textAlign: 'center' }}>번호</Box>
                         <Box sx={{ width: '10%', textAlign: 'center' }}>종류</Box>
                         <Box sx={{ width: '60%', textAlign: 'center' }}>신고내용</Box>
                         <Box sx={{ width: '15%', textAlign: 'center' }}>신고자</Box>
                         <Box sx={{ width: '10%', textAlign: 'center' }}>상태</Box>
-                    </Box>
+                    </TableHeader>
 
                     {/* 신고 데이터 목록 */}
                     {getCurrentPageData().map((item, index) => (
@@ -167,3 +169,13 @@ const AdminBoardReportList = ({ onReportManagement }) => {
 };
 
 export default AdminBoardReportList;
+
+const TableHeader = styled.div`
+  background: #0F275C;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  padding: 0.75rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+`;

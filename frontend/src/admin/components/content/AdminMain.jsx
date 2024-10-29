@@ -21,7 +21,7 @@ const AdminMain = () => {
         <>
             <div className='admin-content'>
                 {
-                    titleValue === '관리자' && <AdminMenuPreview/>
+                    titleValue === '관리자' && <></>
                 }
                 {
                     titleValue === '회원관리' && <AdminMember />

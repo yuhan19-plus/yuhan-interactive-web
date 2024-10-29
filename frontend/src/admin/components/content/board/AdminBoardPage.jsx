@@ -16,6 +16,7 @@ import { useBoardDataAdmin } from "./hooks/useBoardDataAdmin";
 // 코드가 너무 길어져서 훅과 ui로 분리
 const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
+    
     const { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardDataAdmin(boardId);
 
     // 로딩 또는 에러 상태 처리

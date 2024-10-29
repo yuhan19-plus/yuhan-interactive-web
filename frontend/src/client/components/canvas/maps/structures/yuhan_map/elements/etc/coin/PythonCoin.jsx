@@ -8,8 +8,9 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function PythonCoin({ position, rotation }) {
+  const isZoneActive = useSelector((state) => state.goldBox.isZone3);
+  
   const { nodes, materials } = useGLTF('/assets/models/etc/PythonCoin.glb')
-  const isZoneActive = useSelector((state) => state.goldBox.isZone3);// 3번존 상태
 
   return (
     <group position={position} rotation={rotation} scale={0.5}>
@@ -17,13 +18,13 @@ export function PythonCoin({ position, rotation }) {
         <>
           <motion.group
             animate={{
-              y: 20,  // y 애니메이션은 isEnd에 따라 동작
+              y: 20,
             }}
             transition={{ duration: 2.5 }}
           >
             <motion.group
               animate={{
-                rotateY: [0, Math.PI * 2, 0],  // rotateY는 무한 반복
+                rotateY: [0, Math.PI * 2, 0],
               }}
               transition={{
                 repeat: Infinity,  // 무한 반복

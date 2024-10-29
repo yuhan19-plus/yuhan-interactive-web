@@ -40,7 +40,7 @@ export const useBoardData = (boardId) => {
             return; // 입력값이 비어있을 경우 저장 절차 중단
         }
         try {
-            const response = await fetch("/api/boardlike", {
+            const response = await fetch("/api/boardLike", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const useBoardData = (boardId) => {
     // 현재 게시물에 대한 사용자의 좋아요 여부 체크
     const checkLiked = async () => {
         try {
-            const response = await fetch(`/api/boardlike/${boardId}/${cookies.user}`, {
+            const response = await fetch(`/api/boardLike/${boardId}/${cookies.user}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

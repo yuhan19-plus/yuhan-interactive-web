@@ -136,7 +136,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 board_writer: cookies.user
             };
 
-            const response = await fetch("/api/tempboard/save", {
+            const response = await fetch("/api/boardTemp/save", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(tempData),
@@ -161,7 +161,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시 저장 데이터를 삭제함수
     const deleteTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/delete", {
+            const response = await fetch("/api/boardTemp/delete", {
                 method: 'DELETE',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -183,7 +183,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시저장데이터를 읽어오는 함수
     const fetchTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/read", {
+            const response = await fetch("/api/boardTemp/read", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -219,7 +219,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시저장을 확인하고 사용할지 삭제할지 결정하는 함수
     const checkTempData = async () => {
         try {
-            const response = await fetch("/api/tempboard/checkTempData", {
+            const response = await fetch("/api/boardTemp/checkTempData", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

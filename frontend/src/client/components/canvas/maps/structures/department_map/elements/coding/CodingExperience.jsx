@@ -13,17 +13,20 @@ import { faC } from "@fortawesome/free-solid-svg-icons";
 import { faPython } from "@fortawesome/free-brands-svg-icons";
 
 const CodingExperience = ({ onResultCode }) => {
-    const [selectLanguage, setSelectLanguage] = useState('');
-    const [num, setNum] = useState('');
     const CZone = useSelector((state) => state.goldBox.hasVisitedZone1);// 1번 진입했었는지 여부
     const JavaZone = useSelector((state) => state.goldBox.hasVisitedZone2);// 2번 진입했었는지 여부
     const PythonZone = useSelector((state) => state.goldBox.hasVisitedZone3);// 3번 진입했었는지 여부
 
+    const [selectLanguage, setSelectLanguage] = useState('');
+    const [num, setNum] = useState('');
+
+    // 언어선택핸들러
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
         // console.log("Selected language:", event.target.value);
     };
 
+    // 숫자변경핸들러
     const handleNumChange = (event) => {
         const value = event.target.value;
         // 숫자 입력만 허용하고 마지막 숫자만 남기도록 처리
@@ -32,7 +35,7 @@ const CodingExperience = ({ onResultCode }) => {
             setNum(lastNum);
         }
     };
-    // 코드를 가져와서 '정수형데이터'를 기준으로 나누는 메서드
+    // 코드를 가져와서 '정수형데이터'를 기준으로 나누는 함수
     const splitCodes = CodingExperienceCode.map(code => {
         const [part1, part2] = code.split("'정수형데이터'");
         return { part1, part2 };
@@ -40,7 +43,7 @@ const CodingExperience = ({ onResultCode }) => {
 
     useEffect(() => {
         if ((CZone || JavaZone || PythonZone) && selectLanguage) {
-            onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
+            onResultCode(num); // ThreeDCode.jsx로 값을 전달 
         }
     }, [num]);
 
@@ -55,7 +58,6 @@ const CodingExperience = ({ onResultCode }) => {
         }
     }, [CZone, JavaZone, PythonZone]);
 
-
     return (
         <Html position={[-20, 0, 240]} center>
             <MainContainer
@@ -69,7 +71,7 @@ const CodingExperience = ({ onResultCode }) => {
                     {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconJava icon={faJava} />)}
                     {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconPython icon={faPython} />)}
                 </IconContainer>
-                {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
+                {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능
                     <>
                         <CodeTitle>
                             <ChooseLanguage>언어 선택</ChooseLanguage>

@@ -30,7 +30,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     const handleReport = async () => {
         // console.log("수정버튼눌림")
         try {
-            const response = await fetch(`/api/report/save/`, {
+            const response = await fetch(`/api/boardReport/save/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json", // JSON 형식으로 데이터 전송

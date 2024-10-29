@@ -1,11 +1,10 @@
 /**파일 생성자 : 오자현
- *  tempboarddb 모듈화
- *  게시판의 제목과 내용을 임시저장 등록, 읽기, 삭제기능 
+ *  게시판 임시저장 등록, 읽기, 삭제기능 
 */
 
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
-const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 객체 가져오기
+const mysqlconnection = require("../../server"); // server.js에서 MySQL 연결 객체 가져오기
 
 
 // 임시 저장 데이터 읽기
@@ -13,11 +12,11 @@ router.post("/read", (req, res) => {
     // console.log("임시저장 읽기 요청");
     const { userId } = req.body;
 
-    const readTempDataQuery = "SELECT * FROM tempboard WHERE board_writer = ?";
+    const readTempDataQuery = "SELECT * FROM board_temp WHERE board_writer = ?";
 
     mysqlconnection.query(readTempDataQuery, [userId], (err, result) => {
         if (err) {
-            console.error("임시저장 데이터를 읽는 중 에러 발생", err);
+            // console.error("임시저장 데이터를 읽는 중 에러 발생", err);
             return res.status(500).send("임시저장 데이터를 불러오는 중 에러 발생");
         }
 
@@ -36,18 +35,18 @@ router.post("/checkTempData", (req, res) => {
     // console.log("checkTempData");
     const { userId } = req.body;
 
-    const checkTempDataQuery = "SELECT * FROM tempboard where board_writer = ?";
+    const checkTempDataQuery = "SELECT * FROM board_temp where board_writer = ?";
     mysqlconnection.query(checkTempDataQuery, [userId], (err, result) => {
         if (err) {
-            console.error("체크 중 에러", err);
+            // console.error("체크 중 에러", err);
             return res.status(500).send("체크 중 에러 발생");
         }
 
         if (result.length === 0) {
-            console.log("임시저장 데이터 없음");
+            // console.log("임시저장 데이터 없음");
             return res.json({ hasTempData: false, message: "임시저장데이터가 없습니다." });
         } else {
-            console.log("임시저장 데이터 있음");
+            // console.log("임시저장 데이터 있음");
             return res.json({ hasTempData: true, tempData: result[0], message: "임시저장데이터가 있습니다." });
         }
     });
@@ -59,19 +58,19 @@ router.delete("/delete", (req, res) => {
     // console.log("임시 저장 데이터 삭제 요청");
     const { userId } = req.body;
     
-    const deleteTempBoardQuery = "DELETE FROM tempboard WHERE board_writer = ?";
+    const deleteboard_tempQuery = "DELETE FROM board_temp WHERE board_writer = ?";
 
-    mysqlconnection.query(deleteTempBoardQuery, [userId], (err, result) => {
+    mysqlconnection.query(deleteboard_tempQuery, [userId], (err, result) => {
         if (err) {
-            console.error("임시 데이터 삭제 중 에러:", err);
+            // console.error("임시 데이터 삭제 중 에러:", err);
             return res.status(500).send("임시 데이터 삭제 중 에러 발생");
         }
 
         if (result.affectedRows === 0) {
-            console.log("삭제할 데이터가 없습니다.");
+            // console.log("삭제할 데이터가 없습니다.");
             return res.status(404).send("해당 작성자의 임시 저장된 데이터가 없습니다.");
         }
-        console.log("데이터가 성공적으로 삭제되었습니다.");
+        // console.log("데이터가 성공적으로 삭제되었습니다.");
         res.send("임시 저장된 데이터가 성공적으로 삭제되었습니다.");
     });
 });
@@ -89,41 +88,41 @@ router.post("/save", (req, res) => {
     }
 
     // 먼저 데이터가 존재하는지 확인하는 쿼리
-    const checkTempBoardQuery = `SELECT * FROM tempboard WHERE board_writer = ?`;
+    const checkboard_tempQuery = `SELECT * FROM board_temp WHERE board_writer = ?`;
 
-    mysqlconnection.query(checkTempBoardQuery, [board_writer], (err, result) => {
+    mysqlconnection.query(checkboard_tempQuery, [board_writer], (err, result) => {
         if (err) {
-            console.error("임시저장 데이터 확인 중 에러", err);
+            // console.error("임시저장 데이터 확인 중 에러", err);
             return res.status(500).send("데이터 확인 중 에러 발생");
         }
 
         if (result.length > 0) {
             // 데이터가 존재하면 UPDATE
-            const updateTempBoardQuery = `
-                UPDATE tempboard 
+            const updateboard_tempQuery = `
+                UPDATE board_temp 
                 SET board_title = ?, board_content = ? 
                 WHERE board_writer = ?`;
 
-            mysqlconnection.query(updateTempBoardQuery, [board_title, board_content, board_writer], (err, result) => {
+            mysqlconnection.query(updateboard_tempQuery, [board_title, board_content, board_writer], (err, result) => {
                 if (err) {
-                    console.error("임시저장 중 에러", err);
+                    // console.error("임시저장 중 에러", err);
                     return res.status(500).send("임시저장 중 에러 발생");
                 }
-                console.log("업데이트 성공");
+                // console.log("업데이트 성공");
                 res.send("임시저장 업데이트 성공");
             });
         } else {
             // 데이터가 없으면 INSERT
-            const insertTempBoardQuery = `
-                INSERT INTO tempboard (board_title, board_content, board_writer) 
+            const insertboard_tempQuery = `
+                INSERT INTO board_temp (board_title, board_content, board_writer) 
                 VALUES (?, ?, ?)`;
 
-            mysqlconnection.query(insertTempBoardQuery, [board_title, board_content, board_writer], (err, result) => {
+            mysqlconnection.query(insertboard_tempQuery, [board_title, board_content, board_writer], (err, result) => {
                 if (err) {
-                    console.error("임시저장 중 에러", err);
+                    // console.error("임시저장 중 에러", err);
                     return res.status(500).send("임시저장 중 에러 발생");
                 }
-                console.log("저장 성공");
+                // console.log("임시저장 성공");
                 res.send("임시저장 성공");
             });
         }

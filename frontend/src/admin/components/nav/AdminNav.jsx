@@ -2,6 +2,8 @@
  * 임성준 : 프론트엔드 개발
  * 이석재
  *   - 관리자 로그아웃 기능 구현 완료
+ * 오자현
+ *   - 신고내역 배지 기능 구현
  */
 
 import React, { useEffect, useState } from 'react'
@@ -17,7 +19,7 @@ const AdminNav = () => {
     // 뱃지에 적용할 숫자를 불러오는 함수
     const fetchBadge = async () => {
         try {
-            const response = await fetch(`/api/report/fetchBadge`);
+            const response = await fetch(`/api/boardReport/fetchBadge`);
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }

@@ -16,6 +16,21 @@ const Direction = ({ position }) => {
     const [openSection, setOpenSection] = useState(null); // 열려 있는 섹션을 관리하는 상태
     const [mapSize, setMapSize] = useState({ width: "450px", height: "450px" });
 
+    // 윈도우 크기에 따라 지도의 크기 변경 함수
+    const handleResize = () => {
+        const width = window.innerWidth * 0.3 + "px"; // 창 너비의 30%
+        const height = window.innerHeight * 0.3 + "px"; // 창 높이의 30%
+        setMapSize({ width, height });
+    };
+    // 클릭 시 열리거나 닫히도록 상태를 관리하는 함수
+    const toggleDropdown = (section) => {
+        if (openSection === section) {
+            setOpenSection(null); // 이미 열려 있는 섹션을 다시 클릭하면 닫음
+        } else {
+            setOpenSection(section); // 다른 섹션을 클릭하면 해당 섹션을 열고 나머지는 닫음
+        }
+    };
+    
     // 카카오 API 호출
     useEffect(() => {
         const script = document.createElement("script");
@@ -34,13 +49,6 @@ const Direction = ({ position }) => {
             });
         });
 
-        // 윈도우 크기에 따라 지도의 크기 변경
-        const handleResize = () => {
-            const width = window.innerWidth * 0.3 + "px"; // 창 너비의 30%
-            const height = window.innerHeight * 0.3 + "px"; // 창 높이의 30%
-            setMapSize({ width, height });
-        };
-
         // 리스너 등록
         window.addEventListener("resize", handleResize);
 
@@ -52,15 +60,6 @@ const Direction = ({ position }) => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
-
-    // 클릭 시 열리거나 닫히도록 상태를 관리하는 함수
-    const toggleDropdown = (section) => {
-        if (openSection === section) {
-            setOpenSection(null); // 이미 열려 있는 섹션을 다시 클릭하면 닫음
-        } else {
-            setOpenSection(section); // 다른 섹션을 클릭하면 해당 섹션을 열고 나머지는 닫음
-        }
-    };
 
     return (
         <Html position={position} center

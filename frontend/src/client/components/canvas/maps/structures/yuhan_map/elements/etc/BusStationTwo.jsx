@@ -9,9 +9,9 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function BusStationTwo({ position, ...props }) {
-  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation2.glb')
-  // 찾아오는 길버튼의 클릭여부를 확인
+  // 찾아오는 길버튼의 클릭여부
   const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation2.glb')
   const [meshRef, api] = useBox(() => ({
     args: [8, 20, 34],
     type: 'Static',
@@ -19,10 +19,6 @@ export function BusStationTwo({ position, ...props }) {
     position,
     ...props
   }))
-
-  const x = position[0];
-  const y = position[1];
-  const z = position[2];
 
   useEffect(() => {
     // console.log("상태", directionsState)

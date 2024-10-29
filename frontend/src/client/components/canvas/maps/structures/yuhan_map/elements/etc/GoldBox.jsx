@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function GoldBox({ position, rotation }) {
+  const isZoneActive = useSelector((state) => state.goldBox.isZone1 || state.goldBox.isZone2 || state.goldBox.isZone3);
   const { nodes, materials } = useGLTF('/assets/models/etc/goldBox.glb');
-  const isZoneActive = useSelector((state) => state.goldBox.isZone1 || state.goldBox.isZone2 || state.goldBox.isZone3);  // 하나라도 true면 동작
 
   return (
     <group position={position} rotation={rotation} scale={3}>

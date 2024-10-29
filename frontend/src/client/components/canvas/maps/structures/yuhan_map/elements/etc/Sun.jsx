@@ -2,6 +2,7 @@
 * 오자현 
 * - 오브젝트 제작,오브젝트 속성 - position, scale 적용,
 *   애니매이션적용(24/08/29)
+* - 빌보딩 적용
 */
 
 import React, { useRef } from 'react'
@@ -22,7 +23,7 @@ export function Sun({ position }) {
       // Y축 회전만 적용하기 위해 방향 벡터의 y 컴포넌트를 0으로 설정
       direction.y = 0
 
-      // 달이 카메라를 향하도록 회전
+      // 해가 카메라를 향하도록 회전
       sunRef.current.lookAt(sunRef.current.position.clone().add(direction))
     }
   })

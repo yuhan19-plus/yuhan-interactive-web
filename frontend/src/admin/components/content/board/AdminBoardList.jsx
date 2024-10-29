@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

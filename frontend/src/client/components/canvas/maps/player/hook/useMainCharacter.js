@@ -72,9 +72,6 @@ export const useMainCharacter = ({ position, myChar }) => {
     // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
     const [animation, setAnimation] = useState('Stand')
 
-    // 버스영역에 있는지 상태를 관리하는 상태변수
-    const [isInBusZone, setIsInBusZone] = useState(false);
-
     // 동상영역에 있는지 상태를 관리하는 상태 변수
     const [isInStatueZone, setIsInStatueZone] = useState(false);
 
@@ -167,6 +164,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 항공뷰
     useEffect(() => {
+        dispatch(initBusStation()) // 항공뷰 시 찾아오는 길 보이는 거 해결
         if (aerialViewState) {
             gsap.to(camera.position, {
                 x: 0,
@@ -193,6 +191,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 흡연구역 뷰
     useEffect(() => {
+        dispatch(initBusStation())
         if (smokingAreaState){
             gsap.to(camera.position,{
                 x: -580,
@@ -282,12 +281,9 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(550, 100, -170)
                                 }
-                                
-                                if (!isInBusZone) {
-                                    setIsInBusZone(true); // 상태 변경
-                                    dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
-                                    console.log("버스존 1에 진입했습니다.");
-                                }
+
+                            dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
+                            // console.log("버스존 1에 진입했습니다.");
                         }
                         else if ((currentPosition.x <= 522 && currentPosition.x >= 482) &&
                             (currentPosition.z >= -257 && currentPosition.z <= -217)) {
@@ -295,24 +291,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(750, 100, -450)
                                 }
-                                
-                                if (!isInBusZone) {
-                                    setIsInBusZone(true); // 상태 변경
-                                    dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
-                                    console.log("버스존 2에 진입했습니다.");
-                                }
+                            dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
+                            // console.log("버스존 2에 진입했습니다.");
                         }
-                        else {
+                        else { // 버스존이 아닌 경우
+                            dispatch(initBusStation())
                             if(gsapCameraState) {
                                 console.log('Bus Zone')
                                 setGsapCameraState(false)
-                            }
-
-                            if (isInBusZone) {
-                                setIsInBusZone(false); // 상태를 false로 변경
-                                dispatch(leaveBusStationOne()); // 리덕스 상태를 false로 설정
-                                dispatch(leaveBusStationTwo()); // 리덕스 상태를 false로 설정
-                                console.log("버스존을 벗어났습니다.");
                             }
 
                             if (kioskDispatchFlag.current) {
