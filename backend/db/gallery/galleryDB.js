@@ -1,10 +1,10 @@
 /** 파일 생성자 : 이석재
- *  gallerydb 모듈화
- *  갤러리 데이터 가져오기 및 수정 기능
+ *  galleryDB 모듈화
+ *  갤러리 데이터 가져오기 기능
  * */
 const express = require("express");
 const router = express.Router(); // Express 라우터 객체 생성
-const mysqlconnection = require("../server"); // server.js에서 MySQL 연결 객체 가져오기
+const mysqlconnection = require("../../server"); // server.js에서 MySQL 연결 객체 가져오기
 
 // /fetchPicture 경로로 GET 요청 시 work_id와 work_picture를 가져오는 기능
 router.get("/fetchPicture", (req, res) => {
@@ -12,8 +12,8 @@ router.get("/fetchPicture", (req, res) => {
 
     mysqlconnection.query(query, (error, results) => {
         if (error) {
-            console.error("Error fetching pictures:", error);
-            return res.status(500).json({ message: "사진 데이터를 가져오는 중 오류가 발생했습니다." });
+            // console.error("작품 사진 데이터 조회 중 에러 발생:", error);
+            return res.status(500).json({ message: "작품 사진 데이터를 가져오는 중 오류가 발생했습니다." });
         }
 
         // 데이터가 없는 경우
@@ -38,7 +38,7 @@ router.get("/fetchAllWorkInfo", (req, res) => {
 
     mysqlconnection.query(query, (error, results) => {
         if (error) {
-            console.error("Error fetching all details:", error);
+            // console.error("작품 데이터 조회 중 에러 발생:", error);
             return res.status(500).json({ message: "작품 데이터를 가져오는 중 오류가 발생했습니다." });
         }
 
@@ -54,6 +54,5 @@ router.get("/fetchAllWorkInfo", (req, res) => {
         res.status(200).json(encodedResults);
     });
 });
-
 
 module.exports = router; // 라우터 객체 내보내기

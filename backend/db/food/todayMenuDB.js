@@ -5,13 +5,13 @@
  * */
 const express = require("express");
 const router = express.Router();
-const mysqlconnection = require("../server");
+const mysqlconnection = require("../../server");
 
 router.get("/", (req, res) => {
-    const listQuery = "SELECT * FROM todaymenu";
+    const listQuery = "SELECT * FROM food_menu";
     mysqlconnection.query(listQuery, (err, results) => {
         if (err) {
-            console.error("목록을 불러오는데 실패했습니다", err);
+            // console.error("목록을 불러오는데 실패했습니다", err);
             return res.status(500).json({ message: "실패" });
         }
 
@@ -30,13 +30,13 @@ router.get("/", (req, res) => {
 
 router.get("/:foodID", (req, res) => {
     const foodID = req.params.foodID;
-    console.log("Request:", req.params); // 수정: req를 올바르게 출력
+    // console.log("Request:", req.params); // 수정: req를 올바르게 출력
 
-    const getFoodQuery = "SELECT * FROM todaymenu WHERE foodID = ?";
+    const getFoodQuery = "SELECT * FROM food_menu WHERE foodID = ?";
 
     mysqlconnection.query(getFoodQuery, [foodID], (err, results) => {
         if (err) {
-            console.error("음식 데이터를 가져오는 중 에러 발생:", err);
+            // console.error("음식 데이터를 가져오는 중 에러 발생:", err);
             return res.status(500).json({ message: "음식 데이터를 가져오는 데 오류가 발생했습니다." });
         } else if (results.length === 0) {
             return res.status(404).json({ message: "해당 음식이 없습니다." });
@@ -64,11 +64,11 @@ router.post("/", (req, res) => {
     // 이미지 데이터를 BLOB으로 저장
     const foodImgBlob = foodImg ? Buffer.from(foodImg, 'base64') : null;
 
-    const insertFoodQuery = `INSERT INTO todaymenu (foodType, foodName, foodPrice, foodImg, day) VALUES (?, ?, ?, ?, ?)`;
+    const insertFoodQuery = `INSERT INTO food_menu (foodType, foodName, foodPrice, foodImg, day) VALUES (?, ?, ?, ?, ?)`;
 
     mysqlconnection.query(insertFoodQuery, [foodType, foodName, foodPrice, foodImgBlob, day], (err) => {
         if (err) {
-            console.error("음식 등록 중 에러 발생:", err);
+            // console.error("음식 등록 중 에러 발생:", err);
             return res.status(500).json({ message: "음식 등록 중 오류가 발생했습니다." });
         }
         res.send("음식 등록 성공");
@@ -80,21 +80,21 @@ router.put("/update/:food_id", (req, res) => {
     const foodID = req.params.food_id;
     const { foodType, foodName, foodPrice, foodImg ,day} = req.body;
 
-    console.log("수정 요청 들어옴 foodID", foodID);
-    console.log("이미지 수정",foodImg);
+    // console.log("수정 요청 들어옴 foodID", foodID);
+    // console.log("이미지 수정",foodImg);
 
     // foodImg가 있는 경우 base64 이미지를 BLOB으로 변환
     const foodImgBlob = foodImg ? Buffer.from(foodImg, 'base64') : null;
 
     // 음식 데이터 수정 쿼리
     const updateFoodQuery = `
-        UPDATE todaymenu SET foodType = ?, foodName = ?, foodPrice = ?, foodImg = ?, day = ? WHERE foodID = ?
+        UPDATE food_menu SET foodType = ?, foodName = ?, foodPrice = ?, foodImg = ?, day = ? WHERE foodID = ?
     `;
 
     // 음식 데이터 수정
     mysqlconnection.query(updateFoodQuery, [foodType, foodName, foodPrice, foodImgBlob, day, foodID], (err, result) => {
         if (err) {
-            console.error("음식 데이터 수정 중 오류 발생:", err);
+            // console.error("음식 데이터 수정 중 오류 발생:", err);
             return res.status(500).json({ message: "음식 데이터 수정 중 오류 발생" });
         }
 
@@ -107,11 +107,11 @@ router.put("/update/:food_id", (req, res) => {
 router.delete("/delete/:foodID", (req, res) => {
     const foodID = req.params.foodID;
 
-    const deleteFoodQuery = `DELETE FROM todaymenu WHERE foodID = ?`;
+    const deleteFoodQuery = `DELETE FROM food_menu WHERE foodID = ?`;
 
     mysqlconnection.query(deleteFoodQuery, [foodID], (err) => {
         if (err) {
-            console.error("음식 삭제 중 에러 발생:", err);
+            // console.error("음식 삭제 중 에러 발생:", err);
             return res.status(500).json({ message: "음식 삭제 중 오류가 발생했습니다." });
         }
         res.send("음식 삭제 성공");
@@ -121,11 +121,11 @@ router.delete("/delete/:foodID", (req, res) => {
 // 음식 검색
 router.get("/search/:foodName", (req, res) => {
     const foodName = `%${req.params.foodName}%`;
-    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg FROM todaymenu WHERE foodName LIKE ?";
+    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg FROM food_menu WHERE foodName LIKE ?";
 
     mysqlconnection.query(searchQuery, [foodName], (err, results) => {
         if (err) {
-            console.error("음식 검색 중 에러 발생:", err);
+            // console.error("음식 검색 중 에러 발생:", err);
             return res.status(500).json({ message: "음식 검색 중 오류가 발생했습니다." });
         } else if (results.length === 0) {
             return res.status(404).json({ message: "해당 음식이 없습니다." });
@@ -157,7 +157,7 @@ router.post("/ratings/:foodID", (req, res) => {
 
     mysqlconnection.query(insertFoodQuery, [foodID, user_id, ratings], (err) => {
         if (err) {
-            console.error("평점 처리 중 에러 발생:", err);
+            // console.error("평점 처리 중 에러 발생:", err);
             return res.status(500).json({ message: "평점 처리 중 오류가 발생했습니다." });
         }
 
@@ -169,20 +169,20 @@ router.post("/ratings/:foodID", (req, res) => {
         
         mysqlconnection.query(avgQuery, [foodID], (err, rows) => {
             if (err) {
-                console.error("평점 계산 중 에러 발생:", err);
+                // console.error("평점 계산 중 에러 발생:", err);
                 return res.status(500).json({ message: "평점 계산 중 오류가 발생했습니다." });
             }
 
             const averageRating = rows[0].averageRating;
 
             const updateQuery = `
-                UPDATE todaymenu
+                UPDATE food_menu
                 SET foodRating = ?
                 WHERE foodID = ?
             `;
             mysqlconnection.query(updateQuery, [averageRating, foodID], (err) => {
                 if (err) {
-                    console.error("평점 업데이트 중 에러 발생:", err);
+                    // console.error("평점 업데이트 중 에러 발생:", err);
                     return res.status(500).json({ message: "평점 업데이트 중 오류가 발생했습니다." });
                 }
                 res.send("음식 등록 및 평점 업데이트 성공");

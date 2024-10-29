@@ -43,32 +43,33 @@ mysqlconnection.connect((err) => {
 // mysqlconnection 객체를 모듈로 내보내기
 module.exports = mysqlconnection;
 
+// 라우트 설정
 const testdbRoutes = require('./db/testdb'); 
-const todaymenuRoutes = require('./db/todaymenudb');
-const memberRoutes = require('./db/memberdb');
-const memberAdminRoutes = require('./db/memberAdmindb');
+const todaymenuRoutes = require('./db/food/todayMenuDB');
+const memberRoutes = require('./db/member/memberDB');
+const memberAdminRoutes = require('./db/member/memberAdminDB');
 const boardRoutes = require('./db/boarddb');
 const tempboardRoutes = require('./db/tempBoarddb'); 
 const boardLikeRoutes = require('./db/boardLikeddb'); 
-const deptRecAdminRoutes = require('./db/deptRecAdmindb');  // 학부 추천 관리 라우터
+const deptRecAdminRoutes = require('./db/dept/deptRecAdminDB');
 const commentRoutes = require('./db/commentdb'); 
 const reportRoutes = require('./db/reportdb'); 
 const consultationRoutes = require('./db/consultationDB')
-const deptRecRoutes = require('./db/deptRecdb');  // 학부 추천 기능 라우트
-const galleryRoutes = require('./db/gallerydb');
-const galleryAdminRoutes = require('./db/galleryAdmindb');
+const deptRecRoutes = require('./db/dept/deptRecDB');
+const galleryRoutes = require('./db/gallery/galleryDB');
+const galleryAdminRoutes = require('./db/gallery/galleryAdminDB');
 app.use('/', testdbRoutes); // 해당 라우트를 기본 경로로 사용
 app.use('/board', boardRoutes); // 게시판 라우트를 '/board' 경로로 사용
 app.use('/member', memberRoutes);
 app.use('/memberAdmin', memberAdminRoutes);
 app.use('/tempboard', tempboardRoutes);
 app.use('/boardlike', boardLikeRoutes);
-app.use('/deptrecadmin', deptRecAdminRoutes);  // 학부 추천 관리 라우트를 '/deptrec' 경로로 사용
+app.use('/deptrecadmin', deptRecAdminRoutes);
 app.use('/comment', commentRoutes);
 app.use('/report', reportRoutes);
 app.use('/food', todaymenuRoutes);
 app.use('/consultation', consultationRoutes)
-app.use('/deptrec', deptRecRoutes);  // 학부 추천 기능 라우트를 '/deptrec' 경로로 사용
+app.use('/deptrec', deptRecRoutes);
 app.use('/gallery', galleryRoutes);
 app.use('/galleryAdmin', galleryAdminRoutes);
 

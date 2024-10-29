@@ -1,11 +1,11 @@
 /** 파일 생성자 : 이석재
- *  deptRecAdmindb 모듈화
+ *  deptRecAdminDB 모듈화
  * 질문 조회, 질문 수정, 학부 점수 및 순위 조회 기능
  * */
 
 const express = require('express');
 const router = express.Router();
-const mysqlconnection = require('../server'); // DB 연결
+const mysqlconnection = require('../../server'); // DB 연결
 
 // 학부별 질문 조회 API
 router.get('/questions/:deptName', (req, res) => {
@@ -15,7 +15,7 @@ router.get('/questions/:deptName', (req, res) => {
 
     mysqlconnection.query(query, [deptName], (err, results) => {
         if (err) {
-            console.error("질문 조회 중 에러 발생:", err);
+            // console.error("질문 조회 중 에러 발생:", err);
             return res.status(500).send("질문 조회 중 오류가 발생했습니다.");
         }
 
@@ -32,7 +32,7 @@ router.put('/questions/:questionId', (req, res) => {
 
     mysqlconnection.query(updateQuery, [question, questionId], (err, results) => {
         if (err) {
-            console.error("질문 수정 중 에러 발생:", err);
+            // console.error("질문 수정 중 에러 발생:", err);
             return res.status(500).send("질문 수정 중 오류가 발생했습니다.");
         }
 
@@ -46,7 +46,7 @@ router.get('/rankings', (req, res) => {
 
     mysqlconnection.query(query, (err, results) => {
         if (err) {
-            console.error("점수 조회 중 에러 발생:", err);
+            // console.error("점수 조회 중 에러 발생:", err);
             return res.status(500).send("점수 조회 중 오류가 발생했습니다.");
         }
 
@@ -78,6 +78,5 @@ router.get('/rankings', (req, res) => {
         res.json(rankings);
     });
 });
-
 
 module.exports = router;
