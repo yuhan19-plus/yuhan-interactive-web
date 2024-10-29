@@ -32,7 +32,7 @@ router.get("/my-counsel", (req, res) => {
             employment_classification,
             counsel_content,
             counsel_state
-        FROM consultation
+        FROM counsel_consultation
         WHERE student_id = ?
         ORDER BY counsel_date, counsel_time ASC
     `
@@ -65,7 +65,7 @@ router.get("/req-for-consultation-list", (req, res) => {
             counsel_content,
             counsel_state,
             createdAt
-        FROM consultation
+        FROM counsel_consultation
         WHERE professor_id = ?
         ORDER BY counsel_date, counsel_time ASC
     `
@@ -274,7 +274,7 @@ router.put("/my-counsel/counsel-cancel", (req, res) => {
     // console.log("상담이력(상담취소) : ", consultationId)
 
     const updateMyCounselCancelQuery = `
-        UPDATE consultation SET counsel_state = '상담취소'
+        UPDATE counsel_consultation SET counsel_state = '상담취소'
         WHERE student_id = ? AND consultation_id = ?
     `
 
@@ -295,7 +295,7 @@ router.put("/req-for-consultation-list/counsel-approve", (req, res) => {
     // console.log("상담신청목록(상담승인) : ", consultationId)
 
     const updateMyCounselApproveQuery = `
-        UPDATE consultation SET counsel_state = '상담승인'
+        UPDATE counsel_consultation SET counsel_state = '상담승인'
         WHERE professor_id = ? AND consultation_id = ?
     `
 
@@ -316,7 +316,7 @@ router.put("/req-for-consultation-list/counsel-refusal", (req, res) => {
     // console.log("상담신청목록(승인거절) : ", consultationId)
 
     const updateMyCounselCancelQuery = `
-        UPDATE consultation SET counsel_state = '승인거절'
+        UPDATE counsel_consultation SET counsel_state = '승인거절'
         WHERE professor_id = ? AND consultation_id = ?
     `
 
@@ -408,7 +408,7 @@ router.post("/req-for-consultation", (req, res) => {
     } = req.body
 
     const insertConsultationQuery = `
-        INSERT INTO consultation (
+        INSERT INTO counsel_consultation (
             counsel_date, 
             counsel_time,
             consultation_category,
