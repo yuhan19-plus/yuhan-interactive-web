@@ -15,67 +15,37 @@ import { Form, useSubmit } from 'react-router-dom'
 const MemberJoin = () => {
     // const submit = useSubmit()
 
-    // 패스워드 상태 및 관련 메서드
+    // 상태관리
     const [showPassword, setShowPassword] = useState(false)
-
-    const handleClickShowPassword = () => setShowPassword((show) => !show)
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault()
-    };
-
-    // 학생 혹은 교수 선택 상태 및 관련 메서드
-    // true - 학생, false - 교수
     const [memberType, setMemberType] = useState(true)
-    const handleType = (event) => {
-        setMemberType(event.target.checked)
-    };
-
-    // select 상태 및 관련 메서드
-    const [memberMajor, setMemberMajor] = useState('')
-    const [studentGrade, setStudentGrade] = useState('')
-    const [studentClass, setStudentClass] = useState('')
-    const [professorPosition, setProfessorPosition] = useState('')
-
-    const handleMajor = (event) => {
-        // console.log(event)
-        const { target: { value } } = event // event에서 전공명만 가져오기
-        // console.log(value) // 전공명 출력
-        setMemberMajor(
-            typeof value === 'string' ? value : console.log('err')
-        )
-    }
-
-    const handleGrade = (event) => {
-        const {target: {value}} = event
-        // console.log(typeof value)
-        setStudentGrade(
-            typeof value === 'number' ? value : console.log('err')
-        )
-    }
-
-    const handleClass = (event) => {
-        const {target: {value}} = event
-        setStudentClass(
-            typeof value === 'number' ? value : console.log('err')
-        )
-    }
-
-    const handlePosition = (event) => {
-        const {target: {value}} = event
-        setProfessorPosition(
-            typeof value === 'string' ? value : console.log('err')
-        )
-    }
-
-    // 텍스트필드 상태 및 관련 메서드
     const [memberID, setMemberID] = useState('');
     const [memberPW, setMemberPW] = useState('');
     const [memberName, setMemberName] = useState('');
     const [memberPhone, setMemberPhone] = useState('');
     const [memberEmail, setMemberEmail] = useState('');
+    const [memberMajor, setMemberMajor] = useState('');
+    const [memberGender, setMemberGender] = useState(''); // 기본값을 선택하지 않음으로 설정
     const [studentNum, setStudentNum] = useState('');
+    const [studentGrade, setStudentGrade] = useState('')
+    const [studentClass, setStudentClass] = useState('')
+    const [professorPosition, setProfessorPosition] = useState('')
+    const [errors, setErrors] = useState({
+        memberID: '',
+        memberPW: '',
+        memberName: '',
+        memberPhone: '',
+        memberEmail: '',
+        memberMajor: '',
+        studentNum: '',
+        studentGrade: '',
+        studentClass: '',
+        professorPosition: ''
+    });
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [verificationCode, setVerificationCode] = useState('');
+    const [isCodeSent, setIsCodeSent] = useState(false);
 
+    // 핸들러
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -108,28 +78,123 @@ const MemberJoin = () => {
                 break;
         }
     };
-
-    // 라디오 버튼 상태 및 관련 메서드
-    const [memberGender, setMemberGender] = useState(''); // 기본값을 선택하지 않음으로 설정
-
+    const handleType = (event) => {
+        setMemberType(event.target.checked)
+    };
+    const handleMajor = (event) => {
+        // console.log(event)
+        const { target: { value } } = event // event에서 전공명만 가져오기
+        // console.log(value) // 전공명 출력
+        setMemberMajor(
+            typeof value === 'string' ? value : console.log('err')
+        )
+    }
+    const handleGrade = (event) => {
+        const {target: {value}} = event
+        // console.log(typeof value)
+        setStudentGrade(
+            typeof value === 'number' ? value : console.log('err')
+        )
+    }
+    const handleClass = (event) => {
+        const {target: {value}} = event
+        setStudentClass(
+            typeof value === 'number' ? value : console.log('err')
+        )
+    }
+    const handlePosition = (event) => {
+        const {target: {value}} = event
+        setProfessorPosition(
+            typeof value === 'string' ? value : console.log('err')
+        )
+    }
     const handleGenderChange = (event) => {
         setMemberGender(event.target.value);
     };
+    const handleClickShowPassword = () => setShowPassword((show) => !show)
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault()
+    };
+    // 회원가입 처리 핸들러
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        // 유효성 검사
+        if (validate()) {
+            console.log("폼이 제출되었습니다.");
 
-    // 유효성 검사 상태 및 관련 메서드
-    const [errors, setErrors] = useState({
-        memberID: '',
-        memberPW: '',
-        memberName: '',
-        memberPhone: '',
-        memberEmail: '',
-        memberMajor: '',
-        studentNum: '',
-        studentGrade: '',
-        studentClass: '',
-        professorPosition: ''
-    });
+            const formData = {
+                memberID,
+                memberPW,
+                memberName,
+                memberPhone,
+                memberEmail,
+                memberMajor,
+                memberGender,
+                studentNum: memberType ? studentNum : null,
+                studentGrade: memberType ? studentGrade : null,
+                studentClass: memberType ? studentClass : null,
+                professorPosition: !memberType ? professorPosition : null,
+                memberType
+            };
+        try {
+            // 회원가입 처리
+            const response = await fetch('/api/member/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            // 아이디가 중복인 경우
+            if (response.status === 409) {
+                Swal.fire({
+                    title: '중복된 아이디!',
+                    text: '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.',
+                    icon: 'warning',
+                    confirmButtonText: '확인'
+                });
+            // 선택한 학과의 학과장이 이미 존재하는 경우
+            } else if (response.status === 418){
+                Swal.fire({
+                    title: '중복된 학과장 정보!',
+                    text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
+                    icon: 'warning',
+                    confirmButtonText: '확인'
+                });
+            // 회원가입 성공시 리다이렉트
+            } else if (response.ok) {
+                Swal.fire({
+                    title: '회원가입 성공!',
+                    text: '회원가입이 성공적으로 완료되었습니다.',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    window.location.href = '/';
+                });
+            // 회원가입에 실패한 경우
+            } else {
+                Swal.fire({
+                    title: '회원가입 실패!',
+                    text: '회원가입에 실패했습니다. 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
+            }
+        // 서버 오류인 경우
+        } catch (error) {
+            Swal.fire({
+                title: '서버 오류!',
+                text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
+        }
 
+        } else {
+            console.log("유효성 검사를 통과하지 못했습니다.");
+        }
+    };
+    // 유효성 검사 핸들러
     const validate = () => {
         let tempErrors = {};
     
@@ -151,11 +216,9 @@ const MemberJoin = () => {
         }
     
         setErrors(tempErrors);
-        
         return Object.keys(tempErrors).length === 0;
     };
-
-    // 이메일만 검증하는 함수
+    // 이메일 검사 핸들러
     const validateEmail = () => {
         let tempErrors = {};
 
@@ -164,17 +227,9 @@ const MemberJoin = () => {
         }
 
         setErrors(tempErrors);
-        
         return Object.keys(tempErrors).length === 0;
     };
-
-
-    // 이메일 인증을 위한 상태 및 관련 메서드
-    const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 여부 상태
-    const [verificationCode, setVerificationCode] = useState(''); // 사용자가 입력한 인증 코드
-    const [isCodeSent, setIsCodeSent] = useState(false); // 인증 코드가 전송되었는지 확인
-
-    // 이메일 전송 메서드
+    // 이메일 인증 핸들러
     const handleSendVerification = async () => {
         if(!validateEmail()){
             return;
@@ -199,8 +254,7 @@ const MemberJoin = () => {
             Swal.fire('오류', '이메일 전송 중 오류가 발생했습니다.', 'error');
         }
     };
-
-    // 인증코드 확인 메서드
+    // 인증코드 확인 핸들러
     const handleVerifyCode = async () => {
         try {
             const response = await fetch('/api/member/verifyCode', {
@@ -229,114 +283,6 @@ const MemberJoin = () => {
             }
         } catch (error) {
             Swal.fire('오류', '인증 코드 확인 중 오류가 발생했습니다.', 'error');
-        }
-    };
-
-    // 폼 제출 처리 메서드
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        if (validate()) {
-            console.log("폼이 제출되었습니다.");
-
-            const formData = {
-                memberID,
-                memberPW,
-                memberName,
-                memberPhone,
-                memberEmail,
-                memberMajor,
-                memberGender,
-                studentNum: memberType ? studentNum : null,
-                studentGrade: memberType ? studentGrade : null,
-                studentClass: memberType ? studentClass : null,
-                professorPosition: !memberType ? professorPosition : null,
-                memberType
-            };
-    
-        try {
-            const response = await fetch('/api/member/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.status === 409) {
-                // ID 중복
-                Swal.fire({
-                    title: '중복된 아이디!',
-                    text: '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.',
-                    icon: 'warning',
-                    confirmButtonText: '확인'
-                });
-            } else if (response.status === 418){
-                Swal.fire({
-                    title: '중복된 학과장 정보!',
-                    text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
-                    icon: 'warning',
-                    confirmButtonText: '확인'
-                });
-            } else if (response.ok) {
-                Swal.fire({
-                    title: '회원가입 성공!',
-                    text: '회원가입이 성공적으로 완료되었습니다.',
-                    icon: 'success',
-                    confirmButtonText: '확인'
-                }).then(() => {
-                    window.location.href = '/'; // 회원가입 후 루트 경로로 이동
-                });
-            } else {
-                Swal.fire({
-                    title: '회원가입 실패!',
-                    text: '회원가입에 실패했습니다. 다시 시도해주세요.',
-                    icon: 'error',
-                    confirmButtonText: '확인'
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                title: '서버 오류!',
-                text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
-                icon: 'error',
-                confirmButtonText: '확인'
-            });
-        }
-
-
-            // 디버깅 코드
-            /*
-            console.log({
-                memberID,
-                memberPW,
-                memberPhone,
-                memberEmail,
-                memberMajor,
-                memberGender,
-                studentNum: memberType ? studentNum : null,
-                studentGrade: memberType ? studentGrade : null,
-                studentClass: memberType ? studentClass : null,
-                professorPosition: !memberType ? professorPosition : null,
-            });
-            */
-        } else {
-            console.log("유효성 검사를 통과하지 못했습니다.");
-            // 디버깅 코드
-            /*
-            console.log({
-                memberID,
-                memberPW,
-                memberPhone,
-                memberEmail,
-                memberMajor,
-                memberGender,
-                studentNum: memberType ? studentNum : null,
-                studentGrade: memberType ? studentGrade : null,
-                studentClass: memberType ? studentClass : null,
-                professorPosition: !memberType ? professorPosition : null,
-            });
-            */
         }
     };
 

@@ -18,7 +18,7 @@ const EtcGroup = () => {
     return (
         <>
             {/* 유한대 Welcome */}
-            <Welcome />
+            {/* <Welcome /> */}
 
             {/* 농구골대 */}
             <BasketballHoop position={[136.195, 0, -237.254]} />

@@ -15,61 +15,36 @@ import styled from 'styled-components'
 
 
 const MemberLogin = () => {
-
-    // 텍스트필드 상태 및 관련 메서드
-    const [memberID, setMemberID] = useState('');
-    const [memberPW, setMemberPW] = useState('');
-
     // 쿠키(세션 쿠키)
     const [cookies, setCookie] = useCookies(['user']);
 
-   // 쿠키가 존재하면 루트 경로로 리다이렉트
-   useEffect(() => {
-    if (cookies.user) {
-        window.location.href = '/';
-    }
-}, [cookies]);
+    // 상태관리
+    const [memberID, setMemberID] = useState('');
+    const [memberPW, setMemberPW] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
+    const [errors, setErrors] = useState({ memberID: '', memberPW: '' });
 
+    // 핸들러
     const handleIDChange = (event) => {
         setMemberID(event.target.value);
     };
-
     const handlePWChange = (event) => {
         setMemberPW(event.target.value);
     };
-
-    // 패스워드 상태 및 관련 메서드
-    const [showPassword, setShowPassword] = useState(false)
-
     const handleClickShowPassword = () => setShowPassword((show) => !show)
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
     };
-
-    // 유효성검사 상태 및 관련 메서드
-    const [errors, setErrors] = useState({ memberID: '', memberPW: '' });
-
-    // 유효성검사 메서드
-    const validate = () => {
-        let tempErrors = {};
-
-        if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
-        if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
-
-        setErrors(tempErrors);
-        return Object.keys(tempErrors).length === 0;
-    };
-
+    // 로그인 처리 핸들러
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+        // 유효성 검사
         if (validate()) {
             const loginData = {
                 memberID,
                 memberPW,
             };
-    
+            // 로그인 처리
             try {
                 const response = await fetch('/api/member/login', {
                     method: 'POST',
@@ -78,14 +53,14 @@ const MemberLogin = () => {
                     },
                     body: JSON.stringify(loginData),
                 });
-    
+                // 로그인 성공시 쿠키 설정 후 리다이렉트
                 if (response.ok) {
                     const result = await response.json();
                     setCookie('user', memberID, { path: '/' });
                     setCookie('userType', result.userType, { path: '/' });
                     setCookie('userName', result.userName, { path: '/' });
-                    // 로그인 성공 시 바로 리다이렉트
-                    window.location.href = '/'; // 로그인 성공 후 루트 경로로 이동
+                    window.location.href = '/';
+                // 탈퇴한 계정인 경우
                 } else if (response.status === 403) {
                     Swal.fire({
                         title: '로그인 실패!',
@@ -93,6 +68,7 @@ const MemberLogin = () => {
                         icon: 'error',
                         confirmButtonText: '확인'
                     });
+                // 아이디, 비밀번호 오류인 경우
                 } else {
                     Swal.fire({
                         title: '로그인 실패!',
@@ -101,6 +77,7 @@ const MemberLogin = () => {
                         confirmButtonText: '확인'
                     });
                 }
+            // 서버 오류인 경우
             } catch (error) {
                 Swal.fire({
                     title: '서버 오류!',
@@ -111,13 +88,30 @@ const MemberLogin = () => {
             }
         }
     };
+    // 유효성 검사 핸들러
+    const validate = () => {
+        let tempErrors = {};
 
-     // 로그인 페이지에 접근 시 쿠키가 존재하고 로그인 성공이 아닌 경우에만 리다이렉트
-     useEffect(() => {
+        if (!memberID) tempErrors.memberID = "아이디를 입력하세요.";
+        if (!memberPW) tempErrors.memberPW = "비밀번호를 입력하세요.";
+
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
+
+    // useEffect
+    // 쿠키가 존재하고 로그인 성공이 아닌 경우에만 리다이렉트
+    useEffect(() => {
         if (cookies.user && !loginSuccess) {
             window.location.href = '/';
         }
     }, cookies);
+    // 쿠키가 존재하면 루트 경로로 리다이렉트
+    useEffect(() => {
+        if (cookies.user) {
+            window.location.href = '/';
+        }
+    }, [cookies]);
 
     return (
         <div

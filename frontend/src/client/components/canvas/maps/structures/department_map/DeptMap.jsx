@@ -62,7 +62,8 @@ const DeptMap = () => {
                     <FoodDeptHeadCharacter groundMapName={groundMapName} position={[0, 0.7, -100]} scale={0.7} />
                 )}
                 {groundMapName === 'industrial_design_map' && (
-                    <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, -6.3, -100]} scale={0.7} />
+                    // <DesignDeptHeadCharacter groundMapName={groundMapName} position={[0, -6.3, -100]} scale={0.7} />
+                    <></>
                 )}
                 {groundMapName === 'mini_game_map' && (
                     <></>

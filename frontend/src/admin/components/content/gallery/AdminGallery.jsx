@@ -6,14 +6,17 @@ import { Box, Typography, Paper, Button, TextField } from '@mui/material';
 import Swal from 'sweetalert2';
 
 const AdminGallery = () => {
+    // 상태관리
     const [galleryWorks, setGalleryWorks] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // 갤러리 데이터를 서버에서 가져오는 함수
-    useEffect(() => {
-        fetchGalleryWorks();
-    }, []);
-
+    // 핸들러
+    const handleChange = (index, field, value) => {
+        const updatedWorks = [...galleryWorks];
+        updatedWorks[index][field] = value;
+        setGalleryWorks(updatedWorks);
+    };
+    // 갤러리 항목 조회 핸들러
     const fetchGalleryWorks = async () => {
         setLoading(true);
         try {
@@ -25,8 +28,7 @@ const AdminGallery = () => {
         }
         setLoading(false);
     };
-
-    // 이미지 파일을 선택하고 base64로 변환하여 상태에 저장하는 함수
+    // 이미지 파일을 선택 및 base64로 변환하여 저장 핸들러
     const handleImageChange = (index, file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -36,9 +38,9 @@ const AdminGallery = () => {
         };
         if (file) reader.readAsDataURL(file);
     };
-
-    // 갤러리 항목 수정 함수
+    // 갤러리 항목 수정 처리 핸들러
     const handleSaveWork = async (workId, updatedWork) => {
+        // 갤러리 항목 수정 처리
         try {
             const response = await fetch(`/api/galleryAdmin/updateWorkInfo/${workId}`, {
                 method: 'PUT',
@@ -47,6 +49,7 @@ const AdminGallery = () => {
                 },
                 body: JSON.stringify(updatedWork),
             });
+            // 수정에 성공한 경우 갤러리 목록 다시 불러오기
             if (response.ok) {
                 Swal.fire({
                     icon: 'success',
@@ -54,27 +57,32 @@ const AdminGallery = () => {
                     text: '갤러리 항목이 수정되었습니다.',
                     confirmButtonColor: '#3085d6',
                 });
-                fetchGalleryWorks(); // 수정 후 갤러리 목록 다시 불러오기
+                fetchGalleryWorks();
+            // 갤러리 항목 수정에 실패한경우
             } else {
-                throw new Error('갤러리 항목 수정에 실패했습니다.');
+                Swal.fire({
+                    title: '갤러리 항목 수정 실패!',
+                    text: '갤러리 항목 수정에 실패했습니다. 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
+        // 서버 오류인 경우
         } catch (error) {
-            console.error('갤러리 항목 수정 중 에러 발생:', error);
             Swal.fire({
                 icon: 'error',
-                title: '오류 발생',
-                text: '갤러리 항목 수정 중 오류가 발생했습니다.',
+                title: '서버 오류!',
+                text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                 confirmButtonColor: '#d33',
             });
         }
     };
 
-    // 갤러리 항목 수정 상태 관리
-    const handleChange = (index, field, value) => {
-        const updatedWorks = [...galleryWorks];
-        updatedWorks[index][field] = value;
-        setGalleryWorks(updatedWorks);
-    };
+    // useEffect
+    // 갤러리 데이터 가져오기
+    useEffect(() => {
+        fetchGalleryWorks();
+    }, []);
 
     return (
         <Box sx={{ p: 3 }}>

@@ -15,8 +15,11 @@ import { MAJORS, PROFESSOR_POSITION } from '../../../data/commonData'
 import { useCookies } from 'react-cookie'
 
 const MemberModify = () => {
-    const [showPassword, setShowPassword] = useState(false)
+    // 쿠키(세션 쿠키)
     const [cookies, setCookie] = useCookies(['user', 'userType', 'userName'])
+    
+    // 상태관리
+    const [showPassword, setShowPassword] = useState(false)
     const [memberType, setMemberType] = useState(cookies.userType) // 쿠키에서 회원 유형 결정
     const [formData, setFormData] = useState({
         memberID: '',
@@ -32,7 +35,106 @@ const MemberModify = () => {
         professorPosition: ''
     })
     const [errors, setErrors] = useState({})
+    
+    // 핸들러
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        })
+    }
+    const handleClickShowPassword = () => setShowPassword((show) => !show)
+    const handleMouseDownPassword = (event) => event.preventDefault()
+    // 회원정보수정 처리 핸들러
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        // 유효성 검사
+        if (validate()) {
+            try {
+                const { memberPW, ...restFormData } = formData
+                const payload = { 
+                    ...restFormData,
+                    memberType: memberType
+                }
+                
+                if (memberPW) {
+                    payload.memberPW = memberPW // 비밀번호가 있을 경우에만 포함
+                }
+                // 회원정보수정 처리
+                const response = await fetch('/api/member/modify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                // 회원정보수정 성공시 쿠키 업데이트 후 리다이렉트
+                if (response.ok) {
+                    Swal.fire({
+                        title: '수정 완료',
+                        text: '회원 정보가 성공적으로 수정되었습니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인'
+                    }).then(() => {
+                        setCookie('userName', formData.memberName, { path: '/' });
+                        window.location.href = '/'
+                    });
+                // 선택한 학과의 학과장이 이미 존재하는 경우
+                } else if (response.status === 418){
+                    Swal.fire({
+                        title: '중복된 학과장 정보!',
+                        text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
+                        icon: 'warning',
+                        confirmButtonText: '확인'
+                    });
+                // 회원정보수정에 실패한 경우
+                } else {
+                    Swal.fire({
+                        title: '수정 실패',
+                        text: '회원 정보 수정에 실패했습니다.',
+                        icon: 'error',
+                        confirmButtonText: '확인'
+                    });
+                }
+            // 서버 오류인 경우 
+            } catch (error) {
+                Swal.fire({
+                    title: '서버 오류',
+                    text: '서버에서 오류가 발생했습니다. 다시 시도해 주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
+            }
+        }
+    }
+    // 유효성 검사 핸들러
+    const validate = () => {
+        let tempErrors = {}
+        
+        if (!formData.memberName) tempErrors.memberName = '이름을 입력하세요.'
+        if (!formData.memberPhone || !formData.memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = '유효한 전화번호를 입력하세요.'
+        if (!formData.memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = '유효한 이메일을 입력하세요.'
+  
+        if (!memberType === 'admin'){
+            if (!formData.memberMajor) tempErrors.memberMajor = '전공을 선택하세요.'
+        } 
 
+        if (!formData.memberGender) tempErrors.memberGender = '성별을 선택하세요.'
+
+        if (memberType === 'student') { // 학생일 경우
+            if (!formData.studentNum) tempErrors.studentNum = '학번을 입력하세요.'
+            if (!formData.studentGrade) tempErrors.studentGrade = '학년을 선택하세요.'
+            if (!formData.studentClass) tempErrors.studentClass = '반을 선택하세요.'
+        } else if(memberType === 'professor') { // 교수일 경우
+            if (!formData.professorPosition) tempErrors.professorPosition = '직책을 선택하세요.'
+        }
+
+        setErrors(tempErrors)
+        return Object.keys(tempErrors).length === 0
+    }
+
+    // useEffect
+    // 해당하는 회원의 정보 가져오기
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -59,99 +161,6 @@ const MemberModify = () => {
 
         fetchData()
     }, [cookies.user, memberType])
-
-    const handleClickShowPassword = () => setShowPassword((show) => !show)
-    const handleMouseDownPassword = (event) => event.preventDefault()
-
-    const handleChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value
-        })
-    }
-
-    const validate = () => {
-        let tempErrors = {}
-        if (!formData.memberName) tempErrors.memberName = '이름을 입력하세요.'
-        if (!formData.memberPhone || !formData.memberPhone.match(/^\d{10,11}$/)) tempErrors.memberPhone = '유효한 전화번호를 입력하세요.'
-        if (!formData.memberEmail.match(/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/)) tempErrors.memberEmail = '유효한 이메일을 입력하세요.'
-  
-        if (!memberType === 'admin'){
-            if (!formData.memberMajor) tempErrors.memberMajor = '전공을 선택하세요.'
-        } 
-
-        if (!formData.memberGender) tempErrors.memberGender = '성별을 선택하세요.'
-
-        if (memberType === 'student') { // 학생일 경우
-            if (!formData.studentNum) tempErrors.studentNum = '학번을 입력하세요.'
-            if (!formData.studentGrade) tempErrors.studentGrade = '학년을 선택하세요.'
-            if (!formData.studentClass) tempErrors.studentClass = '반을 선택하세요.'
-        } else if(memberType === 'professor') { // 교수일 경우
-            if (!formData.professorPosition) tempErrors.professorPosition = '직책을 선택하세요.'
-        }
-
-        setErrors(tempErrors)
-        return Object.keys(tempErrors).length === 0
-    }
-
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-
-        if (validate()) {
-            try {
-                const { memberPW, ...restFormData } = formData
-                const payload = { 
-                    ...restFormData,
-                    memberType: memberType
-                }
-                
-                if (memberPW) {
-                    payload.memberPW = memberPW // 비밀번호가 있을 경우에만 포함
-                }
-
-                const response = await fetch('/api/member/modify', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-
-                if (response.ok) {
-                    Swal.fire({
-                        title: '수정 완료',
-                        text: '회원 정보가 성공적으로 수정되었습니다.',
-                        icon: 'success',
-                        confirmButtonText: '확인'
-                    }).then(() => {
-                        setCookie('userName', formData.memberName, { path: '/' }); // 쿠키 업데이트
-                        window.location.href = '/' // 확인을 누르면 '/'로 리다이렉트
-                    });
-                } else if (response.status === 418){
-                    Swal.fire({
-                        title: '중복된 학과장 정보!',
-                        text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
-                        icon: 'warning',
-                        confirmButtonText: '확인'
-                    });
-                } else {
-                    Swal.fire({
-                        title: '수정 실패',
-                        text: '회원 정보 수정에 실패했습니다.',
-                        icon: 'error',
-                        confirmButtonText: '확인'
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    title: '서버 오류',
-                    text: '서버에서 오류가 발생했습니다. 다시 시도해 주세요.',
-                    icon: 'error',
-                    confirmButtonText: '확인'
-                });
-            }
-        }
-    }
 
     return (
         <div>

@@ -9,12 +9,60 @@ import Swal from 'sweetalert2';
 import styled from 'styled-components'
 
 const AdminMember = () => {
-
+    // 상태관리
     const [students, setStudents] = useState([]);
     const [professors, setProfessors] = useState([]);
     const [deletedStudents, setDeletedStudents] = useState([]);
     const [deletedProfessors, setDeletedProfessors] = useState([]);
 
+    // 핸들러
+    // 회원탈퇴 처리 핸들러
+    const deleteMember = async (userId, memberType) => {
+        Swal.fire({
+            title: '이 회원을 탈퇴처리 하시겠습니까?',
+            text: '이 작업은 되돌릴 수 없습니다!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '탈퇴',
+            cancelButtonText: '취소',
+            reverseButtons: true
+        // 회원탈퇴 진행을 사용자가 선택한 경우
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                // 회원탈퇴 처리
+                try {
+                    const response = await fetch(`/api/memberAdmin/deleteMember/${userId}`, {
+                        method: 'PUT',
+                    });
+                    // 회원탈퇴 처리에 성공한 경우, 학생/교수 목록에서 해당 회원을 제거 휴 탈퇴 목록에 추가
+                    if (response.ok) {
+                        Swal.fire('회원탈퇴 완료', '회원탈퇴 처리가 완료되었습니다.', 'success');
+                        if (memberType === 'student') {
+                            const deletedStudent = students.find(student => student.user_id === userId);
+                            setStudents(students.filter(student => student.user_id !== userId));
+                            setDeletedStudents([...deletedStudents, deletedStudent]);
+                        } else if (memberType === 'professor') {
+                            const deletedProfessor = professors.find(professor => professor.user_id === userId);
+                            setProfessors(professors.filter(professor => professor.user_id !== userId));
+                            setDeletedProfessors([...deletedProfessors, deletedProfessor]);
+                        }
+                    // 회원탈퇴에 실패한 경우
+                    } else {
+                        throw new Error('회원탈퇴에 실패했습니다.');
+                    }
+                // 서버 오류인 경우
+                } catch (error) {
+                    Swal.fire('서버 오류', '서버에서 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
+                }
+            // 회원탈퇴 취소시
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('취소됨', '회원탈퇴가 취소되었습니다.', 'info');
+            }
+        });
+    };
+
+    // useEffect
+    // 회원 정보 가져오기
     useEffect(() => {
         // 학생 정보 가져오기
         fetch('/api/memberAdmin/fetchstudent')
@@ -40,47 +88,6 @@ const AdminMember = () => {
             .then(data => setDeletedProfessors(data))
             .catch(error => console.error('탈퇴된 교수 정보 불러오기 중 에러:', error));
     }, []);
-
-
-    const deleteMember = async (userId, memberType) => {
-        Swal.fire({
-            title: '이 회원을 탈퇴처리 하시겠습니까?',
-            text: '이 작업은 되돌릴 수 없습니다!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: '탈퇴',
-            cancelButtonText: '취소',
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`/api/memberAdmin/deleteMember/${userId}`, {
-                        method: 'PUT',
-                    });
-                    if (response.ok) {
-                        Swal.fire('회원탈퇴 완료!', '회원탈퇴 처리가 완료되었습니다!', 'success');
-    
-                        // 학생/교수 목록에서 해당 회원을 제거
-                        if (memberType === 'student') {
-                            const deletedStudent = students.find(student => student.user_id === userId);
-                            setStudents(students.filter(student => student.user_id !== userId));
-                            setDeletedStudents([...deletedStudents, deletedStudent]);  // 탈퇴된 목록에 추가
-                        } else if (memberType === 'professor') {
-                            const deletedProfessor = professors.find(professor => professor.user_id === userId);
-                            setProfessors(professors.filter(professor => professor.user_id !== userId));
-                            setDeletedProfessors([...deletedProfessors, deletedProfessor]);  // 탈퇴된 목록에 추가
-                        }
-                    } else {
-                        throw new Error('회원탈퇴에 실패했습니다.');
-                    }
-                } catch (error) {
-                    Swal.fire('오류!', '탈퇴처리 중 오류가 발생했습니다.', 'error');
-                }
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('취소됨', '회원탈퇴가 취소되었습니다.', 'info');
-            }
-        });
-    };
     
     return (
         <>

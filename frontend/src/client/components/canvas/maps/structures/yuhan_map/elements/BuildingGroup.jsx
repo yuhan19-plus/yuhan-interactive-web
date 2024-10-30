@@ -26,12 +26,12 @@ const BuildingGroup = () => {
     return (
         <>
             {/* 1호관 */}
-            <Pyeonghwagwan
+            {/* <Pyeonghwagwan
                 position={[66.35, 80, -69.278]}
                 rotation={[-Math.PI, 0, -Math.PI]}
                 viewValue={viewValue}
                 viewName={viewName}
-            />
+            /> */}
 
             {/* 2호관 */}
             <Bongsagwan
@@ -42,12 +42,12 @@ const BuildingGroup = () => {
             />
 
             {/* 3호관 */}
-            <Jayugwan
+            {/* <Jayugwan
                 position={[-108.5, 68, -142.3]}
                 rotation={[Math.PI / 2, 0, 0]}
                 viewValue={viewValue}
                 viewName={viewName}
-            />
+            /> */}
 
             {/* 4호관 */}
             <StudentCafeteria
@@ -86,12 +86,12 @@ const BuildingGroup = () => {
             />
 
             {/* 8호관 */}
-            <Yujaelagwan
+            {/* <Yujaelagwan
                 position={[-380.0, 97, -186.3]}
                 rotation={[-Math.PI, 0, -Math.PI]}
                 viewValue={viewValue}
                 viewName={viewName}
-            />
+            /> */}
 
             {/* 9호관 */}
             <GateOfSharing
