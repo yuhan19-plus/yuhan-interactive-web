@@ -7,6 +7,7 @@ import React from 'react'
 import { Zone } from '../../common/Zone'
 import { Arrow } from '../../common/Arrow'
 import { useSelector } from 'react-redux'
+import { CodingInfoBoard } from './dept/coding/CodingInfoBoard'
 
 const DeptFloor = ({onMove, ...props}) => {
     const deptInfoState = useSelector((state) => state.deptInfo)
@@ -121,6 +122,7 @@ const DeptFloor = ({onMove, ...props}) => {
             <Zone position={[39.5, -20, 220]} rotation={[0, 0, 0]} scale={4} />
             <Zone position={[37, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
             <Zone position={[67, -20, 217.5]} rotation={[0,  Math.PI / 2, 0]} scale={4} />
+            <CodingInfoBoard position={[52.5, 5, 230]} rotation={[0, Math.PI / 2, 0]}/>
         </>
     )
 }

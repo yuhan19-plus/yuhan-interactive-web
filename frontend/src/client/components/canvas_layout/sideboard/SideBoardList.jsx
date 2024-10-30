@@ -1,19 +1,21 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 사이드에서 보이는 게시판 목록 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 검색, 패이지 정렬, 페이지게이션
  */
 
 import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, Select, MenuItem } from '@mui/material';
+import { Box, List, ListItem, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
 
 const SideBoardList = ({ onCreatePost, onSelectItem }) => {
-    // console.log("사이드게시판리스트 진입")
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies] = useCookies(['user']);
+
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -21,10 +23,12 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
     const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true); // 로딩 상태 변수 추가
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
-    const pageNum = 8; // 한 페이지 게시글 수
+    
     const fullScreenWinth = window.screen.width; // 화면크기
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
+    const pageNum = 8; // 한 페이지 게시글 수
 
+    // 검색핸들러
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
         if (searchQuery === '') {
@@ -69,16 +73,17 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
+    // 게시글선택핸들러
     const handleSelectItem = (boardId) => {
         onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };
 
-
-    // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
+    // 현재 페이지 데이터 정렬 함수
     const getCurrentPageData = () => {
         const targetWriter = 'admin';
         const activeData = dataList.filter(item => item.board_status === 'active'); // 'active'인 데이터만 필터링
@@ -114,6 +119,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
         return sortedData.slice(startIndex, endIndex);
     };
 
+    // 데이터 패치 함수
     const fetchData = async () => {
         try {
             const response = await fetch("/api/board");

@@ -22,7 +22,6 @@ import AdminIndex from './admin/AdminIndex'
 import AdminMain from './admin/components/content/AdminMain'
 import ClientIndex from './client/ClientIndex'
 import DeptCanvasLayout from './client/components/canvas_layout/DeptCanvasLayout'
-import BoardTest from './client/components/dbtest/BoardTest'
 import ErrorPage from './client/components/error/ErrorPage'
 import MemberIndex from './client/components/member/MemberIndex'
 import store from './redux/store/store'
@@ -33,7 +32,7 @@ function App() {
   const checkServerConnection = async () => {
     console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
     try {
-      const response = await fetch('/api/healthcheck'); // 백엔드 서버의 헬스체크 엔드포인트
+      const response = await fetch('/api/healthCheck'); // 백엔드 서버의 헬스체크 엔드포인트
       if (!response.ok) {
         throw new Error('서버 연결에 실패했습니다');
       }
@@ -95,7 +94,6 @@ function App() {
               </Route>            
             </Route>
             <Route path='/error' element={<ErrorPage />} />
-            <Route path="/boardtest" element={<BoardTest />} />
           </Routes>
         </BrowserRouter> 
     </Provider>

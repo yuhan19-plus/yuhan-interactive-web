@@ -1,29 +1,36 @@
 /**
  * 오자현
+ * 코딩경험 모달 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 언어선택, 숫자입력
  */
 import { FormControlLabel, Input, Radio, RadioGroup } from "@mui/material";
 import { Html } from "@react-three/drei";
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
-import { CodingExperienceCode } from "../../../../../../../../data/commonData";
+import { CodingExperienceCode } from "../../../../../../../../../data/commonData";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faJava } from "@fortawesome/free-brands-svg-icons";
 import { faC } from "@fortawesome/free-solid-svg-icons";
 import { faPython } from "@fortawesome/free-brands-svg-icons";
 
-const CodingExperience = ({ onResultCode }) => {
-    const [selectLanguage, setSelectLanguage] = useState('');
-    const [num, setNum] = useState('');
+const CodingModal = ({ inputNumber }) => {
     const CZone = useSelector((state) => state.goldBox.hasVisitedZone1);// 1번 진입했었는지 여부
     const JavaZone = useSelector((state) => state.goldBox.hasVisitedZone2);// 2번 진입했었는지 여부
     const PythonZone = useSelector((state) => state.goldBox.hasVisitedZone3);// 3번 진입했었는지 여부
 
+    const [selectLanguage, setSelectLanguage] = useState('');
+    const [num, setNum] = useState('');
+
+    // 언어선택핸들러
     const handleLanguageChange = (event) => {
         setSelectLanguage(event.target.value);
         // console.log("Selected language:", event.target.value);
     };
 
+    // 숫자변경핸들러
     const handleNumChange = (event) => {
         const value = event.target.value;
         // 숫자 입력만 허용하고 마지막 숫자만 남기도록 처리
@@ -32,7 +39,7 @@ const CodingExperience = ({ onResultCode }) => {
             setNum(lastNum);
         }
     };
-    // 코드를 가져와서 '정수형데이터'를 기준으로 나누는 메서드
+    // 코드를 가져와서 '정수형데이터'를 기준으로 나누는 함수
     const splitCodes = CodingExperienceCode.map(code => {
         const [part1, part2] = code.split("'정수형데이터'");
         return { part1, part2 };
@@ -40,7 +47,7 @@ const CodingExperience = ({ onResultCode }) => {
 
     useEffect(() => {
         if ((CZone || JavaZone || PythonZone) && selectLanguage) {
-            onResultCode(num); // ThreeDCode.jsx로 값을 전달 실행   
+            inputNumber(num); // ResultTextObject.jsx로 num을 전달 
         }
     }, [num]);
 
@@ -55,7 +62,6 @@ const CodingExperience = ({ onResultCode }) => {
         }
     }, [CZone, JavaZone, PythonZone]);
 
-
     return (
         <Html position={[-20, 0, 240]} center>
             <MainContainer
@@ -69,7 +75,7 @@ const CodingExperience = ({ onResultCode }) => {
                     {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconJava icon={faJava} />)}
                     {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconPython icon={faPython} />)}
                 </IconContainer>
-                {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능하도록
+                {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능
                     <>
                         <CodeTitle>
                             <ChooseLanguage>언어 선택</ChooseLanguage>
@@ -122,7 +128,7 @@ const CodingExperience = ({ onResultCode }) => {
     );
 };
 
-export default CodingExperience;
+export default CodingModal;
 
 const MainContainer = styled.div`
     background-color: white;
@@ -167,15 +173,15 @@ const IconContainer = styled.div` /* 아이콘을 상단에 고정 */
 const IconStyle = styled(FontAwesomeIcon)`
     font-size: 2rem;
 `;
-const VisitedIconJava = styled(FontAwesomeIcon)`/* Java 아이콘 style */
+const VisitedIconJava = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: red;
 `;
-const VisitedIconC = styled(FontAwesomeIcon)`/* C언어 아이콘 style */
+const VisitedIconC = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: purple; 
 `;
-const VisitedIconPython = styled(FontAwesomeIcon)` /* 파이썬 아이콘 style */
+const VisitedIconPython = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: blue;
 `;

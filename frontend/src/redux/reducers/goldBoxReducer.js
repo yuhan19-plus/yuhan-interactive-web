@@ -1,6 +1,5 @@
 /**
  * 오자현 보물상자영역 리듀서
- * 졸린상태로 코딩이라 초기화를 추가했으나 왜 추가했는지 모르겠음 일단 나중에 제정신일 때 다시 검토하자
  */
 import { ENTER_GOLDBOXAREA, INIT_GOLDBOXAREA, LEAVE_GOLDBOXAREA } from "../actions/actions";
 
@@ -25,9 +24,9 @@ export function goldBoxReducer(state = initialState, action) {
                 value: false,
                 name: '',
                 goldBoxCount: 0,
-                isZone1: false, // 1번 영역 진입 여부 (유재라관)
-                isZone2: false, // 2번 영역 진입 여부 (테라스)
-                isZone3: false,  // 3번 영역 진입 여부 (농구장)
+                isZone1: false,
+                isZone2: false,
+                isZone3: false,
             }
         case ENTER_GOLDBOXAREA:
             // console.log('진입한 zone:', action.zone);

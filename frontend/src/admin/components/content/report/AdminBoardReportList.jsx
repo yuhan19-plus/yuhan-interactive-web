@@ -1,26 +1,42 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 신고목록을 확인하는 컴포넌트
  * 
+ * 기능 구현- 오자현
+ * - 데이터 패치, 데이터 정렬, 페이지게이션 기능
  */
 import React, { useEffect, useState } from "react";
-import { Box, List, ListItem, ListItemText, Button, Typography, Pagination, InputAdornment, InputBase, FormControl, Select, MenuItem, Grid } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, Pagination, FormControl, Select, MenuItem, Grid } from '@mui/material';
 import { useCookies } from "react-cookie";
+import styled from "styled-components";
 
-// 신고 처리 순서
-// 1.신고내역을 클릭으로 처리페이지 진입
-// 2.처리사유 작성 후 처리완료
 const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
+
     const [dataList, setDataList] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
+
     const pageNum = 8;
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
+    };
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/boardReport/fetch");
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+
+            setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
     };
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
@@ -49,7 +65,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                 return a.report_type.localeCompare(b.report_type);
             }
 
-
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
@@ -60,23 +75,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
     };
-
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/report/fetch");
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-
-            setDataList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
-    };
-
 
     useEffect(() => {
         fetchData();
@@ -100,13 +98,13 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                 </Grid>
                 <List>
                     {/* 테이블 헤더 */}
-                    <Box sx={{ background: "#0F275C", color: "white", display: 'flex', fontWeight: 'bold', p: 1.25, boxShadow: 2, borderRadius: 1 }}>
+                    <TableHeader>
                         <Box sx={{ width: '5%', textAlign: 'center' }}>번호</Box>
                         <Box sx={{ width: '10%', textAlign: 'center' }}>종류</Box>
                         <Box sx={{ width: '60%', textAlign: 'center' }}>신고내용</Box>
                         <Box sx={{ width: '15%', textAlign: 'center' }}>신고자</Box>
                         <Box sx={{ width: '10%', textAlign: 'center' }}>상태</Box>
-                    </Box>
+                    </TableHeader>
 
                     {/* 신고 데이터 목록 */}
                     {getCurrentPageData().map((item, index) => (
@@ -128,7 +126,7 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                     </Typography>
                                 </Box>
 
-                                {/* 신고 내용 리스트에선 25자만 보여지고 들어가면 전부 보여짐*/}
+                                {/* 신고 내용 25자만 출력 */}
                                 <Box sx={{ width: '60%', textAlign: 'left' }}>
                                     <ListItemText
                                         primary={item.report_content.substring(0, 25)}
@@ -148,7 +146,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
                                         {item.report_status === 'Waiting' ? '대기중' : item.report_status === 'ignore' ? '무시됨' : '삭제됨'}
                                     </Typography>
                                 </Box>
-
 
                             </Box>
                         </ListItem>
@@ -170,3 +167,13 @@ const AdminBoardReportList = ({ onReportManagement }) => {
 };
 
 export default AdminBoardReportList;
+
+const TableHeader = styled.div`
+  background: #0F275C;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  padding: 0.75rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+`;

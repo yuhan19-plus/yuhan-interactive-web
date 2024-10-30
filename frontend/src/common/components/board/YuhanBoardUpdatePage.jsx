@@ -1,7 +1,9 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 게시판수정페이지 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 조회, 게시글 수정, 첨부파일 수정, 첨부파일 다운로드
  */
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
@@ -9,7 +11,6 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 
 const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
-    const board_id = boardId;
     // 읽어온 데이터 관리
     const [boardData, setBoardData] = useState({
         board_id: "",
@@ -26,41 +27,15 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     });
     // attachment 테이블의 데이터를 관리하기 위한 상태
     const [attachments, setAttachments] = useState([]);
-    // 파일 입력요소 접근용도 ref
-    const fileInputRef = useRef(null);
-    // 기존파일의 attachment_id를 받아와 관리하는 상태
-    const [attachmentId, setAttachmentId] = useState(0)
-    // boardData의 files배열의 수정할 인덱스를 관리하는 상태
-    const [fileIndex, setFileIndex] = useState(0)
+    const [attachmentId, setAttachmentId] = useState(0); // 기존파일의 attachment_id를 받아와 관리하는 상태
+    const [fileIndex, setFileIndex] = useState(0); // boardData의 files배열의 수정할 인덱스를 관리하는 상태
 
-    // 데이터 가져오기 함수
-    const fetchData = async () => {
-        try {
-            const response = await fetch(`/api/board/${board_id}`); // 서버에서 ID에 맞는 데이터를 가져옴
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
+    const fileInputRef = useRef(null); // 파일 입력요소 접근용도 ref
 
-            // board 데이터 설정
-            setBoardData({
-                ...data["board"],
-                files: data["attachments"] || []  // 첨부파일이 있으면 추가, 없으면 빈 배열
-            });
-            // attachments 배열 업데이트
-            if (data["attachments"]) {
-                // console.log("파일 길이는", data["attachments"].length);
-                setAttachments(data["attachments"]);  // 첨부파일 데이터를 저장
-                // console.log("첨부파일", attachments);
-            }
+    const board_id = boardId;
 
-            // console.log(data);
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생", error);
-        }
-    };
 
-    // 첨부파일다운로드 
+    // 첨부파일다운로드핸들러
     const handleDownload = (fileName, fileData, fileType) => {
         try {
             // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
@@ -86,7 +61,7 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         }
     };
 
-    // 게시판업데이트
+    // 게시판 업데이트 핸들러
     const handleUpdateData = async () => {
         if (!boardData.board_title.trim() || !boardData.board_content.trim()) {
             Swal.fire({
@@ -130,24 +105,25 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
     }
 
+    // 입력값핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setBoardData({ ...boardData, [name]: value });
     };
 
+    // 파일선택 핸들러
     const handleAttachmentEdit = (attachment_id, index) => {
-        setFileIndex(index); // boardData의 files의 배열의 인덱스값을 설정 파일처리에서 해당 인덱스에 집어넣기 위함
+        setFileIndex(index);
         setAttachmentId(attachment_id);
         // console.log("attachmentId", attachmentId)
 
-        // 파일 선택기 트리거
-        // input태그의 type="file"을 이용
+        // 파일 선택기 트리거 input태그의 type="file"을 이용
         if (fileInputRef.current) {
             fileInputRef.current.click(); // 파일 선택기 열기
         }
     };
 
-    // 파일이 선택되었을 때 처리
+    // 파일변경 핸들러
     const handleFileChange = (e) => {
         // console.log("파일변경 진입 fileIndex:", fileIndex)
         const file = e.target.files[0];
@@ -204,6 +180,33 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
         // console.log("변경된 첨부파일", boardData.files)
     };
 
+    // 데이터패치
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`/api/board/${board_id}`); // 서버에서 ID에 맞는 데이터를 가져옴
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+
+            // board 데이터 설정
+            setBoardData({
+                ...data["board"],
+                files: data["attachments"] || []  // 첨부파일이 있으면 추가, 없으면 빈 배열
+            });
+            // attachments 배열 업데이트
+            if (data["attachments"]) {
+                // console.log("파일 길이는", data["attachments"].length);
+                setAttachments(data["attachments"]);  // 첨부파일 데이터를 저장
+                // console.log("첨부파일", attachments);
+            }
+
+            // console.log(data);
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생", error);
+        }
+    };
+
     // useEffect(() => {
     //     console.log("첨부파일", boardData.files) // 체크용
     // },[boardData.files])
@@ -211,7 +214,6 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
     useEffect(() => {
         fetchData();
         // console.log("들어온게시판 id", board_id);
-
     }, [board_id]);
 
     return (

@@ -1,6 +1,7 @@
 /** 파일생성자 : 이정민
  * 초기 position, scale 설정 : 이정민
  * position, scale 수정 및 그림자 설정 : 임성준
+ * 애니메이션 적용 : 오자현
  */
 import { useBox } from '@react-three/cannon';
 import { useGLTF } from '@react-three/drei';
@@ -9,13 +10,10 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function BusStationOne({ position, ...props }) {
-  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation1.glb');
-
   // 찾아오는 길 버튼의 클릭 여부를 확인
   const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
 
-  // 버스 정류장의 애니메이션 적용 여부를 상태로 관리
-  const [animate, setAnimate] = useState(false);
+  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation1.glb');
 
   const [meshRef, api] = useBox(() => ({
     args: [8, 20, 36],
@@ -24,15 +22,6 @@ export function BusStationOne({ position, ...props }) {
     position,
     ...props
   }));
-
-  // directionsState가 변경될 때 애니메이션 상태 제어
-  useEffect(() => {
-    if (directionsState) {
-      setAnimate(true);  // 버튼이 눌리면 애니메이션 활성화
-    } else {
-      setAnimate(false);  // 버튼이 해제되면 애니메이션 비활성화
-    }
-  }, [directionsState]);
 
   useEffect(() => {
     scene.traverse((obj) => {
@@ -45,8 +34,8 @@ export function BusStationOne({ position, ...props }) {
 
   return (
     <>
-      {animate ? (
-        // 애니메이션이 적용되는 상태
+      {directionsState ? (
+        // 애니메이션이 적용
         <group
           ref={meshRef}
           onPointerUp={(e) => {
@@ -68,7 +57,7 @@ export function BusStationOne({ position, ...props }) {
           </motion.group>
         </group >
       ) : (
-        // 애니메이션이 없는 기본 상태
+        // 애니메이션이 없는 기본
         <group
           ref={meshRef}
           onPointerUp={(e) => {

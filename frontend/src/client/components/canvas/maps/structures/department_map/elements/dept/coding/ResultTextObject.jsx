@@ -1,5 +1,9 @@
 /**
  * 오자현
+ * 구구단을 3D로 보여주는 컴포넌트
+ * 
+ * 기능 구현 - 오자현
+ * - 구구단연산, 3D 글자 애니매이션
  */
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -7,14 +11,16 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { motion } from 'framer-motion-3d';
 
-const ThreeDCode = ({ resultCode }) => {
+const ResultTextObject = ({ receivedNumber }) => {
+    const [randomColor, setRandomColor] = useState("#33FF57");
+    const [font, setFont] = useState(null); // 로드된 폰트를 상태로 저장
+
     const firstmMshRef = useRef();
     const staticMeshRef = useRef();
     const finalMeshRef = useRef();
+
     const colorArray = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8", "#A833FF"];
-    const [codeResult, setCodeResult] = useState([]);
-    const [randomColor, setRandomColor] = useState("#33FF57");
-    const [font, setFont] = useState(null); // 로드된 폰트를 상태로 저장
+    const randomIdx = Math.floor(Math.random() * colorArray.length);
 
     useEffect(() => {
         // 폰트 로딩을 Promise로 처리
@@ -27,7 +33,7 @@ const ThreeDCode = ({ resultCode }) => {
     useEffect(() => {
         if (!font || !firstmMshRef.current || !staticMeshRef.current || !finalMeshRef.current) return;
 
-        const num = resultCode;
+        const num = receivedNumber;
         if (num !== '') {
             const resultArray = [];
             for (let i = 1; i <= 9; i++) {
@@ -36,10 +42,11 @@ const ThreeDCode = ({ resultCode }) => {
                 const resultPart = `${num * i}`;
                 resultArray.push({ firstPart, StaticPart, resultPart });
             }
-            setCodeResult(resultArray);
 
-            const randomIdx = Math.floor(Math.random() * colorArray.length);
+            // ResultTextObject의 랜덤색과 고정색
             setRandomColor(colorArray[randomIdx]);
+            const ColorMaterial = new THREE.MeshStandardMaterial({ color: randomColor, });
+            const StaticMaterial = new THREE.MeshStandardMaterial({ color: '#FFFFFF' });
 
             // 기존 텍스트 지우기
             firstmMshRef.current.clear();
@@ -74,33 +81,24 @@ const ThreeDCode = ({ resultCode }) => {
                     bevelEnabled: false,
                 });
 
-                const ColorMaterial = new THREE.MeshStandardMaterial({
-                    color: randomColor,
-                });
-
-                const StaticMaterial = new THREE.MeshStandardMaterial({
-                    color: '#FFFFFF'
-                });
-
                 const FirstMesh = new THREE.Mesh(FirstGeometry, ColorMaterial);
-                FirstMesh.position.set(-2, -index * 8, 0); // Y축으로 각 줄을 아래로 이동
-                firstmMshRef.current.add(FirstMesh);
-
                 const StaticMesh = new THREE.Mesh(StaticGeometry, StaticMaterial);
-                StaticMesh.position.set(0, -index * 8, 0); // Y축으로 각 줄을 아래로 이동
-                staticMeshRef.current.add(StaticMesh);
-
                 const resultMesh = new THREE.Mesh(resultGeometry, ColorMaterial);
-                resultMesh.position.set(17, -index * 8, 0); // 고정된 부분을 옆으로 이동
+
+                FirstMesh.position.set(-2, -index * 8, 0);
+                StaticMesh.position.set(0, -index * 8, 0);
+                resultMesh.position.set(17, -index * 8, 0);
+
+                firstmMshRef.current.add(FirstMesh);
+                staticMeshRef.current.add(StaticMesh);
                 finalMeshRef.current.add(resultMesh);
             });
         } else {
-            setCodeResult([]);
         }
-    }, [resultCode, font]); // 폰트가 로드된 후 실행
+    }, [receivedNumber, font]); // 폰트가 로드된 후 실행
 
     return (
-        <group position={[120, 60, 250]} rotation={[0, Math.PI, 0]}>
+        <group position={[120, 60, 260]} rotation={[0, Math.PI, 0]}>
             <motion.group
                 animate={{ scale: [1, 1.125, 1], y: [0, 5, 0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
@@ -118,4 +116,4 @@ const ThreeDCode = ({ resultCode }) => {
     );
 };
 
-export default ThreeDCode;
+export default ResultTextObject;

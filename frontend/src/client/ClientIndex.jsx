@@ -15,7 +15,6 @@ const ClientIndex = () => {
   const [progress, setProgress] = useState(0);
 
   // 로딩기능부분
-
   useEffect(() => {
     // console.log('ClientIndex 컴포넌트가 마운트되었습니다.');
 

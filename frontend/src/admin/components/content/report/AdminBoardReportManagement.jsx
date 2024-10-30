@@ -1,8 +1,9 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 신고글을 처리하는 컴포넌트
  * 
+ * 기능 구현- 오자현
+ * - 신고글 패치, 삭제처리, 무시처리 기능
  */
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
@@ -10,42 +11,39 @@ import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 
-// 신고 처리 순서
-// 1. 신고내역 진입 후 관리의 처리 버튼 클릭으로 처리 페이지 진입
-// 2. 처리 내역 작성 후 처리 완료
-
 const AdminBoardReportManagement = ({ reportID, onCancel }) => {
     const [cookies] = useCookies(["user"]);
-    const [totalData, setTotalData] = useState({
-        board_content: "",       // 게시판 글 내용
-        board_date: "",          // 게시글 작성 날짜
-        board_id: "",            // 게시글 ID (고유 식별자)
-        board_last_modified: "", // 게시글 마지막 수정 날짜
-        board_like: "",          // 게시글의 좋아요 수
-        board_status: "",        // 게시글의 상태 (예: 공개/비공개 등)
-        board_title: "",         // 게시글 제목
-        board_view: "",          // 게시글 조회수
-        board_writer: "",        // 게시글 작성자
 
-        report_content: "",      // 신고 내용 (신고자가 작성한 내용)
-        report_date: "",         // 신고 날짜
-        report_id: "",           // 신고 ID (고유 식별자)
-        report_resolution: "",   // 신고 처리 사유 (관리자가 입력하는 처리 사유)
-        report_status: "",       // 신고 상태 (예: 처리됨, 처리 중, 무시 등)
-        report_type: "",         // 신고 유형 (예: 스팸, 부적절한 내용 등)
-        report_writer: "",       // 신고자 (신고한 사용자)
-        resolved_at: ""          // 신고가 처리된 날짜 (처리 완료 시점)
+    const [totalData, setTotalData] = useState({
+        board_content: "",
+        board_date: "",
+        board_id: "",
+        board_last_modified: "",
+        board_like: "",
+        board_status: "",
+        board_title: "",
+        board_view: "",
+        board_writer: "",
+
+        report_content: "",
+        report_date: "",
+        report_id: "",
+        report_resolution: "",
+        report_status: "",
+        report_type: "",
+        report_writer: "",
+        resolved_at: ""
     });
 
-    // 입력창에서 value가 변경되면 totalData에 저장하는 함수
+    // 입력값 핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTotalData({ ...totalData, [name]: value });
     };
 
-    // 게시글 삭제 함수
+    // 게시글 삭제핸들러
     const handleDelete = async () => {
-        // 처리 사유가 없으면 동작하지 않도록 유효성 검사
+        // 처리사유 유효성 검사
         if (!totalData.report_resolution) {
             Swal.fire({
                 icon: 'warning',
@@ -56,14 +54,14 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
             return;
         }
         try {
-            const response = await fetch(`/api/report/delete`, {
+            const response = await fetch(`/api/boardReport/delete`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    ...totalData,  // totalData에 포함된 처리 사유와 기타 정보 전송
-                    action: 'delete'  // 삭제를 명시하는 플래그를 보낼 수 있음
+                    ...totalData,
+                    action: 'delete'
                 })
             });
             if (!response.ok) {
@@ -89,9 +87,9 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         }
     }
 
-    // 신고 무시 함수
+    // 신고 무시핸들러
     const handleIgnore = async () => {
-        // 처리 사유가 없으면 동작하지 않도록 유효성 검사
+        // 처리사유 유효성 검사
         if (!totalData.report_resolution) {
             Swal.fire({
                 icon: 'warning',
@@ -102,14 +100,14 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
             return;
         }
         try {
-            const response = await fetch(`/api/report/ignore`, {
+            const response = await fetch(`/api/boardReport/ignore`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    ...totalData,  // totalData에 포함된 처리 사유와 기타 정보 전송
-                    action: 'ignore'  // 무시를 명시하는 플래그를 보낼 수 있음
+                    ...totalData,
+                    action: 'ignore'
                 })
             });
             if (!response.ok) {
@@ -135,10 +133,10 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         }
     }
 
-    // 신고글을 불러오는 함수
+    // 패치핸들러
     const fetchData = async () => {
         try {
-            const response = await fetch(`/api/report/fetch/${reportID}`);
+            const response = await fetch(`/api/boardReport/fetch/${reportID}`);
             if (!response.ok) {
                 throw new Error("데이터를 불러오는데 실패했습니다.");
             }

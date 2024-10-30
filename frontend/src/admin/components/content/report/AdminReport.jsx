@@ -1,6 +1,8 @@
 /** 파일생성자 : 오자현
  * 신고관리 컴포넌트
+ * 
  * 기능구현 - 오자현
+ * - 하위컴포넌트 관리 기능
  */
 
 import React, { useState } from 'react'
@@ -19,7 +21,6 @@ const AdminReport = () => {
     // 신고처리로 진입
     const handleReportManagement = (reportID) => {
         setselectReportID(reportID);
-        // console.log(reportID);
         setCurrentView('reportManagement');
     };
 

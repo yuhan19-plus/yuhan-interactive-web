@@ -1,32 +1,34 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 관리자에서 보는 게시판 목록 컴포넌트
  * 
+ * 기능 구현- 오자현
+ * - 게시글 삭제, 검색, 패치, 페이지게이션
  */
 
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, ListItemText, MenuItem, Pagination, Select, Typography } from '@mui/material';
+import { Box, Button, FormControl, InputAdornment, InputBase, List, ListItem, MenuItem, Pagination, Select, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import Swal from "sweetalert2";
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies] = useCookies(['user']);
+
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortCriteria, setSortCriteria] = useState('board_date'); // 기본 정렬 기준
-    const fullScreenWinth = window.screen.width; // 전체화면이 화면크기
+    const fullScreenWinth = window.screen.width; // 전체화면너비
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
+
     const pageNum = 8;
 
-    // 삭제는 리스트에서 관리자라면 가능하게 하는 식으로 처리하면 될듯
+    // 삭제핸들러
     const handleDeleteItem = async (boardId) => {
         // console.log("삭제요청헨들러 진입, board_id", boardId);
-        // 삭제하는 것으로 동작하게 백엔드와 연결하기 
         try {
             const response = await fetch(`/api/board/delete/${boardId}`, {
                 method: "DELETE",
@@ -41,6 +43,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         fetchData();
     }
 
+    // 검색핸들러
     const handleSearch = async () => {
         // console.log("검색단어", searchQuery) // 검색단어 진입체크
         if (searchQuery === '') {
@@ -70,14 +73,31 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
+    // 아이템선택핸들러
     const handleSelectItem = (boardId) => {
         onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };
 
+    // 패치핸들러
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/board");
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
+    };
+    
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
         const targetWriter = 'admin'; // 관리자 우선순위
@@ -124,20 +144,6 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
-    };
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/board");
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-            setDataList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
     };
 
     useEffect(() => {
@@ -194,10 +200,10 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                         <>
                             {(item.writer_type === 'admin') ? (
                                 <ListItem key={item.board_id}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <FlexListItemBox>
                                         {/* 번호 */}
                                         <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
-                                            <Admincontent sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
+                                            <Admincontent >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
                                         </Box>
                                         {/* 제목 */}
                                         <Box sx={{ width: '45%' }}>
@@ -242,11 +248,11 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                                 </Button>
                                             }
                                         </Box>
-                                    </Box>
+                                    </FlexListItemBox>
                                 </ListItem>
                             ) : (
                                 <ListItem key={item.board_id}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <FlexListItemBox>
                                         {/* 번호 */}
                                         <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
                                             <Typography sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
@@ -294,13 +300,12 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                                 </Button>
                                             }
                                         </Box>
-                                    </Box>
+                                    </FlexListItemBox>
                                 </ListItem>
                             )}
                         </>
                     ))}
                 </List>
-
 
                 <FooterContainer >
                     <Pagination
@@ -369,3 +374,9 @@ const SearchInput = styled(InputBase)`
   border-radius: 4px;
   font-size: 1rem;
 `;
+
+const FlexListItemBox = styled(Box)`
+    display: flex;
+    align-items: center;
+    width: 100%;
+`

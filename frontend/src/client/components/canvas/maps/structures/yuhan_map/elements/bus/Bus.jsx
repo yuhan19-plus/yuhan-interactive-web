@@ -7,20 +7,18 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function Bus({ position }) {
-  const groupOne = React.useRef(); // 버스 1을 위한 그룹 레퍼런스
-  const groupTwo = React.useRef(); // 버스 2를 위한 그룹 레퍼런스
-  const { nodes, materials, animations } = useGLTF('/assets/models/bus/bus.glb');
-  const { actions: actionsOne } = useAnimations(animations, groupOne); // 첫 번째 그룹의 애니메이션
-  const { actions: actionsTwo } = useAnimations(animations, groupTwo); // 두 번째 그룹의 애니메이션
-  const x = position[0];
-  const y = position[1];
-  const z = position[2];
-
   // Redux 상태에서 버스존 1과 2에 있는지 여부 가져오기
   const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
   const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
   // 찾아오는 길버튼의 클릭여부를 확인
   const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
+  const groupOne = React.useRef(); 
+  const groupTwo = React.useRef(); 
+
+  const { nodes, materials, animations } = useGLTF('/assets/models/bus/bus.glb');
+
+  const { actions: actionsOne } = useAnimations(animations, groupOne);
+  const { actions: actionsTwo } = useAnimations(animations, groupTwo);
 
   // 첫 번째 group.current에서 트래버스 실행
   useEffect(() => {
@@ -81,15 +79,14 @@ export function Bus({ position }) {
   return (
     <>
       {(isInBusStationOne || directionsState) && (
-        <motion.group ref={groupOne} position={[x, y + 17.5, z]} scale={8}
-          animate={{ x: [x, x, x], y: [y, y, y], z: [z - 370, z - 50, z + 500] }}
+        <motion.group ref={groupOne} position={[position[0], position[1], position[2]]} scale={8}
+          animate={{ z: [position[2] - 370, position[2] - 50, position[2] + 500] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">
             <group name="Cube" scale={[2, 2, 5]}>
-              {/* <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} color={'#ff0000'} /> */}
               <mesh name="Cube_1" geometry={nodes.Cube_1.geometry}>
-                <meshStandardMaterial color={'#006961'}/>
+                <meshStandardMaterial color={'#006961'} />
               </mesh>
               <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
               <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
@@ -107,8 +104,8 @@ export function Bus({ position }) {
         </motion.group>
       )}
       {(isInBusStationTwo || directionsState) && (
-        <motion.group ref={groupTwo} position={[x, y + 17.5, z]} scale={8} rotation={[0, Math.PI, 0]}
-          animate={{ x: [x + 100, x + 100, x + 100], y: [y, y, y], z: [z + 500, z - 60, z - 370] }}
+        <motion.group ref={groupTwo} position={[position[0], position[1], position[2]]} scale={8} rotation={[0, Math.PI, 0]}
+          animate={{ x: [position[0] + 100, position[0] + 100, position[0] + 100], z: [position[2] + 500, position[2] - 60, position[2] - 370] }}
           transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
         >
           <group name="Scene">

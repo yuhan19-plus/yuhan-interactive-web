@@ -1,6 +1,7 @@
 /** 파일생성자 : 이정민
  *초기 position, scale 설정 : 이정민
  * position, scale 수정 및 그림자 설정 : 임성준
+ * 애니메이션 적용 : 오자현
  */
 import { useBox } from '@react-three/cannon'
 import { useGLTF } from '@react-three/drei'
@@ -9,9 +10,11 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function BusStationTwo({ position, ...props }) {
-  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation2.glb')
   // 찾아오는 길버튼의 클릭여부를 확인
   const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
+
+  const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation2.glb')
+  
   const [meshRef, api] = useBox(() => ({
     args: [8, 20, 34],
     type: 'Static',
@@ -19,10 +22,6 @@ export function BusStationTwo({ position, ...props }) {
     position,
     ...props
   }))
-
-  const x = position[0];
-  const y = position[1];
-  const z = position[2];
 
   useEffect(() => {
     // console.log("상태", directionsState)

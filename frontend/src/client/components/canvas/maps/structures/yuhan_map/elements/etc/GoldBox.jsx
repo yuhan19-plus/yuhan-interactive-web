@@ -1,14 +1,14 @@
 /**
- * 오자현
+ * 파일생성자 오자현
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function GoldBox({ position, rotation }) {
+  const isZoneActive = useSelector((state) => state.goldBox.isZone1 || state.goldBox.isZone2 || state.goldBox.isZone3);
   const { nodes, materials } = useGLTF('/assets/models/etc/goldBox.glb');
-  const isZoneActive = useSelector((state) => state.goldBox.isZone1 || state.goldBox.isZone2 || state.goldBox.isZone3);  // 하나라도 true면 동작
 
   return (
     <group position={position} rotation={rotation} scale={3}>

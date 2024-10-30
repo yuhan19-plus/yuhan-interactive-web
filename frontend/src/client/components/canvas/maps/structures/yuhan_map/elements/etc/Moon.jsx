@@ -10,7 +10,6 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three'
 import { motion } from 'framer-motion-3d'
 
-// 카메라에 빌보딩시켜서 못생긴 면이 안보이도록 하기
 export function Moon({ position }) {
   const { nodes, materials } = useGLTF('/assets/models/etc/moon.glb')
   const moonRef = useRef();

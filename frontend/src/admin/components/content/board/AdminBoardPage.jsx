@@ -1,25 +1,19 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 게시판상세페이지 ui
- * 좋아요, 수정, 삭제, 신고 기능
- * 
- * 추가사항
- * - 신고로 삭제된 경우 삭제사유를 보여지게 
- * 
  */
 import React from "react";
 import { Grid, Button, Typography, Box, Accordion, AccordionDetails, AccordionSummary, Divider } from "@mui/material";
-import {Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, ThumbUp as ThumbUpIcon, FavoriteBorder as FavoriteBorderIcon, Favorite as FavoriteIcon, CalendarToday as CalendarTodayIcon, ExpandMore as ExpandMoreIcon, NoteAlt } from '@mui/icons-material';
 import { useCookies } from "react-cookie";
+import { useAdminBoardData } from "./hooks/useAdminBoardData";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
-import { useBoardDataAdmin } from "./hooks/useBoardDataAdmin";
 
-// 코드가 너무 길어져서 훅과 ui로 분리
 const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
-    const { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload } = useBoardDataAdmin(boardId);
+
+    const { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload } = useAdminBoardData(boardId);
 
     // 로딩 또는 에러 상태 처리
     if (loading) return <Typography>로딩 중...</Typography>;
@@ -27,7 +21,6 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 
     return (
         <BoardLayout>
-            {/* background 맨뒤 cc는 투명도 */}
             <Box sx={{ p: 3 }}>
                 {/* 버튼구역 */}
                 <Grid container alignItems="center" justifyContent="space-between">
@@ -44,17 +37,36 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                     </Grid>
 
                     {/* 수정 및 삭제 버튼 */}
-                    <Grid item>
-                        {/* 작성자는 수정 및 삭제에 모두 접근 가능 */}
-                        {(cookies.user === boardData.board_writer) && (
-                            <>
-                                <StyledUpdateButton
-                                    variant="outlined"
-                                    size="medium"
-                                    onClick={() => onSelectUpdateItem(boardData.board_id)}
-                                >
-                                    수정
-                                </StyledUpdateButton>
+                    {(boardData.board_status === 'delete') ? (<></>) : (
+                        <Grid item>
+                            {/* 작성자는 수정 및 삭제에 모두 접근 가능 */}
+                            {(cookies.user === boardData.board_writer) && (
+                                <>
+                                    <StyledUpdateButton
+                                        variant="outlined"
+                                        size="medium"
+                                        onClick={() => onSelectUpdateItem(boardData.board_id)}
+                                    >
+                                        수정
+                                    </StyledUpdateButton>
+                                    <StyledDeleteButton
+                                        variant="outlined"
+                                        size="medium"
+                                        color="error"
+                                        onClick={async () => {
+                                            const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
+                                            if (isDeleted) {
+                                                onCancel();  // 삭제 성공 시 onCancel 호출
+                                            }
+                                        }}
+                                    >
+                                        삭제
+                                    </StyledDeleteButton>
+                                </>
+                            )}
+
+                            {/* 관리자는 삭제에만 접근 가능 */}
+                            {(cookies.userType === 'admin') && cookies.user !== boardData.board_writer && (
                                 <StyledDeleteButton
                                     variant="outlined"
                                     size="medium"
@@ -68,26 +80,9 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                                 >
                                     삭제
                                 </StyledDeleteButton>
-                            </>
-                        )}
-
-                        {/* 관리자는 삭제에만 접근 가능 */}
-                        {(cookies.userType === 'admin') && cookies.user !== boardData.board_writer && (
-                            <StyledDeleteButton
-                                variant="outlined"
-                                size="medium"
-                                color="error"
-                                onClick={async () => {
-                                    const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
-                                    if (isDeleted) {
-                                        onCancel();  // 삭제 성공 시 onCancel 호출
-                                    }
-                                }}
-                            >
-                                삭제
-                            </StyledDeleteButton>
-                        )}
-                    </Grid>
+                            )}
+                        </Grid>
+                    )}
 
                     {/* 신고버튼 관리자는 신고할 필요없이 그냥 삭제 */}
                     {(cookies.userType !== 'admin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
@@ -202,10 +197,9 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                     </Button>
                 </Grid>
                 <Divider />
-                {/* 댓글 컴포넌츠로 추출 */}
+                {/* 댓글 컴포넌츠 */}
                 <YuhanBoardComment boardData={boardData} />
             </Box>
-
 
             {/* 처리 사유 영역 */}
             {reportData && (
@@ -226,7 +220,6 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                             }).format(new Date(reportData.resolved_at))
                             : '처리 시간이 없습니다.'}
                     </StyledContent>
-
                 </StyledBox>
             )}
         </BoardLayout >

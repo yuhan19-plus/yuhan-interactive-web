@@ -1,6 +1,9 @@
-/** 파일생성자 : 임성준
+/** 
+ * 파일생성자 : 임성준
  * 게시판관리 루트 컴포넌트 - 임성준
- * 기능구현 - 오자현
+ * 
+ * 기능 구현 - 오자현
+ * - 하위 컴포넌트 제어 기능
  */
 
 import React, { useState } from 'react'
@@ -13,23 +16,26 @@ const AdminBoard = () => {
     const [currentView, setCurrentView] = useState('list');
     const [selectedBoardId, setSelectedBoardId] = useState(null); // 선택된 게시글 ID를 저장하는 상태
 
-    const handleCreatePost = () => {
+    // 글작성
+    const handleCreateBoard = () => {
         setCurrentView('insert');
     };
 
+    // 게시글진입
     const handleSelectItem = (boardId) => {
-        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         // console.log(boardId)
+        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         setCurrentView('page'); // 페이지 보기로 전환
     };
 
+    // 게시글수정
     const handleSelectUpdateItem = (boardId) => {
-        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         // console.log(boardId)
+        setSelectedBoardId(boardId); // 선택된 게시글 ID를 상태로 저장
         setCurrentView('update'); // 업데이트 페이지 보기로 전환
     };
 
-    // 목록으로 진입
+    // 게시판목록
     const handleBackToList = () => {
         setCurrentView('list');
     };
@@ -43,7 +49,7 @@ const AdminBoard = () => {
             ) : currentView === 'update' ? (
                 <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : (
-                <AdminBoardList onCreatePost={handleCreatePost} onSelectItem={handleSelectItem} />
+                <AdminBoardList onCreatePost={handleCreateBoard} onSelectItem={handleSelectItem} />
             )}
         </>
     );

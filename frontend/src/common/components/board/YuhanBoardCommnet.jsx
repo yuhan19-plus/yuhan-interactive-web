@@ -1,8 +1,10 @@
 /**
  * 파일생성자 - 오자현 
- * 기능 구현- 오자현
  * 댓글 컴포넌트 
- * 댓글 저장, 삭제기능
+ * 댓글 삭제는 작성자와 관리자가 가능함
+ * 
+ * 기능 구현 - 오자현
+ * - 댓글 저장, 삭제, 조회, 댓글정렬, 페이지게이션 기능
  */
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, List, ListItem, ListItemText, ListItemButton, Button, TextField, Pagination, Box, Divider } from "@mui/material";
@@ -12,27 +14,30 @@ import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 export const YuhanBoardComment = ({ boardData }) => {
-    // console.log(boardID)
     const [cookies] = useCookies(["user"]);  // 쿠키에서 user 정보 가져오기
+
     const boardID = boardData.board_id;
-    const [sortCriteria, setSortCriteria] = useState('comment_date'); // 기본 정렬 기준
+
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const pageNum = 8; // 한 페이지에서 볼 댓글의 수
     const [commentList, setCommentList] = useState([]);
     const [comment, setComment] = useState({
-        comment_id: "", // 백엔드쿼리에서 추가
-        board_id: boardID, // 진입시들어온 boardData로 게시판id 연결
+        comment_id: "",
+        board_id: boardID, // 진입시 들어온 boardData로 게시판id 연결
         comment_writer: cookies.user, // 쿠키로 로그인중인 사용자 id 잡음
-        comment_content: "", // onChange이벤트로 입력
+        comment_content: "",
     });
 
+    const sortCriteria = 'comment_date';
+    const pageNum = 8; // 한 페이지에서 볼 댓글의 수
+
+    // 입력값변경핸들러
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setComment({ ...comment, [name]: value });
     };
 
-    // 댓글 저장
+    // 댓글 저장핸들러
     const handleSaveComment = async () => {
         // console.log("댓글데이터체크", comment.comment_content)
         if (!comment.comment_content.trim()) {
@@ -45,14 +50,14 @@ export const YuhanBoardComment = ({ boardData }) => {
             return;
         }
         try {
-            const response = await fetch("/api/comment/save", {
+            const response = await fetch("/api/boardComment/save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    userId: cookies.user,   // 현재 사용자 ID
-                    boardID: boardID,       // 현재 게시물 ID
+                    userId: cookies.user,
+                    boardID: boardID,
                     comment_content: comment.comment_content,
                 }),
             });
@@ -73,11 +78,11 @@ export const YuhanBoardComment = ({ boardData }) => {
         }
     };
 
-    // 댓글 삭제 
+    // 댓글 삭제 핸들러
     const handleDeleteComment = async (comment_id) => {
         const commentId = comment_id;
         try {
-            const response = await fetch(`/api/comment/delete?commentId=${commentId}`, {
+            const response = await fetch(`/api/boardComment/delete?commentId=${commentId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,42 +103,18 @@ export const YuhanBoardComment = ({ boardData }) => {
         }
     };
 
+    // 페이지변경핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
-    // 댓글 페이지게이션을 위해 정렬하는 함수
+    // 댓글 날짜순 정렬 함수
     const getCurrentPageData = () => {
-        const targetWriter = 'admin'; // 관리자 또는 특정 유저 우선순위
         const sortedData = [...commentList].sort((a, b) => {
             let compareA = a[sortCriteria];
             let compareB = b[sortCriteria];
 
-            // 관리자가 작성한 글 우선순위 부여
-            if (a.comment_writer === targetWriter && b.comment_writer !== targetWriter) {
-                return -1; // a를 더 앞에 배치
-            }
-            if (a.comment_writer !== targetWriter && b.comment_writer === targetWriter) {
-                return 1;  // b를 더 앞에 배치
-            }
-
-            // 상태 순 정렬일 경우 우선순위 부여 (오름차순으로 처리)
-            if (sortCriteria === 'comment_status') {
-                const statusPriority = (status) => {
-                    if (status === 'active') return 1;
-                    if (status === 'delete') return 2;
-                    return 3; // 그 외 상태의 기본 우선순위
-                };
-
-                compareA = statusPriority(a.comment_status);
-                compareB = statusPriority(b.comment_status);
-
-                if (compareA < compareB) return -1; // 오름차순
-                if (compareA > compareB) return 1;
-                return 0;
-            }
-
-            // 날짜일 경우 Date 객체로 변환하여 비교
+            // 날짜비교 Date 객체로 변환하여 비교
             if (sortCriteria === 'comment_date') {
                 compareA = new Date(a[sortCriteria]);
                 compareB = new Date(b[sortCriteria]);
@@ -142,6 +123,7 @@ export const YuhanBoardComment = ({ boardData }) => {
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
+
             return 0;
         });
 
@@ -153,7 +135,7 @@ export const YuhanBoardComment = ({ boardData }) => {
     // 목록 불러오기
     const fetchComment = async () => {
         try {
-            const response = await fetch(`/api/comment/List/${boardID}`, {
+            const response = await fetch(`/api/boardComment/List/${boardID}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -164,12 +146,12 @@ export const YuhanBoardComment = ({ boardData }) => {
             }
             const data = await response.json();
             // console.log("들어온 데이터", data);
-            setCommentList(data); // 받아온 데이터를 상태에 설정
+            setCommentList(data);
         } catch (error) {
             console.error("댓글 목록을 불러오는 중 에러 발생:", error);
         }
     };
-    
+
     useEffect(() => {
         fetchComment(boardID);
     }, [boardID]);
@@ -180,8 +162,7 @@ export const YuhanBoardComment = ({ boardData }) => {
 
     return (
         <>
-            {/* 읽어들인 댓들이 보여지는 영역 */}
-
+            {/* 댓글영역 */}
             <Grid item xs={12} sx={{ marginTop: "2vh" }}>
                 <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                     댓글 {commentList.length}
@@ -225,7 +206,6 @@ export const YuhanBoardComment = ({ boardData }) => {
                                         </Grid>
                                     </Grid>
                                 </ListItem>
-
                                 <Divider />
                             </List>
                         ))
@@ -249,8 +229,8 @@ export const YuhanBoardComment = ({ boardData }) => {
             ) : (
                 <></>
             )}
-            {/* 로그인시에만 댓글작성이 가능하도록 */}
-            {cookies.user && (
+            {/* 댓글작성영역 */}
+            {(cookies.user && boardData.board_status !== 'delete') && (
                 <Grid item xs={12} sx={{ marginTop: "2vh" }}>
                     <Grid container alignItems="center" spacing={0.5}>
                         <Grid item xs={10}>
