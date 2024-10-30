@@ -559,14 +559,15 @@ const MemberJoin = () => {
 const MemberJoinContent = styled.div`
     width: 100%;
     height: 100%;
+
     div {
         width: 100%;
         margin: 7px 0;
         padding: 0 15px;
-        background-color: #ffffff00;
+        background-color: var(--sub-opacity-color);
         border-radius: 15px;
         &:hover {
-            background-color: #ffffff00;
+            background-color: var(--sub-opacity-color);
         }
     }
 `
@@ -585,8 +586,9 @@ const JoinAuthButton = styled.button`
     font-size: 14px;
     box-shadow: 2px 2px 4px #d9d9d9,
                 -2px -2px 4px #ffffff;
+
     &:hover {
-        color: white;
+        color: var(--sub-color);
         background: #0F275C;
         box-shadow: inset 2px 2px 4px #0d214e,
                     inset -2px -2px 4px #112d6a;
@@ -597,13 +599,14 @@ const JoinAuthButton = styled.button`
 const JoinButton = styled.button`
     width: 100%;
     border-radius: 15px;
-    color: white;
+    color: var(--sub-color);
     border: none;
     padding: 15px;
     font-size: 24px;
-    background: #0F275C;
+    color: var(--main-color);
     box-shadow: 2px 2px 4px #d9d9d9,
                 -2px -2px 4px #ffffff;
+                
     &:hover {
         box-shadow: inset 2px 2px 4px #0d214e,
                     inset -2px -2px 4px #112d6a;

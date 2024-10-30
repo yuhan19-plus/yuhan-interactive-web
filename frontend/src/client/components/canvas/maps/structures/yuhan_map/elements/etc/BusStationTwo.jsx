@@ -11,7 +11,7 @@ import { motion } from 'framer-motion-3d';
 export function BusStationTwo({ position, ...props }) {
   const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation2.glb')
   // 찾아오는 길버튼의 클릭여부를 확인
-  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+  const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
   const [meshRef, api] = useBox(() => ({
     args: [8, 20, 34],
     type: 'Static',

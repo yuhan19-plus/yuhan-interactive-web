@@ -16,20 +16,11 @@ import { useCookies } from 'react-cookie'; // 쿠키에서 사용자 정보 가�
 import { useNavigate } from 'react-router-dom';
 
 const AdminEnterModal = () => {
-    // const modalValue = useSelector((state) => state.modal)
-    const dispatch = useDispatch()
-
     const [code, setCode] = useState(''); // 코드 입력값을 관리할 상태 추가
     const [cookies, setCookie] = useCookies(['user', 'adminMode']); // 쿠키에서 로그인한 user ID 가져오기
+    
+    const dispatch = useDispatch()
     const navigate = useNavigate(); // useNavigate 훅 사용
-
-
-    // adminMode 쿠키가 존재할 경우 자동으로 /admin으로 리다이렉트
-    useEffect(() => {
-            if (cookies.adminMode) {
-            navigate('/admin', { state: { title: '관리자' } });
-        }
-    }, [cookies, navigate]);
 
     const handleCloseModal = (e) => {
         e.stopPropagation()
@@ -85,11 +76,16 @@ const AdminEnterModal = () => {
             });
         }
     };
-    
+
+    // adminMode 쿠키가 존재할 경우 자동으로 /admin으로 리다이렉트
+    useEffect(() => {
+            if (cookies.adminMode) {
+            navigate('/admin', { state: { title: '관리자' } });
+        }
+    }, [cookies, navigate]);
 
     return (
         <>
-        {/* Form 넣어서 작업 진행할 것 */}
             <AdminEnterModalWrapper>
                 <AdminEnterModalHeader>
                     <p>유한대 관리자</p>
@@ -113,21 +109,22 @@ const AdminEnterModalWrapper = styled.div`
     top: 30%;
     width: 350px;
     height: 200px;
-    background-color: #ffffffdd;
-    color: white;
-    border-radius: 15px;
+    background-color: var(--sub-opacity-color);
+    color: var(--sub-color);
+    border-radius: 1rem;
 `
 const AdminEnterModalHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5px;
-    background-color: #0F275C;
+    padding: 0 0.3rem;
+    background-color: var(--main-color);
     width: 100%;
-    font-size: 24px;
+    font-size: 1.2rem;
     font-weight: 900;
     height: 25%;
-    border-radius: 15px 15px 0 0;
+    border-radius: 1rem 1rem 0 0;
+
     svg {
         &:hover {
             cursor: pointer;
@@ -137,19 +134,19 @@ const AdminEnterModalHeader = styled.div`
 
 const AdminEnterModalContent = styled.div`
     width: 100%;
-    padding: 10px;
+    padding: 0.7rem;
     color: black;
 `
 const AdminEnterModalFooter = styled.div`
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 0.7rem;
+    padding: 0.7rem;
 `
 
 const EnterButton = styled.div`
-    background-color: #0F275C;
+    background-color: var(--main-color);
     text-align: center;
-    padding: 10px;
-    border-radius: 15px;
+    padding: 0.7rem;
+    border-radius: 1rem;
     cursor: pointer;
 `
 

@@ -1,9 +1,9 @@
-import { Html, Text } from '@react-three/drei'
+import { Html } from '@react-three/drei'
 import React from 'react'
 import styled from 'styled-components'
 import { deptInfoCareerAndEmploymentFieldData, deptInfoDeptFeaturesData, deptInfoEduGoalsData, deptInfoLicenseData, deptInfoMainEduFieldsData } from '../../../../../../../../../data/commonData'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBaby, faBraille, faBriefcase, faBuildingColumns, faChalkboard, faChartLine, faCheck, faCheckCircle, faFile, faFileLines, faGraduationCap, faIdCard, faStar, faStarAndCrescent, faUser, faUserGraduate, faUserTie } from '@fortawesome/free-solid-svg-icons'
+import { faBriefcase, faBuildingColumns, faChalkboard, faCheckCircle, faFileLines, faGraduationCap, faIdCard, faStar } from '@fortawesome/free-solid-svg-icons'
 
 const DeptModal = ({position, deptInfoName}) => {
     return (
@@ -11,55 +11,86 @@ const DeptModal = ({position, deptInfoName}) => {
             <Html position={position} center>
                 <StyledModal>
                     {deptInfoName === '학과특징' && (
-                        <>
-                            <ModalTitle><FontAwesomeIcon icon={faBuildingColumns} /> {deptInfoName}</ModalTitle>   
+                        <ModalWrapper>
+                            <ModalTitle>
+                                <FontAwesomeIcon icon={faBuildingColumns} />
+                                {deptInfoName}
+                            </ModalTitle>   
                             {deptInfoDeptFeaturesData.map((text, idx) => (
-                                <p key={idx} style={{fontSize: '20px'}}>&nbsp;{text}</p>
+                                <p key={idx} style={{fontSize: '20px'}}>
+                                    {text}
+                                </p>
                             ))}
-                        </>
+                        </ModalWrapper>
                     )}
                     {deptInfoName === '진로 및 취업 분야' && (
-                        <>
-                            <ModalTitle><FontAwesomeIcon icon={faBriefcase} /> {deptInfoName}</ModalTitle>
-                            {deptInfoCareerAndEmploymentFieldData.map((text, idx) => (
-                                <p key={idx} style={{fontSize: '18px'}}><FontAwesomeIcon icon={faFileLines} /> {text}</p>
-                            ))}
-                        </>
+                        <ModalWrapper>
+                            <ModalTitle>
+                                <FontAwesomeIcon icon={faBriefcase} />
+                                {deptInfoName}
+                            </ModalTitle>
+                            <ModalContent>
+                                {deptInfoCareerAndEmploymentFieldData.map((text, idx) => (
+                                    <p key={idx} style={{fontSize: '18px'}}>
+                                        <FontAwesomeIcon icon={faFileLines} />
+                                        {text}
+                                    </p>
+                                ))}
+                            </ModalContent> 
+                        </ModalWrapper>
                     )}
                     {deptInfoName === '교육목표' && (
                         <ModalWrapper>
-                            <ModalTitle><FontAwesomeIcon icon={faGraduationCap} /> {deptInfoName}</ModalTitle>
-                            {deptInfoEduGoalsData.map((text, idx) => (
-                                <p key={idx} style={{fontSize: '20px'}}><FontAwesomeIcon icon={faCheckCircle} style={{marginRight: '0.5%'}} /> {text}</p>
-                            ))}            
+                            <ModalTitle>
+                                <FontAwesomeIcon icon={faGraduationCap} />
+                                {deptInfoName}
+                            </ModalTitle>
+                            <ModalContent>
+                                {deptInfoEduGoalsData.map((text, idx) => (
+                                    <p key={idx} style={{fontSize: '20px'}}>
+                                        <FontAwesomeIcon icon={faCheckCircle} />
+                                        {text}
+                                    </p>
+                                ))}
+                            </ModalContent>         
                         </ModalWrapper>
                     )}
                     {deptInfoName === '주요교육분야' && (
-                        <>
-                            <ModalTitle><FontAwesomeIcon icon={faChalkboard} /> {deptInfoName}</ModalTitle>   
-                            {deptInfoMainEduFieldsData.map((text, idx) => (
-                                idx % 2 !== 0 ? (
-                                    <p key={idx} style={{fontSize: '16px'}}>{text}</p>
-                                ) : (
-                                    <p key={idx} style={{fontSize: '18px', fontWeight: '900', borderBottom: '2px solid white'}}>
-                                        <FontAwesomeIcon icon={faStar} />
-                                        {text}
-                                    </p>
-                                )
-                            ))}
-                        </>
+                        <ModalWrapper>
+                            <ModalTitle>
+                                <FontAwesomeIcon icon={faChalkboard} />
+                                {deptInfoName}
+                            </ModalTitle>   
+                            <ModalContent>
+                                {deptInfoMainEduFieldsData.map((text, idx) => (
+                                    idx % 2 !== 0 ? (
+                                        <p key={idx} style={{fontSize: '16px'}}>{text}</p>
+                                    ) : (
+                                        <p key={idx} style={{fontSize: '18px', fontWeight: '900', borderBottom: '2px solid white'}}>
+                                            <FontAwesomeIcon icon={faStar} />
+                                            {text}
+                                        </p>
+                                    )
+                                ))}
+                            </ModalContent>
+                        </ModalWrapper>
                     )}
                     {deptInfoName === '자격증' && (
-                        <>
-                            <ModalTitle><FontAwesomeIcon icon={faIdCard} /> {deptInfoName}</ModalTitle>   
-                            {deptInfoLicenseData.map((text, idx) => (
-                                text === '' ? (
-                                    <p key={idx}></p>
-                                ) : (
-                                    <p key={idx} style={{fontSize: '14px', margin: '0'}}>{text}</p>
-                                )
-                            ))}
-                        </>
+                        <ModalWrapper>
+                            <ModalTitle>
+                                <FontAwesomeIcon icon={faIdCard} />
+                                {deptInfoName}
+                            </ModalTitle>  
+                            <ModalContent> 
+                                {deptInfoLicenseData.map((text, idx) => (
+                                    text === '' ? (
+                                        <p key={idx}></p>
+                                    ) : (
+                                        <p key={idx} style={{fontSize: '14px', margin: '0'}}>{text}</p>
+                                    )
+                                ))}
+                            </ModalContent> 
+                        </ModalWrapper>
                     )}
                 </StyledModal>
             </Html>
@@ -69,28 +100,41 @@ const DeptModal = ({position, deptInfoName}) => {
 
 const StyledModal = styled.div`
     width: 500px;
-    background: #0F275Cdd;
+    background: var(--main-opacity-color);
     padding: 5%;
-    border-radius: 25px;
-    border: 3px solid white;
-    color: white;
-    font-size: 24px;
+    border-radius: 1rem;
+    border: 0.3rem solid var(--sub-color);
+    color: var(--sub-color);
+    font-size: 1.5rem;
+
     p {
         margin: 3% 0;
     }
 `
 
 const ModalWrapper = styled.div`
-
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 const ModalContent = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
+    svg {
+        margin-right: 0.3rem;
+    }
 `
 
 const ModalTitle = styled.p`
     margin: 0;
     font-weight: 900;
+    
+    svg {
+        margin-right: 0.3rem;
+    }
 `
 
 export default DeptModal

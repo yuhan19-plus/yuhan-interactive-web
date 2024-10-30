@@ -70,7 +70,7 @@ export function License({name, deptInfoValue, deptInfoName, position, scale, ...
         position={position}
       >
         {(deptInfoValue && (name === deptInfoName)) && (
-              <DeptModal position={[0, 0, 75]} deptInfoName={deptInfoName} />
+              <DeptModal position={[0, -10, 75]} deptInfoName={deptInfoName} />
         )}
       </group>
     </>

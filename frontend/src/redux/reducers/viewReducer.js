@@ -5,38 +5,44 @@
  * 찾아오는 길 뷰 상태 추가
  */
 
-import { AERIAL_VIEW, DIRECTIONS_VIEW, GUIDE_VIEW, SMOKINGAREA_VIEW } from "../actions/actions"
+import { AERIAL_VIEW, DIRECTIONS_VIEW, GUIDE_VIEW, INIT_VIEW, SMOKINGAREA_VIEW } from "../actions/actions"
 
 const initialState = {
     value: false,
-    btnMenuName: ''
+    viewName: ''
 }
 
-export function menuBtnReducer(state = initialState, action) {
+export function viewReducer(state = initialState, action) {
     switch(action.type) {
+        case INIT_VIEW:
+            return {
+                ...state,
+                value: false,
+                viewName: ''
+            }
         case AERIAL_VIEW:
             return {
                 ...state,
                 value: !state.value,
-                btnMenuName: 'aerialView'
+                viewName: 'aerialView'
             }
         case DIRECTIONS_VIEW:
             return {
                 ...state,
                 value: !state.value,
-                btnMenuName: 'directionsView'
+                viewName: 'directionsView'
             }
         case SMOKINGAREA_VIEW:
             return {
                 ...state,
                 value: !state.value,
-                btnMenuName: 'smokingAreaView'
+                viewName: 'smokingAreaView'
             }
         case GUIDE_VIEW:
             return {
                 ...state,
                 value: !state.value,
-                btnMenuName: 'campusGuideView'
+                viewName: 'campusGuideView'
             }
         default:
             return state

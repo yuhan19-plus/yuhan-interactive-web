@@ -91,13 +91,13 @@ export function Kiosk({position, name, ...props}) {
                 )
               }
               {
-                kioskName === '유재라관' && (
-                  <KioskModal kioskName={kioskName} position={[-85, -85, 30]} />
+                kioskName === '유일한기념관' && (
+                  <KioskModal kioskName={kioskName} position={[-117, -65, 50]} />
                 )
               }
               {
-                kioskName === '유일한기념관' && (
-                  <KioskModal kioskName={kioskName} position={[-70, -55, 50]} />
+                kioskName === '유재라관' && (
+                  <KioskModal kioskName={kioskName} position={[-85, -85, 30]} />
                 )
               }
             </mesh>

@@ -32,13 +32,13 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 2~3개의 변수만 사용해서 코드 수정할 부분 - 성준
     const deptHeadAniFlag = useRef(false)
-
-    const btnValue = useSelector((state) => state.btnMenu)
-    const aerialViewState = btnValue.value
-    const directionsState = btnValue.value && btnValue.btnMenuName === 'directionsView'
-    const smokingAreaState = btnValue.value && btnValue.btnMenuName === 'smokingAreaView'
-    const campusGuideViewValue = btnValue.value
-    const campusGuideViewName = btnValue.btnMenuName
+    
+    const viewState = useSelector((state) => state.view)
+    const aerialViewValue = viewState.value
+    const directionsState = viewState.value && viewState.viewName === 'directionsView'
+    const smokingAreaState = viewState.value && viewState.viewName === 'smokingAreaView'
+    const campusGuideViewValue = viewState.value
+    const campusGuideViewName = viewState.viewName
 
     // 텔레포트
     const teleportState = useSelector((state) => state.teleport)
@@ -167,7 +167,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 항공뷰
     useEffect(() => {
-        if (aerialViewState) {
+        if (aerialViewValue) {
             gsap.to(camera.position, {
                 x: 0,
                 y: 1000,
@@ -176,7 +176,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 ease: 'power2.inOut'
             })
         }
-    }, [aerialViewState, camera])
+    }, [aerialViewValue, camera])
 
     // 찾아오는 길 뷰
     useEffect(() => {
@@ -248,11 +248,9 @@ export const useMainCharacter = ({ position, myChar }) => {
     useFrame(({ camera }) => {
         if (!player || !charRef.current || !targetPosition) return
 
-        if (aerialViewState) {
+        if (aerialViewValue) {
             return
-        } else if (directionsState) {
-            return
-        }
+        } 
         else {
             const currentPosition = charRef.current.position // 현재 위치
             const distance = currentPosition.distanceTo(targetPosition) // 현재 위치와 클릭위치 사이의 거리
@@ -262,18 +260,20 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // Start Zone
                 if ((currentPosition.x <= 285 && currentPosition.x >= 275) &&
                     (currentPosition.z >= -360 && currentPosition.z <= -350)) {
+                        console.log('test')
                         // console.log('이것', currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
                         handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
                 }
                 // 학교 밖 정문 앞 쪽
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
                     ((currentPosition.z < -325 && currentPosition.z >= -560))) {
-                        console.log('학교 밖 정문 앞 쪽')
+                        console.log('test')
                         handleCamera(550, 150, -550)
                 }
                 // 그 외 학교 밖
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
                     ((currentPosition.z < 396 && currentPosition.z >= -325))) {
+                        console.log('test')
                         handleCamera(600, 150, 50)
                         // Bus Zone
                         if ((currentPosition.x <= 322 && currentPosition.x >= 262) &&
@@ -629,17 +629,17 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     dispatch(Enter_SmokingArea());
                                     console.log("흡연구역 입장", isInSmokingArea);
                                 }
-                    }
-                    else{
-                        if(gsapCameraState) {
-                            setGsapCameraState(false)
                         }
-                        if (isInSmokingArea) {
-                            setIsInSmokingArea(false);
-                            dispatch(Leave_SmokingArea());
-                            console.log("흡연구역 퇴장", isInSmokingArea);
+                        else{
+                            if(gsapCameraState) {
+                                setGsapCameraState(false)
+                            }
+                            if (isInSmokingArea) {
+                                setIsInSmokingArea(false);
+                                dispatch(Leave_SmokingArea());
+                                console.log("흡연구역 퇴장", isInSmokingArea);
+                            }
                         }
-                    }
                 }
 
                 // 학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이
@@ -704,7 +704,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 if(!yuhanStatueCameraFlag.current) {
                                     yuhanStatueCameraFlag.current = true
                                     setGsapCameraState(true)
-                                    handleGSAPCamera(172, 30, -385)
+                                    handleGSAPCamera(200, 75, -385)
                                     dispatch(statueGuide())
                                 }
                                 if (!isInStatueZone) {
@@ -721,18 +721,25 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(false)
                                     dispatch(initGuide())
                                 }
-                                if (isInStatueZone) {
-                                    setIsInStatueZone(false);
-                                    dispatch(Leave_Statue());
-                                    console.log("동상 퇴장", isInStatueZone);
-                                }
+                            }
+                            if (isInStatueZone) {
+                                setIsInStatueZone(false);
+                                dispatch(Leave_Statue());
+                                console.log("동상 퇴장", isInStatueZone);
                             }
                         }
+                }
+                else {
+                    if (isInStatueZone) {
+                        setIsInStatueZone(false);
+                        dispatch(Leave_Statue());
+                        console.log("동상 퇴장", isInStatueZone);
+                    }
                 }
                 
                 // 유재라관
                 if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
-                    handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
+                    // handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
                     // 영역진입체크
                     if (!isGoldBoxArea1) {
                         setisGoldBoxArea1(true)
@@ -748,7 +755,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
                 // 테라스
                 if ((currentPosition.x >= -140 && currentPosition.x <= -100) && (currentPosition.z >= 180 && currentPosition.z <= 220)) {
-                    handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
+                    // handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
                     // 영역진입체크
                     if (!isGoldBoxArea2) {
                         setisGoldBoxArea2(true)
@@ -764,7 +771,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
                 // 나눔의 숲
                 if ((currentPosition.x >= -75 && currentPosition.x <= 115) && (currentPosition.z >= -220 && currentPosition.z <= -180)) {
-                    handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
+                    // handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
                     // 영역진입체크
                     if (!isGoldBoxArea3) {
                         setisGoldBoxArea3(true)

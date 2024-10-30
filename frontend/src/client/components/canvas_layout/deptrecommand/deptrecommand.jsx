@@ -3,6 +3,8 @@ import axios from "axios";
 import { School, Business, Engineering, Brush, LocalHospital, Favorite } from '@mui/icons-material';
 import { departmentLinks } from '../../../../data/commonData'
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 
 const DeptRecommand = () => {
   const [questions, setQuestions] = useState({});
@@ -217,15 +219,15 @@ const DeptRecommand = () => {
   const getDepartmentIcon = (dept) => {
     switch (dept) {
       case "공학부":
-        return <Engineering style={{ fontSize: 40, color: "#007bff" }} />;
+        return <Engineering />;
       case "디자인문화학부":
-        return <Brush style={{ fontSize: 40, color: "#007bff" }} />;
+        return <Brush />;
       case "건강보건학부":
-        return <LocalHospital style={{ fontSize: 40, color: "#007bff" }} />;
+        return <LocalHospital />;
       case "건강생활학부":
-        return <Favorite style={{ fontSize: 40, color: "#007bff" }} />;
+        return <Favorite />;
       case "비즈니스학부":
-        return <Business style={{ fontSize: 40, color: "#007bff" }} />;
+        return <Business />;
       default:
         return null;
     }
@@ -252,7 +254,7 @@ if (result) {
           <p>아직 진로를 명확하게 결정하지 못하셨나요? 그러면 이런 선택지는 어떠신가요?</p>
           <p>아이콘을 클릭하면 자유전공학과 소개 페이지로 이동합니다.</p>
           <IconTextWrapper onClick={() => handleIconClick("자유전공학과")}>
-            <School style={{ fontSize: 50, color: "#007bff", cursor: "pointer" }} />
+            <School style={{ fontSize: 50, cursor: "pointer" }} />
             <span>자유전공학과 소개 페이지로 이동하기</span>
           </IconTextWrapper>
         </FreeDeptContainer>
@@ -265,10 +267,16 @@ if (result) {
                 return (
                   <RankBox key={index}>
                     <IconTextWrapper onClick={() => handleIconClick(item.deptName)}>
-                      <RankText>{`${item.rank}위`} {/* 순위 출력 */}</RankText>
-                      {getDepartmentIcon(item.deptName)} {/* 학부 아이콘 출력 */}
-                      <span>{item.deptName}</span> {/* 학부 이름 출력 */}
-                      <span>{`${item.score}점`}</span> {/* 점수 출력 */}
+                      <RankText>
+                        {`${item.rank} 위`} {/* 순위 출력 */}
+                      </RankText>
+                      <DeptName>
+                        {/* 학부 아이콘 출력 */}
+                        <p>{getDepartmentIcon(item.deptName)}</p>
+                        {/* 학부 이름 출력 */}
+                        <p>{item.deptName}</p>
+                      </DeptName> 
+                      <span>{`${item.score} 점`}</span> {/* 점수 출력 */}
                     </IconTextWrapper>
                   </RankBox>
                 );
@@ -278,10 +286,11 @@ if (result) {
               <FreeDeptContainer>
                 <p>어떤 학부를 선택할지 결정을 못하셨나요? 그러면 이런 선택지는 어떠신가요?</p>
                 <p>아이콘을 클릭하면 자유전공학과 소개 페이지로 이동합니다.</p>
-                <IconTextWrapper onClick={() => handleIconClick("자유전공학과")}>
-                  <School style={{ fontSize: 50, color: "#007bff", cursor: "pointer" }} />
+                <FreeDeptIconTextWrapper onClick={() => handleIconClick("자유전공학과")}>
+                  {/* <School style={{ fontSize: 50, cursor: "pointer" }} /> */}
                   <span>자유전공학과 소개 페이지로 이동하기</span>
-                </IconTextWrapper>
+                  <FontAwesomeIcon icon={faDoorOpen} />
+                </FreeDeptIconTextWrapper>
               </FreeDeptContainer>
             </div>
           ) : (
@@ -332,27 +341,43 @@ export default DeptRecommand;
 
 const IconTextWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 25px;
   margin-top: 10x;
   margin-bottom: 5px;
   font-size: 1.2em;
-  color: #007bff;
+  color: var(--font-yellow-color);
   width: 100%;
 
   span {
     position: relative;
   }
+
+  svg {
+    font-size: 40px;
+    color: var(--font-yellow-color)
+  }
 `;
 
+const FreeDeptIconTextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  cursor: pointer;
+
+  svg {
+    margin-left: 5px;
+    font-size: 24px;
+  }
+`
+
 const RankBox = styled.div`
-  background-color: #f9f9f9;
+  background-color: var(--main-color);
   padding: 20px;
   border-radius: 10px;
-  width: 100%; // 전체 너비 사용
-  text-align: center;
+  width: 100%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 15px;
   display: flex;
@@ -367,7 +392,7 @@ const ResultContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin: 10px 0; // 위아래 마진만 유지
+  margin: 10px 0;
 `;
 
 const FreeDeptContainer = styled.div`
@@ -375,7 +400,8 @@ const FreeDeptContainer = styled.div`
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 10px;
-  background-color: #f0f8ff;
+  background-color: var(--main-color);
+  color: var(--font-lightGreen-color);
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -407,41 +433,43 @@ const AnswerButtons = styled.div`
 `;
 
 const AnswerButton = styled.button`
-  background-color: ${props => (props.selected ? "#0056b3" : "#007bff")};
-  color: white;
+  background-color: ${props => (props.selected ? "var(--main-color)" : "var(--sub-dark-color)")};
+  color: var(--font-yellow-color);
   padding: 10px 20px;
   margin: 0 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: var(--main-color);
   }
 `;
 
 const SubmitButton = styled.button`
-  background-color: #007bff;
-  color: white;
+  background-color: var(--main-color);
+  color: var(--font-yellow-color);
   padding: 10px 20px;
   margin: 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:disabled {
-    background-color: gray;
+    background-color: var(--main-dark-color);
     cursor: not-allowed;
   }
 `;
 
 const SubTitle = styled.h4`
   text-align: center;
-    margin-top: 5px;    // 원하는 간격 설정
-`;
-const Title = styled.h2`
-  margin-bottom: 5px;  // 원하는 간격 설정
+    margin-top: 5px;
 `;
 
 const RankText = styled.span`
     font-weight: 900;
     font-size: 1.3em;
 `;
+
+const DeptName = styled.span`
+    display: flex;
+    align-items: center;
+`

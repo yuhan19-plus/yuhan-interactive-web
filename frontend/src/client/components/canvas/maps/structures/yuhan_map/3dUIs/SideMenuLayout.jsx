@@ -19,17 +19,17 @@ import { currentProfessorUserInfo, currentStudentUserInfo, myCounsel, reqForCons
 let title
 
 const SideMenuLayout = (props) => {
-    const dispatch = useDispatch()
     const [cookies] = useCookies(['user'])
     const userId = cookies.user
     const userType = cookies.userType
     // console.log(userId)
     // console.log(userType)
 
+    const dispatch = useDispatch()
+    
     const { pageName, value } = props
-    // console.log(pageName)
-
     title = pageName
+    // console.log(pageName)
 
     if (title === 'consultation') title = '상담신청'
     else if (title === 'board') title = '유한게시판'
@@ -44,9 +44,11 @@ const SideMenuLayout = (props) => {
                     studentId: userId
                 }
             })
+
             const data = response.data
             // console.log("data", data)
             dispatch(currentStudentUserInfo(data.student))
+
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -69,9 +71,11 @@ const SideMenuLayout = (props) => {
                     professorId: userId
                 }
             })
+
             const data = response.data
             // console.log("data", data)
             dispatch(currentProfessorUserInfo(data.professor))
+
             Swal.fire({
                 icon: 'success',
                 title: '데이터 로드 성공.',
@@ -92,6 +96,7 @@ const SideMenuLayout = (props) => {
                 CurrentStudentData()
                 dispatch(myCounsel())
             }
+
             if(userType === 'professor') {
                 CurrentProfessorData()
                 dispatch(reqForConsultation())
@@ -105,7 +110,6 @@ const SideMenuLayout = (props) => {
                 <>
                     <DetailHeader title={title} />
                     <DetailContent>
-                        {/* 내용작성 */}
                         {title === '유한게시판' &&
                             <SideBoard />
                         }
@@ -137,8 +141,8 @@ const DetailContent = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: #ffffffdd;
-    padding: 15px;
+    background-color: var(--sub-color);
+    padding: 1rem;
 `
 
 export default SideMenuLayout

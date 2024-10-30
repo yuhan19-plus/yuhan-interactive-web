@@ -11,8 +11,8 @@ import { Bricks4 } from './miniObject/Bricks4';
 import { Bricks512 } from './miniObject/Bricks512';
 import { Bricks64 } from './miniObject/Bricks64';
 import { Bricks8 } from './miniObject/Bricks8';
+import { FONT_URL } from '../../../../../../data/commonData';
 
-const fontURL = 'assets/fonts/HakgyoansimWoojuR.json';
 const Bricks2048List = () => {
     return (
         <>
@@ -24,23 +24,23 @@ const Bricks2048List = () => {
                 <Bricks32 position={[10,0,0]}/>,
 
                 <group position={[0, -0.25, 2.5]} scale={0.8}>
-                    <Text3D position={[-0.2, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[-0.2, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         2
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[2.9, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[2.9, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         4
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[6, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[6, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         8
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[8.8, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[8.8, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         16
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[11.9, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[11.9, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         32
                         <meshStandardMaterial color="white" />
                     </Text3D>
@@ -55,27 +55,27 @@ const Bricks2048List = () => {
                 <Bricks2048 position={[12.5,0,0]}/>
 
                 <group position={[-0.2,-0.25,2.5]} scale={0.8}>
-                    <Text3D position={[-0.3, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]} >
+                    <Text3D position={[-0.3, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]} >
                         64
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[2.5, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[2.5, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         128
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[5.6, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[5.6, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         256
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[8.8, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[8.8, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         512
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[11.6, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[11.6, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         1024
                         <meshStandardMaterial color="white" />
                     </Text3D>
-                    <Text3D position={[14.7, 0, 0]} font={fontURL} rotation={[Math.PI/-2,0,0]}>
+                    <Text3D position={[14.7, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
                         2048
                         <meshStandardMaterial color="white" />
                     </Text3D>

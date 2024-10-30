@@ -10,7 +10,7 @@ const DetailFooter = () => {
             <DetailFooterLayout>
                 <DetailFooterLogo>
                     {/* 로고 */}
-                    <img src='/assets/images/yuhanLogo.png' />
+                    <img src='/assets/images/yuhan-logo.png' />
                 </DetailFooterLogo>
                 <DetailFooterContent>
                     <div>
@@ -37,11 +37,11 @@ const DetailFooter = () => {
 const DetailFooterLayout = styled.div`
     width: 100%;
     height: 15%;
-    background-color: #0F275C;
+    background-color: var(--main-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5% 0.7%;
+    padding: 1rem;
 `
 
 const DetailFooterLogo = styled.div`
@@ -56,14 +56,16 @@ const DetailFooterContent = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--sub-color);
+
     div {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     div > p {
-        margin-right: 15px;
+        margin-right: 1rem;
     }
 `
 

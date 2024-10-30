@@ -9,11 +9,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const DeptSideBarMenu = ({currentMapName}) => {
-    // console.log(currentMapName)
+const DeptSideBarMenu = () => {
     const groundMapState = useSelector((state) => state.groundMap)
     const pathData = groundMapState.pathData
     // console.log(groundMapState)
+
     return (
         <MainSideBarMenuWrapper>
             <MainSideBarMenuItem>
@@ -32,10 +32,6 @@ const DeptSideBarMenu = ({currentMapName}) => {
                 <FontAwesomeIcon icon={faBuilding} />
                 <span><a href={pathData[2]} target='_blank'>학과사무실</a></span>
             </MainSideBarMenuItem>
-            <MainSideBarMenuItem>
-                <FontAwesomeIcon icon={faCalendarDays} />
-                <span><a href={pathData[3]} target='_blank'>학사일정</a></span>
-            </MainSideBarMenuItem>
         </MainSideBarMenuWrapper>
     )
 }
@@ -48,7 +44,7 @@ const MainSideBarMenuWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     padding-bottom: 15rem;
-    border-top: 1px solid white;
+    border-top: 0.3rem solid var(--sub-color);
 `
 
 const MainSideBarMenuItem = styled.div`
@@ -57,20 +53,20 @@ const MainSideBarMenuItem = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 10px;
-    gap: 10px;
-    border-bottom: 1px solid white;
+    padding: 0.7rem;
+    gap: 1rem;
+    border-bottom: 0.1rem solid var(--sub-color);
     cursor: pointer;
-    color: white;
+    color: var(--sub-color);
 
     svg {
-        width: 34px;
-        height: 34px;
+        width: 2rem;
+        height: 2rem;
     }
 
     span {
-        font-size: 12px;
-        padding-top: 8px;
+        font-size: 0.8rem;
+        padding-top: 0.5rem;
         font-weight: 500;
     }
 
@@ -79,21 +75,21 @@ const MainSideBarMenuItem = styled.div`
     }
     
     &:hover {
-        background-color: white;
-        color: #0F275C;
+        background-color: var(--sub-color);
+        color: var(--main-color);
 
         span {
-            font-size: 14px;
+            font-size: 1rem;
             font-weight: 800;
         }
 
         span > a {
-            color: #0F275C;
+            color: var(--main-color);
         }
 
         svg {
-            width: 36px;
-            height: 36px;
+            width: 2.3rem;
+            height: 2.3rem;
         }
     }
 `

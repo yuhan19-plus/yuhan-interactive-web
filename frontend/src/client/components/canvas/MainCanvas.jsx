@@ -16,13 +16,13 @@ const MainCanvas = () => {
     const kiosk = useSelector((state) => state.kiosk)
     const bus = useSelector((state) => state.bus)
     const statue = useSelector((state) => state.statue)
-    const aerialViewState = useSelector((state) => state.btnMenu)
+    const viewState = useSelector((state) => state.view)
     const kioskValue = kiosk.value
     const busOneValue = bus.inBusStationOne
     const busTwoValue = bus.inBusStationTwo
     const statueValue = statue.inStatue
-    const aerialViewValue = aerialViewState.value
-    const aerialViewName = aerialViewState.btnMenuName
+    const viewValue = viewState.value
+    const viewName = viewState.viewName
 
     // 빛의 위치 값 설정 변수
     const cameraPosition = [0, 1000, 0]
@@ -66,14 +66,14 @@ const MainCanvas = () => {
                     enableZoom={false}
                     minDistance={150}               // 카메라 확대 최소 범위
                     maxDistance={1000}              // 카메라 확대 최대 범위
-                    autoRotate={aerialViewName === 'campusGuideView' && aerialViewValue}
+                    autoRotate={viewName === 'campusGuideView' && viewValue}
                     mouseButtons={{
                         LEFT: (
                             kioskValue ||
                             busOneValue ||
                             busTwoValue ||
                             statueValue ||
-                            aerialViewName === 'campusGuideView'
+                            viewName === 'campusGuideView'
                         ) ? false : THREE.MOUSE.ROTATE,   // 왼쪽 클릭은 회전
                         MIDDLE: null,               // 중간 클릭은 줌
                         RIGHT: null                 // 오른쪽 클릭은 비활성화

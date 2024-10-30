@@ -15,9 +15,11 @@ import * as THREE from 'three'
 const DepartmentCanvas = () => {
     const deptInfo = useSelector((state) => state.deptInfo)
     const deptInfoValue = deptInfo.value
+
     // 빛의 위치 값 설정 변수
     const lightPosition = [-500, 500, -350]
     const cameraPosition = [30, 300, 50]
+    
     return (
         <>
             <Canvas

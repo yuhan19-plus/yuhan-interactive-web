@@ -12,8 +12,7 @@ import { Bricks4 } from './miniObject/Bricks4';
 import { Bricks512 } from './miniObject/Bricks512';
 import { Bricks64 } from './miniObject/Bricks64';
 import { Bricks8 } from './miniObject/Bricks8';
-
-const fontURL = 'assets/fonts/HakgyoansimWoojuR.json';
+import { FONT_URL } from '../../../../../../data/commonData';
 
 const initialBoard = [
   [0, 0, 0, 0],
@@ -184,12 +183,12 @@ function MiniGame2048() {
       )}
       {gameOver && (
         <>
-          <Text3D position={[1, 1.8, 7]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={fontURL} >
+          <Text3D position={[1, 1.8, 7]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} >
             Game Over
             <meshStandardMaterial color="red" />
           </Text3D>
           <Text3D 
-            position={[1, 2.3, 6.2]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} onClick={handleResetClick} font={fontURL}>
+            position={[1, 2.3, 6.2]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} onClick={handleResetClick} font={FONT_URL}>
             -다시하기-
             <meshStandardMaterial color="blue" />
           </Text3D>
@@ -197,11 +196,11 @@ function MiniGame2048() {
       )}
       {gameClear && (
         <>
-        <Text3D position={[1, 1.8, 5]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={fontURL}>
+        <Text3D position={[1, 1.8, 5]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL}>
           축하합니다! 2048을 달성하셨습니다!
           <meshStandardMaterial color="green" />
         </Text3D>
-        <Text3D position={[1, 1.8, 4.5]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} font={fontURL} onClick={handleResetClick}>
+        <Text3D position={[1, 1.8, 4.5]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} onClick={handleResetClick}>
             -다시하기-
             <meshStandardMaterial color="blue" />
           </Text3D>

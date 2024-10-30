@@ -18,10 +18,10 @@ import { GateOfSharing } from './building/GateOfSharing'
 import { B9_B1_Between_B } from './building/B9-B1-Between-B'
 
 const BuildingGroup = () => {
-    // btnMenu 상태 값 가져오기
-    const btnMenuState = useSelector((state) => state.btnMenu)
-    const btnMenuValue = btnMenuState.value
-    const btnMenuName = btnMenuState.btnMenuName
+    // view 상태 값 가져오기
+    const viewState = useSelector((state) => state.view)
+    const viewValue = viewState.value
+    const viewName = viewState.viewName
 
     return (
         <>
@@ -29,40 +29,40 @@ const BuildingGroup = () => {
             <Pyeonghwagwan
                 position={[66.35, 80, -69.278]}
                 rotation={[-Math.PI, 0, -Math.PI]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 2호관 */}
             <Bongsagwan
                 position={[222, 67, -180]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 3호관 */}
             <Jayugwan
                 position={[-108.5, 68, -142.3]}
                 rotation={[Math.PI / 2, 0, 0]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 4호관 */}
             <StudentCafeteria
                 position={[249.5, 56, 248.3]}
                 rotation={[Math.PI, 0, Math.PI]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
             
             {/* 5호관 */}
             <Nanumgwan
                 position={[13.651, 73, 121.584]}
                 rotation={[0, 1.571, 0]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
             
             {/* 56호관 */}
@@ -73,32 +73,32 @@ const BuildingGroup = () => {
             <Changjogwan
                 position={[12.86, 71, 271.937]}
                 rotation={[0, -1.571, 0]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
             
             {/* 7호관 */}
             <MemorialHall
                 position={[-341.439, 69, 182.681]}
                 rotation={[Math.PI / 2, 0, Math.PI]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 8호관 */}
             <Yujaelagwan
                 position={[-380.0, 97, -186.3]}
                 rotation={[-Math.PI, 0, -Math.PI]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 9호관 */}
             <GateOfSharing
                 position={[267.607, 62, 40.988]}
                 rotation={[Math.PI, 0, Math.PI]}
-                btnMenuValue={btnMenuValue}
-                btnMenuName={btnMenuName}
+                viewValue={viewValue}
+                viewName={viewName}
             />
 
             {/* 1 9호관 */}
