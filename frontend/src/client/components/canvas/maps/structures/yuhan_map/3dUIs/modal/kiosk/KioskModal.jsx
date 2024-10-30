@@ -291,8 +291,8 @@ const KioskItem = styled.div`
     color: var(--sub-color);
 
     &:hover {
-        color: var(--yuhan-yellow-color);
-        border-color: var(--yuhan-yellow-color);
+        color: var(--font-yellow-color);
+        border-color: var(--font-yellow-color);
     }
 `
 
@@ -328,11 +328,11 @@ const KioskLinkContent = styled.div`
         border-bottom: 0.1rem solid var(--sub-color);
 
         &:hover {
-            color: var(--yuhan-yellow-color);
-            border-color: var(--yuhan-yellow-color);
+            color: var(--font-yellow-color);
+            border-color: var(--font-yellow-color);
             a {
-                color: var(--yuhan-yellow-color);
-                border-color: var(--yuhan-yellow-color);
+                color: var(--font-yellow-color);
+                border-color: var(--font-yellow-color);
             }
         }
     }
@@ -348,8 +348,8 @@ const PageLink = styled.div`
 
         &:hover {
             b {
-                color: var(--yuhan-yellow-color);
-                border-color: var(--yuhan-yellow-color);
+                color: var(--font-yellow-color);
+                border-color: var(--font-yellow-color);
             }
         }
     }

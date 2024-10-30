@@ -8,12 +8,18 @@
     --sub-color: #FFFFFF;
     --sub-opacity-color: #FFFFFF00;
     --sub-opacity-color2: #FFFFFFDD;
-    --yuhan-yellow-color: #F4CE3D;
-    --yuhan-orange-color: #EF7421;
+
+    /* 강조 색상 */
+    --font-yellow-color: #F4CE3D;
+    --font-orange-color: #EF7421;
+    --font-blue-color: #56E5FF;
+    --font-lightGreen-color: #64C9B9;
+
+    /* dark 색상 */
     --main-dark-color: #1C293A;
     --sub-dark-color: #8C9292;
-    --yuhan-light-green: #64C9B9;
 
+    /* 에러 색상 */
     --error-color: #FF0000;
 }
 

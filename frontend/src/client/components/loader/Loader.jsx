@@ -73,7 +73,7 @@ const Progressing = styled.div`
 const Bar = styled.div`
   width: ${(props) => `${props.width}%`};
   height: 100%;
-  background: var(--yuhan-orange-color);
+  background: var(--font-orange-color);
   border-radius: 2.5vh 0 0 2.5vh; 
   display: flex;
   align-items: center;

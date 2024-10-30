@@ -141,5 +141,5 @@ const PhotoContent = styled.img`
     border-radius: 7px;
     width: 100%;
     height: 100%;
-    border: 0.3rem solid var(--yuhan-orange-color)
+    border: 0.3rem solid var(--font-orange-color)
 `

@@ -347,7 +347,7 @@ const IconTextWrapper = styled.div`
   margin-top: 10x;
   margin-bottom: 5px;
   font-size: 1.2em;
-  color: var(--yuhan-yellow-color);
+  color: var(--font-yellow-color);
   width: 100%;
 
   span {
@@ -356,7 +356,7 @@ const IconTextWrapper = styled.div`
 
   svg {
     font-size: 40px;
-    color: var(--yuhan-yellow-color)
+    color: var(--font-yellow-color)
   }
 `;
 
@@ -401,7 +401,7 @@ const FreeDeptContainer = styled.div`
   margin-bottom: 5px;
   padding: 10px;
   background-color: var(--main-color);
-  color: var(--yuhan-light-green);
+  color: var(--font-lightGreen-color);
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -434,7 +434,7 @@ const AnswerButtons = styled.div`
 
 const AnswerButton = styled.button`
   background-color: ${props => (props.selected ? "var(--main-color)" : "var(--sub-dark-color)")};
-  color: var(--yuhan-yellow-color);
+  color: var(--font-yellow-color);
   padding: 10px 20px;
   margin: 0 10px;
   border: none;
@@ -447,7 +447,7 @@ const AnswerButton = styled.button`
 
 const SubmitButton = styled.button`
   background-color: var(--main-color);
-  color: var(--yuhan-yellow-color);
+  color: var(--font-yellow-color);
   padding: 10px 20px;
   margin: 20px;
   border: none;

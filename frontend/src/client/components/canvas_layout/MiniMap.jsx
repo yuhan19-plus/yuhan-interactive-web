@@ -195,7 +195,7 @@ const Teleport = styled.div`
     background-color: var(--main-color);
     font-weight: 900;
     border-radius: 50%;
-    border: 2px solid var(--yuhan-yellow-color);
+    border: 2px solid var(--font-yellow-color);
     display : flex;
     justify-content : center;
     align-items : center;
@@ -214,7 +214,7 @@ const Teleport = styled.div`
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--main-color);
-            color: var(--yuhan-yellow-color);
+            color: var(--font-yellow-color);
             font-size: 17px;
             padding: 5px 10px;
             border-radius: 5px;

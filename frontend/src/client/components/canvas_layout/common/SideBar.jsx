@@ -228,7 +228,7 @@ const DropdownController = styled.div`
     padding: 0.1rem;
 
     &:hover {
-        color: var(--yuhan-yellow-color);
+        color: var(--font-yellow-color);
     }
 
     svg {
