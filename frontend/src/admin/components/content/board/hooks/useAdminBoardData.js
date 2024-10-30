@@ -122,7 +122,7 @@ export const useAdminBoardData = (boardId) => {
     };
 
     // 사용자의 좋아요 여부 체크 함수
-    const checkLiked = async () => {
+    const handlecheckLiked = async () => {
         try {
             const response = await fetch(`/api/boardLike/${boardId}/${cookies.user}`, {
                 method: "POST",
@@ -183,14 +183,14 @@ export const useAdminBoardData = (boardId) => {
         }
     };
 
+    const fetchDatas = async () => {
+        await handlecheckLiked(); // 좋아요 여부 체크
+        await fetchData();  // 게시물 데이터 가져오기
+        await deleteCheckReport(); // 신고삭제사유 가져오기
+    };
+    
     useEffect(() => {
-        const fetchDataAndCheckLiked = async () => {
-            await checkLiked(); // 좋아요 여부 체크
-            await fetchData();  // 게시물 데이터 가져오기
-            await deleteCheckReport(); // 신고삭제사유 가져오기
-        };
-
-        fetchDataAndCheckLiked();
+        fetchDatas();
     }, [boardId]);
 
     return { boardData, attachments, loading, error, liked, reportData, handleDeleteItem, handleLikeToggle, handleDownload, deleteCheckReport };

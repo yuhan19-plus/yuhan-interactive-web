@@ -47,7 +47,7 @@ const CodingModal = ({ inputNumber }) => {
 
     useEffect(() => {
         if ((CZone || JavaZone || PythonZone) && selectLanguage) {
-            inputNumber(num); // ResultTextObject.jsx로 값을 전달 
+            inputNumber(num); // ResultTextObject.jsx로 num을 전달 
         }
     }, [num]);
 
@@ -173,15 +173,15 @@ const IconContainer = styled.div` /* 아이콘을 상단에 고정 */
 const IconStyle = styled(FontAwesomeIcon)`
     font-size: 2rem;
 `;
-const VisitedIconJava = styled(FontAwesomeIcon)`/* Java 아이콘 style */
+const VisitedIconJava = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: red;
 `;
-const VisitedIconC = styled(FontAwesomeIcon)`/* C언어 아이콘 style */
+const VisitedIconC = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: purple; 
 `;
-const VisitedIconPython = styled(FontAwesomeIcon)` /* 파이썬 아이콘 style */
+const VisitedIconPython = styled(FontAwesomeIcon)`
     font-size: 2rem;
     color: blue;
 `;

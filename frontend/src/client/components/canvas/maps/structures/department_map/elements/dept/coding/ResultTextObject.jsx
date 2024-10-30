@@ -12,7 +12,6 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { motion } from 'framer-motion-3d';
 
 const ResultTextObject = ({ receivedNumber }) => {
-    const [codeResult, setCodeResult] = useState([]);
     const [randomColor, setRandomColor] = useState("#33FF57");
     const [font, setFont] = useState(null); // 로드된 폰트를 상태로 저장
 
@@ -43,7 +42,6 @@ const ResultTextObject = ({ receivedNumber }) => {
                 const resultPart = `${num * i}`;
                 resultArray.push({ firstPart, StaticPart, resultPart });
             }
-            setCodeResult(resultArray);
 
             // ResultTextObject의 랜덤색과 고정색
             setRandomColor(colorArray[randomIdx]);
@@ -96,7 +94,6 @@ const ResultTextObject = ({ receivedNumber }) => {
                 finalMeshRef.current.add(resultMesh);
             });
         } else {
-            setCodeResult([]);
         }
     }, [receivedNumber, font]); // 폰트가 로드된 후 실행
 

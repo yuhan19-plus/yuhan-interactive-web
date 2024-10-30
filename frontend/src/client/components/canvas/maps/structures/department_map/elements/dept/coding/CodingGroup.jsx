@@ -11,8 +11,8 @@ const CodingGroup = () => {
     const isInCodingArea = useSelector(state => state.codingArea.value);
     const [num, setNum] = useState('');
 
-    const onNum = (Code) => {
-        setNum(Code)
+    const onNum = (Number) => {
+        setNum(Number);
     }
 
     // useEffect(() =>{

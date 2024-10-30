@@ -133,7 +133,7 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         }
     }
 
-    // 신고글을 불러오는 함수
+    // 패치핸들러
     const fetchData = async () => {
         try {
             const response = await fetch(`/api/boardReport/fetch/${reportID}`);

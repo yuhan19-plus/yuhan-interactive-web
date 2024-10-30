@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies] = useCookies(['user']);
-    
+
     const [dataList, setDataList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -83,6 +83,21 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         onSelectItem(boardId); // 선택된 게시글 ID를 상위 컴포넌트로 전달
     };
 
+    // 패치핸들러
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/board");
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+            setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
+    };
+    
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
         const targetWriter = 'admin'; // 관리자 우선순위
@@ -129,20 +144,6 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
-    };
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/board");
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-            setDataList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
     };
 
     useEffect(() => {
@@ -199,10 +200,10 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                         <>
                             {(item.writer_type === 'admin') ? (
                                 <ListItem key={item.board_id}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <FlexListItemBox>
                                         {/* 번호 */}
                                         <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
-                                            <Admincontent sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
+                                            <Admincontent >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
                                         </Box>
                                         {/* 제목 */}
                                         <Box sx={{ width: '45%' }}>
@@ -247,11 +248,11 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                                 </Button>
                                             }
                                         </Box>
-                                    </Box>
+                                    </FlexListItemBox>
                                 </ListItem>
                             ) : (
                                 <ListItem key={item.board_id}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <FlexListItemBox>
                                         {/* 번호 */}
                                         <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
                                             <Typography sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
@@ -299,13 +300,13 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
                                                 </Button>
                                             }
                                         </Box>
-                                    </Box>
+                                    </FlexListItemBox>
                                 </ListItem>
                             )}
                         </>
                     ))}
                 </List>
-                
+
                 <FooterContainer >
                     <Pagination
                         count={totalPages}
@@ -373,3 +374,9 @@ const SearchInput = styled(InputBase)`
   border-radius: 4px;
   font-size: 1rem;
 `;
+
+const FlexListItemBox = styled(Box)`
+    display: flex;
+    align-items: center;
+    width: 100%;
+`

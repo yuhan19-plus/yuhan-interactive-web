@@ -12,16 +12,31 @@ import styled from "styled-components";
 
 const AdminBoardReportList = ({ onReportManagement }) => {
     const [cookies] = useCookies(["user"]);
-    
+
     const [dataList, setDataList] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     const pageNum = 8;
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
+    };
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch("/api/boardReport/fetch");
+            if (!response.ok) {
+                throw new Error("데이터를 불러오는데 실패했습니다.");
+            }
+            const data = await response.json();
+
+            setDataList(data);
+            setTotalPages(Math.ceil(data.length / pageNum));
+        } catch (error) {
+            console.error("데이터 불러오는 중 에러 발생:", error);
+        }
     };
 
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
@@ -59,21 +74,6 @@ const AdminBoardReportList = ({ onReportManagement }) => {
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
-    };
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/boardReport/fetch");
-            if (!response.ok) {
-                throw new Error("데이터를 불러오는데 실패했습니다.");
-            }
-            const data = await response.json();
-
-            setDataList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
-        } catch (error) {
-            console.error("데이터 불러오는 중 에러 발생:", error);
-        }
     };
 
     useEffect(() => {

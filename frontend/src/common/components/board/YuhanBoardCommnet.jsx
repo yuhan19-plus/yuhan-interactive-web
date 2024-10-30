@@ -18,7 +18,6 @@ export const YuhanBoardComment = ({ boardData }) => {
 
     const boardID = boardData.board_id;
 
-    const [sortCriteria, setSortCriteria] = useState('comment_date'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [commentList, setCommentList] = useState([]);
@@ -29,6 +28,7 @@ export const YuhanBoardComment = ({ boardData }) => {
         comment_content: "",
     });
 
+    const sortCriteria = 'comment_date';
     const pageNum = 8; // 한 페이지에서 볼 댓글의 수
 
     // 입력값변경핸들러
@@ -108,38 +108,13 @@ export const YuhanBoardComment = ({ boardData }) => {
         setCurrentPage(value);
     };
 
-    // 댓글 정렬 함수
+    // 댓글 날짜순 정렬 함수
     const getCurrentPageData = () => {
-        const targetWriter = 'admin'; // 관리자 우선순위
         const sortedData = [...commentList].sort((a, b) => {
             let compareA = a[sortCriteria];
             let compareB = b[sortCriteria];
 
-            // 관리자가 작성한 글 우선순위 부여
-            if (a.comment_writer === targetWriter && b.comment_writer !== targetWriter) {
-                return -1; // a를 더 앞에 배치
-            }
-            if (a.comment_writer !== targetWriter && b.comment_writer === targetWriter) {
-                return 1;  // b를 더 앞에 배치
-            }
-
-            // 상태 순 정렬일 경우 우선순위 부여 (오름차순으로 처리)
-            if (sortCriteria === 'comment_status') {
-                const statusPriority = (status) => {
-                    if (status === 'active') return 1;
-                    if (status === 'delete') return 2;
-                    return 3; // 그 외 상태의 기본 우선순위
-                };
-
-                compareA = statusPriority(a.comment_status);
-                compareB = statusPriority(b.comment_status);
-
-                if (compareA < compareB) return -1; // 오름차순
-                if (compareA > compareB) return 1;
-                return 0;
-            }
-
-            // 날짜일 경우 Date 객체로 변환하여 비교
+            // 날짜비교 Date 객체로 변환하여 비교
             if (sortCriteria === 'comment_date') {
                 compareA = new Date(a[sortCriteria]);
                 compareB = new Date(b[sortCriteria]);
@@ -148,6 +123,7 @@ export const YuhanBoardComment = ({ boardData }) => {
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
+
             return 0;
         });
 

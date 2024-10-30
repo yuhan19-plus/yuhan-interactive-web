@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 
 export const useSideBoardData = (boardId) => {
     const [cookies] = useCookies(["user"]);
-    
+
     const [boardData, setBoardData] = useState({
         board_id: "",
         board_title: "",
@@ -30,7 +30,7 @@ export const useSideBoardData = (boardId) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [liked, setLiked] = useState(false);
-    
+
     // 좋아요 핸들러
     const handleLikeToggle = async () => {
         if (!cookies.user) {
@@ -58,9 +58,8 @@ export const useSideBoardData = (boardId) => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // 서버에서 성공 응답을 받은 후 상태를 변경
             setLiked(!liked);
-            // 데이터를 불러와 변경된 좋아요수 반영
+            // 데이터를 다시 불러 변경된 좋아요 수 반영
             fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
@@ -68,7 +67,7 @@ export const useSideBoardData = (boardId) => {
         }
     };
 
-    // 첨부파일다운로드핸들러
+    // 첨부파일 다운로드 핸들러
     const handleDownload = (fileName, fileData, fileType) => {
         try {
             // Buffer의 data 배열을 Uint8Array로 변환하여 Blob 생성
@@ -109,8 +108,8 @@ export const useSideBoardData = (boardId) => {
         }
     };
 
-    // 현재 게시물에 대한 사용자의 좋아요 여부 체크
-    const checkLiked = async () => {
+    // 좋아요체크핸들러
+    const handlecheckLiked = async () => {
         try {
             const response = await fetch(`/api/boardLike/${boardId}/${cookies.user}`, {
                 method: "POST",
@@ -154,12 +153,13 @@ export const useSideBoardData = (boardId) => {
             setLoading(false);
         }
     };
-
+    
+    const fetchDataAndCheckLiked = async () => {
+        await handlecheckLiked(); // 좋아요 여부 체크
+        await fetchData();  // 게시물 데이터 가져오기
+    };
     useEffect(() => {
-        const fetchDataAndCheckLiked = async () => {
-            await checkLiked(); // 좋아요 여부 체크
-            await fetchData();  // 게시물 데이터 가져오기
-        };
+
 
         fetchDataAndCheckLiked();
     }, [boardId]);

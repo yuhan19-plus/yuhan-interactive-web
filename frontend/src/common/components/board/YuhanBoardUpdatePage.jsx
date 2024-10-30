@@ -113,7 +113,7 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
     // 파일선택 핸들러
     const handleAttachmentEdit = (attachment_id, index) => {
-        setFileIndex(index); // boardData의 files의 배열의 인덱스값을 설정 파일처리에서 해당 인덱스에 집어넣기 위함
+        setFileIndex(index);
         setAttachmentId(attachment_id);
         // console.log("attachmentId", attachmentId)
 

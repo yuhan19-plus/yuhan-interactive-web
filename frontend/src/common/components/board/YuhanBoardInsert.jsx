@@ -199,7 +199,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    userId: cookies.user,  // 현재 사용자 ID를 전송
+                    userId: cookies.user,
                 }),
             });
 
@@ -209,7 +209,6 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 if (data.tempData) {
                     // console.log("읽어온 데이터", data.tempData);
 
-                    // 데이터를 상태에 반영
                     setBoardData({
                         board_title: data.tempData.board_title,
                         board_content: data.tempData.board_content,
