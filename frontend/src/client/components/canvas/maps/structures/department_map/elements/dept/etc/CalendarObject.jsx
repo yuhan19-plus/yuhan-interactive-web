@@ -1,14 +1,15 @@
 import React from 'react'
 import { Text3D, useGLTF } from '@react-three/drei'
 import moment from 'moment'
+import { FONT_URL } from '../../../../../../../../../data/commonData'
 
 export function CalendarObject({position, ...props}) {
   const currentMonthDate = moment(new Date()).format("MM월")
   console.log(currentMonthDate)
   const { nodes, materials } = useGLTF('/assets/models/dept_etc/Calendar.glb')
-  const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
+  
   const fontStyle = {
-      font: fontUrl,
+      font: FONT_URL,
       letterSpacing: 0.01,
       height: 0.1,
       lineHeight: 1,

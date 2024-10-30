@@ -1,5 +1,6 @@
 /**
  * 임성준
+ * 건물 그룹화 및 위치 설정
  */
 
 import React from 'react'
@@ -26,12 +27,12 @@ const BuildingGroup = () => {
     return (
         <>
             {/* 1호관 */}
-            {/* <Pyeonghwagwan
-                position={[66.35, 80, -69.278]}
-                rotation={[-Math.PI, 0, -Math.PI]}
+            <Pyeonghwagwan
+                position={[63.7, 79.3, -69]}
+                rotation={[-Math.PI, Math.PI, -Math.PI]}
                 viewValue={viewValue}
                 viewName={viewName}
-            /> */}
+            />
 
             {/* 2호관 */}
             <Bongsagwan
@@ -42,12 +43,12 @@ const BuildingGroup = () => {
             />
 
             {/* 3호관 */}
-            {/* <Jayugwan
-                position={[-108.5, 68, -142.3]}
+            <Jayugwan
+                position={[-106, 67.3, -147.15]}
                 rotation={[Math.PI / 2, 0, 0]}
                 viewValue={viewValue}
                 viewName={viewName}
-            /> */}
+            />
 
             {/* 4호관 */}
             <StudentCafeteria
@@ -86,12 +87,12 @@ const BuildingGroup = () => {
             />
 
             {/* 8호관 */}
-            {/* <Yujaelagwan
-                position={[-380.0, 97, -186.3]}
+            <Yujaelagwan
+                position={[-380.0, 97, -178]}
                 rotation={[-Math.PI, 0, -Math.PI]}
                 viewValue={viewValue}
                 viewName={viewName}
-            /> */}
+            />
 
             {/* 9호관 */}
             <GateOfSharing

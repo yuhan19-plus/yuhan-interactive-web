@@ -2,11 +2,11 @@ import { Text3D } from '@react-three/drei'
 import React from 'react'
 import { motion } from 'framer-motion-3d'
 import { useSelector } from 'react-redux'
+import { FONT_URL } from '../../../../../../../../../data/commonData'
 
 const DeptNameObject = ({groundMapName, positionOne, positionTwo , ...props}) => {
-    const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
     const fontStyle = {
-        font: fontUrl,
+        font: FONT_URL,
         letterSpacing: 0.01,
         height: 2,
         lineHeight: 1,

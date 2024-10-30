@@ -39,7 +39,8 @@ export function DesignDeptHeadCharacter({groundMapName, position, ...props}) {
           <primitive object={nodes.Hip} />
           <primitive object={nodes.Thigh_L} />
           <primitive object={nodes.Thigh_R} />
-          <skinnedMesh name="Hair" geometry={nodes.Hair.geometry} material={materials.Hair} skeleton={nodes.Hair.skeleton} />
+          <primitive object={nodes.neutral_bone} />
+          <skinnedMesh name="Hair" geometry={nodes.Hair.geometry} material={materials['Hair.002']} skeleton={nodes.Hair.skeleton} />
           <skinnedMesh name="Jaket" geometry={nodes.Jaket.geometry} material={materials.Cloth} skeleton={nodes.Jaket.skeleton} />
           <skinnedMesh name="Pants" geometry={nodes.Pants.geometry} material={materials.Cloth} skeleton={nodes.Pants.skeleton} />
           <group name="SD">

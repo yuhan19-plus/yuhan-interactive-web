@@ -3,13 +3,14 @@ import { Text3D, useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'
 import moment from 'moment'
 import { useFrame } from '@react-three/fiber'
+import { FONT_URL } from '../../../../../../../../../data/commonData'
 
 export function DeskWatch({position, ...props}) {
   const [currentTime, setCurrentTime] = useState(0)
   const { scene, nodes, materials } = useGLTF('/assets/models/dept_etc/DeskWatch.glb')
-  const fontUrl = 'assets/fonts/HakgyoansimWoojuR.json'
+  
   const fontStyle = {
-      font: fontUrl,
+      font: FONT_URL,
       letterSpacing: 0.01,
       height: 0.1,
       lineHeight: 1,

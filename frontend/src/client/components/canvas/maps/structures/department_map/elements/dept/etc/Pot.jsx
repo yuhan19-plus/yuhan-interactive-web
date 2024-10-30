@@ -4,7 +4,7 @@ import { useBox } from '@react-three/cannon'
 
 export function Pot({position, ...props}) {
   const { scene, nodes, materials } = useGLTF('/assets/models/dept_etc/pot.glb')
-
+  
   const [meshRef, api] = useBox(() => ({
     args: [285, 60, 150],
     type: 'Static',
@@ -21,7 +21,7 @@ export function Pot({position, ...props}) {
       }
     })
   }, [scene])
-
+  
   return (
     <group position={position} {...props}>
       <group position={[-4.066, 4.324, -0.149]} rotation={[-0.302, 0.914, -2.314]} scale={0.3}>

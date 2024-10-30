@@ -15,7 +15,18 @@ import { CSDeptHeadCharacter } from '../../../../player/dept/CSDeptHeadCharacter
 import { useSelector } from 'react-redux'
 import { FONT_URL } from '../../../../../../../../data/commonData'
 
+// 3D Text 폰트 스타일
+const fontStyle = {
+    font: FONT_URL,
+    letterSpacing: 0.01,
+    height: 2,
+    lineHeight: 1,
+    fontSize: 1,
+}
+
 const Welcome = () => {
+    const { scene } = useThree()
+
     // 맵 상태 가져오기
     const groundMapState = useSelector((state) => state.groundMap)
     const groundMapName = groundMapState.mapName
@@ -27,15 +38,6 @@ const Welcome = () => {
     // 빛 설정을 도와주는 Helper
     useHelper(lightRef, THREE.SpotLightHelper, 5)
 
-    // 3D Text 폰트 스타일
-    const fontStyle = {
-        font: FONT_URL,
-        letterSpacing: 0.01,
-        height: 2,
-        lineHeight: 1,
-        fontSize: 1,
-    }
-
     const [welcomeFloorRef] = useBox(() => ({
         args: [200, 16, 230],
         mass: 1,
@@ -43,8 +45,6 @@ const Welcome = () => {
         position: [-428, 2.5, -447],
         rotation:[0, 0, 0]
     }))
-
-    const { scene } = useThree()
 
     useEffect(() => {
         if (!targetRef.current) return
