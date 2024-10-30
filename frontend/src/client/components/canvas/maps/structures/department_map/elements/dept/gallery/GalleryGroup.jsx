@@ -9,55 +9,54 @@ import GalleryModal from '../modal/GalleryModal';
 import { Zone } from '../../../../common/Zone';
 
 const GalleryGroup = () => {
-    const [pictures, setPictures] = useState([]);
-    const [workInfo, setWorkInfo] = useState([]);
-
-    // 작품 영역 상태 가져오기
+    
+    // useSelector
+    // 영역 진입 여부 가져오기
     const isInFirstWork = useSelector((state) => state.galleryArea.inFirstWork);
-    useEffect(()=>{
-        console.log("1등 작품",isInFirstWork)
-    },[isInFirstWork])
     const isInSecondWork = useSelector((state) => state.galleryArea.inSecondWork);
-    useEffect(()=>{
-        console.log("2등 작품",isInSecondWork)
-    },[isInSecondWork])
     const isInThirdWork = useSelector((state) => state.galleryArea.inThirdWork);
-    useEffect(()=>{
-        console.log("3등 작품",)
-    },[isInThirdWork])
 
-    useEffect(() => {
-        // 백엔드에서 사진 데이터를 가져오는 함수
-        const fetchPictures = async () => {
-            try {
-                const response = await axios.get('/api/gallery/fetchPicture');
-                setPictures(response.data);
-                console.log("데이터 가져오기 완료!");
-            } catch (error) {
-                console.error("Error fetching pictures:", error);
-            }
-        };
-        fetchPictures();
-    }, []);
-
-    useEffect(() => {
-        // 백엔드에서 전체 작품 정보를 가져오는 함수
-        const fetchWorkInfo = async () => {
-            try {
-                const response = await axios.get('/api/gallery/fetchAllWorkInfo');
-                setWorkInfo(response.data);
-                console.log("전체 작품 데이터 가져오기 완료!");
-            } catch (error) {
-                console.error("Error fetching all work details:", error);
-            }
-        };
-        fetchWorkInfo();
-    }, []);
-
+    // useLoader
     // 각 Box에 이미지 텍스처 적용
     const texture1 = pictures[0] ? useLoader(THREE.TextureLoader, pictures[0].work_picture) : null;
     const texture2 = pictures[1] ? useLoader(THREE.TextureLoader, pictures[1].work_picture) : null;
     const texture3 = pictures[2] ? useLoader(THREE.TextureLoader, pictures[2].work_picture) : null;
+
+    // 상태관리
+    const [pictures, setPictures] = useState([]);
+    const [workInfo, setWorkInfo] = useState([]);
+
+    // 핸들러
+    // 사진 데이터 조회 핸들러
+    const fetchPictures = async () => {
+        try {
+            const response = await axios.get('/api/gallery/fetchPicture');
+            setPictures(response.data);
+            console.log("데이터 가져오기 완료!");
+        } catch (error) {
+            console.error("Error fetching pictures:", error);
+        }
+    };
+    // 전체 작품 정보 조회 핸들러
+    const fetchWorkInfo = async () => {
+        try {
+            const response = await axios.get('/api/gallery/fetchAllWorkInfo');
+            setWorkInfo(response.data);
+            console.log("전체 작품 데이터 가져오기 완료!");
+        } catch (error) {
+            console.error("Error fetching all work details:", error);
+        }
+    };
+
+    // useEffect
+    // 사진 데이터 가져오기
+    useEffect(() => {
+        fetchPictures();
+    }, []);
+    // 전체 작품 정보 가져오기
+    useEffect(() => {
+        fetchWorkInfo();
+    }, []);
 
     return (
         <>

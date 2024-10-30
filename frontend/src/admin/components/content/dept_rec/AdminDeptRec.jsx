@@ -5,7 +5,7 @@ import React, { useState, useEffect} from 'react'
 import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const AdminDeptRec = () => {
-
+    // 상태관리
     const [departments, setDepartments] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [rankings, setRankings] = useState([]);
@@ -13,13 +13,8 @@ const AdminDeptRec = () => {
     const [deptQuestions, setDeptQuestions] = useState([]); // 선택된 학부의 질문
     const [loading, setLoading] = useState(false);
 
-    // 학부 목록과 점수 정보 불러오기
-    useEffect(() => {
-        fetchDepartments();
-        fetchRankings();
-    }, []);
-
-    // 학부 목록을 서버에서 가져옴
+    // 핸들러
+    // 학부 목록 조회 핸들러
     const fetchDepartments = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
@@ -32,8 +27,7 @@ const AdminDeptRec = () => {
             console.error('학부 목록을 불러오는 중 에러 발생:', error);
         }
     };
-
-    // 학부 점수 및 순위 정보를 서버에서 가져옴
+    // 학부 점수 및 순위 정보 조회 핸들러
     const fetchRankings = async () => {
         try {
             const response = await fetch('/api/deptrecadmin/rankings');
@@ -43,14 +37,7 @@ const AdminDeptRec = () => {
             console.error('학부 점수를 불러오는 중 에러 발생:', error);
         }
     };
-
-    // 선택된 학부의 질문 목록을 서버에서 가져옴
-    useEffect(() => {
-        if (selectedDept) {
-            fetchQuestions(selectedDept);
-        }
-    }, [selectedDept]);
-
+    // 질문 목록 조회 핸들러
     const fetchQuestions = async (deptName) => {
         setLoading(true);
         try {
@@ -62,9 +49,9 @@ const AdminDeptRec = () => {
         }
         setLoading(false);
     };
-
-    // 질문 수정
+    // 질문 수정 처리 핸들러
     const handleSaveQuestion = async (questionId, newQuestion) => {
+        // 질문 수정 처리
         try {
             const response = await fetch(`/api/deptrecadmin/questions/${questionId}`, {
                 method: 'PUT',
@@ -73,16 +60,33 @@ const AdminDeptRec = () => {
                 },
                 body: JSON.stringify({ question: newQuestion }),
             });
+            // 질문 수정에 성공한 경우 질문 목록 다시 불러오기
             if (response.ok) {
                 alert('질문이 수정되었습니다.');
-                fetchQuestions(selectedDept); // 수정 후 질문 목록 다시 불러오기
+                fetchQuestions(selectedDept);
+            // 질문 수정에 실패한 경우
             } else {
                 throw new Error('질문 수정에 실패했습니다.');
             }
+        // 서버 오류인 경우
         } catch (error) {
             console.error('질문 수정 중 에러 발생:', error);
         }
     };
+
+    // useEffect
+    // 선택된 학부의 질문 목록을 서버에서 가져오기
+    useEffect(() => {
+        if (selectedDept) {
+            fetchQuestions(selectedDept);
+        }
+    }, [selectedDept]);
+    // 학부 목록과 점수 정보 불러오기
+    useEffect(() => {
+        fetchDepartments();
+        fetchRankings();
+    }, []);
+
 
     return (
         <>
