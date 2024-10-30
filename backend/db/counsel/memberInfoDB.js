@@ -21,7 +21,7 @@ router.get("/current-student-info", (req, res) => {
             user_major,
             student_number,
             student_grade
-        FROM student
+        FROM member_student
         WHERE user_id = ?
     `
 
@@ -50,7 +50,7 @@ router.get("/current-professor-info", (req, res) => {
             user_email,
             user_major,
             professor_position
-        FROM professor
+        FROM member_professor
         WHERE user_id = ?
     `
 
@@ -79,7 +79,7 @@ router.get("/get-my-professor-info", (req, res) => {
             user_phone,
             user_email,
             professor_position
-        FROM professor
+        FROM member_professor
         WHERE user_major = ? AND professor_position = "학과장"
     `
 
