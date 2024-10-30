@@ -22,50 +22,47 @@ import { Arrow } from './structures/common/Arrow'
 
 const RootMap = () => {
     const dispatch = useDispatch()
+
     const myChar = useSelector((state) => state.mChar)
     const groundMapState = useSelector((state) => state.groundMap)
     const currentGroundMapName = groundMapState.mapName
+    const busStationState = useSelector((state) => state.bus)
+    const busStationValue = busStationState.value
+    const busStationName = busStationState.busStationName
+    // const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
+    // const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
+    const viewDirectionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
+    const viewSmokingAreaState = useSelector((state) => state.view.value && state.view.viewName === 'smokingAreaView');
+    const isInStatue = useSelector(state=> state.statue.inStatue);
+    const isInStudentKiosk = useSelector(state=> state.studentKiosk.inStudentKiosk);
+    const isInSmokingArea = useSelector(state=> state.smokingArea.value);
 
     const [targetPosition, setTargetPosition] = useState(myChar.currentPosition)
-
-    useEffect(() => {
-        dispatch(mainChar(targetPosition))
-    }, [targetPosition])
 
     const handleMove = (newPosition) => {
         // console.log('newPosition', newPosition)
         setTargetPosition(newPosition)
     }
 
-    // Redux 상태에서 버스존 1에 있는지 여부 가져오기
-    const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
-    const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
-    // 찾아오는 길버튼의 클릭여부를 확인
-    const viewDirectionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
     useEffect(() => {
-        console.log(isInBusStationTwo)
-    }, [isInBusStationTwo])
+        dispatch(mainChar(targetPosition))
+    }, [targetPosition])
 
-    // 찾아오는 길버튼의 클릭여부를 확인
-    const viewSmokingAreaState = useSelector((state) => state.view.value && state.view.viewName === 'smokingAreaView');
-
-    // 동상 출퇴장 처리
-    const isInStatue = useSelector(state=> state.statue.inStatue);
-    useEffect(()=>{
-        console.log("동상",isInStatue)
-    },[isInStatue])
+    // useEffect(() => {
+    //     console.log(isInBusStationTwo)
+    // }, [isInBusStationTwo])
     
-    //학생 식당 음식 출퇴장 처리
-    const isInStudentKiosk = useSelector(state=> state.studentKiosk.inStudentKiosk);
-    useEffect(()=>{
-        console.log("식당",isInStudentKiosk)
-    },[isInStudentKiosk])
+    // useEffect(()=>{
+    //     console.log("동상",isInStatue)
+    // },[isInStatue])
+    
+    // useEffect(()=>{
+    //     console.log("식당",isInStudentKiosk)
+    // },[isInStudentKiosk])
 
-    // 흡연장 출퇴장 처리
-    const isInSmokingArea = useSelector(state=> state.smokingArea.inSmokingArea);
-    useEffect(()=>{
-        console.log("흡연장",isInSmokingArea)
-    },[isInSmokingArea])
+    // useEffect(()=>{
+    //     console.log("흡연장",isInSmokingArea)
+    // },[isInSmokingArea])
 
     return (
         <group>
@@ -135,18 +132,18 @@ const RootMap = () => {
                         ) : (
                             <>
                                 {/* 찾아오는 길 안내문 */}
-                                {isInBusStationOne && (
+                                {(busStationValue) && (
                                     <>
                                         <Direction position={[170, 0, 0]} />
                                         <Bus position={[355, 17.5, -150]} />
                                     </>
                                 )}
-                                {isInBusStationTwo && (
+                                {/* {(busStationValue && busStationName === 'busStationTwo') && (
                                     <>
                                         <Direction position={[540, 0, 0]} />
                                         <Bus position={[355, 17.5, -150]} />
                                     </>
-                                )}
+                                )} */}
                             </>
                         )
                     }

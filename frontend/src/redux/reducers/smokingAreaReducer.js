@@ -2,27 +2,32 @@
  * 흡연장 입장 퇴장 리듀서
  */
 
-import { ENTER_SMOKINGAREA, INIT_SMOKING_AREA, LEAVE_SMOKINGAREA } from "../actions/actions";
+import { INIT_SMOKING_AREA, ON_SMOKING_AREA } from "../actions/actions";
 
-const initialState = {inSmokingArea: false};
+const initialState = {value: false};
 
 export function smokingAreaReducer(state=initialState,action){
     switch(action.type){
         case INIT_SMOKING_AREA:
             return {
                 ...state,
-                inSmokingArea: false
+                value: false
             }
-        case ENTER_SMOKINGAREA:
-            return{
+        case ON_SMOKING_AREA:
+            return {
                 ...state,
-                inSmokingArea: true,
-            };
-        case LEAVE_SMOKINGAREA:
-            return{
-                ...state,
-                inSmokingArea: false,
-            };
+                value: !state.value
+            }
+        // case ENTER_SMOKINGAREA:
+        //     return{
+        //         ...state,
+        //         value: !state.value,
+        //     };
+        // case LEAVE_SMOKINGAREA:
+        //     return{
+        //         ...state,
+        //         value: !state.value,
+        //     };
         default:
             return state;
     }

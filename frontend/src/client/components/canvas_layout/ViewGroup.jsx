@@ -22,10 +22,10 @@ const ViewGroup = () => {
     const handleAerialView = (e) => {
         e.stopPropagation()
         if(kioskValue || busValue || smokingValue || statueValue) {
-            if(kioskValue) dispatch(initKiosk())
-            if(busValue) dispatch(initBusStation())
-            if(smokingValue) dispatch(initSmokingArea())
-            if(statueValue) dispatch(initStatue())
+            // if(kioskValue) dispatch(initKiosk())
+            // if(busValue) dispatch(initBusStation())
+            // if(smokingValue) dispatch(initSmokingArea())
+            // if(statueValue) dispatch(initStatue())
             
             Swal.fire({
                 icon: "info",
@@ -40,10 +40,10 @@ const ViewGroup = () => {
     const handleDirectionsView = (e) => {
         e.stopPropagation()
         if(kioskValue || busValue || smokingValue || statueValue) {
-            if(kioskValue) dispatch(initKiosk())
-            if(busValue) dispatch(initBusStation())
-            if(smokingValue) dispatch(initSmokingArea())
-            if(statueValue) dispatch(initStatue())
+            // if(kioskValue) dispatch(initKiosk())
+            // if(busValue) dispatch(initBusStation())
+            // if(smokingValue) dispatch(initSmokingArea())
+            // if(statueValue) dispatch(initStatue())
 
             Swal.fire({
                 icon: "info",
@@ -58,10 +58,10 @@ const ViewGroup = () => {
     const handleSmokingAreaView = (e) => {
         e.stopPropagation()
         if(kioskValue || busValue || smokingValue || statueValue) {
-            if(kioskValue) dispatch(initKiosk())
-            if(busValue) dispatch(initBusStation())
-            if(smokingValue) dispatch(initSmokingArea())
-            if(statueValue) dispatch(initStatue())
+            // if(kioskValue) dispatch(initKiosk())
+            // if(busValue) dispatch(initBusStation())
+            // if(smokingValue) dispatch(initSmokingArea())
+            // if(statueValue) dispatch(initStatue())
                 
             Swal.fire({
                 icon: "info",
@@ -76,10 +76,10 @@ const ViewGroup = () => {
     const handleGuideView = (e) => {
         e.stopPropagation()
         if(kioskValue || busValue || smokingValue || statueValue) {
-            if(kioskValue) dispatch(initKiosk())
-            if(busValue) dispatch(initBusStation())
-            if(smokingValue) dispatch(initSmokingArea())
-            if(statueValue) dispatch(initStatue())
+            // if(kioskValue) dispatch(initKiosk())
+            // if(busValue) dispatch(initBusStation())
+            // if(smokingValue) dispatch(initSmokingArea())
+            // if(statueValue) dispatch(initStatue())
                 
             Swal.fire({
                 icon: "info",

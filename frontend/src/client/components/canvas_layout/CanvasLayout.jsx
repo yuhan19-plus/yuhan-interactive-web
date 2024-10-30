@@ -27,7 +27,7 @@ const CanvasLayout = ({ children }) => {
     const currentModalValue = currentModal.value
 
     const groundMapState = useSelector((state) => state.groundMap)
-    console.log(groundMapState)
+    // console.log(groundMapState)
 
     useEffect(() => {
         if(location.pathname === '/') {

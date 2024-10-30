@@ -1,3 +1,8 @@
+/** 
+ * 임성준
+ * - 학과장 캐릭터의 애니메이션을 위한 훅
+ */
+
 import { useAnimations, useGLTF } from "@react-three/drei"
 import { useFrame, useGraph } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -8,21 +13,26 @@ import { deptHeadAniInit } from "../../../../../../../redux/actions/actions"
 import { useAnimatedText } from "../useAnimatedText"
 
 export const useCsDeptCharacter = ({myChar, groundMapName, position, ...props}) => {
+    const dispatch = useDispatch()
+
     const deptHeadAniState = useSelector((state) => state.deptHeadAni)
     const deptHeadAniValue = deptHeadAniState.value
     const deptHeadAniName = deptHeadAniState.animationName
     // console.log('deptHeadAniState', deptHeadAniState)
+
     const [text, setText] = useState('컴퓨터소프트웨어공학과에 오신걸 환영합니다.')
     const { displayText } = useAnimatedText(text)
-
-    const dispatch = useDispatch()
 
     const deptCharRef = useRef()
     const nameRef = useRef(null)
     const chatRef = useRef(null)
+
     const { scene, animations } = useGLTF('/assets/models/character/CSDeptHead.glb')
+
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
+
     const { nodes, materials } = useGraph(clone)
+    
     const { actions } = useAnimations(animations, deptCharRef)
     // console.log(animations)
     

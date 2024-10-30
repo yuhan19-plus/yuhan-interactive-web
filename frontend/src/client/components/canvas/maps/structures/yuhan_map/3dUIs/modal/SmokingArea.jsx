@@ -9,9 +9,9 @@ const SmokingArea = ({ position }) => {
       center
     >
       <SmokingWrapper
-        onPointerUp={(e) => {
-            e.stopPropagation()
-        }}
+          onPointerUp={(e) => {
+              e.stopPropagation()
+          }}
       >
         <SmokingHeader>
           <img style={{width:"8%", height:"8%", verticalAlign:"sub"}} src="assets/images/smokingArea.png"/>

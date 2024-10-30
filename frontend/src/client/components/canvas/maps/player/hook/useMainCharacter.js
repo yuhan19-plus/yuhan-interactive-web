@@ -11,14 +11,69 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationMixer, Vector3 } from "three"
 import { SkeletonUtils } from "three-stdlib"
-import { Enter_First_Work, Leave_First_Work, Enter_Second_Work, Leave_Second_Work, Enter_Third_Work, Leave_Third_Work, EnterCodingArea, LeaveCodingArea, Enter_SmokingArea, Leave_SmokingArea, Enter_Statue, Enter_StudentKiosk, Leave_Statue, Leave_StudentKiosk, deptInfoCareerAndEmploymentField, deptInfoDeptFeatures, deptInfoEduGoals, deptInfoLicense, deptInfoMainEduFields, enterBusStationOne, enterBusStationTwo, initDeptInfo, initKiosk, initMiniMapTeleport, kioskBongSa, kioskCafeteria, kioskChangjo, kioskJayu, kioskMemorialHall, kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, leaveBusStationOne, leaveBusStationTwo, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide, EnterGoldBoxArea, LeaveGoldBoxArea, initCodingArea, initBusStation } from "../../../../../../redux/actions/actions"
+import {
+    Enter_First_Work,
+    Leave_First_Work,
+    Enter_Second_Work,
+    Leave_Second_Work,
+    Enter_Third_Work,
+    Leave_Third_Work,
+    EnterCodingArea,
+    LeaveCodingArea,
+    Enter_Statue,
+    Enter_StudentKiosk,
+    Leave_Statue,
+    Leave_StudentKiosk,
+    deptInfoCareerAndEmploymentField,
+    deptInfoDeptFeatures,
+    deptInfoEduGoals,
+    deptInfoLicense,
+    deptInfoMainEduFields,
+    initDeptInfo,
+    initKiosk,
+    initMiniMapTeleport,
+    kioskBongSa,
+    kioskCafeteria,
+    kioskChangjo,
+    kioskJayu,
+    kioskMemorialHall,
+    kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide, EnterGoldBoxArea, LeaveGoldBoxArea, initCodingArea, initBusStation, initSmokingArea, 
+    onBusStationOne,
+    onBusStationTwo,
+    onSmokingArea} from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
+import Swal from "sweetalert2"
 
 export const useMainCharacter = ({ position, myChar }) => {
+    const dispatch = useDispatch()
+
+    const groundMapState = useSelector((state) => state.groundMap)
+
+    const viewState = useSelector((state) => state.view)
+    const aerialViewValue = viewState.value
+    const directionsState = viewState.value && viewState.viewName === 'directionsView'
+    const smokingAreaState = viewState.value && viewState.viewName === 'smokingAreaView'
+    const campusGuideViewValue = viewState.value
+    const campusGuideViewName = viewState.viewName
+   
+    const kioskState = useSelector((state) => state.kiosk)
+    const busState = useSelector((state) => state.bus)
+    const smokingState = useSelector((state) => state.smokingArea)
+    const statueState = useSelector((state) => state.statue)
+    const kioskValue = kioskState.value
+    const busValue = busState.value
+    const smokingValue = smokingState.value
+    const statueValue = statueState.inStatue
+
+    // 텔레포트
+    const teleportState = useSelector((state) => state.teleport)
+    const teleportValue = teleportState.value
+    const teleportPosition = teleportState.position
+    // console.log('teleportPosition', teleportPosition)
+
     const [isAnimating, setIsAnimating] = useState(false)
     const [gsapCameraState, setGsapCameraState] = useState(false)
-    const groundMapState = useSelector((state) => state.groundMap)
-    const dispatch = useDispatch()
+
     // 추가적인 useRef 선언으로 상태를 추적
     const kioskDispatchFlag = useRef(false)
     const welcomeZoneCameraFlag = useRef(false) 
@@ -29,22 +84,8 @@ export const useMainCharacter = ({ position, myChar }) => {
     const deptInfoLicenseDispatchFlag = useRef(false)
     const deptInfoDeptFeaturesDispatchFlag = useRef(false)
     const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
-
-    // 2~3개의 변수만 사용해서 코드 수정할 부분 - 성준
     const deptHeadAniFlag = useRef(false)
-    
-    const viewState = useSelector((state) => state.view)
-    const aerialViewValue = viewState.value
-    const directionsState = viewState.value && viewState.viewName === 'directionsView'
-    const smokingAreaState = viewState.value && viewState.viewName === 'smokingAreaView'
-    const campusGuideViewValue = viewState.value
-    const campusGuideViewName = viewState.viewName
-
-    // 텔레포트
-    const teleportState = useSelector((state) => state.teleport)
-    const teleportValue = teleportState.value
-    const teleportPosition = teleportState.position
-    // console.log('teleportPosition', teleportPosition)
+    const busStationFlag = useRef(false)
 
     const { camera } = useThree()
 
@@ -52,10 +93,6 @@ export const useMainCharacter = ({ position, myChar }) => {
     const player = myChar.name // 값 : SJ
     const charRef = useRef(null)
     const point = document.getElementById(`student-point-${player}`)
-
-    // 초기 목표 위치를 설정
-    // console.log('position', position)
-    const [targetPosition, setTargetPosition] = useState(new Vector3(...position))
 
     const { scene, materials, animations } = useGLTF('/assets/models/character/MainCharacter.glb')
 
@@ -68,6 +105,10 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // AnimationMixer 생성 (애니메이션을 제어하는 클래스)
     const mixer = useMemo(() => new AnimationMixer(clone), [clone])
+    
+    // 초기 목표 위치를 설정
+    // console.log('position', position)
+    const [targetPosition, setTargetPosition] = useState(new Vector3(...position))
 
     // 현재 실행 중인 애니메이션 상태를 저장하는 상태 변수
     const [animation, setAnimation] = useState('Stand')
@@ -88,6 +129,7 @@ export const useMainCharacter = ({ position, myChar }) => {
     const [isGoldBoxArea1, setisGoldBoxArea1] = useState(false);
     const [isGoldBoxArea2, setisGoldBoxArea2] = useState(false);
     const [isGoldBoxArea3, setisGoldBoxArea3] = useState(false);
+
     // 갤러리 영역 상태관리
     const [isFirstWork, setIsFirstWork] = useState(false);
     const [isSecondWork, setIsSecondWork] = useState(false);
@@ -113,9 +155,9 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 처음 렌더링 시 초기 위치를 설정
     useEffect(() => {
-        console.log('groundMapState.mapName ', groundMapState.mapName)
-        console.log(myChar.currentPosition)
-        console.log(myChar.deptInitPosition)
+        // console.log('groundMapState.mapName ', groundMapState.mapName)
+        // console.log(myChar.currentPosition)
+        // console.log(myChar.deptInitPosition)
         if (charRef.current) {
             if (groundMapState.mapName === 'yh_map') {
                 charRef.current.position.set(
@@ -133,7 +175,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
             }
         }
-        console.log('charRef.current.position', charRef.current.position)
+        // console.log('charRef.current.position', charRef.current.position)
     }, [groundMapState])
 
     // 목표 위치가 변경되면 캐릭터 이동 시작
@@ -165,41 +207,102 @@ export const useMainCharacter = ({ position, myChar }) => {
     // 항공뷰
     useEffect(() => {
         if (aerialViewValue) {
-            dispatch(initBusStation()) // 항공뷰 시 찾아오는 길 보이는 거 해결
-            gsap.to(camera.position, {
-                x: 0,
-                y: 1000,
-                z: -300,
-                duration: 1,
-                ease: 'power2.inOut'
-            })
+            if(
+                kioskValue ||
+                busValue ||
+                smokingValue ||
+                statueValue ||
+                yuhanTvZoneCameraFlag.current ||
+                welcomeZoneCameraFlag.current
+            ) {
+                // if(kioskValue) dispatch(initKiosk())
+                // if(busValue) dispatch(initBusStation())
+                // if(smokingValue) dispatch(initSmokingArea())
+                // if(statueValue) dispatch(initStatue())
+                
+                Swal.fire({
+                    icon: "info",
+                    title: "안내",
+                    text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+                })
+            }
+            else {
+                gsap.to(camera.position, {
+                    x: 0,
+                    y: 1000,
+                    z: -300,
+                    duration: 1,
+                    ease: 'power2.inOut'
+                })
+            }
         }
     }, [aerialViewValue, camera])
 
     // 찾아오는 길 뷰
     useEffect(() => {
         if (directionsState) {
-            gsap.to(camera.position, {
-                x: 1800,
-                y: 700,
-                z: -250,
-                duration: 1.5,
-                ease: 'power2.inOut',
-            });
+            if(
+                kioskValue ||
+                busValue ||
+                smokingValue ||
+                statueValue ||
+                yuhanTvZoneCameraFlag.current ||
+                welcomeZoneCameraFlag.current
+            ) {
+                // if(kioskValue) dispatch(initKiosk())
+                // if(busValue) dispatch(initBusStation())
+                // if(smokingValue) dispatch(initSmokingArea())
+                // if(statueValue) dispatch(initStatue())
+                
+                Swal.fire({
+                    icon: "info",
+                    title: "안내",
+                    text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+                })
+            }
+            else {
+                gsap.to(camera.position, {
+                    x: 1800,
+                    y: 700,
+                    z: -250,
+                    duration: 1.5,
+                    ease: 'power2.inOut',
+                });
+            }
         }
     }, [directionsState, camera]);
 
     // 흡연구역 뷰
     useEffect(() => {
-        dispatch(initBusStation())
         if (smokingAreaState){
-            gsap.to(camera.position,{
-                x: -580,
-                y: 1000,
-                z: 0,
-                duration: 1.5,
-                ease: 'power2.inOut',
-            });
+            if(
+                kioskValue ||
+                busValue ||
+                smokingValue ||
+                statueValue ||
+                yuhanTvZoneCameraFlag.current ||
+                welcomeZoneCameraFlag.current
+            ) {
+                // if(kioskValue) dispatch(initKiosk())
+                // if(busValue) dispatch(initBusStation())
+                // if(smokingValue) dispatch(initSmokingArea())
+                // if(statueValue) dispatch(initStatue())
+                
+                Swal.fire({
+                    icon: "info",
+                    title: "안내",
+                    text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+                })
+            }
+            else {
+                gsap.to(camera.position,{
+                    x: -580,
+                    y: 1000,
+                    z: 0,
+                    duration: 1.5,
+                    ease: 'power2.inOut',
+                });
+            }
         }
     }, [smokingAreaState, camera]);
 
@@ -217,9 +320,6 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     // 카메라 설정 부분
     const handleGSAPCamera = (x, y, z) => {
-        // console.log('currentPosition', charRef.current.position)
-        // console.log('x, y, z', x, y, z)
-        // console.log(isAnimating, gsapState)
         if (isAnimating) return
         setIsAnimating(true)
         gsap.to(camera.position, {
@@ -235,11 +335,7 @@ export const useMainCharacter = ({ position, myChar }) => {
     }
 
     const handleCamera = (x, y, z) => {
-        // if (isAnimating) return
-        // isAnimating = true
-        // console.log('handleCamera', gsapCameraState)
         if(!gsapCameraState) {
-            // console.log('handleCamera')
             camera.position.set(x, y, z)
         }
     }
@@ -259,20 +355,20 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // Start Zone
                 if ((currentPosition.x <= 285 && currentPosition.x >= 275) &&
                     (currentPosition.z >= -360 && currentPosition.z <= -350)) {
-                        console.log('test')
+                        // console.log('test')
                         // console.log('이것', currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
                         handleGSAPCamera(currentPosition.x + 0, currentPosition.y + 50, currentPosition.z + 100)
                 }
                 // 학교 밖 정문 앞 쪽
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
                     ((currentPosition.z < -325 && currentPosition.z >= -560))) {
-                        console.log('test')
+                        // console.log('test')
                         handleCamera(550, 150, -550)
                 }
                 // 그 외 학교 밖
                 else if((currentPosition.x > 250 && currentPosition.x < 520) &&
                     ((currentPosition.z < 396 && currentPosition.z >= -325))) {
-                        console.log('test')
+                        // console.log('test')
                         handleCamera(600, 150, 50)
                         // Bus Zone
                         if ((currentPosition.x <= 322 && currentPosition.x >= 262) &&
@@ -281,8 +377,11 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(550, 100, -170)
                                 }
-
-                            dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
+                                if(!busStationFlag.current) {
+                                    busStationFlag.current = true
+                                    dispatch(onBusStationOne())
+                                }
+                            // dispatch(enterBusStationOne()); // 리덕스 액션 디스패치
                             // console.log("버스존 1에 진입했습니다.");
                         }
                         else if ((currentPosition.x <= 522 && currentPosition.x >= 482) &&
@@ -291,19 +390,26 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setGsapCameraState(true)
                                     handleGSAPCamera(750, 100, -450)
                                 }
-                            dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
+                                if(!busStationFlag.current) {
+                                    busStationFlag.current = true
+                                    dispatch(onBusStationTwo())
+                                }
+                            // dispatch(enterBusStationTwo()); // 리덕스 액션 디스패치
                             // console.log("버스존 2에 진입했습니다.");
                         }
                         else { // 버스존이 아닌 경우
-                            dispatch(initBusStation())
                             if(gsapCameraState) {
-                                console.log('Bus Zone')
                                 setGsapCameraState(false)
                             }
 
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
                                 dispatch(initKiosk())
+                            }
+
+                            if(busStationFlag.current) {
+                                busStationFlag.current = false
+                                dispatch(initBusStation())
                             }
                         }
                 }
@@ -612,7 +718,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 }
                                 if (!isInSmokingArea) {
                                     setIsInSmokingArea(true);
-                                    dispatch(Enter_SmokingArea());
+                                    dispatch(onSmokingArea())
+                                    // dispatch(Enter_SmokingArea());
                                     console.log("흡연구역 입장", isInSmokingArea);
                                 }
                         }
@@ -622,7 +729,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                             }
                             if (isInSmokingArea) {
                                 setIsInSmokingArea(false);
-                                dispatch(Leave_SmokingArea());
+                                dispatch(initSmokingArea())
+                                // dispatch(Leave_SmokingArea());
                                 console.log("흡연구역 퇴장", isInSmokingArea);
                             }
                         }
@@ -661,7 +769,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 유한TV Zone
                 if ((currentPosition.x <= -108 && currentPosition.x >= -148) &&
                     (currentPosition.z <= -410 && currentPosition.z >= -450)) {
-                        console.log('유한TV Zone 진입')
+                        // console.log('유한TV Zone 진입')
                         if(!yuhanTvZoneCameraFlag.current) {
                             yuhanTvZoneCameraFlag.current = true
                             setGsapCameraState(true)
@@ -673,7 +781,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if(yuhanTvZoneCameraFlag.current) {
                         yuhanTvZoneCameraFlag.current = false
                         if(gsapCameraState) {
-                            console.log("유한TV setGsapCameraState")
+                            // console.log("유한TV setGsapCameraState")
                             setGsapCameraState(false)
                             dispatch(initGuide())
                         }
@@ -696,14 +804,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 if (!isInStatueZone) {
                                     setIsInStatueZone(true);
                                     dispatch(Enter_Statue());
-                                    console.log("동상 입장", isInStatueZone);
+                                    // console.log("동상 입장", isInStatueZone);
                                 }
                         }
                         else {
                             if(yuhanStatueCameraFlag.current) {
                                 yuhanStatueCameraFlag.current = false
                                 if(gsapCameraState) {
-                                    console.log("동상 setGsapCameraState")
+                                    // console.log("동상 setGsapCameraState")
                                     setGsapCameraState(false)
                                     dispatch(initGuide())
                                 }
@@ -711,7 +819,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             if (isInStatueZone) {
                                 setIsInStatueZone(false);
                                 dispatch(Leave_Statue());
-                                console.log("동상 퇴장", isInStatueZone);
+                                // console.log("동상 퇴장", isInStatueZone);
                             }
                         }
                 }
@@ -719,7 +827,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (isInStatueZone) {
                         setIsInStatueZone(false);
                         dispatch(Leave_Statue());
-                        console.log("동상 퇴장", isInStatueZone);
+                        // console.log("동상 퇴장", isInStatueZone);
                     }
                 }
                 

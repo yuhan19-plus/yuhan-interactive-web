@@ -30,16 +30,16 @@ function App() {
 
   // 서버 연결 상태를 확인하는 함수
   const checkServerConnection = async () => {
-    console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
+    // console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
     try {
       const response = await fetch('/api/healthCheck'); // 백엔드 서버의 헬스체크 엔드포인트
       if (!response.ok) {
         throw new Error('서버 연결에 실패했습니다');
       }
       const data = await response.json();
-      console.log('서버와 연결되었습니다:', data.message); // 서버 연결 성공 메시지 출력
+      // console.log('서버와 연결되었습니다:', data.message); // 서버 연결 성공 메시지 출력
     } catch (error) {
-      console.error('서버 연결 확인 중 오류 발생:', error);
+      // console.error('서버 연결 확인 중 오류 발생:', error);
     }
   };
 
@@ -57,41 +57,15 @@ function App() {
             <Route path='/login' element={<MemberIndex value='login' />} />
             <Route path='/join' element={<MemberIndex value='join' />} />
             <Route path='/membermodify' element={<MemberIndex value='modify' />} />
-
-            {/* client 부분 경로
-              오늘의 메뉴
-              학과체험
-              상담신청
-              유한게시판
-            */}
             <Route path='/department/*' element={<DeptCanvasLayout />} />
-            {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
-              <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
-              <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
-            </Route> */}
-            {/* <Route path='/client-yuhanBoard' element={<YuhanBoard />} /> */}
-            {/* <Route path='/client-food' element={<FoodBoard />} /> */}
-
             <Route path='/admin' element={<AdminIndex />}>
               <Route path='/admin' element={<AdminMain />} />
-              <Route path='/admin/member' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>
-              <Route path='/admin/foodMenu' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>
-              <Route path='/admin/board' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>
-              <Route path='/admin/deptRec' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>
-              <Route path='/admin/report' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>
-              <Route path='/admin/gallery' element={<AdminMain />}>
-                {/* 경로설정 */}
-              </Route>            
+              <Route path='/admin/member' element={<AdminMain />} />
+              <Route path='/admin/foodMenu' element={<AdminMain />} />
+              <Route path='/admin/board' element={<AdminMain />} />
+              <Route path='/admin/deptRec' element={<AdminMain />} />
+              <Route path='/admin/report' element={<AdminMain />} />
+              <Route path='/admin/gallery' element={<AdminMain />} />            
             </Route>
             <Route path='/error' element={<ErrorPage />} />
           </Routes>

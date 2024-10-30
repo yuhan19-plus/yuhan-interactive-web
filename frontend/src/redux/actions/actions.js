@@ -96,15 +96,18 @@ export const LEAVE_STUDENTKIOSK = 'LEAVE_STUDENTKIOSK';
 
 // 버스 정류장 - 자현
 export const INIT_BUS_STATION='INIT_BUS_STATION';
-export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
-export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
-export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
-export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
+export const ON_BUS_STATION_ONE = 'ON_BUS_STATION_ONE'
+export const ON_BUS_STATION_TWO = 'ON_BUS_STATION_TWO'
+// export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
+// export const LEAVE_BUS_STATION_ONE = 'LEAVE_BUS_STATION_ONE';
+// export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
+// export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 
 // 흡연장 - 석재
 export const INIT_SMOKING_AREA = 'INIT_SMOKING_AREA'
-export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
-export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
+export const ON_SMOKING_AREA = 'ON_SMOKING_AREA'
+// export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
+// export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
 // 코딩경험영역 - 자현 INIT_CODINGAREA
 export const INIT_CODINGAREA = 'INIT_CODINGAREA';
@@ -280,18 +283,24 @@ export const campusGuideView = () => ({
 export const initBusStation = () => ({
     type:INIT_BUS_STATION,
 })
-export const enterBusStationOne = () => ({
-    type: ENTER_BUS_STATION_ONE,
-});
-export const leaveBusStationOne = () => ({
-    type: LEAVE_BUS_STATION_ONE,
-});
-export const enterBusStationTwo = () => ({
-    type: ENTER_BUS_STATION_TWO,
-});
-export const leaveBusStationTwo = () => ({
-    type: LEAVE_BUS_STATION_TWO,
-});
+export const onBusStationOne = () => ({
+    type: ON_BUS_STATION_ONE
+})
+export const onBusStationTwo = () => ({
+    type: ON_BUS_STATION_TWO
+})
+// export const enterBusStationOne = () => ({
+//     type: ENTER_BUS_STATION_ONE,
+// });
+// export const leaveBusStationOne = () => ({
+//     type: LEAVE_BUS_STATION_ONE,
+// });
+// export const enterBusStationTwo = () => ({
+//     type: ENTER_BUS_STATION_TWO,
+// });
+// export const leaveBusStationTwo = () => ({
+//     type: LEAVE_BUS_STATION_TWO,
+// });
 
 // 키오스크
 export const initKiosk = () => ({
@@ -356,12 +365,15 @@ export const Leave_StudentKiosk =() =>({
 export const initSmokingArea = () => ({
     type: INIT_SMOKING_AREA
 })
-export const Enter_SmokingArea = () =>({
-    type:ENTER_SMOKINGAREA
+export const onSmokingArea = () => ({
+    type: ON_SMOKING_AREA
 })
-export const Leave_SmokingArea = () =>({
-    type:LEAVE_SMOKINGAREA
-})
+// export const Enter_SmokingArea = () =>({
+//     type:ENTER_SMOKINGAREA
+// })
+// export const Leave_SmokingArea = () =>({
+//     type:LEAVE_SMOKINGAREA
+// })
 
 // 학과체험 맵 학과 소개 - 성준
 // 교육목표

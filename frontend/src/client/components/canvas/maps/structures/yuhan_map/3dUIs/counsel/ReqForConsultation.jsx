@@ -117,7 +117,6 @@ const ReqForConsultation = ({currentUserState}) => {
                     title: '신청 완료',
                     text: '상담 신청이 성공적으로 접수되었습니다.',
                 }).then(() => {
-                    console.log()
                     handleCheckCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
                     handleUpdateCounselState(professorData.professorId, formData.counselDate, formData.counselTime)
                     handleMyCounsel()
