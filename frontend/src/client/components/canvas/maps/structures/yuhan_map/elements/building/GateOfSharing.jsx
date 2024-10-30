@@ -10,7 +10,7 @@ import { GateOfSharingEntrance } from './GateOfSharingEntrance'
 import { GateOfSharingLeftPillar } from './GateOfSharingLeftPillar'
 import { GateOfSharingRightPillar } from './GateOfSharingRightPillar'
 
-export function GateOfSharing({position, btnMenuValue, btnMenuName, ...props}) {
+export function GateOfSharing({position, viewValue, viewName, ...props}) {
   const gateOfSharingRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -24,7 +24,7 @@ export function GateOfSharing({position, btnMenuValue, btnMenuName, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+      if(viewValue && viewName === 'campusGuideView') {
           setHovered(true)
       }
   }

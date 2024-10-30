@@ -20,7 +20,8 @@ const DeptElements = ({ groundMapName }) => {
                     <GalleryGroup />
                     {groundMapName === 'yuhan_bio_map' && (
                         // 바이오
-                        <BioGroup />
+                        // <BioGroup />
+                        <></>
                     )}
                     {groundMapName === 'computer_sw_map' && (
                         // 컴소

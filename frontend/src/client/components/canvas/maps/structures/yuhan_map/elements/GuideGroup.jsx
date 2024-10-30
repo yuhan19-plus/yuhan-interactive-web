@@ -12,9 +12,9 @@ import { motion } from 'framer-motion-3d'
 
 const GuideGroup = () => {
     // 항공뷰 버튼 그룹 상태
-    const aerialViewState = useSelector((state) => state.btnMenu)
-    const aerialViewValue =  aerialViewState.value
-    const aerialViewName = aerialViewState.btnMenuName
+    const viewState = useSelector((state) => state.view)
+    const aerialViewValue =  viewState.value
+    const aerialViewName = viewState.viewName
 
     // 3D Text 폰트 스타일
     const fontStyle = {

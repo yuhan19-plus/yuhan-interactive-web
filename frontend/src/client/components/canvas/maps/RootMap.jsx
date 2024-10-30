@@ -41,13 +41,13 @@ const RootMap = () => {
     const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
     const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
     // 찾아오는 길버튼의 클릭여부를 확인
-    const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+    const viewDirectionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
     useEffect(() => {
         console.log(isInBusStationTwo)
     }, [isInBusStationTwo])
 
     // 찾아오는 길버튼의 클릭여부를 확인
-    const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView');
+    const viewSmokingAreaState = useSelector((state) => state.view.value && state.view.viewName === 'smokingAreaView');
 
     // 동상 출퇴장 처리
     const isInStatue = useSelector(state=> state.statue.inStatue);
@@ -105,7 +105,7 @@ const RootMap = () => {
                         </>
                     )}
 
-                    {smokingAreaState ? (
+                    {viewSmokingAreaState ? (
                             <>
                                 <Arrow position={[41.672, 50, -284.431]} scale={8} />
                                 <Arrow position={[131.979, 25, -125]} scale={8} />
@@ -126,7 +126,7 @@ const RootMap = () => {
                         )  
                     }
 
-                    {directionsState ? (
+                    {viewDirectionsState ? (
                             <>
                                 <Arrow position={[282, 25, -163]} scale={8} />
                                 <Arrow position={[502, 25, -237]} scale={8} />

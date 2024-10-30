@@ -10,7 +10,7 @@ import { NanumgwanLeftPillar } from './NanumgwanLeftPillar'
 import { NanumgwanRightPillar } from './NanumgwanRightPillar'
 import { SmokingArea } from '../etc/SmokingArea'
 
-export function Nanumgwan({position, btnMenuValue, btnMenuName, ...props}) {
+export function Nanumgwan({position, viewValue, viewName, ...props}) {
   const nanumRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -24,7 +24,7 @@ export function Nanumgwan({position, btnMenuValue, btnMenuName, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+      if(viewValue && viewName === 'campusGuideView') {
           setHovered(true)
       }
   }

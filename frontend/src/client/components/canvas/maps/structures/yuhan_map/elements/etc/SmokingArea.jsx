@@ -20,11 +20,11 @@ export function SmokingArea({position, scale, ...props}) {
     ...props
   }))
 
-  const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView')
+  const viewState = useSelector((state) => state.view.value && state.view.viewName === 'smokingAreaView')
 
   useEffect(() => {
     // 흡연구역 상태가 활성화되면 애니메이션 시작
-    if (smokingAreaState) {
+    if (viewState) {
       gsap.to(meshRef.current.scale, {
         x: 1.5, y: 1.5, z: 1.5, 
         duration: 0.5,
@@ -41,7 +41,7 @@ export function SmokingArea({position, scale, ...props}) {
         ease: "power1.inOut"
       })
     }
-  }, [smokingAreaState]) // smokingAreaState 변경을 감지
+  }, [viewState]) // viewState 변경을 감지
 
   useEffect(() => {
     scene.traverse((obj) => {

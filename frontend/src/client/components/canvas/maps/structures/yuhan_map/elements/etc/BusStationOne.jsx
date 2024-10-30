@@ -12,7 +12,7 @@ export function BusStationOne({ position, ...props }) {
   const { scene, nodes, materials } = useGLTF('/assets/models/etc/BusStation1.glb');
 
   // 찾아오는 길 버튼의 클릭 여부를 확인
-  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+  const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
 
   // 버스 정류장의 애니메이션 적용 여부를 상태로 관리
   const [animate, setAnimate] = useState(false);

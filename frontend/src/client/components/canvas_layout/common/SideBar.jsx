@@ -20,31 +20,25 @@ import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
 
 const title = ''
-const SideBar = () => {
 
+const SideBar = () => {
+    // 쿠키(세션 쿠키)
+    const [cookies, setCookie, removeCookie] = useCookies();
+
+    const dispatch = useDispatch()
     const location = useLocation()
     const currentPath = location.pathname
     // console.log('currentPath', currentPath) // 현재 경로 출력
-
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
     const currentMap = useSelector((state) => state.groundMap)
     const currentMapName = currentMap.mapName
-
     console.log('currentMapName', currentMapName) // 현재 맵 이름 출력
     
-    const dispatch = useDispatch()
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
     const handleShowAdminEnterModal = () => {
         dispatch(adminEnterModal())
     }
     
-    // const sideMenuValue = useSelector((state) => state.sideMenu)
-
-    // console.log('sideMenuValue', sideMenuValue)
-
-    // 쿠키(세션 쿠키)
-    const [cookies, setCookie, removeCookie] = useCookies();
-
     const handleSideMenuInit = () => {
         // 사이드 메뉴 초기화
         dispatch(initSideMenu())
@@ -123,7 +117,9 @@ const SideBar = () => {
                 </SideBarHeader>
                 <SideBarList>
                     {
-                        (currentMapName === 'yh_map' &&  currentPath === '/') ? <MainSideBarMenu /> : <DeptSideBarMenu currentMapName={currentMapName} />
+                        (currentMapName === 'yh_map' &&  currentPath === '/') ?
+                            <MainSideBarMenu /> :
+                            <DeptSideBarMenu />
                     }
                 </SideBarList>
             </SideBarContainer>
@@ -230,6 +226,10 @@ const DropdownController = styled.div`
     color: var(--sub-color);
     border-radius: 2.5rem;
     padding: 0.1rem;
+
+    &:hover {
+        color: var(--yuhan-yellow-color);
+    }
 
     svg {
         width: 2.5rem;

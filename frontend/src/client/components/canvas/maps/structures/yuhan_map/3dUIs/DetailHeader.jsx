@@ -3,15 +3,15 @@
  */
 import { Close } from '@mui/icons-material'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { initSideMenu } from '../../../../../../../redux/actions/actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faSitemap } from '@fortawesome/free-solid-svg-icons'
 
 const DetailHeader = (props) => {
-    const sideMenuValue = useSelector((state) => state.sideMenu)
     const dispatch = useDispatch()
+    
     const { title } = props
 
     const handleCloseSideMenu = (e) => {

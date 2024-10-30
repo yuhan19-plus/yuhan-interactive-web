@@ -19,17 +19,17 @@ import { currentProfessorUserInfo, currentStudentUserInfo, myCounsel, reqForCons
 let title
 
 const SideMenuLayout = (props) => {
-    const dispatch = useDispatch()
     const [cookies] = useCookies(['user'])
     const userId = cookies.user
     const userType = cookies.userType
     // console.log(userId)
     // console.log(userType)
 
+    const dispatch = useDispatch()
+    
     const { pageName, value } = props
-    // console.log(pageName)
-
     title = pageName
+    // console.log(pageName)
 
     if (title === 'consultation') title = '상담신청'
     else if (title === 'board') title = '유한게시판'
@@ -142,7 +142,7 @@ const DetailContent = styled.div`
     height: 100%;
     overflow-y: auto;
     background-color: var(--sub-color);
-    padding: 15px;
+    padding: 1rem;
 `
 
 export default SideMenuLayout

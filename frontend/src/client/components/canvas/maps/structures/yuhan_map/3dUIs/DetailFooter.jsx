@@ -65,7 +65,7 @@ const DetailFooterContent = styled.div`
     }
 
     div > p {
-        margin-right: 15px;
+        margin-right: 1rem;
     }
 `
 

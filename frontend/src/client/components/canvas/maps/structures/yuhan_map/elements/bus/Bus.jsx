@@ -20,7 +20,7 @@ export function Bus({ position }) {
   const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
   const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
   // 찾아오는 길버튼의 클릭여부를 확인
-  const directionsState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'directionsView');
+  const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
 
   // 첫 번째 group.current에서 트래버스 실행
   useEffect(() => {

@@ -1,11 +1,3 @@
-/**
- * **********************************************************
- * 정리할 부분
- * - 코드 가독성을 위해서 공통 부분 모으기
- * - 스타일 컴포넌트로 변경 후 코드 정리
- * **********************************************************
- */
-
 import { Html } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 import { Subway, DirectionsBus, DirectionsCar, LocalParking } from '@mui/icons-material';
@@ -84,7 +76,7 @@ const Direction = ({ position }) => {
                     onPointerDown={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
                     onPointerMove={(e) => e.stopPropagation()}  // 드래그 이벤트 전파 차단
                 ></div>
-                <DirectionHeader>
+                <DirectionContainer>
                     <DirectionTitle>
                         <p>찾아오시는 길</p>
                     </DirectionTitle>
@@ -163,7 +155,7 @@ const Direction = ({ position }) => {
                             </DirectionContentItem>
                         )}
                     </DirectionContent>
-                </DirectionHeader>
+                </DirectionContainer>
             </DirectionWrapper>
         </Html>
     );
@@ -175,7 +167,7 @@ const DirectionWrapper = styled.div`
     overflow: hidden;
 `
 
-const DirectionHeader = styled.div`
+const DirectionContainer = styled.div`
     width: 100%;
     height: 100%;
     background-color: var(--sub-color);

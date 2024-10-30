@@ -9,11 +9,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const DeptSideBarMenu = ({currentMapName}) => {
-    // console.log(currentMapName)
+const DeptSideBarMenu = () => {
     const groundMapState = useSelector((state) => state.groundMap)
     const pathData = groundMapState.pathData
     // console.log(groundMapState)
+
     return (
         <MainSideBarMenuWrapper>
             <MainSideBarMenuItem>
@@ -31,10 +31,6 @@ const DeptSideBarMenu = ({currentMapName}) => {
             <MainSideBarMenuItem>
                 <FontAwesomeIcon icon={faBuilding} />
                 <span><a href={pathData[2]} target='_blank'>학과사무실</a></span>
-            </MainSideBarMenuItem>
-            <MainSideBarMenuItem>
-                <FontAwesomeIcon icon={faCalendarDays} />
-                <span><a href={pathData[3]} target='_blank'>학사일정</a></span>
             </MainSideBarMenuItem>
         </MainSideBarMenuWrapper>
     )

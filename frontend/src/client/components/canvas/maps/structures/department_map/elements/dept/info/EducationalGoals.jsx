@@ -70,23 +70,11 @@ export function EducationalGoals({name, deptInfoValue, deptInfoName, position, s
         position={position}
       >
         {(deptInfoValue && (name === deptInfoName)) && (
-              <DeptModal position={[0, 0, 100]} deptInfoName={deptInfoName} />
+              <DeptModal position={[50, 0, 70]} deptInfoName={deptInfoName} />
         )}
       </group>
     </>
   )
 }
-
-const StyledModal = styled.div`
-    width: 500px;
-    background: #0F275Cdd;
-    padding: 5%;
-    border-radius: 25px;
-    color: white;
-    font-size: 24px;
-    p {
-        margin-bottom: 3%;
-    }
-`
 
 useGLTF.preload('/assets/models/dept_info/education.glb')

@@ -20,7 +20,7 @@ export function SmokingBooth({position, ...props}) {
 
   const boothRef = useRef();
 
-  const smokingAreaState = useSelector((state) => state.btnMenu.value && state.btnMenu.btnMenuName === 'smokingAreaView')
+  const smokingAreaState = useSelector((state) => state.view.value && state.view.viewName === 'smokingAreaView')
 
   useEffect(() => {
     // 흡연구역 상태가 활성화되면 애니메이션 시작

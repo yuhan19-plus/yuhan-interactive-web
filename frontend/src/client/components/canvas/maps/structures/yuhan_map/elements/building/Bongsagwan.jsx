@@ -9,7 +9,7 @@ import { motion } from 'framer-motion-3d'
 import { BongsagwanEntrance } from './BongsagwanEntrance'
 import { SmokingArea } from '../etc/SmokingArea'
 
-export function Bongsagwan({position, btnMenuValue, btnMenuName, ...props}) {
+export function Bongsagwan({position, viewValue, viewName, ...props}) {
   const bongsagwanRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -23,7 +23,7 @@ export function Bongsagwan({position, btnMenuValue, btnMenuName, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+      if(viewValue && viewName === 'campusGuideView') {
           setHovered(true)
       }
   }

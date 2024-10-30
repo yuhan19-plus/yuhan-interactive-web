@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import BtnMenuGroup from './BtnMenuGroup'
+import ViewGroup from './ViewGroup'
 import { useDispatch, useSelector } from 'react-redux'
 import MiniMapContent from './mini_map/MiniMapContent'
 import { miniMapTeleport } from '../../../redux/actions/actions'
@@ -23,7 +23,7 @@ const MiniMap = () => {
 
     return (
         <MiniMapWrapper>
-            <BtnMenuGroup />
+            <ViewGroup />
             <MiniMapContentWrapper>
                 <MiniMapContent cameraPosition={cameraPosition} />
                 <Teleport style={{top: "40%", right: "40%"}} $tooltipcontent="평화관 정문" onClick={() => {

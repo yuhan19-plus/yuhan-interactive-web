@@ -25,6 +25,8 @@ const YuhanCalendar = () => {
 
     const today = new Date()
     const [date, setDate] = useState(today)
+    const [registeredDates, setRegisteredDates] = useState([])
+    const [allCounselDatesAndTimes, setAllCounselDatesAndTimes] = useState([])
 
     const handleTodayClick = () => {
         const today = new Date()
@@ -43,10 +45,7 @@ const YuhanCalendar = () => {
         dispatch(counselBtn())
     }
 
-    const [registeredDates, setRegisteredDates] = useState([])
-    const [allCounselDatesAndTimes, setAllCounselDatesAndTimes] = useState([])
-
-    const GetCounselDates = async () => {
+    const getCounselDates = async () => {
         try {
             const response = await axios.get('/api/consultation/counsel-dates', {
                 params: {
@@ -76,6 +75,7 @@ const YuhanCalendar = () => {
         if(!myProfessorInfoState || myProfessorInfoState.length === 0) return
         try {
             date = moment(date).format("YYYY-MM-DD")
+
             const response = await axios.get('/api/consultation/counsel-date', {
                 params: {
                     professorId: userId,
@@ -106,7 +106,7 @@ const YuhanCalendar = () => {
     }
 
     // 날짜 등록 처리
-    const ClickRegisterDate = async (userId, userMajor, userName, counselDate) => {
+    const clickRegisterDate = async (userId, userMajor, userName, counselDate) => {
         try {
             // put일 때 params를 사용할 경우 직접 전송해야함
             const response = await axios.put('/api/consultation/counsel-date-register/register-date', {
@@ -116,12 +116,13 @@ const YuhanCalendar = () => {
                 professorMajor: userMajor
             })
             // console.log(response.data)
+
             Swal.fire({
                 icon: 'success',
                 title: '날짜등록',
                 text: `${counselDate}상담가능 날짜를 등록하였습니다.`,
             })
-            GetCounselDates()
+            getCounselDates()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -132,7 +133,7 @@ const YuhanCalendar = () => {
     }
 
     // 등록된 날짜 취소 처리
-    const ClickCancelDate = async (userId, counselDate) => {
+    const clickCancelDate = async (userId, counselDate) => {
         try {
             await axios.delete('/api/consultation/counsel-date-delete', {
                 data: {
@@ -140,12 +141,14 @@ const YuhanCalendar = () => {
                     counselDate: counselDate
                 }
             })
+
             Swal.fire({
                 icon: 'success',
                 title: '날짜등록취소',
                 text: '등록된 날짜를 취소하였습니다.',
             })
-            GetCounselDates()
+            
+            getCounselDates()
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -157,7 +160,7 @@ const YuhanCalendar = () => {
 
     useEffect(() => {
         if(userId) {
-            GetCounselDates()
+            getCounselDates()
         }
     }, [userId])
 
@@ -325,7 +328,7 @@ const YuhanCalendar = () => {
                                                                         cancelButtonText: "닫기",
                                                                     }).then((res) => {
                                                                         if (res.isConfirmed) {
-                                                                            ClickCancelDate(userId, moment(date).format("YYYY-MM-DD"))
+                                                                            clickCancelDate(userId, moment(date).format("YYYY-MM-DD"))
                                                                         } else {
                                                                             return
                                                                         }
@@ -383,7 +386,7 @@ const YuhanCalendar = () => {
                                                         cancelButtonText: "닫기",
                                                     }).then((res) => {
                                                         if (res.isConfirmed) {
-                                                            ClickRegisterDate(userId, userMajor, userName, moment(date).format("YYYY-MM-DD"))
+                                                            clickRegisterDate(userId, userMajor, userName, moment(date).format("YYYY-MM-DD"))
                                                         } else {
                                                             return
                                                         }

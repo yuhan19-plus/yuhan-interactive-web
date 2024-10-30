@@ -10,8 +10,8 @@ import { Arrow } from '../../common/Arrow'
 const Floor = ({onMove, ...props}) => {
     // redux 상태 값 가져오기
     const guideState = useSelector((state) => state.guide)
-    const viewMenuState = useSelector((state) => state.btnMenu)
-    const aerialViewStateValue = viewMenuState.value
+    const viewState = useSelector((state) => state.view)
+    const viewValue = viewState.value
     const guideValue = guideState.value
     const guideAreaName = guideState.guideAreaName
 
@@ -26,7 +26,7 @@ const Floor = ({onMove, ...props}) => {
                 castShadow
                 receiveShadow
                 onPointerUp={(e) => {
-                    if(!aerialViewStateValue) {
+                    if(!viewValue) {
                         const currentPosition = [e.point.x, 0.3, e.point.z]
                         console.log('currentPosition', currentPosition) // 확인을 위한 출력
                         if (onMove) {
@@ -47,7 +47,7 @@ const Floor = ({onMove, ...props}) => {
                 ) : (
                     <>
                         {
-                            aerialViewStateValue ? (
+                            viewValue ? (
                                 <></>
                             ) : (
                                 <Arrow position={[42, 15, -515]} scale={5} />
@@ -67,7 +67,7 @@ const Floor = ({onMove, ...props}) => {
                 ) : (
                     <>
                         {
-                            aerialViewStateValue ? (
+                            viewValue ? (
                                 <></>
                             ) : (
                                 <Arrow position={[-275, 15, -433]} scale={5} />
@@ -87,7 +87,7 @@ const Floor = ({onMove, ...props}) => {
                 ) : (
                     <>
                         {
-                            aerialViewStateValue ? (
+                            viewValue ? (
                                 <></>
                             ) : (
                                 <Arrow position={[-128, 15, -430]} scale={5} />

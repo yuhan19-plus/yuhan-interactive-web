@@ -8,7 +8,7 @@ import { useGLTF } from '@react-three/drei'
 import { motion } from 'framer-motion-3d'
 import { SmokingArea } from '../etc/SmokingArea'
 
-export function Pyeonghwagwan({position, btnMenuValue, btnMenuName, ...props}) {
+export function Pyeonghwagwan({position, viewValue, viewName, ...props}) {
   const pyeonghwaRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -22,7 +22,7 @@ export function Pyeonghwagwan({position, btnMenuValue, btnMenuName, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+      if(viewValue && viewName === 'campusGuideView') {
           setHovered(true)
       }
   }

@@ -74,6 +74,8 @@ export const DEPT_INFO_LICENSE = 'DEPT_INFO_LICENSE' // 자격증
 export const DEPT_INFO_DEPT_FEATURES = 'DEPT_INFO_DEPT_FEATURES' // 학과특징
 
 // 미니맵 상단 버튼 그룹 - 성준
+// 뷰 초기화 - 성준
+export const INIT_VIEW = 'INIT_VIEW'
 // 항공뷰 버튼 - 성준
 export const AERIAL_VIEW = 'AERIAL_VIEW'
 // 찾아오는 길버튼 - 자현
@@ -84,6 +86,7 @@ export const SMOKINGAREA_VIEW = 'SMOKINGAREA_VIEW'
 export const GUIDE_VIEW = 'GUIDE_VIEW'
 
 //입구 동상 - 정민
+export const INIT_STATUE = 'INIT_STATUE'
 export const ENTER_STATUE = 'ENTER_STATUE';
 export const LEAVE_STATUE = 'LEAVE_STATUE';
 
@@ -99,6 +102,7 @@ export const ENTER_BUS_STATION_TWO = 'ENTER_BUS_STATION_TWO';
 export const LEAVE_BUS_STATION_TWO = 'LEAVE_BUS_STATION_TWO';
 
 // 흡연장 - 석재
+export const INIT_SMOKING_AREA = 'INIT_SMOKING_AREA'
 export const ENTER_SMOKINGAREA = 'ENTER_SMOKINGAREA'
 export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
@@ -250,6 +254,10 @@ export const counselDateRegister = () => ({
 })
 
 // 미니맵 상단 버튼 그룹 - 성준
+// 미니맵 상단 버튼 뷰 초기화 - 성준
+export const initView = () => ({
+    type: INIT_VIEW
+})
 // 미니맵 상단 항공뷰 버튼 - 성준
 export const aerialView = () => ({
     type: AERIAL_VIEW
@@ -326,6 +334,9 @@ export const kioskYujaela = (boolValue) => ({
     payload: boolValue
 })
 //입구 동상
+export const initStatue = () => ({
+    type: INIT_STATUE
+})
 export const Enter_Statue = () =>({
     type:ENTER_STATUE
 })
@@ -342,6 +353,9 @@ export const Leave_StudentKiosk =() =>({
 })
 
 // 흡연장
+export const initSmokingArea = () => ({
+    type: INIT_SMOKING_AREA
+})
 export const Enter_SmokingArea = () =>({
     type:ENTER_SMOKINGAREA
 })

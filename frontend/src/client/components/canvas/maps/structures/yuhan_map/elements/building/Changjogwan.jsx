@@ -9,7 +9,7 @@ import { motion } from 'framer-motion-3d'
 import { ChangjogwanPillar } from './ChangjogwanPillar'
 import { SmokingArea } from '../etc/SmokingArea'
 
-export function Changjogwan({position, btnMenuValue, btnMenuName, ...props}) {
+export function Changjogwan({position, viewValue, viewName, ...props}) {
   const changjoRef = useRef()
   const [hovered, setHovered] = useState(false)
 
@@ -23,7 +23,7 @@ export function Changjogwan({position, btnMenuValue, btnMenuName, ...props}) {
   }))
 
   const handlePointerOver = () => {
-      if(btnMenuValue && btnMenuName === 'campusGuideView') {
+      if(viewValue && viewName === 'campusGuideView') {
           setHovered(true)
       }
   }

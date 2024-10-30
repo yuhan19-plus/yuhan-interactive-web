@@ -78,9 +78,3 @@ const DeptNameObject = ({groundMapName, positionOne, positionTwo , ...props}) =>
 }
 
 export default DeptNameObject
-
-// 
-
-//                      
-
-//                     

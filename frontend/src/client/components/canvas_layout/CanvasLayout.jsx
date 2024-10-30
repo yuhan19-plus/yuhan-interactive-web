@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import SideMenuLayout from '../canvas/maps/structures/yuhan_map/3dUIs/SideMenuLayout'
 import MiniMap from './MiniMap'
 import AdminEnterModal from '../canvas/maps/structures/yuhan_map/3dUIs/modal/AdminEnterModal'
-import BtnMenuGroup from './BtnMenuGroup'
 import { useLocation } from 'react-router-dom'
-import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, yhMap, yuhanBioMap } from '../../../redux/actions/actions'
-import { BIO_PATH, CSW_PATH, FN_PATH, ID_PATH } from '../../../data/commonData'
+import { yhMap } from '../../../redux/actions/actions'
+
 
 const CanvasLayout = ({ children }) => {
     const location = useLocation()
@@ -29,17 +28,6 @@ const CanvasLayout = ({ children }) => {
 
     const groundMapState = useSelector((state) => state.groundMap)
     console.log(groundMapState)
-
-    // const currentMap = useSelector((state) => state.groundMap)
-    // const currentMapName = currentMap.mapName
-
-    // console.log('currentMapName', currentMapName)
-
-    // console.log('sideMenuValue', currentSideMenuValue)
-    // console.log('sideMenuName', currentSideMenuName)
-    
-    // console.log('currentModalValue', currentModalValue)
-    // console.log('currentModalName', currentModalName)
 
     useEffect(() => {
         if(location.pathname === '/') {

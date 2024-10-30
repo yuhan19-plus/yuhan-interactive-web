@@ -16,21 +16,24 @@ import DeptFloor from './elements/DeptFloor'
 const DeptMap = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const myChar = useSelector((state) => state.mChar)
     const groundMapState = useSelector((state) => state.groundMap)
     const groundMapName = groundMapState.mapName
+
     const [targetPosition, setTargetPosition] = useState(myChar.deptInitPosition)
     console.log('dept targetPosition : ', targetPosition)
+    
+    const handleMove = (newPosition) => {
+        setTargetPosition(newPosition)
+    }
+
     useEffect(() => {
         if (targetPosition) {
             dispatch(mainCharDept(targetPosition))
         }
     }, [targetPosition, dispatch])
-
-    const handleMove = (newPosition) => {
-        setTargetPosition(newPosition)
-    }
-
+    
     useEffect(() => {
         if(groundMapName === '' || groundMapName === 'yh_map') {
             navigate('/')

@@ -7,7 +7,7 @@ import { consultationReducer } from "./consultationReducer";
 import { kioskReducer } from "./kioskReducer";
 import { mainCharReducer } from "./mainCharReducer";
 import { mapReducer } from "./mapReducer";
-import { menuBtnReducer } from "./menuBtnReducer";
+import { viewReducer } from "./viewReducer";
 import { miniMapReducer } from "./miniMapReducer";
 import { modalReducer } from "./modalReducer";
 import { sideMenuReducer } from "./sideMenuReducer";
@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
     groundMap: mapReducer,
     modal: modalReducer,
     mChar: mainCharReducer,
-    btnMenu: menuBtnReducer,
+    view: viewReducer,
     counsel: consultationReducer,
     kiosk: kioskReducer,
     teleport: miniMapReducer,

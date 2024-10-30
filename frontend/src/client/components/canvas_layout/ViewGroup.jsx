@@ -3,32 +3,97 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { aerialView, campusGuideView, directionsView, initKiosk, smokingAreaView } from '../../../redux/actions/actions'
+import { aerialView, campusGuideView, directionsView, initBusStation, initKiosk, initSmokingArea, initStatue, initView, smokingAreaView } from '../../../redux/actions/actions'
+import Swal from 'sweetalert2'
 
-const BtnMenuGroup = () => {
+const ViewGroup = () => {
     const dispatch = useDispatch()
+
+    const kioskState = useSelector((state) => state.kiosk)
+    const busState = useSelector((state) => state.bus)
+    const smokingState = useSelector((state) => state.smokingArea)
+    const statueState = useSelector((state) => state.statue)
+    const kioskValue = kioskState.value
+    const busValue = busState.value
+    const smokingValue = smokingState.value
+    const statueValue = statueState.inStatue
 
     // 미니맵 상단 버튼 handle메서드
     const handleAerialView = (e) => {
         e.stopPropagation()
-        dispatch(initKiosk())
-        dispatch(aerialView())
+        if(kioskValue || busValue || smokingValue || statueValue) {
+            if(kioskValue) dispatch(initKiosk())
+            if(busValue) dispatch(initBusStation())
+            if(smokingValue) dispatch(initSmokingArea())
+            if(statueValue) dispatch(initStatue())
+            
+            Swal.fire({
+                icon: "info",
+                title: "안내",
+                text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+            })
+        }
+        else {
+            dispatch(aerialView())
+        }
     } 
     const handleDirectionsView = (e) => {
         e.stopPropagation()
-        dispatch(directionsView())
+        if(kioskValue || busValue || smokingValue || statueValue) {
+            if(kioskValue) dispatch(initKiosk())
+            if(busValue) dispatch(initBusStation())
+            if(smokingValue) dispatch(initSmokingArea())
+            if(statueValue) dispatch(initStatue())
+
+            Swal.fire({
+                icon: "info",
+                title: "안내",
+                text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+            })
+        }
+        else {
+            dispatch(directionsView())
+        }
     } 
     const handleSmokingAreaView = (e) => {
         e.stopPropagation()
-        dispatch(smokingAreaView())
+        if(kioskValue || busValue || smokingValue || statueValue) {
+            if(kioskValue) dispatch(initKiosk())
+            if(busValue) dispatch(initBusStation())
+            if(smokingValue) dispatch(initSmokingArea())
+            if(statueValue) dispatch(initStatue())
+                
+            Swal.fire({
+                icon: "info",
+                title: "안내",
+                text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+            })
+        }
+        else {
+            dispatch(smokingAreaView())
+        }
     }
     const handleGuideView = (e) => {
         e.stopPropagation()
-        dispatch(campusGuideView())
+        if(kioskValue || busValue || smokingValue || statueValue) {
+            if(kioskValue) dispatch(initKiosk())
+            if(busValue) dispatch(initBusStation())
+            if(smokingValue) dispatch(initSmokingArea())
+            if(statueValue) dispatch(initStatue())
+                
+            Swal.fire({
+                icon: "info",
+                title: "안내",
+                text: "해당 이벤트 영역에서는 이용할 수 없습니다."
+            })
+        }
+        else {
+            dispatch(campusGuideView())
+        }
     }
 
     return (
-        <BtnMenuWrapper>
+        <ViewWrapper>
             <BtnList>
                 <BtnItem onClick={handleAerialView} data-tooltip='항공뷰'>
                     <FontAwesomeIcon icon={faPlane} />
@@ -43,11 +108,11 @@ const BtnMenuGroup = () => {
                     <FontAwesomeIcon icon={faLocationDot} />
                 </BtnItem>
             </BtnList>
-        </BtnMenuWrapper>
+        </ViewWrapper>
     )
 }
 
-const BtnMenuWrapper = styled.div`
+const ViewWrapper = styled.div`
     width: 100%;
     height: 30px;
 `
@@ -117,4 +182,4 @@ const BtnItem = styled.button`
     }
 `
 
-export default BtnMenuGroup
+export default ViewGroup

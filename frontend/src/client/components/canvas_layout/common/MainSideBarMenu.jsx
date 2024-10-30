@@ -18,14 +18,15 @@ import SchoolIcon from '@mui/icons-material/School';
 import SupportIcon from '@mui/icons-material/Support';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { board, consultation, deptRec, food, initChar, yhMap } from '../../../../redux/actions/actions';
+import { board, consultation, deptRec, food } from '../../../../redux/actions/actions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
 
 const MainSideBarMenu = () => {
+    // 쿠키 값 가져오기를 위한 훅
+    const [cookies] = useCookies(['user']);
+
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const handleSideMenuConsultation = () => {
         dispatch(consultation())
@@ -39,9 +40,6 @@ const MainSideBarMenu = () => {
     const handleDeptRec = () => {
         dispatch(deptRec())
     }
-
-    // 쿠키 값 가져오기를 위한 훅
-    const [cookies] = useCookies(['user']);
 
     return (
         <MainSideBarMenuWrapper>
