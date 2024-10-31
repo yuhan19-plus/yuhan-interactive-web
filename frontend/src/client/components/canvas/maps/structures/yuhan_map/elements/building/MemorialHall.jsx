@@ -52,7 +52,7 @@ export function MemorialHall({position, viewValue, viewName, ...props}) {
       }}
       onPointerOut={handlePointerOut}
       animate={{
-        y: hovered ? 25 : -1
+        y: hovered ? 20 : -1
       }}
       transition={{
         duration: 1,
