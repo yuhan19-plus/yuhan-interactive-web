@@ -21,7 +21,7 @@ const initialBoard = [
   [0, 0, 0, 0]
 ];
 
-function MiniGame2048() {
+function MiniGame2048({ position, rotation, scale }) {
   const [board, setBoard] = useState(initialBoard);
   const [moved, setMoved] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -175,38 +175,66 @@ function MiniGame2048() {
   };
 
   return (
-    <group position={[195, -6.5, 190]} scale={[8, 8, 8]} rotation={[Math.PI / -2, 0, Math.PI]}>
-      {board.map((row, rowIndex) =>
-        row.map((tile, colIndex) => (
-          <Tile key={`${rowIndex}-${colIndex}`} value={tile} position={[colIndex * -2.1, rowIndex * 2.1, (rowIndex + colIndex) * 0.3]} />
-        ))
-      )}
-      {gameOver && (
-        <>
-          <Text3D position={[1, 1.8, 7]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} >
-            Game Over
-            <meshStandardMaterial color="red" />
-          </Text3D>
-          <Text3D 
-            position={[1, 2.3, 6.2]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} onClick={handleResetClick} font={FONT_URL}>
-            -다시하기-
-            <meshStandardMaterial color="blue" />
-          </Text3D>
-        </>
-      )}
-      {gameClear && (
-        <>
-          <Text3D position={[1, 1.8, 5]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL}>
-            축하합니다! 2048을 달성하셨습니다!
-            <meshStandardMaterial color="green" />
-          </Text3D>
-          <Text3D position={[1, 1.8, 4.5]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} onClick={handleResetClick}>
-            -다시하기-
-            <meshStandardMaterial color="blue" />
-          </Text3D>
-        </>
-      )}
-    </group>
+    <>
+      <group position={position} rotation={rotation} scale={scale}>
+          <group position={[195, -6.5, 190]} scale={[8, 8, 8]} rotation={[Math.PI / -2, 0, Math.PI]}>
+          {board.map((row, rowIndex) =>
+            row.map((tile, colIndex) => (
+              <Tile
+                key={`${rowIndex}-${colIndex}`}
+                value={tile}
+                position={[colIndex * -2.1, rowIndex * 2.1, (rowIndex + colIndex) * 0.3]}
+              />
+            ))
+          )}
+        </group>
+        {gameOver && (
+          <group position={[200, 30, 160]}>
+              <Text3D
+                scale={scale}
+                rotation={[0, -Math.PI / 2, 0]}
+                font={FONT_URL}
+              >
+                Game Over
+                <meshStandardMaterial color="red" />
+              </Text3D>
+              <Text3D 
+                position-y={-7}
+                scale={scale}
+                rotation={[0, -Math.PI / 2, 0]}
+                onClick={handleResetClick}
+                font={FONT_URL}
+              >
+                -다시하기-
+                <meshStandardMaterial color="blue" />
+              </Text3D>
+            </group>
+          )}
+          {gameClear && (
+            <group position={[200, 30, 160]}>
+              <Text3D
+                position-z={-17}
+                scale={scale}
+                rotation={[0, -Math.PI / 2, 0]}
+                font={FONT_URL}
+              >
+                축하합니다! 2048을 달성하셨습니다!
+                <meshStandardMaterial color="green" />
+              </Text3D>
+              <Text3D
+                position-y={-7}
+                scale={scale}
+                rotation={[0, -Math.PI / 2, 0]}
+                onClick={handleResetClick}
+                font={FONT_URL}
+              >
+                -다시하기-
+                <meshStandardMaterial color="blue" />
+              </Text3D>
+            </group>
+          )}
+      </group>
+    </>
   );
 }
 

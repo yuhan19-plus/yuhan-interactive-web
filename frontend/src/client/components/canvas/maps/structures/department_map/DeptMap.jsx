@@ -45,6 +45,7 @@ const DeptMap = () => {
         <group>
             <DeptFloor
                 position={[0, -11, 0]}
+                groundMapName={groundMapName}
                 onMove={handleMove}
             />
             <DeptElements groundMapName={groundMapName} />

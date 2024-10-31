@@ -13,9 +13,9 @@ import { Bricks64 } from './miniObject/Bricks64';
 import { Bricks8 } from './miniObject/Bricks8';
 import { FONT_URL } from '../../../../../../data/commonData';
 
-const Bricks2048List = () => {
+const Bricks2048List = ({ position, rotation, scale }) => {
     return (
-        <>
+        <group position={position} rotation={rotation} scale={scale}>
             <group position={[200, -6.5, 110]} scale={5} rotation={[0,Math.PI/-2,0]}>
                 <Bricks2 />
                 <Bricks4  position={[2.5,0,0]}/>
@@ -81,7 +81,7 @@ const Bricks2048List = () => {
                     </Text3D>
                 </group>
             </group>
-        </>
+        </group>
     );
 };
 

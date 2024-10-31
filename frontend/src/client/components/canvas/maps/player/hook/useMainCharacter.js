@@ -897,6 +897,30 @@ export const useMainCharacter = ({ position, myChar }) => {
                 }
                 dispatch(initCodingArea())
             }
+            else if (groundMapState.mapName === 'mini_game_map') {
+                // return
+                if (currentPosition.x === 0 && currentPosition.z === 0) {
+                    handleGSAPCamera(0, 50, 75)
+                }
+
+                // 1사분면
+                if ((currentPosition.x > 0 && currentPosition.x <= 250) &&
+                    (currentPosition.z >= -250 && currentPosition.z <= 0)) {
+                    handleCamera(currentPosition.x + -200, currentPosition.y + 130, currentPosition.z + 200)
+                }
+
+                // 2사분면
+                if ((currentPosition.x < 0 && currentPosition.x >= -250) &&
+                    (currentPosition.z >= -250 && currentPosition.z <= 0)) {
+                    handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 100)
+                }
+
+                // 3, 4사분면
+                if ((currentPosition.x <= 250 && currentPosition.x >= -250) &&
+                    (currentPosition.z > 0 && currentPosition.z <= 250)) {
+                    handleCamera(currentPosition.x, currentPosition.y + 350, currentPosition.z + 350)
+                }
+            }
             else {
                 // return
 

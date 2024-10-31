@@ -15,14 +15,18 @@ const DeptElements = ({ groundMapName }) => {
         <>
             {groundMapName !== '' && (
                 <>
-                    <DeptInfoGroup groundMapName={groundMapName} />
-                    <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
-                    <GalleryGroup />
                     {groundMapName === 'computer_sw_map' && (
                         // 컴소
                         <>
+                            <DeptInfoGroup groundMapName={groundMapName} />
+                            <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
+                            <GalleryGroup />
                             <CodingGroup />
-                            <MiniGame2048Group />
+                        </>
+                    )}
+                    {groundMapName === 'mini_game_map' && (
+                        <>
+                            <MiniGame2048Group position={[0, 0, 0]} />
                         </>
                     )}
                     {/* {groundMapName === 'yuhan_bio_map' && (
@@ -33,14 +37,10 @@ const DeptElements = ({ groundMapName }) => {
                     {/* {groundMapName === 'food_nutrition_map' && (
                         // 식품영양
                         <></>
-                    )}
-                    {groundMapName === 'industrial_design_map' && (
+                    )} */}
+                    {/* {groundMapName === 'industrial_design_map' && (
                         // 산디
                         <></>
-                    )}
-                    {groundMapName === 'mini_game_map' && (
-                        <>
-                        </>
                     )} */}
                 </>
             )}
