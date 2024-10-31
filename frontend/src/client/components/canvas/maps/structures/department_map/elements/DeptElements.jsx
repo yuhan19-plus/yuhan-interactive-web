@@ -18,20 +18,19 @@ const DeptElements = ({ groundMapName }) => {
                     <DeptInfoGroup groundMapName={groundMapName} />
                     <EtcGroup groundMapName={groundMapName} position={[-125, 0, -125]} />
                     <GalleryGroup />
-                    {groundMapName === 'yuhan_bio_map' && (
-                        // 바이오
-                        // <BioGroup />
-                        <></>
-                    )}
                     {groundMapName === 'computer_sw_map' && (
                         // 컴소
                         <>
                             <CodingGroup />
-                             {/* 미니게임 */}
-                            <MiniGame2048Group/>
+                            <MiniGame2048Group />
                         </>
                     )}
-                    {groundMapName === 'food_nutrition_map' && (
+                    {/* {groundMapName === 'yuhan_bio_map' && (
+                        // 바이오
+                        // <BioGroup />
+                        <></>
+                    )} */}
+                    {/* {groundMapName === 'food_nutrition_map' && (
                         // 식품영양
                         <></>
                     )}
@@ -42,7 +41,7 @@ const DeptElements = ({ groundMapName }) => {
                     {groundMapName === 'mini_game_map' && (
                         <>
                         </>
-                    )}
+                    )} */}
                 </>
             )}
 

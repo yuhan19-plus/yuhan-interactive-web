@@ -196,11 +196,11 @@ function MiniGame2048() {
       )}
       {gameClear && (
         <>
-        <Text3D position={[1, 1.8, 5]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL}>
-          축하합니다! 2048을 달성하셨습니다!
-          <meshStandardMaterial color="green" />
-        </Text3D>
-        <Text3D position={[1, 1.8, 4.5]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} onClick={handleResetClick}>
+          <Text3D position={[1, 1.8, 5]} scale={0.5}  rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL}>
+            축하합니다! 2048을 달성하셨습니다!
+            <meshStandardMaterial color="green" />
+          </Text3D>
+          <Text3D position={[1, 1.8, 4.5]} scale={0.3} rotation={[Math.PI/2, Math.PI/2, 0]} font={FONT_URL} onClick={handleResetClick}>
             -다시하기-
             <meshStandardMaterial color="blue" />
           </Text3D>

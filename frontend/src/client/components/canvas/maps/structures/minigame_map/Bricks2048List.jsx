@@ -17,11 +17,11 @@ const Bricks2048List = () => {
     return (
         <>
             <group position={[200, -6.5, 110]} scale={5} rotation={[0,Math.PI/-2,0]}>
-                <Bricks2 />,
-                <Bricks4  position={[2.5,0,0]}/>,
-                <Bricks8 position={[5,0,0]}/>,
-                <Bricks16 position={[7.5,0,0]}/>,
-                <Bricks32 position={[10,0,0]}/>,
+                <Bricks2 />
+                <Bricks4  position={[2.5,0,0]}/>
+                <Bricks8 position={[5,0,0]}/>
+                <Bricks16 position={[7.5,0,0]}/>
+                <Bricks32 position={[10,0,0]}/>
 
                 <group position={[0, -0.25, 2.5]} scale={0.8}>
                     <Text3D position={[-0.2, 0, 0]} font={FONT_URL} rotation={[Math.PI/-2,0,0]}>
@@ -47,11 +47,11 @@ const Bricks2048List = () => {
                 </group>
             </group>
             <group position={[240, -6.5, 110]} scale={5} rotation={[0,Math.PI/-2,0]}>
-                <Bricks64 />,
-                <Bricks128 position={[2.5,0,0]}/>,
-                <Bricks256 position={[5,0,0]}/>,
-                <Bricks512 position={[7.5,0,0]}/>,
-                <Bricks1024 position={[10,0,0]}/>,
+                <Bricks64 />
+                <Bricks128 position={[2.5,0,0]}/>
+                <Bricks256 position={[5,0,0]}/>
+                <Bricks512 position={[7.5,0,0]}/>
+                <Bricks1024 position={[10,0,0]}/>
                 <Bricks2048 position={[12.5,0,0]}/>
 
                 <group position={[-0.2,-0.25,2.5]} scale={0.8}>

@@ -5,8 +5,8 @@ import MiniGame2048 from './MiniGame2048';
 const MiniGame2048Group= () =>{
     return(
         <>
-            <MiniGame2048/>
-            <Bricks2048List/>
+            <MiniGame2048 />
+            <Bricks2048List />
         </>
     )
 }
