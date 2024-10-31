@@ -11,6 +11,7 @@ import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import { BackButton, ButtonContainer, ContentContainer, FileButton, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
 
 const YuhanBoardInsert = ({ onCancel }) => {
     const [cookies] = useCookies(['user']);
@@ -131,7 +132,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
     // 임시저장
     const saveTempBoard = async () => {
         // 유효성 검사
-        if ((boardData.board_content === '') || (boardData.board_title === '')) {
+        if (!boardDataRef.current.board_content && !boardDataRef.current.board_title) {
             Swal.fire({
                 icon: "error",
                 text: "저장할 데이터가 없습니다."
@@ -316,90 +317,57 @@ const YuhanBoardInsert = ({ onCancel }) => {
 
     return (
         <BoardLayout>
-            <Box sx={{ p: 3 }}>
-                {/* 버튼구역 */}
-                <Grid container alignItems="center" justifyContent="space-between">
-                    {/* 돌아가기 버튼 */}
-                    <Grid item>
-                        <StyledBackButton
-                            variant="contained"
-                            size="medium"
-                            color="primary"
-                            onClick={onCancel}
-                        >
-                            돌아가기
-                        </StyledBackButton>
-                    </Grid>
-                </Grid>
-                <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <StyledTitleTypography variant="h3">
-                        게시물 작성
-                    </StyledTitleTypography>
-                </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="제목"
-                            name="board_title"
-                            variant="outlined"
-                            required
-                            value={boardData.board_title}
-                            onChange={handleInputChange}
-                        />
-                    </Grid>
+            {/* 버튼구역 */}
+            <ButtonContainer>
+                <BackButton onClick={onCancel} >
+                    돌아가기
+                </BackButton>
+            </ButtonContainer>
+            <TitleTypography variant="h3">
+                게시물 작성
+            </TitleTypography>
+            <ContentContainer>
+                <InputTitle
+                    name="board_title"
+                    value={boardData.board_title}
+                    onChange={handleInputChange}
+                />
 
-                    <Grid item xs={12}>
-                        <StyledDropZone {...getRootProps()}>
-                            <input {...getInputProps()} />
-                            {boardData.files.length === 0 ? (
-                                <p>파일은 15mb를 넘으면 안됩니다.<br /> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
-                            ) : (
-                                <Box mt={2}>
-                                    <FileList>
-                                        {boardData.files.map((file, index) => (
-                                            <FileItem key={index}>
-                                                <span>
-                                                    {file.file_name} ({(file.file_size / 1024).toFixed(2)} KB)
-                                                    <Button
-                                                        variant="outlined"
-                                                        color="secondary"
-                                                        size="small"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation(); // 이벤트 전파 중단
-                                                            handleDeleteFile(index); // 파일 삭제
-                                                        }}
-                                                    >
-                                                        제거
-                                                    </Button>
-                                                </span>
-                                            </FileItem>
-                                        ))}
-                                    </FileList>
-                                </Box>
-                            )}
-                        </StyledDropZone>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="내용"
-                            name="board_content"
-                            variant="outlined"
-                            required
-                            multiline
-                            rows={8}
-                            value={boardData.board_content}
-                            onChange={handleInputChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12} textAlign="right">
-                        <Button variant="contained" color="primary" onClick={() => { handleAddData(); }}>
-                            게시물 등록
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
+                <StyledDropZone {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    {boardData.files.length === 0 ? (
+                        <p>파일은 15mb를 넘으면 안됩니다.<br /> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
+                    ) : (
+                        <FileList>
+                            {boardData.files.map((file, index) => (
+                                <FileItem key={index}>
+                                    <span>
+                                        {file.file_name} ({(file.file_size / 1024).toFixed(2)} KB)
+                                        <FileButton
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // 이벤트 전파 중단
+                                                handleDeleteFile(index); // 파일 삭제
+                                            }}
+                                        >
+                                            제거
+                                        </FileButton>
+                                    </span>
+                                </FileItem>
+                            ))}
+                        </FileList>
+                    )}
+                </StyledDropZone>
+                <InputContent
+                    name="board_content"
+                    value={boardData.board_content}
+                    onChange={handleInputChange}
+                />
+                <SubmitButtonContainer>
+                    <TotalSubmitButton onClick={() => { handleAddData(); }}>
+                        게시물 등록
+                    </TotalSubmitButton>
+                </SubmitButtonContainer>
+            </ContentContainer>
         </BoardLayout>
     );
 };
@@ -439,25 +407,11 @@ const FileList = styled.ul`
   list-style-type: none;
   padding-left: 0;
   text-align: left;
+  margin-top: 2;
 `;
 
 const FileItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const StyledBackButton = styled(Button)`
-  background-color: #2ecc71 !important;
-  padding: 0.5vh 2vw !important;
-  
-  &:hover {
-    background-color: #27ae60 !important;
-  }
-`;
-
-const StyledTitleTypography = styled(Typography)`
-  color: #34495e;
-  font-weight: bold;
-  font-size: 2.5rem;
 `;

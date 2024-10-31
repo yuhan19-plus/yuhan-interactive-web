@@ -10,11 +10,12 @@ import { Grid, Typography, Select, MenuItem, TextField, Box, Button } from '@mui
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
+import { BackButton, ButtonContainer } from "./YuhanBoardCommonStyles";
 
 // 신고글을 작성하는 컴포넌트 
 const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     const [cookies] = useCookies(["user"]);
-    
+
     const [reportData, setReportData] = useState({
         board_id: boardId,
         report_writer: cookies.user,
@@ -65,92 +66,65 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     }
 
     return (
-        <>
-            <Box sx={{
-                p: 3,
-                height: '100%',
-                background: 'white'
-            }}>
-                {/* 버튼구역 */}
-                <Grid container alignItems="center" justifyContent="space-between">
-                    {/* 돌아가기 버튼 */}
-                    <Grid item>
-                        <StyledBackButton
-                            variant="contained"
-                            size="medium"
-                            color="primary"
-                            onClick={onCancel}
-                        >
-                            돌아가기
-                        </StyledBackButton>
-                    </Grid>
-                </Grid>
-                <StyledGrid container>
-                    <StyledTitleTypography variant="h4">
-                        신고게시글: {boardTitle}
-                    </StyledTitleTypography>
-                </StyledGrid>
-                <StyledGrid container>
-                    <StyledReporterTypography variant="h5">
-                        신고자 : {cookies.user}
-                    </StyledReporterTypography>
-                </StyledGrid>
+        <ReportContainer>
+            <ButtonContainer>
+                <BackButton onClick={onCancel} >
+                    돌아가기
+                </BackButton>
+            </ButtonContainer>
+            <StyledGrid container>
+                <StyledTitleTypography variant="h4">
+                    신고게시글: {boardTitle}
+                </StyledTitleTypography>
+            </StyledGrid>
+            <StyledGrid container>
+                <StyledReporterTypography variant="h5">
+                    신고자 : {cookies.user}
+                </StyledReporterTypography>
+            </StyledGrid>
 
-                {/* 게시글 신고 태그 선택 드롭박스 */}
-                <Grid item xs={12} sx={{ marginBottom: "2vh" }}>
-                    <Typography variant="subtitle1">신고 유형</Typography>
-                    <Select
-                        name="report_type"
-                        label="신고 유형"
-                        defaultValue="etc"
-                        fullWidth
-                        onChange={handleInputChange}
-                    >
-                        <MenuItem value="spam">스팸</MenuItem>
-                        <MenuItem value="abuse">욕설</MenuItem>
-                        <MenuItem value="etc">기타</MenuItem>
-                    </Select>
-                </Grid>
+            <Grid item xs={12} sx={{ marginBottom: "2vh" }}>
+                <Typography variant="subtitle1">신고 유형</Typography>
+                <SelectReportType onChange={handleInputChange}>
+                    <MenuItem value="spam">스팸</MenuItem>
+                    <MenuItem value="abuse">욕설</MenuItem>
+                    <MenuItem value="etc">기타</MenuItem>
+                </SelectReportType>
+            </Grid>
 
-                {/* 게시글 신고 내용 */}
-                <Grid item xs={12}>
-                    <Typography variant="subtitle1">신고 내용</Typography>
-                    <TextField
-                        name="report_content"
-                        label="신고 내용을 입력하세요"
-                        multiline
-                        rows={4}
-                        fullWidth
-                        variant="outlined"
-                        onChange={handleInputChange}
-                    />
-                </Grid>
-                <Grid item xs={12} textAlign="right">
-                    <StyledDeleteButton
-                        variant="contained"
-                        onClick={() => { handleReport(); }}
-                    >
-                        신고하기
-                    </StyledDeleteButton>
-
-                </Grid>
-            </Box >
-        </>
+            <Grid item xs={12}>
+                <InputReportContent
+                    onChange={handleInputChange}
+                />
+            </Grid>
+            <Grid item xs={12} textAlign="right">
+                <ReportButton onClick={() => { handleReport(); }} >
+                    신고하기
+                </ReportButton>
+            </Grid>
+        </ReportContainer>
     );
 };
 
 export default YuhanBoardReport;
 
-const StyledDeleteButton = styled(Button)`
+const ReportContainer = styled.div`
+    height: 100%;
+    background: var(--sub-color);
+`
+
+const ReportButton = styled(Button).attrs({
+    variant: "contained",
+})`
   margin-right: 1vw !important;
   margin-top: 1vh !important;
   background: linear-gradient(45deg, #e74c3c 30%, #f1c40f 90%);
   border-color: #e74c3c;
-  color: #ffffff;
+  color: var(--sub-color);
 
   &:hover {
     background-color: #c0392b !important;
-    color: #ffffff;
+    color: var(--sub-color);
   }
 `;
 
@@ -171,11 +145,23 @@ const StyledReporterTypography = styled(Typography)`
   font-size: 2rem !important;
 `;
 
-const StyledBackButton = styled(Button)`
-  background-color: #2ecc71 !important;
-  padding: 0.5vh 2vw !important;
-  
-  &:hover {
-    background-color: #27ae60 !important;
-  }
-`;
+const InputReportContent = styled(TextField).attrs({
+    multiline: true,
+    fullWidth: true,
+    label: "신고내용",
+    variant: "outlined",
+    rows: 4,
+})`
+    border-radius: 0.5vh;
+    width:100%;
+  `;
+
+const SelectReportType = styled(Select).attrs({
+    name: "report_type",
+    label: "신고 유형",
+    defaultValue: "etc",
+    fullWidth: true,
+})`
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+`

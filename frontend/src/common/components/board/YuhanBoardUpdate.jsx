@@ -9,8 +9,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { BackButton, ButtonContainer, ContentContainer, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
 
-const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
+const YuhanBoardUpdate = ({ boardId, onCancel }) => {
     // 읽어온 데이터 관리
     const [boardData, setBoardData] = useState({
         board_id: "",
@@ -176,6 +177,19 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
                     files: updatedFiles, // 새로운 배열로 상태 업데이트
                 };
             });
+            console.log(attachments[fileIndex]);
+            setAttachments(prevAttachments =>
+                prevAttachments.map((attachment, index) =>
+                    index === fileIndex ?
+                        {
+                            ...attachment,
+                            ...uploadedFile,
+                            board_id: attachment.board_id,
+                            upload_date: attachment.upload_date,
+                        }
+                        : attachment
+                )
+            );
         };
         // console.log("변경된 첨부파일", boardData.files)
     };
@@ -218,99 +232,72 @@ const YuhanBoardUpdatePage = ({ boardId, onCancel }) => {
 
     return (
         <BoardLayout>
-            <BoardMainLayout>
-                <Box sx={{ p: 3 }}>
-                    <Typography variant="h4" gutterBottom>
-                        게시물
-                    </Typography>
-                    {/* 버튼구역 */}
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        {/* 돌아가기 버튼 */}
-                        <Grid item sx={{ marginBottom: "2vh" }}>
-                            <StyledBackButton
-                                variant="contained"
-                                size="medium"
-                                color="primary"
-                                onClick={onCancel}
+            {/* 버튼구역 */}
+            <ButtonContainer>
+                <BackButton onClick={onCancel} >
+                    돌아가기
+                </BackButton>
+            </ButtonContainer>
+            <TitleTypography variant="h3">
+                게시물 수정
+            </TitleTypography>
+            <ContentContainer>
+                <InputTitle
+                    name="board_title"
+                    value={boardData.board_title}
+                    onChange={handleInputChange}
+                />
+                첨부파일
+                {attachments.length > 0 ? (
+                    attachments.map((attachment, index) => (
+                        <FileItemContainer key={index} >
+                            <Typography variant="body1" sx={{ marginRight: 2 }}>
+                                <a
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleDownload(attachment.file_name, attachment.file_data, attachment.file_type);
+                                    }}
+                                    style={{ textDecoration: 'none', color: 'blue' }}
+                                >
+                                    {attachment.file_name}
+                                </a>
+                            </Typography>
+                            <Button
+                                onClick={(e) => handleAttachmentEdit(attachment.attachment_id, index)}
+                                variant="outlined"
+                                size="small"
                             >
-                                돌아가기
-                            </StyledBackButton>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2} >
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="제목"
-                                name="board_title"
-                                variant="outlined"
-                                value={boardData.board_title}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            첨부파일
-                            {attachments.length > 0 ? (
-                                attachments.map((attachment, index) => (
-                                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                                        <Typography variant="body1" sx={{ marginRight: 2 }}>
-                                            <a
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleDownload(attachment.file_name, attachment.file_data, attachment.file_type);
-                                                }}
-                                                style={{ textDecoration: 'none', color: 'blue' }}
-                                            >
-                                                {attachment.file_name}
-                                            </a>
-                                        </Typography>
-                                        <Button
-                                            onClick={(e) => handleAttachmentEdit(attachment.attachment_id, index)}
-                                            variant="outlined"
-                                            size="small"
-                                        >
-                                            파일수정
-                                        </Button>
-                                    </Box>
-                                ))
-                            ) : (
-                                <Typography variant="body1">첨부파일이 없습니다.</Typography>
-                            )}
-                            <input
-                                type="file"
-                                ref={fileInputRef} // ref 연결
-                                style={{ display: "none" }} // 숨김 처리
-                                onChange={handleFileChange} // 파일이 선택되면 처리
-                            />
-                        </Grid>
-
-
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="내용"
-                                name="board_content"
-                                variant="outlined"
-                                value={boardData.board_content}
-                                onChange={handleInputChange}
-                                multiline
-                                rows={8}
-                            />
-                        </Grid>
-                        <Grid item xs={12} textAlign="right">
-                            <Button variant="contained" color="primary" onClick={handleUpdateData}>
-                                수정하기
+                                파일수정
                             </Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </BoardMainLayout>
+                        </FileItemContainer>
+                    ))
+                ) : (
+                    <Typography>첨부파일이 없습니다.</Typography>
+                )}
+                <input // 기능만 이용
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                />
+
+                <InputContent
+                    name="board_content"
+                    value={boardData.board_content}
+                    onChange={handleInputChange}
+                />
+                <SubmitButtonContainer>
+                    <TotalSubmitButton onClick={handleUpdateData}>
+                        수정하기
+                    </TotalSubmitButton>
+                </SubmitButtonContainer>
+            </ContentContainer>
         </BoardLayout>
     );
 };
 
-export default YuhanBoardUpdatePage;
+export default YuhanBoardUpdate;
 
 const BoardLayout = styled.div`
     display: flex;
@@ -327,14 +314,8 @@ const BoardLayout = styled.div`
         margin: 0 auto;
     }
 `;
-const BoardMainLayout = styled.div`
-`;
-
-const StyledBackButton = styled(Button)`
-  background-color: #2ecc71 !important;
-  padding: 0.5vh 2vw !important;
-  
-  &:hover {
-    background-color: #27ae60 !important;
-  }
+const FileItemContainer = styled(Box)`
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px; // marginBottom: 2는 16px에 해당합니다
 `;

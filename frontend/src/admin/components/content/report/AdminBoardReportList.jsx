@@ -82,85 +82,83 @@ const AdminBoardReportList = ({ onReportManagement }) => {
 
     return (
         <>
-            <Box sx={{ p: 3 }}>
-                <Grid container alignItems="center" justifyContent="flex-end" sx={{ position: 'relative' }} >
-                    <FormControl sx={{ minWidth: 80 }}>
-                        <Select
-                            labelId="sort-label"
-                            value={sortCriteria}
-                            onChange={(e) => setSortCriteria(e.target.value)}
-                            sx={{ height: '4vh', padding: '0px 8px', }}>
-                            <MenuItem value="report_date">날짜순</MenuItem>
-                            <MenuItem value="report_status">상태순</MenuItem>
-                            <MenuItem value="report_type">종류순</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <List>
-                    {/* 테이블 헤더 */}
-                    <TableHeader>
-                        <Box sx={{ width: '5%', textAlign: 'center' }}>번호</Box>
-                        <Box sx={{ width: '10%', textAlign: 'center' }}>종류</Box>
-                        <Box sx={{ width: '60%', textAlign: 'center' }}>신고내용</Box>
-                        <Box sx={{ width: '15%', textAlign: 'center' }}>신고자</Box>
-                        <Box sx={{ width: '10%', textAlign: 'center' }}>상태</Box>
-                    </TableHeader>
 
-                    {/* 신고 데이터 목록 */}
-                    {getCurrentPageData().map((item, index) => (
-                        <ListItem key={item.report_id} divider sx={{ textAlign: "center" }}
-                            onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                            onClick={() => onReportManagement(item.report_id)}
-                        >
-                            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <Grid container alignItems="center" justifyContent="flex-end" sx={{ position: 'relative' }} >
+                <FormControl sx={{ minWidth: 80 }}>
+                    <Select
+                        labelId="sort-label"
+                        value={sortCriteria}
+                        onChange={(e) => setSortCriteria(e.target.value)}
+                        sx={{ height: '4vh', padding: '0px 8px', }}>
+                        <MenuItem value="report_date">날짜순</MenuItem>
+                        <MenuItem value="report_status">상태순</MenuItem>
+                        <MenuItem value="report_type">종류순</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+            <List>
+                {/* 테이블 헤더 */}
+                <TableHeader>
+                    <Box sx={{ width: '5%', textAlign: 'center' }}>번호</Box>
+                    <Box sx={{ width: '10%', textAlign: 'center' }}>종류</Box>
+                    <Box sx={{ width: '60%', textAlign: 'center' }}>신고내용</Box>
+                    <Box sx={{ width: '15%', textAlign: 'center' }}>신고자</Box>
+                    <Box sx={{ width: '10%', textAlign: 'center' }}>상태</Box>
+                </TableHeader>
 
-                                {/* 번호 */}
-                                <Box sx={{ width: '5%', textAlign: 'center' }}>
-                                    <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography>
-                                </Box>
+                {/* 신고 데이터 목록 */}
+                {getCurrentPageData().map((item, index) => (
+                    <ListItem key={item.report_id} divider sx={{ textAlign: "center" }}
+                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                        onClick={() => onReportManagement(item.report_id)}
+                    >
+                        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
 
-                                {/* 신고 종류 */}
-                                <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                    <Typography>
-                                        {item.report_type === 'spam' ? '스팸' : item.report_type === 'abuse' ? '욕설' : '기타'}
-                                    </Typography>
-                                </Box>
-
-                                {/* 신고 내용 25자만 출력 */}
-                                <Box sx={{ width: '60%', textAlign: 'left' }}>
-                                    <ListItemText
-                                        primary={item.report_content.substring(0, 25)}
-                                    />
-                                </Box>
-
-                                {/* 신고자 */}
-                                <Box sx={{ width: '15%', textAlign: 'center' }}>
-                                    <ListItemText
-                                        primary={item.report_writer}
-                                    />
-                                </Box>
-
-                                {/* 상태 */}
-                                <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                    <Typography sx={{ color: item.report_status === 'Waiting' ? 'red' : 'inherit', fontWeight: item.report_status === 'Waiting' ? 'bold' : 'normal' }}>
-                                        {item.report_status === 'Waiting' ? '대기중' : item.report_status === 'ignore' ? '무시됨' : '삭제됨'}
-                                    </Typography>
-                                </Box>
-
+                            {/* 번호 */}
+                            <Box sx={{ width: '5%', textAlign: 'center' }}>
+                                <Typography>{(currentPage - 1) * pageNum + (index + 1)}</Typography>
                             </Box>
-                        </ListItem>
-                    ))}
-                </List>
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        color='primary'
-                    />
-                </Box>
+                            {/* 신고 종류 */}
+                            <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                <Typography>
+                                    {item.report_type === 'spam' ? '스팸' : item.report_type === 'abuse' ? '욕설' : '기타'}
+                                </Typography>
+                            </Box>
 
+                            {/* 신고 내용 25자만 출력 */}
+                            <Box sx={{ width: '60%', textAlign: 'left' }}>
+                                <ListItemText
+                                    primary={!item.report_content ? '신고 내용이 없습니다.' : (item.report_content.substring(0, 25))}
+                                />
+                            </Box>
+
+                            {/* 신고자 */}
+                            <Box sx={{ width: '15%', textAlign: 'center' }}>
+                                <ListItemText
+                                    primary={item.report_writer}
+                                />
+                            </Box>
+
+                            {/* 상태 */}
+                            <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                <Typography sx={{ color: item.report_status === 'Waiting' ? 'red' : 'inherit', fontWeight: item.report_status === 'Waiting' ? 'bold' : 'normal' }}>
+                                    {item.report_status === 'Waiting' ? '대기중' : item.report_status === 'ignore' ? '무시됨' : '삭제됨'}
+                                </Typography>
+                            </Box>
+
+                        </Box>
+                    </ListItem>
+                ))}
+            </List>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color='primary'
+                />
             </Box>
         </>
     );

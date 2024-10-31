@@ -76,7 +76,12 @@ export const useAdminBoardData = (boardId) => {
             fetchData();
         } catch (error) {
             console.error("좋아요 상태 변경 중 오류 발생:", error);
-            alert("좋아요 상태 변경 중 오류가 발생했습니다!");
+            Swal.fire({
+                icon: 'error',
+                title: '변경 중 에러',
+                text: '좋아요 상태 변경 중 오류가 발생했습니다!',
+                confirmButtonColor: '#3085d6',
+            });
         }
     };
 

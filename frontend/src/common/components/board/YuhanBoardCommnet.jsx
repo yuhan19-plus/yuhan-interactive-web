@@ -163,49 +163,45 @@ export const YuhanBoardComment = ({ boardData }) => {
     return (
         <>
             {/* 댓글영역 */}
-            <Grid item xs={12} sx={{ marginTop: "2vh" }}>
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            <CommentListWrapper>
+                <CountCommentText>
                     댓글 {commentList.length}
-                </Typography>
-                <Grid container sx={{ width: "100%" }} direction="column">
+                </CountCommentText>
+                <CommentListContainer>
                     {commentList.length !== 0 ? (
                         getCurrentPageData().map((item, index) => (
                             <List key={item.comment_id}>
-                                <ListItem sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                                    <Grid container sx={{ marginBottom: "1vh" }}>
-                                        <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                                            <NoteAlt sx={{ color: '#0F275C' }} />
-                                            <ListItemText primary={item.comment_writer} sx={{ marginLeft: "1vh" }} />
-                                            <Grid item xs={1}>
-                                                {/* 삭제 버튼 */}
-                                                {cookies.user &&
-                                                    (cookies.user === item.comment_writer || cookies.userType === "admin") &&
-                                                    (
-                                                        <Grid item xs={12} sx={{ textAlign: "right" }}>
-                                                            <ListItemButton onClick={() => handleDeleteComment(item.comment_id)}>
-                                                                삭제
-                                                            </ListItemButton>
-                                                        </Grid>
-                                                    )
-                                                }
-                                            </Grid>
-                                        </Grid>
+                                <CommentListItem>
+                                    <CommentInfoContainer>
+                                        <CommentIconTextContainer>
+                                            <NoteAlt />
+                                            <CommentWriter>
+                                                {item.comment_writer}
+                                            </CommentWriter>
+                                        </CommentIconTextContainer>
 
-                                        <Grid item xs={11} sx={{ width: "100%" }}>
-                                            <StyledContentListItemText
-                                                primary={item.comment_content} />
-                                        </Grid>
+                                        {cookies.user &&
+                                            (cookies.user === item.comment_writer || cookies.userType === "admin") && (
+                                                <DeleteButtonWrapper>
+                                                    <Button onClick={() => handleDeleteComment(item.comment_id)}>
+                                                        삭제
+                                                    </Button>
+                                                </DeleteButtonWrapper>
+                                            )
+                                        }
+                                    </CommentInfoContainer>
 
-                                        <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                                            <CalendarToday sx={{ color: '#0F275C' }} />
-                                            <ListItemText
-                                                primary={new Date(item.comment_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', })
-                                                    + ' '
-                                                    + new Date(item.comment_date).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false, })}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </ListItem>
+                                    <CommentArea>
+                                        {item.comment_content}
+                                    </CommentArea>
+
+                                    <DateArea>
+                                        <CommentIconTextContainer>
+                                            <CalendarToday />
+                                            {new Date(item.comment_date).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </CommentIconTextContainer>
+                                    </DateArea>
+                                </CommentListItem>
                                 <Divider />
                             </List>
                         ))
@@ -213,80 +209,134 @@ export const YuhanBoardComment = ({ boardData }) => {
                     ) : (
                         <></>
                     )}
-                </Grid>
-            </Grid>
+                </CommentListContainer>
+            </CommentListWrapper>
 
             {/* 페이지게이션 */}
             {commentList.length !== 0 ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 3, position: 'relative' }}>
+                <PaginationContainer>
                     <Pagination
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
                         color="primary"
                     />
-                </Box>
+                </PaginationContainer>
             ) : (
                 <></>
             )}
             {/* 댓글작성영역 */}
             {(cookies.user && boardData.board_status !== 'delete') && (
-                <Grid item xs={12} sx={{ marginTop: "2vh" }}>
-                    <Grid container alignItems="center" spacing={0.5}>
-                        <Grid item xs={10}>
-                            <StyledTextField
-                                name="comment_content"
-                                placeholder="원하시는 댓글을 작성하세요"
-                                multiline
-                                minRows={2}
-                                maxRows={4}
-                                fullWidth
-                                value={comment.comment_content}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
+                <InputCommentContainer>
+                    <InputComment
+                        name="comment_content"
+                        value={comment.comment_content}
+                        onChange={handleInputChange}
+                    />
 
-                        <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end', paddingLeft: '0.5vw' }}>
-                            <StyledButton
-                                variant="contained"
-                                color="primary"
-                                onClick={() => handleSaveComment(boardData.board_id)}
-                            >
-                                작성하기
-                            </StyledButton>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                    <SubmitButton onClick={() => handleSaveComment(boardData.board_id)}                            >
+                        작성하기
+                    </SubmitButton>
+                </InputCommentContainer>
             )}
         </>
     );
 };
 
-const StyledTextField = styled(TextField)`
-  background-color: #0F275C;
-  border-radius: 0.5vh;
-
-  & .MuiInputBase-input::placeholder {
-    color: #FFFFFF;
-  }
-
-  & .MuiInputBase-input {
-    color: #FFFFFF;
-  }
+const CommentListWrapper = styled.div`
+    margin-top: 2vh;
 `;
-const StyledButton = styled(Button)`
-  padding: 3vh 1vw !important; 
-  font-size: 1rem !important;
-  background-color: #0F275C !important;
 
+const CountCommentText = styled(Typography)`
+    font-variant:h5;
+    font-weight:bold;
+`
+const CommentListContainer = styled.div`
+    width: 100%;
+    flex-direction: column;
+`;
+
+const CommentListItem = styled(ListItem)`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 0;
+
+    svg {
+        color: var(--main-color);
+    }
+`
+const CommentInfoContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+`
+const CommentArea = styled.div`
+    width: 100%;
+    border-radius: 0.5vh;
+    background-color: var(--main-color);
+    color: var(--sub-color);
+    padding: 2vh;
+`
+const CommentWriter = styled.div`
+    
+`
+const CommentIconTextContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+const DeleteButtonWrapper = styled.div`
+    margin-left: auto;
+`;
+const DateArea = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; // 왼쪽 정렬
+    width: 100%;
+    margin-top: 0.2vh;
+`;
+
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3;
+    position: relative;
+`
+const InputCommentContainer = styled.div`
+    display: flex;
+    margin-top: 1.5vh;
+    align-items:center;
+`
+const InputComment = styled(TextField).attrs({
+    multiline: true,
+    fullWidth: true,
+    minRows: 2,
+    maxRows: 4,
+    placeholder: "원하시는 댓글을 작성하세요",
+})`
+    background-color: var(--main-color);
+    border-radius: 0.5vh;
+    height: 10vh;
+    width:100%;
+  
+    & .MuiInputBase-input::placeholder {
+      color: var(--sub-color);
+    }
+  
+    & .MuiInputBase-input {
+      color: var(--sub-color);
+    }
+  `;
+const SubmitButton = styled(Button)`
+    margin-left: 0.5vw !important;
+    width: 7.5vw ;
+    height: 10vh;
+    font-size: 1rem !important;
+    background-color: var(--main-color) !important;
+    color: var(--sub-color) !important;
   &:hover {
-    background-color: #325db8 !important;;
+    background-color: #325db8 !important;
   }
-`;
-
-const StyledContentListItemText = styled(ListItemText)`
-  border-radius: 0.5vh;
-  background-color: #0F275C;
-  color: #FFFFFF;
-  padding: 2vh;
-`;
+`;  

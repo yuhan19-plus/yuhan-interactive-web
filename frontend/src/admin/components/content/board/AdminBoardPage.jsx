@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 import { useAdminBoardData } from "./hooks/useAdminBoardData";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
+import { BackButton, ButtonContainer, DeleteButton, RightAlignedButtons, UpdateButton } from "../../../../common/components/board/YuhanBoardCommonStyles";
 
 const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
@@ -21,38 +22,20 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
 
     return (
         <BoardLayout>
-            <Box sx={{ p: 3 }}>
-                {/* 버튼구역 */}
-                <Grid container alignItems="center" justifyContent="space-between">
-                    {/* 돌아가기 버튼 */}
-                    <Grid item>
-                        <StyledBackButton
-                            variant="contained"
-                            size="medium"
-                            color="primary"
-                            onClick={onCancel}
-                        >
-                            돌아가기
-                        </StyledBackButton>
-                    </Grid>
+            {/* 버튼구역 */}
+            <ButtonContainer>
+                <BackButton onClick={onCancel} >
+                    돌아가기
+                </BackButton>
 
+                <RightAlignedButtons>
                     {/* 수정 및 삭제 버튼 */}
                     {(boardData.board_status === 'delete') ? (<></>) : (
-                        <Grid item>
-                            {/* 작성자는 수정 및 삭제에 모두 접근 가능 */}
+                        <>
                             {(cookies.user === boardData.board_writer) && (
                                 <>
-                                    <StyledUpdateButton
-                                        variant="outlined"
-                                        size="medium"
-                                        onClick={() => onSelectUpdateItem(boardData.board_id)}
-                                    >
-                                        수정
-                                    </StyledUpdateButton>
-                                    <StyledDeleteButton
-                                        variant="outlined"
-                                        size="medium"
-                                        color="error"
+                                    <UpdateButton onClick={() => onSelectUpdateItem(boardData.board_id)}>수정</UpdateButton>
+                                    <DeleteButton
                                         onClick={async () => {
                                             const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
                                             if (isDeleted) {
@@ -61,16 +44,12 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                                         }}
                                     >
                                         삭제
-                                    </StyledDeleteButton>
+                                    </DeleteButton>
                                 </>
                             )}
 
-                            {/* 관리자는 삭제에만 접근 가능 */}
-                            {(cookies.userType === 'admin') && cookies.user !== boardData.board_writer && (
-                                <StyledDeleteButton
-                                    variant="outlined"
-                                    size="medium"
-                                    color="error"
+                            {cookies.user !== boardData.board_writer && (
+                                <DeleteButton
                                     onClick={async () => {
                                         const isDeleted = await handleDeleteItem();  // 삭제 작업 수행
                                         if (isDeleted) {
@@ -79,127 +58,113 @@ const AdminBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportIte
                                     }}
                                 >
                                     삭제
-                                </StyledDeleteButton>
+                                </DeleteButton>
                             )}
-                        </Grid>
+                        </>
                     )}
+                </RightAlignedButtons>
+            </ButtonContainer>
 
-                    {/* 신고버튼 관리자는 신고할 필요없이 그냥 삭제 */}
-                    {(cookies.userType !== 'admin') && (cookies.user) && (cookies.user !== boardData.board_writer) && (
-                        <Grid item>
-                            <StyledDeleteButton
-                                variant="outlined"
-                                size="medium"
-                                color="error"
-                                onClick={() => handleReportItem(boardData.board_id, boardData.board_title)}
-                            >
-                                신고
-                            </StyledDeleteButton>
-                        </Grid>
-                    )}
-                </Grid>
+            {/* 제목영역 */}
+            <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
+                <Typography variant="h2" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2.5rem" }}>
+                    {boardData.board_title}
+                </Typography>
+            </Grid>
 
-                {/* 제목영역 */}
-                <Grid container sx={{ marginTop: "0.5vh", padding: "0.5vw" }}>
-                    <Typography variant="h2" sx={{ color: "#34495E", fontWeight: "bold", fontSize: "2.5rem" }}>
-                        {boardData.board_title}
+            {/* 추가 정보 영역 */}
+            <Grid container sx={{ padding: "0.25vw" }}>
+                {/* 작성자 이름 */}
+                <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
+                    <NoteAlt sx={{ color: '#0F275C', marginRight: '0.5rem' }} />
+                    <Typography variant="h6" sx={{ color: "#7F8C8D", fontSize: "1.25rem" }}>
+                        {boardData.board_writer}
                     </Typography>
                 </Grid>
 
-                {/* 추가 정보 영역 */}
-                <Grid container sx={{ padding: "0.25vw" }}>
-                    {/* 작성자 이름 */}
-                    <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                        <NoteAlt sx={{ color: '#0F275C', marginRight: '0.5rem' }} />
-                        <Typography variant="h6" sx={{ color: "#7F8C8D", fontSize: "1.25rem" }}>
-                            {boardData.board_writer}
-                        </Typography>
-                    </Grid>
-
-                    {/* 작성일과 조회수 */}
-                    <Grid item xs={12} container alignItems="center">
-                        <SubProfileInfo>
-                            작성일 : {' '}
-                            {new Intl.DateTimeFormat('ko-KR', {
-                                year: 'numeric', month: '2-digit', day: '2-digit',
-                                hour: '2-digit', minute: '2-digit', hour12: false
-                            }).format(new Date(boardData.board_date))}
-                        </SubProfileInfo>
-                        <SubProfileInfo>
-                            조회 {boardData.board_view}
-                        </SubProfileInfo>
-                        <SubProfileInfo style={{ marginLeft: 'auto' }}>
-                            수정일 : {' '}
-                            {new Intl.DateTimeFormat('ko-KR', {
-                                year: 'numeric', month: '2-digit', day: '2-digit',
-                                hour: '2-digit', minute: '2-digit', hour12: false
-                            }).format(new Date(boardData.board_last_modified))}
-                        </SubProfileInfo>
-                    </Grid>
+                {/* 작성일과 조회수 */}
+                <Grid item xs={12} container alignItems="center">
+                    <SubProfileInfo>
+                        작성일 : {' '}
+                        {new Intl.DateTimeFormat('ko-KR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit',
+                            hour: '2-digit', minute: '2-digit', hour12: false
+                        }).format(new Date(boardData.board_date))}
+                    </SubProfileInfo>
+                    <SubProfileInfo>
+                        조회 {boardData.board_view}
+                    </SubProfileInfo>
+                    <SubProfileInfo style={{ marginLeft: 'auto' }}>
+                        수정일 : {' '}
+                        {new Intl.DateTimeFormat('ko-KR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit',
+                            hour: '2-digit', minute: '2-digit', hour12: false
+                        }).format(new Date(boardData.board_last_modified))}
+                    </SubProfileInfo>
                 </Grid>
-                <Divider />
-                {/* 첨부파일 영역 */}
-                <AttachmentsContainer>
-                    {attachments.length > 0 ? (
-                        <StyledAccordion>
-                            <StyledAccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                            >
-                                첨부파일
-                            </StyledAccordionSummary>
-                            <StyledAccordionDetails>
-                                {attachments.map((attachment, index) => {
-                                    const displayName = attachment.file_name.length > 15
-                                        ? attachment.file_name.slice(0, 10) + "..."
-                                        : attachment.file_name;
+            </Grid>
+            <Divider />
+            {/* 첨부파일 영역 */}
+            <AttachmentsContainer>
+                {attachments.length > 0 ? (
+                    <StyledAccordion>
+                        <StyledAccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            첨부파일
+                        </StyledAccordionSummary>
+                        <StyledAccordionDetails>
+                            {attachments.map((attachment, index) => {
+                                const displayName = attachment.file_name.length > 15
+                                    ? attachment.file_name.slice(0, 10) + "..."
+                                    : attachment.file_name;
 
-                                    return (
-                                        <AttachmentLink
-                                            key={index}
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                handleDownload(
-                                                    attachment.file_name,
-                                                    attachment.file_data,
-                                                    attachment.file_type
-                                                );
-                                            }}
-                                        >
-                                            {displayName}
-                                        </AttachmentLink>
-                                    );
-                                })}
-                            </StyledAccordionDetails>
-                        </StyledAccordion>
-                    ) : (
-                        <></>
-                    )}
-                </AttachmentsContainer>
+                                return (
+                                    <AttachmentLink
+                                        key={index}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDownload(
+                                                attachment.file_name,
+                                                attachment.file_data,
+                                                attachment.file_type
+                                            );
+                                        }}
+                                    >
+                                        {displayName}
+                                    </AttachmentLink>
+                                );
+                            })}
+                        </StyledAccordionDetails>
+                    </StyledAccordion>
+                ) : (
+                    <></>
+                )}
+            </AttachmentsContainer>
 
-                {/* 내용 영역 */}
-                <StyledGridItem>
-                    {boardData.board_content}
-                </StyledGridItem>
+            {/* 내용 영역 */}
+            <StyledGridItem>
+                {boardData.board_content}
+            </StyledGridItem>
 
-                {/* 좋아요 버튼영역 */}
-                <Grid>
-                    <Button
-                        onClick={handleLikeToggle}
-                        sx={{
-                            color: liked ? '#e74c3c' : '#e74c3c', // 좋아요 상태에 따른 색상 변경
-                        }}
-                        startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />} // 아이콘 조건부 렌더링
-                    >
-                        {liked ? '좋아요' : '좋아요'}  {boardData.board_like}
-                    </Button>
-                </Grid>
-                <Divider />
-                {/* 댓글 컴포넌츠 */}
-                <YuhanBoardComment boardData={boardData} />
-            </Box>
+            {/* 좋아요 버튼영역 */}
+            <Grid>
+                <Button
+                    onClick={handleLikeToggle}
+                    sx={{
+                        color: liked ? '#e74c3c' : '#e74c3c', // 좋아요 상태에 따른 색상 변경
+                    }}
+                    startIcon={liked ? <FavoriteIcon /> : <FavoriteBorderIcon />} // 아이콘 조건부 렌더링
+                >
+                    {liked ? '좋아요' : '좋아요'}  {boardData.board_like}
+                </Button>
+            </Grid>
+            <Divider />
+            {/* 댓글 */}
+            <YuhanBoardComment boardData={boardData} />
 
             {/* 처리 사유 영역 */}
             {reportData && (
@@ -232,11 +197,11 @@ const BoardLayout = styled.div`
     min-height: 80vh;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--sub-color);
     border-radius: 2vh;
     
     .header {
-        color: white;
+        color: var(--sub-color);
     }
 
     .container {
@@ -261,27 +226,6 @@ const StyledContent = styled(Typography)`
   background-color: #f0f0f0;
 `;
 
-const StyledUpdateButton = styled(Button)`
-  margin-right: 1vw !important;
-  color: #3498db;
-  border-color: #3498db;
-  
-  &:hover {
-    background-color: #3498db !important;
-    color: #ffffff;
-  }
-`;
-
-const StyledDeleteButton = styled(Button)`
-  margin-right: 1vw !important;
-  border-color: #e74c3c;
-  
-  &:hover {
-    background-color: #e74c3c !important;
-    color: #ffffff;
-  }
-`;
-
 const AttachmentsContainer = styled.div`
   padding: 1vw;
   display: flex;
@@ -299,7 +243,7 @@ const StyledAccordionSummary = styled(AccordionSummary)`
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
-  background: #ffffff;
+  background: var(--sub-color);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -326,15 +270,6 @@ const StyledGridItem = styled(Grid)`
   white-space: pre-line;
   color: #2C3E50;
   word-wrap: break-word;
-`;
-
-const StyledBackButton = styled(Button)`
-  background-color: #2ecc71 !important;
-  padding: 0.5vh 2vw !important;
-  
-  &:hover {
-    background-color: #27ae60 !important;
-  }
 `;
 
 const SubProfileInfo = styled(Typography)`

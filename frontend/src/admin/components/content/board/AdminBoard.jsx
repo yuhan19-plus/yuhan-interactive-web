@@ -7,10 +7,10 @@
  */
 
 import React, { useState } from 'react'
-import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import AdminBoardList from './AdminBoardList';
 import AdminBoardPage from './AdminBoardPage';
+import YuhanBoardUpdate from '../../../../common/components/board/YuhanBoardUpdate';
 
 const AdminBoard = () => {
     const [currentView, setCurrentView] = useState('list');
@@ -47,7 +47,7 @@ const AdminBoard = () => {
             ) : currentView === 'page' ? (
                 <AdminBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} />
             ) : currentView === 'update' ? (
-                <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
+                <YuhanBoardUpdate boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : (
                 <AdminBoardList onCreatePost={handleCreateBoard} onSelectItem={handleSelectItem} />
             )}
