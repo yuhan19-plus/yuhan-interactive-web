@@ -148,15 +148,15 @@ const MemberJoin = () => {
             // 아이디가 중복인 경우
             if (response.status === 409) {
                 Swal.fire({
-                    title: '중복된 아이디!',
-                    text: '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.',
+                    title: '사용중인 아이디',
+                    text: '이미 사용중인 아이디입니다. 다른 아이디를 사용해주세요.',
                     icon: 'warning',
                     confirmButtonText: '확인'
                 });
             // 선택한 학과의 학과장이 이미 존재하는 경우
             } else if (response.status === 418){
                 Swal.fire({
-                    title: '중복된 학과장 정보!',
+                    title: '중복된 학과장 정보',
                     text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
                     icon: 'warning',
                     confirmButtonText: '확인'
@@ -164,7 +164,7 @@ const MemberJoin = () => {
             // 회원가입 성공시 리다이렉트
             } else if (response.ok) {
                 Swal.fire({
-                    title: '회원가입 성공!',
+                    title: '회원가입 성공',
                     text: '회원가입이 성공적으로 완료되었습니다.',
                     icon: 'success',
                     confirmButtonText: '확인'
@@ -174,7 +174,7 @@ const MemberJoin = () => {
             // 회원가입에 실패한 경우
             } else {
                 Swal.fire({
-                    title: '회원가입 실패!',
+                    title: '회원가입 실패',
                     text: '회원가입에 실패했습니다. 다시 시도해주세요.',
                     icon: 'error',
                     confirmButtonText: '확인'
@@ -183,7 +183,7 @@ const MemberJoin = () => {
         // 서버 오류인 경우
         } catch (error) {
             Swal.fire({
-                title: '서버 오류!',
+                title: '서버 오류',
                 text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                 icon: 'error',
                 confirmButtonText: '확인'
@@ -267,7 +267,7 @@ const MemberJoin = () => {
     
             if (response.ok) {
                 setIsEmailVerified(true); // 이메일 인증 성공
-                Swal.fire('성공', '이메일 인증이 완료되었습니다.', 'success');
+                Swal.fire('인증 완료', '이메일 인증이 완료되었습니다.', 'success');
             } else {
                 const data = await response.json();
                 if (data.message === '인증 시간이 지났습니다. 재인증해주세요.') {
@@ -275,7 +275,7 @@ const MemberJoin = () => {
                     setVerificationCode(''); // 입력된 인증 코드 비우기
                     setIsCodeSent(false); // 인증 코드 전송 상태를 초기화
                     setIsEmailVerified(false); // 이메일 인증 상태를 초기화
-                    Swal.fire('실패', '인증 시간이 만료되었습니다. 다시 인증을 시도해주세요.', 'error');
+                    Swal.fire('인증 시간 만료', '인증 시간이 만료되었습니다. 다시 인증을 시도해주세요.', 'error');
                 }
                 else {
                     Swal.fire('실패', data.message, 'error');

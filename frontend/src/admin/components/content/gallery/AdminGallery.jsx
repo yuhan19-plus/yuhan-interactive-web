@@ -54,14 +54,14 @@ const AdminGallery = () => {
                 Swal.fire({
                     icon: 'success',
                     title: '수정 완료',
-                    text: '갤러리 항목이 수정되었습니다.',
+                    text: '갤러리 항목이 성공적으로 수정되었습니다.',
                     confirmButtonColor: '#3085d6',
                 });
                 fetchGalleryWorks();
             // 갤러리 항목 수정에 실패한경우
             } else {
                 Swal.fire({
-                    title: '갤러리 항목 수정 실패!',
+                    title: '수정 실패',
                     text: '갤러리 항목 수정에 실패했습니다. 다시 시도해주세요.',
                     icon: 'error',
                     confirmButtonText: '확인'
@@ -71,7 +71,7 @@ const AdminGallery = () => {
         } catch (error) {
             Swal.fire({
                 icon: 'error',
-                title: '서버 오류!',
+                title: '서버 오류',
                 text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                 confirmButtonColor: '#d33',
             });

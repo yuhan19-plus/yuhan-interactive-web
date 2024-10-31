@@ -82,7 +82,7 @@ const MemberModify = () => {
                 // 선택한 학과의 학과장이 이미 존재하는 경우
                 } else if (response.status === 418){
                     Swal.fire({
-                        title: '중복된 학과장 정보!',
+                        title: '중복된 학과장 정보',
                         text: '선택한 학과에 해당하는 학과장 정보가 이미 존재합니다. 관리자에게 문의하십시오.',
                         icon: 'warning',
                         confirmButtonText: '확인'
@@ -91,7 +91,7 @@ const MemberModify = () => {
                 } else {
                     Swal.fire({
                         title: '수정 실패',
-                        text: '회원 정보 수정에 실패했습니다.',
+                        text: '회원 정보 수정에 실패했습니다. 다시 시도해주세요.',
                         icon: 'error',
                         confirmButtonText: '확인'
                     });
@@ -100,7 +100,7 @@ const MemberModify = () => {
             } catch (error) {
                 Swal.fire({
                     title: '서버 오류',
-                    text: '서버에서 오류가 발생했습니다. 다시 시도해 주세요.',
+                    text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                     icon: 'error',
                     confirmButtonText: '확인'
                 });

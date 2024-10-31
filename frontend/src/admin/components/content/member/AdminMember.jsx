@@ -36,7 +36,12 @@ const AdminMember = () => {
                     });
                     // 회원탈퇴 처리에 성공한 경우, 학생/교수 목록에서 해당 회원을 제거 휴 탈퇴 목록에 추가
                     if (response.ok) {
-                        Swal.fire('회원탈퇴 완료', '회원탈퇴 처리가 완료되었습니다.', 'success');
+                        Swal.fire({
+                            icon: 'success',
+                            title: '회원탈퇴 완료',
+                            text: '회원탈퇴 처리가 완료되었습니다.',
+                            confirmButtonColor: '#3085d6',
+                        });
                         if (memberType === 'student') {
                             const deletedStudent = students.find(student => student.user_id === userId);
                             setStudents(students.filter(student => student.user_id !== userId));
@@ -48,15 +53,30 @@ const AdminMember = () => {
                         }
                     // 회원탈퇴에 실패한 경우
                     } else {
-                        throw new Error('회원탈퇴에 실패했습니다.');
+                        Swal.fire({
+                            title: '회원탈퇴 실패',
+                            text: '회원탈퇴에 실패했습니다. 다시 시도해주세요.',
+                            icon: 'error',
+                            confirmButtonText: '확인'
+                        });
                     }
                 // 서버 오류인 경우
                 } catch (error) {
-                    Swal.fire('서버 오류', '서버에서 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '서버 오류',
+                        text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+                        confirmButtonColor: '#d33',
+                    });
                 }
             // 회원탈퇴 취소시
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('취소됨', '회원탈퇴가 취소되었습니다.', 'info');
+                Swal.fire({
+                    icon: 'info',
+                    title: '취소됨',
+                    text: '회원탈퇴가 취소되었습니다.',
+                    confirmButtonColor: '#d33',
+                });
             }
         });
     };

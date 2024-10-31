@@ -3,6 +3,7 @@
  */
 import React, { useState, useEffect} from 'react'
 import { Box, TextField, Button, MenuItem, Select, FormControl, InputLabel, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import Swal from 'sweetalert2';
 
 const AdminDeptRec = () => {
     // 상태관리
@@ -62,15 +63,30 @@ const AdminDeptRec = () => {
             });
             // 질문 수정에 성공한 경우 질문 목록 다시 불러오기
             if (response.ok) {
-                alert('질문이 수정되었습니다.');
+                Swal.fire({
+                    icon: 'success',
+                    title: '수정 완료',
+                    text: '질문이 성공적으로 수정되었습니다.',
+                    confirmButtonColor: '#3085d6',
+                });
                 fetchQuestions(selectedDept);
             // 질문 수정에 실패한 경우
             } else {
-                throw new Error('질문 수정에 실패했습니다.');
+                Swal.fire({
+                    title: '수정 실패',
+                    text: '질문 수정에 실패했습니다. 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
         // 서버 오류인 경우
         } catch (error) {
-            console.error('질문 수정 중 에러 발생:', error);
+            Swal.fire({
+                icon: 'error',
+                title: '서버 오류',
+                text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
+                confirmButtonColor: '#d33',
+            });
         }
     };
 
