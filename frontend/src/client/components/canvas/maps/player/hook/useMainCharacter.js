@@ -431,7 +431,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             if(!isInStudentKioskZone) {
                                 setIsInStudentKioskZone(true);
                                 dispatch(Enter_StudentKiosk());
-                                console.log("학생식당 입장", isInStudentKioskZone); // 상태를 true로 출력
+                                // console.log("학생식당 입장", isInStudentKioskZone);
                             }
 
                             if(!kioskDispatchFlag.current) {
@@ -441,7 +441,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                     else {
                         if(gsapCameraState) {
-                            console.log('학생 식당')
+                            // console.log('학생 식당')
                             setGsapCameraState(false)
                         }
 
@@ -449,7 +449,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if(isInStudentKioskZone) {
                             setIsInStudentKioskZone(false);
                             dispatch(Leave_StudentKiosk());
-                            console.log("학생식당 퇴장", isInStudentKioskZone); // 상태를 false로 출력
+                            // console.log("학생식당 퇴장", isInStudentKioskZone);
                         }
 
                         if(kioskDispatchFlag.current) {
@@ -467,6 +467,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                 if (currentPosition.x <= 150 && currentPosition.z > 120) {
                     if (currentPosition.x < -170 && currentPosition.x > -240) {
+                        // console.log('test')
                         handleCamera(currentPosition.x + 0, currentPosition.y + 100, currentPosition.z - 180)
                     }
 
@@ -492,10 +493,32 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 dispatch(kioskChangjo())
                             }
                     }
+                    // 테라스
+                    else if ((currentPosition.x >= -140 && currentPosition.x <= -100) &&
+                            (currentPosition.z >= 180 && currentPosition.z <= 220)) {
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(-160, 10, 165)
+                                }
+                                // 영역진입체크
+                                if (!isGoldBoxArea2) {
+                                    setisGoldBoxArea2(true)
+                                    dispatch(EnterGoldBoxArea('isZone2'));
+                                    // console.log("테라스 보물상자 진입")
+                                }
+                    }
                     else {
                         if(gsapCameraState) {
+                            // console.log('te')
                             setGsapCameraState(false)
                         }
+
+                        if (isGoldBoxArea2) {
+                            setisGoldBoxArea2(false);
+                            dispatch(LeaveGoldBoxArea('isZone2', 'hasVisitedZone2'))
+                            // console.log("테라스 보물상자 탈출")
+                        }
+
                         if (kioskDispatchFlag.current) {
                             kioskDispatchFlag.current = false
                             dispatch(initKiosk())
@@ -520,16 +543,16 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
 
                     // 나눔관 키오스크 + 이벤트
-                    else if ((currentPosition.x >= 12 && currentPosition.x <= 54)
-                        && (currentPosition.z >= 57 && currentPosition.z <= 77)) {
-                            if(!gsapCameraState) {
-                                setGsapCameraState(true)
-                                handleGSAPCamera(-10, 15, 0)
-                            }
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskNanum())
-                            }
+                    else if ((currentPosition.x >= 12 && currentPosition.x <= 54) &&
+                            (currentPosition.z >= 57 && currentPosition.z <= 77)) {
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(-10, 15, 0)
+                                }
+                                if (!kioskDispatchFlag.current) {
+                                    kioskDispatchFlag.current = true
+                                    dispatch(kioskNanum())
+                                }
                     }
 
                     else {
@@ -552,7 +575,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             (currentPosition.z >= 74 && currentPosition.z <= 114)) {
                                 if(!gsapCameraState) {
                                     setGsapCameraState(true)
-                                    console.log('gsapCameraState', gsapCameraState)
+                                    // console.log('gsapCameraState', gsapCameraState)
                                     handleGSAPCamera(-160, 50, 95)
                                 }
                                 
@@ -564,7 +587,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         else {
                             if(gsapCameraState) {
                                 setGsapCameraState(false)
-                                console.log("유일한기념관 setGsapCameraState")
+                                // console.log("유일한기념관 setGsapCameraState")
                             }
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
@@ -576,22 +599,45 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if (currentPosition.x <= -270) {
                         handleCamera(currentPosition.x + 100, currentPosition.y + 100, currentPosition.z + 0)
                         // 유재라관 키오스크 + 이벤트
-                        if ((currentPosition.x <= -279 && currentPosition.x >= -319)
-                            && (currentPosition.z <= -65 && currentPosition.z >= -85)) {
-                            if(!gsapCameraState) {
-                                setGsapCameraState(true)
-                                handleGSAPCamera(-298, 30, 13)
-                            }
-                            if (!kioskDispatchFlag.current) {
-                                kioskDispatchFlag.current = true
-                                dispatch(kioskYujaela())
-                            }
+                        if ((currentPosition.x <= -279 && currentPosition.x >= -319) &&
+                            (currentPosition.z <= -65 && currentPosition.z >= -85)) {
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(-298, 30, 13)
+                                }
+                                if (!kioskDispatchFlag.current) {
+                                    kioskDispatchFlag.current = true
+                                    dispatch(kioskYujaela())
+                                }
+                        }
+                        // 유재라관
+                        else if ((currentPosition.x >= -370 && currentPosition.x <= -320) &&
+                            (currentPosition.z >= -130 && currentPosition.z <= -90)) {
+                                // console.log('test')
+                                if(!gsapCameraState) {
+                                    setGsapCameraState(true)
+                                    handleGSAPCamera(-310, 10, -40)
+                                }
+                                // 영역진입체크
+                                if (!isGoldBoxArea1) {
+                                    setisGoldBoxArea1(true)
+                                    dispatch(EnterGoldBoxArea('isZone1'));
+                                    // console.log("유재라관 보물상자 진입")
+                                }
                         }
                         else {
+                            // console.log('test2')
                             if(gsapCameraState) {
                                 setGsapCameraState(false)
-                                console.log("유재라관 setGsapCameraState")
+                                // console.log("유재라관 setGsapCameraState")
                             }
+
+                            if (isGoldBoxArea1) {
+                                setisGoldBoxArea1(false);
+                                dispatch(LeaveGoldBoxArea('isZone1', 'hasVisitedZone1'))
+                                // console.log("유재라관 보물상자 탈출")
+                            }
+
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
                                 dispatch(initKiosk())
@@ -619,7 +665,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         else {
                             if(gsapCameraState) {
                                 setGsapCameraState(false)
-                                console.log("자유관 setGsapCameraState")
+                                // console.log("자유관 setGsapCameraState")
                             }
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
@@ -642,7 +688,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // 나눔의 숲 큰 입구
                 if (currentPosition.x >= -128 && currentPosition.x < -30) {
                     if (currentPosition.z < -254 && currentPosition.z > -340) {
-                        handleCamera(currentPosition.x - 180, currentPosition.y + 250, currentPosition.z - 150)
+                        // console.log('test')
+                        handleCamera(currentPosition.x, currentPosition.y + 150, currentPosition.z - 150)
                     }
                 }
 
@@ -690,7 +737,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         else {
                             if(gsapCameraState) {
                                 setGsapCameraState(false)
-                                console.log("봉사관 setGsapCameraState")
+                                // console.log("봉사관 setGsapCameraState")
                             }
                             if (kioskDispatchFlag.current) {
                                 kioskDispatchFlag.current = false
@@ -700,15 +747,12 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 }
 
-                // 나눔의 숲 3사분면
-                if ((currentPosition.z < -200 && currentPosition.z >= -320) &&
-                    (currentPosition.x > 58 && currentPosition.x <= 190)) {
-                        handleCamera(currentPosition.x + -50, currentPosition.y + 100, currentPosition.z + 50)
-                }
-                // 나눔의 숲 4사분면
-                if((currentPosition.x >= -69 && currentPosition.x <= 58) &&
+                // 나눔의 숲 3, 4사분면
+                if ((currentPosition.x >= -69 && currentPosition.x <= 190) &&
                     (currentPosition.z < -200 && currentPosition.z >= -320)) {
-                        handleCamera(currentPosition.x - 30, currentPosition.y + 50, currentPosition.z + 50)
+                        // console.log('test')
+                        handleCamera(currentPosition.x, currentPosition.y + 100, currentPosition.z + 50)
+
                         // 흡연구역 이벤트 발생 지역
                         if ((currentPosition.x <= 58 && currentPosition.x >= 25) &&
                             (currentPosition.z <= -240 && currentPosition.z >= -280)) {
@@ -720,18 +764,37 @@ export const useMainCharacter = ({ position, myChar }) => {
                                     setIsInSmokingArea(true);
                                     dispatch(onSmokingArea())
                                     // dispatch(Enter_SmokingArea());
-                                    console.log("흡연구역 입장", isInSmokingArea);
+                                    // console.log("흡연구역 입장", isInSmokingArea);
                                 }
+                        }
+                        else if ((currentPosition.x >= 66 && currentPosition.x <= 126) &&
+                                (currentPosition.z >= -230 && currentPosition.z < -200)) {
+                                    if(!gsapCameraState) {
+                                        setGsapCameraState(true)
+                                        handleGSAPCamera(75, 20, -272)
+                                    }
+                                    if (!isGoldBoxArea3) {
+                                        setisGoldBoxArea3(true)
+                                        dispatch(EnterGoldBoxArea('isZone3'));
+                                        // console.log("나눔의 숲 보물상자 진입")
+                                    }
                         }
                         else{
                             if(gsapCameraState) {
                                 setGsapCameraState(false)
                             }
+
+                            if (isGoldBoxArea3) {
+                                setisGoldBoxArea3(false);
+                                dispatch(LeaveGoldBoxArea('isZone3', 'hasVisitedZone3'))
+                                // console.log("나눔의 숲 보물상자 탈출")
+                            }
+
                             if (isInSmokingArea) {
                                 setIsInSmokingArea(false);
                                 dispatch(initSmokingArea())
                                 // dispatch(Leave_SmokingArea());
-                                console.log("흡연구역 퇴장", isInSmokingArea);
+                                // console.log("흡연구역 퇴장", isInSmokingArea);
                             }
                         }
                 }
@@ -740,6 +803,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 if (currentPosition.z <= -340) {
                     if (currentPosition.x >= -128 && currentPosition.x <= -30) {
                         // console.log("학교입구, 유한TV, 나눔의 숲 입구, Welcome Zone 사이")
+                        // console.log('test')
                         handleCamera(currentPosition.x - 180, currentPosition.y + 350, currentPosition.z + 180)
                     }
                 }
@@ -747,7 +811,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                 // Welcome Zone
                 if ((currentPosition.x <= -260 && currentPosition.x >= -286) &&
                     (currentPosition.z <= -420 && currentPosition.z >= -450)) {
-                        console.log('Welcome Zone 진입')
+                        // console.log('Welcome Zone 진입')
                         if(!welcomeZoneCameraFlag.current) {
                             welcomeZoneCameraFlag.current = true
                             setGsapCameraState(true)
@@ -759,7 +823,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     if(welcomeZoneCameraFlag.current) {
                         welcomeZoneCameraFlag.current = false
                         if(gsapCameraState) {
-                            console.log("Welcome setGsapCameraState")
+                            // console.log("Welcome setGsapCameraState")
                             setGsapCameraState(false)
                             dispatch(initGuide())
                         }
@@ -830,55 +894,6 @@ export const useMainCharacter = ({ position, myChar }) => {
                         // console.log("동상 퇴장", isInStatueZone);
                     }
                 }
-                
-                // 유재라관
-                if ((currentPosition.x >= -370 && currentPosition.x <= -320) && (currentPosition.z >= -130 && currentPosition.z <= -90)) {
-                    // handleCamera(currentPosition.x + 30, currentPosition.y + 10, currentPosition.z + 50)
-                    // 영역진입체크
-                    if (!isGoldBoxArea1) {
-                        setisGoldBoxArea1(true)
-                        dispatch(EnterGoldBoxArea('isZone1'));
-                        // console.log("유재라관 보물상자 진입")
-                    }
-                } else {
-                    if (isGoldBoxArea1) {
-                        setisGoldBoxArea1(false);
-                        dispatch(LeaveGoldBoxArea('isZone1', 'hasVisitedZone1'))
-                        // console.log("유재라관 보물상자 탈출")
-                    }
-                }
-                // 테라스
-                if ((currentPosition.x >= -140 && currentPosition.x <= -100) && (currentPosition.z >= 180 && currentPosition.z <= 220)) {
-                    // handleCamera(currentPosition.x - 30, currentPosition.y + 10, currentPosition.z - 35)
-                    // 영역진입체크
-                    if (!isGoldBoxArea2) {
-                        setisGoldBoxArea2(true)
-                        dispatch(EnterGoldBoxArea('isZone2'));
-                        // console.log("테라스 보물상자 진입")
-                    }
-                } else {
-                    if (isGoldBoxArea2) {
-                        setisGoldBoxArea2(false);
-                        dispatch(LeaveGoldBoxArea('isZone2', 'hasVisitedZone2'))
-                        // console.log("테라스 보물상자 탈출")
-                    }
-                }
-                // 나눔의 숲
-                if ((currentPosition.x >= -75 && currentPosition.x <= 115) && (currentPosition.z >= -220 && currentPosition.z <= -180)) {
-                    // handleCamera(currentPosition.x - 30, currentPosition.y + 20, currentPosition.z - 50)
-                    // 영역진입체크
-                    if (!isGoldBoxArea3) {
-                        setisGoldBoxArea3(true)
-                        dispatch(EnterGoldBoxArea('isZone3'));
-                        // console.log("나눔의 숲 보물상자 진입")
-                    }
-                } else {
-                    if (isGoldBoxArea3) {
-                        setisGoldBoxArea3(false);
-                        dispatch(LeaveGoldBoxArea('isZone3', 'hasVisitedZone3'))
-                        // console.log("나눔의 숲 보물상자 탈출")
-                    }
-                }
                 dispatch(initCodingArea())
             }
             else {
@@ -908,7 +923,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                     else {
                         if(deptInfoEduGoalsDispatchFlag.current) {
-                            console.log("교육목표 setGsapCameraState")
+                            // console.log("교육목표 setGsapCameraState")
                             deptInfoEduGoalsDispatchFlag.current = false
                             setGsapCameraState(false)
                             dispatch(initDeptInfo())
@@ -946,7 +961,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                     else {
                         if(deptInfoDeptFeaturesDispatchFlag.current) {
-                            console.log("학과특징 setGsapCameraState")
+                            // console.log("학과특징 setGsapCameraState")
                             deptInfoDeptFeaturesDispatchFlag.current = false
                             setGsapCameraState(false)
                             dispatch(initDeptInfo())
