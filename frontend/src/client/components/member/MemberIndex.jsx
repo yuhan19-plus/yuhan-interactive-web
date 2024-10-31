@@ -33,28 +33,26 @@ const MemberIndex = (props) => {
                 </MemberContentWrapper>
             </div>
             <div className='footer-wrapper'>
-                <div className='container'>
-                    <Footer />
-                </div>
+                <Footer />
             </div>
         </div>
     )
 }
 
 const MemberContentWrapper = styled.div`
-    margin-top: 50px;
-    padding: 35px 150px;
+    margin-top: 3rem;
+    padding: 1.5rem 5rem;
 `
 
 const MemberContainer = styled.div`
     margin: 0 auto;
-    padding: 25px;
+    padding: 1.3rem;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 25px;
+    border-radius: 1rem;
     box-shadow:  7px 7px 9px #d9d9d9,
                 -7px -7px 9px #ffffff;
 `

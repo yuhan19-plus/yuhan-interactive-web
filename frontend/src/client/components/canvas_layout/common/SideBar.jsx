@@ -76,16 +76,6 @@ const SideBar = () => {
                 <SideBarHeader>
                     <img src='/assets/images/yuhan-logo2.png' />
                     
-                    {cookies.user && (
-                        <WelcomeWrapper>
-                            <Link to={'/membermodify'}>
-                                <WelcomeContent>
-                                    <p>{cookies.userName}님 안녕하세요!</p>
-                                </WelcomeContent>
-                            </Link>
-                        </WelcomeWrapper>
-                    )}
-                    
                     <AccountManagementWrapper>
                         <AccountManagementList>
                             {cookies.user ? ( // 쿠키가 존재하면 로그아웃 버튼을 보여줍니다.
@@ -115,6 +105,16 @@ const SideBar = () => {
                             )}
                         </AccountManagementList>
                     </AccountManagementWrapper>
+                    
+                    {cookies.user && (
+                        <WelcomeWrapper>
+                            <Link to={'/membermodify'}>
+                                <WelcomeContent>
+                                    <p>{cookies.userName}님 안녕하세요!</p>
+                                </WelcomeContent>
+                            </Link>
+                        </WelcomeWrapper>
+                    )}
                 </SideBarHeader>
                 <SideBarList>
                     {

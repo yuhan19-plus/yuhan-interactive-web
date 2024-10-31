@@ -525,17 +525,17 @@ const JoinAuthArea = styled.div`
 
 const JoinAuthButton = styled.button`
     width: 100%;
-    border-radius: 15px;
-    color: black;
+    border-radius: 1rem;
+    background-color: var(--main-color);
+    color: var(--sub-color);
     border: none;
-    padding: 15px;
-    font-size: 14px;
+    padding: 1rem;
+    font-size: 0.9rem;
     box-shadow: 2px 2px 4px #d9d9d9,
                 -2px -2px 4px #ffffff;
 
     &:hover {
-        color: var(--sub-color);
-        background: #0F275C;
+        color: var(--font-yellow-color);
         box-shadow: inset 2px 2px 4px #0d214e,
                     inset -2px -2px 4px #112d6a;
         cursor: pointer;
@@ -544,12 +544,12 @@ const JoinAuthButton = styled.button`
 
 const JoinButton = styled.button`
     width: 100%;
-    border-radius: 15px;
+    border-radius: 1rem;
     color: var(--sub-color);
     border: none;
-    padding: 15px;
-    font-size: 24px;
-    color: var(--main-color);
+    padding: 1rem;
+    font-size: 1.5rem;
+    background-color: var(--main-color);
     box-shadow: 2px 2px 4px #d9d9d9,
                 -2px -2px 4px #ffffff;
                 
@@ -557,6 +557,7 @@ const JoinButton = styled.button`
         box-shadow: inset 2px 2px 4px #0d214e,
                     inset -2px -2px 4px #112d6a;
         cursor: pointer;
+        color: var(--font-yellow-color);
     }
 `
 

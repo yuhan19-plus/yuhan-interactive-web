@@ -19,9 +19,7 @@ const AdminIndex = () => {
                 </AdminContentWrapper>
             </div>
             <div className='footer-wrapper'>
-                <div className='container'>
-                    <Footer />
-                </div>
+                <Footer />
             </div>
         </div>
     )
@@ -29,12 +27,11 @@ const AdminIndex = () => {
 
 const AdminContentWrapper = styled.div`
     width: 100%;
-    min-height: 500px;
-    margin-top: 40px;
-    border-radius: 25px;
-    box-shadow:  5px 5px 7px #d9d9d9,
-                -5px -5px 7px #ffffff;
-    padding: 35px;
+    margin-top: 3rem;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 7px #d9d9d9,
+                -5px -5px 7px var(--sub-color);
+    padding: 1.3rem;
 `
 
 export default AdminIndex

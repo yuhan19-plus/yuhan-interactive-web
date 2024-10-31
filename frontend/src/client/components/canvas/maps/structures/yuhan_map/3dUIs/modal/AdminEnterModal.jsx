@@ -108,8 +108,7 @@ const AdminEnterModalWrapper = styled.div`
     left: 40%;
     top: 30%;
     width: 350px;
-    height: 200px;
-    background-color: var(--sub-opacity-color);
+    background-color: var(--sub-opacity-color2);
     color: var(--sub-color);
     border-radius: 1rem;
 `
@@ -117,7 +116,7 @@ const AdminEnterModalHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0.3rem;
+    padding: 0.5rem;
     background-color: var(--main-color);
     width: 100%;
     font-size: 1.2rem;
