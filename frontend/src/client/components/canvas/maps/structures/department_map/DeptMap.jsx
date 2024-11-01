@@ -22,7 +22,7 @@ const DeptMap = () => {
     const groundMapName = groundMapState.mapName
 
     const [targetPosition, setTargetPosition] = useState(myChar.deptInitPosition)
-    console.log('dept targetPosition : ', targetPosition)
+    // console.log('dept targetPosition : ', targetPosition)
     
     const handleMove = (newPosition) => {
         setTargetPosition(newPosition)

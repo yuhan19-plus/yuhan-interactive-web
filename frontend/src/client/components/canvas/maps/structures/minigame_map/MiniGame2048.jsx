@@ -13,6 +13,7 @@ import { Bricks512 } from './miniObject/Bricks512';
 import { Bricks64 } from './miniObject/Bricks64';
 import { Bricks8 } from './miniObject/Bricks8';
 import { FONT_URL } from '../../../../../../data/commonData';
+import { motion } from 'framer-motion-3d'
 
 const initialBoard = [
   [0, 0, 0, 0],
@@ -114,15 +115,19 @@ function MiniGame2048({ position, rotation, scale }) {
 
     switch (e.key) {
       case 'ArrowLeft':
+        console.log('좌')
         slideLeft();
         break;
       case 'ArrowRight':
+        console.log('우')
         slideRight();
         break;
       case 'ArrowUp':
+        console.log('위')
         slideUp();
         break;
       case 'ArrowDown':
+        console.log('아래')
         slideDown();
         break;
       default:
@@ -171,6 +176,7 @@ function MiniGame2048({ position, rotation, scale }) {
   };
 
   const handleResetClick = () => {
+    console.log('reset')
     resetGame(); 
   };
 
@@ -178,17 +184,87 @@ function MiniGame2048({ position, rotation, scale }) {
     <>
       <group position={position} rotation={rotation} scale={scale}>
           <group position={[195, -6.5, 190]} scale={[8, 8, 8]} rotation={[Math.PI / -2, 0, Math.PI]}>
-          {board.map((row, rowIndex) =>
-            row.map((tile, colIndex) => (
-              <Tile
-                key={`${rowIndex}-${colIndex}`}
-                value={tile}
-                position={[colIndex * -2.1, rowIndex * 2.1, (rowIndex + colIndex) * 0.3]}
-              />
-            ))
-          )}
+            {board.map((row, rowIndex) =>
+              row.map((tile, colIndex) => (
+                <Tile
+                  key={`${rowIndex}-${colIndex}`}
+                  value={tile}
+                  position={[colIndex * -2.1, rowIndex * 2.1, (rowIndex + colIndex) * 0.3]}
+                />
+              ))
+            )}
         </group>
         {gameOver && (
+          <motion.group
+            position={[160, -10, 165]}
+            animate={{
+              y: [-15, -10],
+            }}
+            transition={{
+              delay: 0.1,
+              duration: 1,
+              ease: 'easeIn'
+            }}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleResetClick()
+            }}
+          >
+            <mesh>
+              <boxGeometry args={[20, 5, 30]} />
+              <meshStandardMaterial color={'#00FF00'} />
+            </mesh>
+            <group position={[3, 2.3, -8.5]} rotation={[0, 0, -Math.PI / 2]}>
+                <Text3D
+                  scale={scale}
+                  rotation={[0, -Math.PI / 2, 0]}
+                  font={FONT_URL}
+                >
+                  Game Over
+                  <meshStandardMaterial color="#FF0000" />
+                </Text3D>
+                <Text3D 
+                  position-y={-7}
+                  scale={scale}
+                  rotation={[0, -Math.PI / 2, 0]}
+                  font={FONT_URL}
+                >
+                  -다시하기-
+                  <meshStandardMaterial color="#0000FF" />
+                </Text3D>
+              </group>
+          </motion.group>
+        )}
+        {gameClear && (
+          <group position={[160, -10, 165]}>
+            <mesh>
+              <boxGeometry args={[20, 5, 30]} />
+              <meshStandardMaterial color={'#00FF00'} />
+            </mesh>
+            <group position={[3, 2.3, -8.5]} rotation={[0, 0, -Math.PI / 2]}>
+                <Text3D
+                  position-z={-17}
+                  scale={scale}
+                  rotation={[0, -Math.PI / 2, 0]}
+                  font={FONT_URL}
+                >
+                  축하합니다! 2048을 달성하셨습니다!
+                  <meshStandardMaterial color="green" />
+                </Text3D>
+                <Text3D
+                  position-y={-7}
+                  scale={scale}
+                  rotation={[0, -Math.PI / 2, 0]}
+                  onClick={handleResetClick}
+                  font={FONT_URL}
+                >
+                  -다시하기-
+                  <meshStandardMaterial color="blue" />
+                </Text3D>
+              </group>
+          </group>
+        )}
+        {/* {gameOver && (
           <group position={[200, 30, 160]}>
               <Text3D
                 scale={scale}
@@ -209,8 +285,8 @@ function MiniGame2048({ position, rotation, scale }) {
                 <meshStandardMaterial color="blue" />
               </Text3D>
             </group>
-          )}
-          {gameClear && (
+          )} */}
+          {/* {gameClear && (
             <group position={[200, 30, 160]}>
               <Text3D
                 position-z={-17}
@@ -232,7 +308,7 @@ function MiniGame2048({ position, rotation, scale }) {
                 <meshStandardMaterial color="blue" />
               </Text3D>
             </group>
-          )}
+          )} */}
       </group>
     </>
   );
