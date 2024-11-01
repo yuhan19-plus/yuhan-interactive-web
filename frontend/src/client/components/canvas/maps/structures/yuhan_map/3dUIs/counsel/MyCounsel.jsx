@@ -218,11 +218,10 @@ const MyCounsel = ({ currentUserState }) => {
                     </Table>
                     <PaginationContainer>
                         {myCounselData.length > 0 && (
-                            <Pagination
+                            <StyledPagination
                                 count={Math.ceil(myCounselData.length / PAGE_COUNT)}
                                 page={currentPage}
                                 onChange={handleChangePage}
-                                color="info"
                             />
                         )}
                     </PaginationContainer>
@@ -244,7 +243,17 @@ const PaginationContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 15px 0px;
+    padding: 1rem 0;
+`
+
+const StyledPagination = styled(Pagination)`
+    button {
+        background-color: var(--main-color);
+        color: var(--font-yellow-color);
+        span {
+            
+        }
+    }
 `
 
 export default MyCounsel

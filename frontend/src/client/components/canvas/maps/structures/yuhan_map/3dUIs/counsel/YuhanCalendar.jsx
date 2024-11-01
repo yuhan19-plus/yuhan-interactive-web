@@ -167,13 +167,13 @@ const YuhanCalendar = () => {
     return (
         <>
             <CalendarWrapper>
-                <Button
-                    variant="contained"
+                <StyledButton
+                    // variant="contained"
                     onClick={handleTodayClick}
-                    color="info"
+                    // color="info"
                 >
                     오늘
-                </Button>
+                </StyledButton>
                 <StyledCalendar
                     locale="ko-KR" // 한국어 기준으로 표시
                     value={date}
@@ -420,6 +420,7 @@ const CalendarWrapper = styled.div`
     button {
         width: 10%;
     }
+
     /* 전체 달력 배경 */
     .react-calendar {
         width: 100%;
@@ -530,6 +531,15 @@ const CounselBtn = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+`
+
+const StyledButton = styled(Button)`
+    background-color: var(--main-color) !important;
+    color: var(--sub-color) !important;
+    
+    &:hover {
+        color: var(--font-yellow-color) !important;
+    }
 `
 
 export default YuhanCalendar

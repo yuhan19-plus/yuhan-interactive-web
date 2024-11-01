@@ -75,45 +75,49 @@ const CounselContent = () => {
                     {
                         userType === 'student' ? (
                             <>
-                                <Button
+                                <StyledButton
                                     variant="contained"
                                     // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleMyCounsel()
                                     }}
                                 >
-                                    <FontAwesomeIcon icon={faList} />&nbsp;상담이력
-                                </Button>
-                                <Button
+                                    <FontAwesomeIcon icon={faList} />
+                                    <p>상담이력</p>
+                                </StyledButton>
+                                <StyledButton
                                     variant="contained"
                                     // style={{marginRight: '5px'}}
                                     onClick={() => {
                                         handleCounselDate()
                                     }}
                                 >
-                                    <FontAwesomeIcon icon={faCalendarCheck} />&nbsp;상담날짜
-                                </Button>
+                                    <FontAwesomeIcon icon={faCalendarCheck} />
+                                    <p>상담날짜</p>
+                                </StyledButton>
                             </>
                         ) : (
                                 <>
-                                    <Button
+                                    <StyledButton
                                         variant="contained"
                                         // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleReqForConsultation()
                                         }}
                                     >
-                                        <FontAwesomeIcon icon={faListCheck} />&nbsp;상담신청목록
-                                    </Button>
-                                    <Button
+                                        <FontAwesomeIcon icon={faListCheck} />
+                                        <p>상담신청목록</p>
+                                    </StyledButton>
+                                    <StyledButton
                                         variant="contained"
                                         // style={{marginRight: '5px'}}
                                         onClick={() => {
                                             handleCounselDateRegister()
                                         }}
                                     >
-                                        <FontAwesomeIcon icon={faCalendarPlus} />&nbsp;상담날짜등록
-                                    </Button>
+                                        <FontAwesomeIcon icon={faCalendarPlus} />
+                                        <p>상담날짜등록</p>
+                                    </StyledButton>
                                 </>
                         )
                     }
@@ -170,9 +174,6 @@ const CounselBtn = styled.div`
     display: flex;
     align-items: center;
     justify-content: end;
-    button {
-        margin-right: 5px;
-    }
 `
 
 const ContentContainer = styled.div`
@@ -181,6 +182,20 @@ const ContentContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+`
+
+const StyledButton = styled(Button)`
+    background-color: var(--main-color) !important;
+    color: var(--sub-color) !important;
+    margin-right: 0.5rem !important;
+        
+    svg {
+        margin-right: 0.5rem !important
+    }
+
+    &:hover {
+        color: var(--font-yellow-color) !important;
+    }
 `
 
 export default CounselContent

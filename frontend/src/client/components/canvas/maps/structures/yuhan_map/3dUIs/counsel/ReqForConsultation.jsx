@@ -286,9 +286,8 @@ const ReqForConsultation = ({currentUserState}) => {
                     </StyledFormControl>
                     <StyledFormControl>
                         <FormContent style={{ justifyContent: 'flex-end', marginTop: '15px' }}>
-                            <Button
-                                variant="outlined"
-                                color="error"
+                            <StyledCancelButton
+                                variant="contained" 
                                 style={{ marginRight: '15px' }}
                                 onClick={() => {
                                     Swal.fire({
@@ -306,10 +305,10 @@ const ReqForConsultation = ({currentUserState}) => {
                                 }}
                             >
                                 취소하기
-                            </Button>
-                            <Button type="submit" variant="contained">
+                            </StyledCancelButton>
+                            <StyledButton type="submit" variant="contained">
                                 신청하기
-                            </Button>
+                            </StyledButton>
                         </FormContent>
                     </StyledFormControl>
                 </form>
@@ -354,4 +353,23 @@ const FormContent = styled.div`
     display: flex;
     align-items: center;
 `
+
+const StyledButton = styled(Button)`
+    background-color: var(--main-color) !important;
+    color: var(--sub-color) !important;
+    
+    &:hover {
+        color: var(--font-yellow-color) !important;
+    }
+`
+
+const StyledCancelButton = styled(Button)`
+    background-color: var(--main-dark-color) !important;
+    color: var(--sub-color) !important;
+    
+    &:hover {
+        color: var(--font-yellow-color) !important;
+    }
+`
+
 export default ReqForConsultation
