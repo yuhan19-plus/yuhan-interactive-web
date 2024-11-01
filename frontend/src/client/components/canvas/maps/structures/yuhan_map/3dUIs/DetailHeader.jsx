@@ -85,6 +85,10 @@ const MenuClose = styled.div`
         width: 2.5rem;
         height: 2.5rem;
     }
+
+    &:hover {
+        color: var(--font-yellow-color);
+    }
 `
 
 export default DetailHeader

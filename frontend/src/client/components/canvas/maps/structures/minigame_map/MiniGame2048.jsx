@@ -115,19 +115,19 @@ function MiniGame2048({ position, rotation, scale }) {
 
     switch (e.key) {
       case 'ArrowLeft':
-        console.log('좌')
+        // console.log('좌')
         slideLeft();
         break;
       case 'ArrowRight':
-        console.log('우')
+        // console.log('우')
         slideRight();
         break;
       case 'ArrowUp':
-        console.log('위')
+        // console.log('위')
         slideUp();
         break;
       case 'ArrowDown':
-        console.log('아래')
+        // console.log('아래')
         slideDown();
         break;
       default:
@@ -176,7 +176,7 @@ function MiniGame2048({ position, rotation, scale }) {
   };
 
   const handleResetClick = () => {
-    console.log('reset')
+    // console.log('reset')
     resetGame(); 
   };
 
@@ -194,6 +194,7 @@ function MiniGame2048({ position, rotation, scale }) {
               ))
             )}
         </group>
+        
         {gameOver && (
           <motion.group
             position={[160, -10, 165]}
@@ -236,33 +237,50 @@ function MiniGame2048({ position, rotation, scale }) {
           </motion.group>
         )}
         {gameClear && (
-          <group position={[160, -10, 165]}>
+          <motion.group
+            position={[160, -10, 165]}
+            animate={{
+              y: [-15, -10],
+            }}
+            transition={{
+              delay: 0.1,
+              duration: 1,
+              ease: 'easeIn'
+            }}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleResetClick()
+            }}
+          >
             <mesh>
-              <boxGeometry args={[20, 5, 30]} />
+              <boxGeometry args={[20, 5, 80]} />
               <meshStandardMaterial color={'#00FF00'} />
             </mesh>
-            <group position={[3, 2.3, -8.5]} rotation={[0, 0, -Math.PI / 2]}>
-                <Text3D
+            <group
+              position={[3, 2.3, -8.5]}
+              rotation={[0, 0, -Math.PI / 2]}
+              onClick={handleResetClick}
+            >
+              <Text3D
                   position-z={-17}
                   scale={scale}
                   rotation={[0, -Math.PI / 2, 0]}
                   font={FONT_URL}
                 >
                   축하합니다! 2048을 달성하셨습니다!
-                  <meshStandardMaterial color="green" />
+                  <meshStandardMaterial color="#047c00" />
                 </Text3D>
                 <Text3D
                   position-y={-7}
                   scale={scale}
                   rotation={[0, -Math.PI / 2, 0]}
-                  onClick={handleResetClick}
                   font={FONT_URL}
                 >
                   -다시하기-
-                  <meshStandardMaterial color="blue" />
+                  <meshStandardMaterial color="#0000FF" />
                 </Text3D>
-              </group>
-          </group>
+            </group>
+          </motion.group>
         )}
         {/* {gameOver && (
           <group position={[200, 30, 160]}>
