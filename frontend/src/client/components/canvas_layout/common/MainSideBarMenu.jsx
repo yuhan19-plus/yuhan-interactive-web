@@ -24,7 +24,7 @@ import styled from 'styled-components';
 
 const MainSideBarMenu = () => {
     // 쿠키 값 가져오기를 위한 훅
-    const [cookies] = useCookies(['user']);
+    const [cookies] = useCookies(['user', 'userType']);
 
     const dispatch = useDispatch()
 
@@ -89,7 +89,7 @@ const MainSideBarMenu = () => {
                 <span><a onClick={handleSideMenuBoard}>게시판</a></span>
             </MainSideBarMenuItem>
             {/* 쿠키가 있을 때만 상담신청 메뉴를 표시 */}
-            {cookies.user && (
+            {cookies.user && cookies.userType !== 'admin' && (
                 <MainSideBarMenuItem>
                     <FontAwesomeIcon icon={faEnvelopeOpenText} />
                     <span><a onClick={handleSideMenuConsultation}>상담신청</a></span>
