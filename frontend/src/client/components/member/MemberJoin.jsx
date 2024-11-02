@@ -6,7 +6,8 @@
  */
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { FilledInput, FormControl, FormControlLabel, FormLabel, FormHelperText, IconButton, InputAdornment, InputLabel, MenuItem, NativeSelect, OutlinedInput, Radio, RadioGroup, Select, Stack, Switch, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
 import styled from 'styled-components'
 import { MAJORS, PROFESSOR_POSITION } from '../../../data/commonData'
@@ -14,6 +15,9 @@ import { Form, useSubmit } from 'react-router-dom'
 
 const MemberJoin = () => {
     // const submit = useSubmit()
+
+    // 쿠키(세션 쿠키)
+    const [cookies, setCookie] = useCookies(['user']);
 
     // 상태관리
     const [showPassword, setShowPassword] = useState(false)
@@ -285,6 +289,14 @@ const MemberJoin = () => {
             Swal.fire('오류', '인증 코드 확인 중 오류가 발생했습니다.', 'error');
         }
     };
+
+    // useEffect
+    // 쿠키가 존재하면 루트 경로로 리다이렉트
+    useEffect(() => {
+        if (cookies.user) {
+            window.location.href = '/';
+        }
+    }, [cookies]);
 
     return (
         <div

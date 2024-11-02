@@ -100,12 +100,6 @@ const MemberLogin = () => {
     };
 
     // useEffect
-    // 쿠키가 존재하고 로그인 성공이 아닌 경우에만 리다이렉트
-    useEffect(() => {
-        if (cookies.user && !loginSuccess) {
-            window.location.href = '/';
-        }
-    }, cookies);
     // 쿠키가 존재하면 루트 경로로 리다이렉트
     useEffect(() => {
         if (cookies.user) {

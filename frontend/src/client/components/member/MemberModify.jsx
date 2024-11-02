@@ -161,6 +161,12 @@ const MemberModify = () => {
 
         fetchData()
     }, [cookies.user, memberType])
+    // 쿠키가 존재하지 않으면 루트 경로로 리다이렉트
+    useEffect(() => {
+        if (!cookies.user) {
+            window.location.href = '/';
+        }
+    }, [cookies]);
 
     return (
         <div>
