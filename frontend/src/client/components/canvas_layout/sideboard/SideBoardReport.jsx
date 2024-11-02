@@ -10,10 +10,10 @@ import { Grid, Typography, Select, MenuItem, TextField, Box, Button } from '@mui
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { BackButton, ButtonContainer } from "./YuhanBoardCommonStyles";
+import { BackButton, ButtonContainer } from "../../../../common/components/board/YuhanBoardCommonStyles";
 
 // 신고글을 작성하는 컴포넌트 
-const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
+const SideBoardReport = ({ boardId, boardTitle, onCancel }) => {
     const [cookies] = useCookies(["user"]);
 
     const [reportData, setReportData] = useState({
@@ -72,16 +72,16 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
                     돌아가기
                 </BackButton>
             </ButtonContainer>
-            <StyledGrid container>
-                <StyledTitleTypography variant="h4">
+            <ReportInfoContainer container>
+                <ReportTitleTypography variant="h4">
                     신고게시글: {boardTitle}
-                </StyledTitleTypography>
-            </StyledGrid>
-            <StyledGrid container>
-                <StyledReporterTypography variant="h5">
+                </ReportTitleTypography>
+            </ReportInfoContainer>
+            <ReportInfoContainer container>
+                <ReporterTypography variant="h5">
                     신고자 : {cookies.user}
-                </StyledReporterTypography>
-            </StyledGrid>
+                </ReporterTypography>
+            </ReportInfoContainer>
 
             <Grid item xs={12} sx={{ marginBottom: "2vh" }}>
                 <Typography variant="subtitle1">신고 유형</Typography>
@@ -106,7 +106,7 @@ const YuhanBoardReport = ({ boardId, boardTitle, onCancel }) => {
     );
 };
 
-export default YuhanBoardReport;
+export default SideBoardReport;
 
 const ReportContainer = styled.div`
     height: 100%;
@@ -128,18 +128,18 @@ const ReportButton = styled(Button).attrs({
   }
 `;
 
-const StyledGrid = styled(Grid)`
+const ReportInfoContainer = styled(Grid)`
   margin-top: 0.5vh;
   padding: 0.5vw;
 `;
 
-const StyledTitleTypography = styled(Typography)`
+const ReportTitleTypography = styled(Typography)`
   color: #ee2e2e;
   font-weight: bold !important;
   font-size: 2.5rem !important; 
 `;
 
-const StyledReporterTypography = styled(Typography)`
+const ReporterTypography = styled(Typography)`
   color: #ee2e2e;
   font-weight: bold !important;
   font-size: 2rem !important;

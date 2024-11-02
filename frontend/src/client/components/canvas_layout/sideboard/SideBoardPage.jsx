@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 import { useSideBoardData } from "./hooks/useSideBoardData";
 import styled from "styled-components";
 import { YuhanBoardComment } from "../../../../common/components/board/YuhanBoardCommnet";
-import { BackButton, ButtonContainer, DeleteButton, RightAlignedButtons, UpdateButton } from "../../../../common/components/board/YuhanBoardCommonStyles";
+import { AttachmemtAccordion, AttachmemtAccordionDetails, AttachmemtAccordionSummary, AttachmentLink, AttachmentsContainer, BackButton, ButtonContainer, DeleteButton, ButtonRightContainer, UpdateButton } from "../../../../common/components/board/YuhanBoardCommonStyles";
 
 const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem }) => {
     const [cookies] = useCookies(["user"]);
@@ -25,7 +25,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
             {/* 버튼구역 */}
             <ButtonContainer>
                 <BackButton onClick={onCancel}>돌아가기</BackButton>
-                <RightAlignedButtons>
+                <ButtonRightContainer>
                     {(cookies.user === boardData.board_writer) && (
                         <>
                             <UpdateButton onClick={() => onSelectUpdateItem(boardData.board_id)}>수정</UpdateButton>
@@ -60,7 +60,7 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                             신고
                         </DeleteButton>
                     )}
-                </RightAlignedButtons>
+                </ButtonRightContainer>
             </ButtonContainer>
 
             {/* 제목영역 */}
@@ -106,15 +106,15 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
             {/* 첨부파일 영역 */}
             <AttachmentsContainer>
                 {attachments.length > 0 ? (
-                    <StyledAccordion>
-                        <StyledAccordionSummary
+                    <AttachmemtAccordion>
+                        <AttachmemtAccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
                             첨부파일
-                        </StyledAccordionSummary>
-                        <StyledAccordionDetails>
+                        </AttachmemtAccordionSummary>
+                        <AttachmemtAccordionDetails>
                             {attachments.map((attachment, index) => {
                                 const displayName = attachment.file_name.length > 15
                                     ? attachment.file_name.slice(0, 10) + "..."
@@ -137,17 +137,17 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
                                     </AttachmentLink>
                                 );
                             })}
-                        </StyledAccordionDetails>
-                    </StyledAccordion>
+                        </AttachmemtAccordionDetails>
+                    </AttachmemtAccordion>
                 ) : (
                     <></>
                 )}
             </AttachmentsContainer>
 
             {/* 내용 영역 */}
-            <StyledGridItem>
+            <ReportedBoardContent>
                 {boardData.board_content}
-            </StyledGridItem>
+            </ReportedBoardContent>
 
             {/* 좋아요 버튼영역 */}
             <Grid>
@@ -171,7 +171,6 @@ const SideBoardPage = ({ boardId, onCancel, onSelectUpdateItem, handleReportItem
 export default SideBoardPage;
 
 const BoardLayout = styled.div`
-    min-height: 80vh;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -182,45 +181,11 @@ const BoardLayout = styled.div`
     }
 
     .container {
-        max-width: 1200px;
         margin: 0 auto;
     }
 `;
 
-const AttachmentsContainer = styled.div`
-  padding: 1vw;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const StyledAccordion = styled(Accordion)`
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-`;
-
-const StyledAccordionSummary = styled(AccordionSummary)`
-  font-size: 1.1rem;
-`;
-
-const StyledAccordionDetails = styled(AccordionDetails)`
-  background: var(--sub-color);
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  gap: 0.25vh;
-  position: absolute;
-  z-index: 10;
-`;
-
-const AttachmentLink = styled.a`
-  color: #2980B9;
-  text-align: center;
-  display: block;
-  width: auto;
-`;
-
-const StyledGridItem = styled(Grid)`
+const ReportedBoardContent = styled(Grid)`
   margin-bottom: 2vh;
   padding: 1vh 1vw;
   border-radius: 0.5vh;

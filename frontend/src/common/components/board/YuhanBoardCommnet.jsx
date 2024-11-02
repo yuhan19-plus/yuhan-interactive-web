@@ -170,20 +170,20 @@ export const YuhanBoardComment = ({ boardData }) => {
                 <CommentListContainer>
                     {commentList.length !== 0 ? (
                         getCurrentPageData().map((item, index) => (
-                            <List key={item.comment_id}>
+                            <CommentList key={item.comment_id}>
                                 <CommentListItem>
                                     <CommentInfoContainer>
                                         <CommentIconTextContainer>
                                             <NoteAlt />
-                                            <CommentWriter>
+                                            <>
                                                 {item.comment_writer}
-                                            </CommentWriter>
+                                            </>
                                         </CommentIconTextContainer>
 
                                         {cookies.user &&
                                             (cookies.user === item.comment_writer || cookies.userType === "admin") && (
                                                 <DeleteButtonWrapper>
-                                                    <Button onClick={() => handleDeleteComment(item.comment_id)}>
+                                                    <Button className="font-color-red" onClick={() => handleDeleteComment(item.comment_id)}>
                                                         삭제
                                                     </Button>
                                                 </DeleteButtonWrapper>
@@ -203,7 +203,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                                     </DateArea>
                                 </CommentListItem>
                                 <Divider />
-                            </List>
+                            </CommentList>
                         ))
 
                     ) : (
@@ -219,7 +219,18 @@ export const YuhanBoardComment = ({ boardData }) => {
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        color="primary"
+                        sx={{
+                            "& .MuiPaginationItem-root": {
+                                backgroundColor: 'var(--sub-color) !important',
+                            },
+                            "& .Mui-selected": {
+                                backgroundColor: 'var(--main-color) !important',
+                                color: 'var(--sub-color) !important',
+                                "&:hover": {
+                                    backgroundColor: 'var(--main-color) !important',
+                                },
+                            },
+                        }}
                     />
                 </PaginationContainer>
             ) : (
@@ -234,7 +245,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                         onChange={handleInputChange}
                     />
 
-                    <SubmitButton onClick={() => handleSaveComment(boardData.board_id)}                            >
+                    <SubmitButton onClick={() => handleSaveComment(boardData.board_id)}>
                         작성하기
                     </SubmitButton>
                 </InputCommentContainer>
@@ -260,8 +271,6 @@ const CommentListItem = styled(ListItem)`
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 0;
-
     svg {
         color: var(--main-color);
     }
@@ -278,9 +287,6 @@ const CommentArea = styled.div`
     background-color: var(--main-color);
     color: var(--sub-color);
     padding: 2vh;
-`
-const CommentWriter = styled.div`
-    
 `
 const CommentIconTextContainer = styled.div`
     display: flex;
@@ -318,7 +324,6 @@ const InputComment = styled(TextField).attrs({
 })`
     background-color: var(--main-color);
     border-radius: 0.5vh;
-    height: 10vh;
     width:100%;
   
     & .MuiInputBase-input::placeholder {
@@ -332,11 +337,17 @@ const InputComment = styled(TextField).attrs({
 const SubmitButton = styled(Button)`
     margin-left: 0.5vw !important;
     width: 7.5vw ;
-    height: 10vh;
+    height: 8.5vh;
     font-size: 1rem !important;
-    background-color: var(--main-color) !important;
     color: var(--sub-color) !important;
-  &:hover {
-    background-color: #325db8 !important;
-  }
-`;  
+    background-color: var(--main-dark-color) !important;
+    &:hover {
+    background-color: var(--main-color) !important;
+    color: var(--font-yellow-color) !important;
+    }
+`;
+
+const CommentList = styled(List)`
+    margin: 0;
+    padding: 0;
+`

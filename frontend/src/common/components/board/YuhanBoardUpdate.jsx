@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import { BackButton, ButtonContainer, ContentContainer, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
+import { BackButton, ButtonContainer, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
 
 const YuhanBoardUpdate = ({ boardId, onCancel }) => {
     // 읽어온 데이터 관리
@@ -258,7 +258,7 @@ const YuhanBoardUpdate = ({ boardId, onCancel }) => {
                                         e.preventDefault();
                                         handleDownload(attachment.file_name, attachment.file_data, attachment.file_type);
                                     }}
-                                    style={{ textDecoration: 'none', color: 'blue' }}
+                                    style={{ textDecoration: 'none', color: 'blue' }}   
                                 >
                                     {attachment.file_name}
                                 </a>
@@ -316,6 +316,13 @@ const BoardLayout = styled.div`
 `;
 const FileItemContainer = styled(Box)`
     display: flex;
-    align-items: center;
-    margin-bottom: 16px; // marginBottom: 2는 16px에 해당합니다
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  display: flex;
+  gap:0.5rem;
 `;

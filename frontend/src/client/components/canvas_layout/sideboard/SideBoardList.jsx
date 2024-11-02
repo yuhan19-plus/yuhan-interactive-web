@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import Swal from 'sweetalert2';
-import { WriteButton, WriteButtonContainer } from '../../../../common/components/board/YuhanBoardCommonStyles';
+import { SearchButton, WriteButton, WriteButtonContainer } from '../../../../common/components/board/YuhanBoardCommonStyles';
 
 const SideBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies] = useCookies(['user']);
@@ -172,7 +172,7 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                             </InputAdornment>
                         }
                     />
-                    <Button variant="contained" color='info' onClick={handleSearch}>검색</Button>
+                    <SearchButton onClick={handleSearch}>검색</SearchButton>
 
                     {/* 정렬 기준 선택 드롭다운 */}
                     <FormControl sx={{ marginLeft: '1vw', minWidth: 80 }}>
@@ -279,7 +279,18 @@ const SideBoardList = ({ onCreatePost, onSelectItem }) => {
                         count={totalPages}
                         page={currentPage}
                         onChange={handlePageChange}
-                        color='primary'
+                        sx={{
+                            "& .MuiPaginationItem-root": {
+                                backgroundColor: 'var(--sub-color) !important',
+                            },
+                            "& .Mui-selected": {
+                                backgroundColor: 'var(--main-color) !important',
+                                color: 'var(--sub-color) !important',
+                                "&:hover": {
+                                    backgroundColor: 'var(--main-color) !important',
+                                },
+                            },
+                        }}
                     />
 
                     {cookies.user &&

@@ -4,7 +4,6 @@
 import { ENTER_GOLDBOXAREA, INIT_GOLDBOXAREA, LEAVE_GOLDBOXAREA } from "../actions/actions";
 
 const initialState = {
-    value: false,
     isZone1: false, // 1번 영역 진입 여부 (유재라관)
     isZone2: false, // 2번 영역 진입 여부 (테라스)
     isZone3: false,  // 3번 영역 진입 여부 (농구장)
@@ -19,7 +18,6 @@ export function goldBoxReducer(state = initialState, action) {
         case INIT_GOLDBOXAREA:
             return {
                 ...state,
-                value: false,
                 isZone1: false,
                 isZone2: false,
                 isZone3: false,

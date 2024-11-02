@@ -7,13 +7,10 @@
  */
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
-import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import styled from "styled-components";
 import { BackButton, ButtonContainer } from "../../../../common/components/board/YuhanBoardCommonStyles";
 
 const AdminBoardReportManagement = ({ reportID, onCancel }) => {
-    const [cookies] = useCookies(["user"]);
 
     const [totalData, setTotalData] = useState({
         board_content: "",

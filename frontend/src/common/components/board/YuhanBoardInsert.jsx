@@ -11,7 +11,7 @@ import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import { BackButton, ButtonContainer, ContentContainer, FileButton, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
+import { BackButton, ButtonContainer, InputContent, InputTitle, SubmitButtonContainer, TitleTypography, TotalSubmitButton } from "./YuhanBoardCommonStyles";
 
 const YuhanBoardInsert = ({ onCancel }) => {
     const [cookies] = useCookies(['user']);
@@ -286,7 +286,14 @@ const YuhanBoardInsert = ({ onCancel }) => {
                 return;
             }
             else {
-                // 임시 저장을 물어보고 사용자가 확인하면 saveTempBoard 함수 호출
+                if (!boardDataRef.current.board_content && !boardDataRef.current.board_title) {
+                    Swal.fire({
+                        icon: "warning",
+                        text: "저장할 데이터가 없어 임시 저장을 하지 않습니다."
+                    });                    
+                    return;
+                }
+                // 임시 저장 의사묻기
                 Swal.fire({
                     title: '임시 저장하시겠습니까?',
                     text: "임시 저장을 진행하시려면 확인을 눌러주세요.",
@@ -305,7 +312,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
         };
     }, []);
 
-    // 이 컴포넌트가 처음 실행될 때 임시저장여부확인 
+    // 임시저장여부확인 
     useEffect(() => {
         checkTempData();
     }, []);
@@ -333,7 +340,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                     onChange={handleInputChange}
                 />
 
-                <StyledDropZone {...getRootProps()}>
+                <BoardInsertDropZone {...getRootProps()}>
                     <input {...getInputProps()} />
                     {boardData.files.length === 0 ? (
                         <p>파일은 15mb를 넘으면 안됩니다.<br /> 파일을 여기에 드래그 앤 드롭하거나 클릭하여 파일을 선택하세요.</p>
@@ -356,7 +363,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                             ))}
                         </FileList>
                     )}
-                </StyledDropZone>
+                </BoardInsertDropZone>
                 <InputContent
                     name="board_content"
                     value={boardData.board_content}
@@ -375,7 +382,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
 export default YuhanBoardInsert;
 
 const BoardLayout = styled.div`
-    min-height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     
@@ -389,7 +396,7 @@ const BoardLayout = styled.div`
     }`
     ;
 
-const StyledDropZone = styled.div`
+const BoardInsertDropZone = styled.div`
   border: 2px dashed #cccccc;
   border-radius: 8px;
   padding: 30px;
@@ -415,3 +422,27 @@ const FileItem = styled.li`
   align-items: center;
   justify-content: space-between;
 `;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  display: flex;
+  gap: 16px;
+`;
+
+const FileButton = styled(Button).attrs({
+    variant: "outlined",
+  })`
+    margin-right: 1vw;
+    color: #e74c3c !important;
+    border: 1px solid #e74c3c !important;
+    padding: 0 !important;
+    font-size: 0.75rem;
+  
+    &:hover {
+        background-color: #e74c3c !important;
+        color: var(--sub-color) !important;
+    }
+  `;

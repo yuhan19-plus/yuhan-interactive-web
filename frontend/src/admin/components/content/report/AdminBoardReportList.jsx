@@ -7,18 +7,15 @@
  */
 import React, { useEffect, useState } from "react";
 import { Box, List, ListItem, ListItemText, Typography, Pagination, FormControl, Select, MenuItem, Grid } from '@mui/material';
-import { useCookies } from "react-cookie";
 import styled from "styled-components";
 
 const AdminBoardReportList = ({ onReportManagement }) => {
-    const [cookies] = useCookies(["user"]);
-
     const [dataList, setDataList] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [sortCriteria, setSortCriteria] = useState('report_status'); // 기본 정렬 기준
     const [currentPage, setCurrentPage] = useState(1);
 
-    const pageNum = 8;
+    const pageNum = 10;
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
