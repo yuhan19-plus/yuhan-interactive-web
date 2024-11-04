@@ -11,7 +11,7 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
         foodType: "",
         foodName: "",
         foodPrice: "",
-        foodImg: "", // base64 image data
+        foodImg: "",
         day: ""
     });
     const [files, setFiles] = useState([]);
@@ -28,10 +28,10 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                 foodType: data.foodType,
                 foodName: data.foodName,
                 foodPrice: data.foodPrice,
-                foodImg: data.foodImg,
+                foodImg: data.foodImg ? data.foodImg.split(",")[1] : "", // base64 문자열만 저장
                 day: data.day
             });
-            setFiles([{ file_name: "현재 이미지", file_data: data.foodImg }]);
+            setFiles([{ file_name: "현재 이미지", file_data: data.foodImg }]); // 전체 Data URL을 사용하여 이미지 표시
         } catch (error) {
             console.error("데이터 불러오는 중 에러 발생", error);
         }
@@ -44,9 +44,14 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
     const onDrop = useCallback((acceptedFiles) => {
         const reader = new FileReader();
         reader.onloadend = () => {
+            const base64String = reader.result.split(",")[1]; // base64 문자열만 추출
+            setFoodData((prev) => ({
+                ...prev,
+                foodImg: base64String
+            }));
             setFiles([{
                 file_name: acceptedFiles[0].name,
-                file_data: reader.result,
+                file_data: reader.result, // 전체 Data URL을 사용하여 이미지 표시
             }]);
         };
         reader.readAsDataURL(acceptedFiles[0]);
@@ -67,7 +72,7 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
             foodType: foodData.foodType,
             foodName: foodData.foodName,
             foodPrice: foodData.foodPrice,
-            foodImg: files[0]?.file_data || foodData.foodImg,
+            foodImg: foodData.foodImg, // base64 문자열만 전송
             day: foodData.day
         };
     
@@ -115,7 +120,16 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
             }
         }
     };
-    
+
+    // 요일 옵션을 동적으로 필터링
+    const dayOptions = (() => {
+        if (foodData.foodType === '양식' || foodData.foodType === '한식') {
+            return ['월', '화', '수', '목', '금'];
+        } else if (foodData.foodType === '일품1' || foodData.foodType === '일품2') {
+            return ['매일'];
+        }
+        return []; // 기본값으로 아무것도 반환하지 않음
+    })();
 
     return (
         <BoardLayout>
@@ -174,12 +188,9 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                                     onChange={handleInputChange}
                                     required
                                 >
-                                    <MenuItem value="월">월</MenuItem>
-                                    <MenuItem value="화">화</MenuItem>
-                                    <MenuItem value="수">수</MenuItem>
-                                    <MenuItem value="목">목</MenuItem>
-                                    <MenuItem value="금">금</MenuItem>
-                                    <MenuItem value="매일">매일</MenuItem>
+                                    {dayOptions.map((day) => (
+                                        <MenuItem key={day} value={day}>{day}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -205,6 +216,7 @@ const AdminFoodUpdate = ({ foodID, onCancel }) => {
                                             src={files[0].file_data}
                                             alt={files[0].file_name}
                                             style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                                            onError={(e) => { e.target.src = '/default-image.png'; }}
                                         />
                                     </Box>
                                 )}

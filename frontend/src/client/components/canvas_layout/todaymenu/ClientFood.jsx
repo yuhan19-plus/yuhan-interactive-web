@@ -4,7 +4,7 @@
  * 클라이언트(학생) 이 보는 오늘의메뉴 게시판
  * 
  */
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
@@ -235,7 +235,15 @@ const ClientFood = () => {
 
                         <Grid sx={{ background: "white", borderRadius: 2, boxShadow: 2, marginBottom: 1, marginTop: 1, width: "21.25vw", height: "28vh", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center" }}>
                             {selectedFood ? (
-                                <img src={`${getFoodDetails(selectedFood)?.foodImg}`} alt="Food" style={{ width: '10vw', height: 'auto' }} />
+                                <img
+                                    src={`${getFoodDetails(selectedFood)?.foodImg}`}
+                                    alt="Food"
+                                    style={{
+                                        height: getFoodDetails(selectedFood)?.foodImgHeight > getFoodDetails(selectedFood)?.foodImgWidth ? '10vh' : 'auto',
+                                        width: getFoodDetails(selectedFood)?.foodImgHeight <= getFoodDetails(selectedFood)?.foodImgWidth ? '10vw' : 'auto',
+                                        objectFit: 'contain' // 비율 유지
+                                    }}
+                                />
                             ) : (
                                 <img src={defaultImage} alt="Default" style={{ opacity: "0.3", width: '10vw', height: 'auto' }} />
                             )}
