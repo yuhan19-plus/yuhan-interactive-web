@@ -75,12 +75,13 @@ const AdminMenuPreview = () => {
         const combinedPosts = adminPosts.slice(0, 5);
         return combinedPosts;
     };
-    
+
     // 신고 5개 로드 함수 
     const getAdminReportData = () => {
         // Waiting인 것 중 최신 5개 (만약 부족하면 최신순서로 채움)
         const WaitingReports = reportData.filter(item => item.report_status === 'Waiting');
-        const nonWaitingReports = reportData.filter(item => item.report_status !== 'Waiting');
+        const nonWaitingReports = reportData.filter(item => item.report_status !== 'Waiting')
+            .sort((a, b) => new Date(b.report_date) - new Date(a.report_date));
 
         // 대기중인 신고가 5개 미만이면 최신 글을 추가
         const combinedReports = WaitingReports.concat(nonWaitingReports).slice(0, 5);
@@ -125,7 +126,9 @@ const AdminMenuPreview = () => {
 
                                 {/* 신고 내용 리스트에선 25자만 보여지고 들어가면 전부 보여짐 */}
                                 <Box sx={{ width: '60%' }}>
-                                    <ListItemText primary={item.report_content.substring(0, 25)} />
+                                    <ListItemText
+                                        primary={!item.report_content ? '신고 내용이 없습니다.' : (item.report_content.substring(0, 25))}
+                                    />
                                 </Box>
 
                                 {/* 신고자 */}
@@ -254,7 +257,7 @@ const HalfPart = styled.div`
 `;
 
 const PartTitle = styled.div`
-    border-left: 5px solid #0F275C;
+    border-left: 5px solid var(--main-color);
     padding: 5px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -270,7 +273,7 @@ const TableHeader = styled.div`
     text-align: center;
     align-items: center;
     height: 1vh;
-    background: #0F275C;
+    background: var(--main-color);
     color: white;
     display: flex;
     font-weight: bold;

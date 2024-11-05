@@ -7,12 +7,10 @@
  */
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Button, Typography, TextField } from '@mui/material';
-import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import styled from "styled-components";
+import { BackButton, ButtonContainer } from "../../../../common/components/board/YuhanBoardCommonStyles";
 
 const AdminBoardReportManagement = ({ reportID, onCancel }) => {
-    const [cookies] = useCookies(["user"]);
 
     const [totalData, setTotalData] = useState({
         board_content: "",
@@ -168,18 +166,11 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
         <>
             <Box sx={{ p: 3, backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 3 }}>
                 {/* 돌아가기 버튼 */}
-                <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                        <StyledBackButton
-                            variant="contained"
-                            size="medium"
-                            color="primary"
-                            onClick={onCancel}
-                        >
-                            돌아가기
-                        </StyledBackButton>
-                    </Grid>
-                </Grid>
+                <ButtonContainer>
+                    <BackButton onClick={onCancel} >
+                        돌아가기
+                    </BackButton>
+                </ButtonContainer>
 
                 {/* 신고 정보 영역 */}
                 <Box sx={{ mt: 3, backgroundColor: '#fff', padding: 3, borderRadius: 2, boxShadow: 1 }}>
@@ -272,11 +263,3 @@ const AdminBoardReportManagement = ({ reportID, onCancel }) => {
 };
 
 export default AdminBoardReportManagement;
-const StyledBackButton = styled(Button)`
-  background-color: #2ecc71 !important;
-  padding: 0.5vh 2vw !important;
-  
-  &:hover {
-    background-color: #27ae60 !important;
-  }
-`;

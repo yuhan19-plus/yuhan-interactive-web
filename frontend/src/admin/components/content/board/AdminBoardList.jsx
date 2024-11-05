@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import Swal from "sweetalert2";
+import { SearchButton, WriteButton, WriteButtonContainer } from '../../../../common/components/board/YuhanBoardCommonStyles';
 
 const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const [cookies] = useCookies(['user']);
@@ -24,7 +25,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
     const fullScreenWinth = window.screen.width; // 전체화면너비
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > fullScreenWinth / 2);
 
-    const pageNum = 8;
+    const pageNum = 10;
 
     // 삭제핸들러
     const handleDeleteItem = async (boardId) => {
@@ -97,7 +98,7 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
             console.error("데이터 불러오는 중 에러 발생:", error);
         }
     };
-    
+
     // 현재 페이지 데이터를 가져옴 (정렬 기준에 따라)
     const getCurrentPageData = () => {
         const targetWriter = 'admin'; // 관리자 우선순위
@@ -157,173 +158,179 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
 
     return (
         <BoardLayout>
-            <Box sx={{ p: 3 }}>
-                <CenteredContainer>
-                    <SearchInput
-                        placeholder="검색할 제목이나 작성자를 입력하세요"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        }
-                    />
-                    <Button variant="contained" onClick={handleSearch} color='info' >검색</Button>
-
-                    <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
-                        <Select
-                            labelId="sort-label"
-                            value={sortCriteria}
-                            onChange={(e) => setSortCriteria(e.target.value)}
-                            sx={{ height: '4vh', padding: '0px 8px' }}
-                        >
-                            <MenuItem value="board_date">날짜순</MenuItem>
-                            <MenuItem value="board_like">좋아요순</MenuItem>
-                            <MenuItem value="board_view">조회수순</MenuItem>
-                            <MenuItem value="board_status">상태순</MenuItem>
-                        </Select>
-                    </FormControl>
-                </CenteredContainer>
-
-                <List sx={{ textAlign: 'center' }}>
-                    <TableHeader>
-                        <Box sx={{ width: '10%' }}>번호</Box>
-                        <Box sx={{ width: '45%' }}>제목</Box>
-                        <Box sx={{ width: '15%' }}>작성자</Box>
-                        <Box sx={{ width: '10%' }}>View</Box>
-                        <Box sx={{ width: '10%' }}>Like</Box>
-                        <Box sx={{ width: '10%' }}>관리</Box>
-                    </TableHeader>
-
-                    {getCurrentPageData().map((item, index) => (
-                        <>
-                            {(item.writer_type === 'admin') ? (
-                                <ListItem key={item.board_id}>
-                                    <FlexListItemBox>
-                                        {/* 번호 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
-                                            <Admincontent >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
-                                        </Box>
-                                        {/* 제목 */}
-                                        <Box sx={{ width: '45%' }}>
-                                            <Admincontent
-                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                                onClick={() => handleSelectItem(item.board_id)}
-                                            >{isWideScreen ? item.board_title.substring(0, 25) : item.board_title.substring(0, 15)}
-                                            </Admincontent>
-                                        </Box>
-                                        {/* 작성자 */}
-                                        <Box sx={{ width: '15%', textAlign: 'center' }}>
-                                            <Admincontent
-                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                                onClick={() => handleSelectItem(item.board_id)}
-                                            >
-                                                {item.board_writer}
-                                            </Admincontent>
-                                        </Box>
-                                        {/* 조회수 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <Admincontent>
-                                                {item.board_view}
-                                            </Admincontent>
-                                        </Box>
-                                        {/* 좋아요 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <Admincontent>
-                                                {item.board_like}
-                                            </Admincontent>
-                                        </Box>
-                                        {/* 관리 */}
-                                        <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
-                                            {item.board_status === 'active' &&
-                                                <Button
-                                                    variant="contained"
-                                                    size="small"
-                                                    color="error"
-                                                    sx={{ marginLeft: '5px' }}
-                                                    onClick={() => handleDeleteItem(item.board_id)}
-                                                >
-                                                    삭제
-                                                </Button>
-                                            }
-                                        </Box>
-                                    </FlexListItemBox>
-                                </ListItem>
-                            ) : (
-                                <ListItem key={item.board_id}>
-                                    <FlexListItemBox>
-                                        {/* 번호 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
-                                            <Typography sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
-                                        </Box>
-                                        {/* 제목 */}
-                                        <Box sx={{ width: '45%' }}>
-                                            <Typography
-                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                                onClick={() => handleSelectItem(item.board_id)}
-                                            >{isWideScreen ? item.board_title.substring(0, 25) : item.board_title.substring(0, 15)}
-                                            </Typography>
-                                        </Box>
-                                        {/* 작성자 */}
-                                        <Box sx={{ width: '15%', textAlign: 'center' }}>
-                                            <Typography
-                                                onPointerOver={(e) => e.target.style.cursor = 'pointer'}
-                                                onClick={() => handleSelectItem(item.board_id)}
-                                            >
-                                                {item.board_writer}
-                                            </Typography>
-                                        </Box>
-                                        {/* 조회수 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <Typography>
-                                                {item.board_view}
-                                            </Typography>
-                                        </Box>
-                                        {/* 좋아요 */}
-                                        <Box sx={{ width: '10%', textAlign: 'center' }}>
-                                            <Typography>
-                                                {item.board_like}
-                                            </Typography>
-                                        </Box>
-                                        {/* 관리 */}
-                                        <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
-                                            {item.board_status === 'active' &&
-                                                <Button
-                                                    variant="contained"
-                                                    size="small"
-                                                    color="error"
-                                                    sx={{ marginLeft: '5px' }}
-                                                    onClick={() => handleDeleteItem(item.board_id)}
-                                                >
-                                                    삭제
-                                                </Button>
-                                            }
-                                        </Box>
-                                    </FlexListItemBox>
-                                </ListItem>
-                            )}
-                        </>
-                    ))}
-                </List>
-
-                <FooterContainer >
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        color='primary'
-                    />
-                    {cookies.user &&
-                        <Box sx={{ position: 'absolute', right: 5 }}>
-                            <Button variant="contained" color="primary" onClick={onCreatePost}
-                            >
-                                글작성
-                            </Button>
-                        </Box>
+            <CenteredContainer>
+                <SearchInput
+                    placeholder="검색할 제목이나 작성자를 입력하세요"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    startAdornment={
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
                     }
-                </FooterContainer>
-            </Box>
+                />
+                <SearchButton onClick={handleSearch} >검색</SearchButton>
+
+                <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
+                    <Select
+                        labelId="sort-label"
+                        value={sortCriteria}
+                        onChange={(e) => setSortCriteria(e.target.value)}
+                        sx={{ height: '4vh', padding: '0px 8px' }}
+                    >
+                        <MenuItem value="board_date">날짜순</MenuItem>
+                        <MenuItem value="board_like">좋아요순</MenuItem>
+                        <MenuItem value="board_view">조회수순</MenuItem>
+                        <MenuItem value="board_status">상태순</MenuItem>
+                    </Select>
+                </FormControl>
+            </CenteredContainer>
+
+            <List sx={{ textAlign: 'center' }}>
+                <TableHeader>
+                    <Box sx={{ width: '10%' }}>번호</Box>
+                    <Box sx={{ width: '45%' }}>제목</Box>
+                    <Box sx={{ width: '15%' }}>작성자</Box>
+                    <Box sx={{ width: '10%' }}>View</Box>
+                    <Box sx={{ width: '10%' }}>Like</Box>
+                    <Box sx={{ width: '10%' }}>관리</Box>
+                </TableHeader>
+
+                {getCurrentPageData().map((item, index) => (
+                    (item.writer_type === 'admin') ? (
+                        <ListItem key={item.board_id} divider>
+                            <FlexListItemBox>
+                                {/* 번호 */}
+                                <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
+                                    <Admincontent >{(currentPage - 1) * pageNum + (index + 1)}</Admincontent> {/* 현재 페이지에 맞는 번호 */}
+                                </Box>
+                                {/* 제목 */}
+                                <Box sx={{ width: '45%' }}>
+                                    <Admincontent
+                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                        onClick={() => handleSelectItem(item.board_id)}
+                                    >{isWideScreen ? item.board_title.substring(0, 25) : item.board_title.substring(0, 15)}
+                                    </Admincontent>
+                                </Box>
+                                {/* 작성자 */}
+                                <Box sx={{ width: '15%', textAlign: 'center' }}>
+                                    <Admincontent
+                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                        onClick={() => handleSelectItem(item.board_id)}
+                                    >
+                                        {item.board_writer}
+                                    </Admincontent>
+                                </Box>
+                                {/* 조회수 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <Admincontent>
+                                        {item.board_view}
+                                    </Admincontent>
+                                </Box>
+                                {/* 좋아요 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <Admincontent>
+                                        {item.board_like}
+                                    </Admincontent>
+                                </Box>
+                                {/* 관리 */}
+                                <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
+                                    {item.board_status === 'active' &&
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="error"
+                                            sx={{ marginLeft: '5px' }}
+                                            onClick={() => handleDeleteItem(item.board_id)}
+                                        >
+                                            삭제
+                                        </Button>
+                                    }
+                                </Box>
+                            </FlexListItemBox>
+                        </ListItem>
+                    ) : (
+                        <ListItem key={item.board_id} divider>
+                            <FlexListItemBox>
+                                {/* 번호 */}
+                                <Box sx={{ width: '10%', textAlign: 'center', pr: 1 }}>
+                                    <Typography sx={{}} >{(currentPage - 1) * pageNum + (index + 1)}</Typography> {/* 현재 페이지에 맞는 번호 */}
+                                </Box>
+                                {/* 제목 */}
+                                <Box sx={{ width: '45%' }}>
+                                    <Typography
+                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                        onClick={() => handleSelectItem(item.board_id)}
+                                    >{isWideScreen ? item.board_title.substring(0, 25) : item.board_title.substring(0, 15)}
+                                    </Typography>
+                                </Box>
+                                {/* 작성자 */}
+                                <Box sx={{ width: '15%', textAlign: 'center' }}>
+                                    <Typography
+                                        onPointerOver={(e) => e.target.style.cursor = 'pointer'}
+                                        onClick={() => handleSelectItem(item.board_id)}
+                                    >
+                                        {item.board_writer}
+                                    </Typography>
+                                </Box>
+                                {/* 조회수 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <Typography>
+                                        {item.board_view}
+                                    </Typography>
+                                </Box>
+                                {/* 좋아요 */}
+                                <Box sx={{ width: '10%', textAlign: 'center' }}>
+                                    <Typography>
+                                        {item.board_like}
+                                    </Typography>
+                                </Box>
+                                {/* 관리 */}
+                                <Box sx={{ width: '10%', display: 'flex', justifyContent: 'flex-end' }}>
+                                    {item.board_status === 'active' &&
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="error"
+                                            sx={{ marginLeft: '5px' }}
+                                            onClick={() => handleDeleteItem(item.board_id)}
+                                        >
+                                            삭제
+                                        </Button>
+                                    }
+                                </Box>
+                            </FlexListItemBox>
+                        </ListItem>
+                    )
+                ))}
+            </List>
+
+            <FooterContainer >
+                <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    sx={{
+                        "& .MuiPaginationItem-root": {
+                            backgroundColor: 'var(--sub-color) !important',
+                        },
+                        "& .Mui-selected": {
+                            backgroundColor: 'var(--main-color) !important',
+                            color: 'var(--sub-color) !important',
+                            "&:hover": {
+                                backgroundColor: 'var(--main-color) !important',
+                            },
+                        },
+                    }}
+                />
+                {cookies.user &&
+                    <WriteButtonContainer>
+                        <WriteButton onClick={onCreatePost}>
+                            글작성
+                        </WriteButton>
+                    </WriteButtonContainer>
+                }
+            </FooterContainer>
         </BoardLayout>
     );
 };
@@ -331,31 +338,30 @@ const AdminBoardList = ({ onCreatePost, onSelectItem }) => {
 export default AdminBoardList;
 
 const BoardLayout = styled.div`
-    overflow-x: hidden;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
 `;
 
 const Admincontent = styled.div`
     font-weight: 900;
     font-style: italic;
-    color: #0F275C;
+    color: var(--main-color);
 `
 
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 1  0px;
   align-items: center;
 `
 
 const TableHeader = styled.div`
-  background: #0F275C;
+  background: var(--main-color);
   color: white;
   display: flex;
   font-weight: bold;
   padding: 0.75rem;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   border-radius: 0.5rem;
 `;
 

@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import SideBoardList from './SideBoardList';
 import YuhanBoardInsert from '../../../../common/components/board/YuhanBoardInsert';
 import SideBoardPage from './SideBoardPage';
-import YuhanBoardUpdatePage from '../../../../common/components/board/YuhanBoardUpdatePage';
-import YuhanBoardReport from '../../../../common/components/board/YuhanBoardReport';
+import SideBoardReport from './SideBoardReport';
+import YuhanBoardUpdate from '../../../../common/components/board/YuhanBoardUpdate';
 
 const SideBoard = () => {
     const [currentView, setCurrentView] = useState('list');
@@ -56,9 +56,9 @@ const SideBoard = () => {
             ) : currentView === 'page' ? (
                 <SideBoardPage boardId={selectedBoardId} onCancel={handleBackToList} onSelectUpdateItem={handleSelectUpdateItem} handleReportItem={handleReport} />
             ) : currentView === 'update' ? (
-                <YuhanBoardUpdatePage boardId={selectedBoardId} onCancel={handleBackToList} />
+                <YuhanBoardUpdate boardId={selectedBoardId} onCancel={handleBackToList} />
             ) : currentView === 'Report' ? (
-                <YuhanBoardReport boardId={selectedBoardId} boardTitle={selectedBoardTitle} onCancel={handleBackToList} />
+                <SideBoardReport boardId={selectedBoardId} boardTitle={selectedBoardTitle} onCancel={handleBackToList} />
             ) : (
                 <SideBoardList onCreatePost={handleCreateBoard} onSelectItem={handleSelectItem} />
             )}
