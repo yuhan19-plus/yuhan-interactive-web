@@ -25,6 +25,9 @@ const Floor = ({onMove, ...props}) => {
                 ref={meshRef}
                 castShadow
                 receiveShadow
+                onClick={(e) => {
+                    e.stopPropagation()
+                }}
                 onPointerUp={(e) => {
                     if(!viewValue) {
                         const currentPosition = [e.point.x, 0.3, e.point.z]

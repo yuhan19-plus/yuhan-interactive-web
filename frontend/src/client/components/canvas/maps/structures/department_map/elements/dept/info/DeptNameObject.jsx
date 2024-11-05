@@ -1,7 +1,6 @@
 import { Text3D } from '@react-three/drei'
 import React from 'react'
 import { motion } from 'framer-motion-3d'
-import { useSelector } from 'react-redux'
 import { FONT_URL } from '../../../../../../../../../data/commonData'
 
 const DeptNameObject = ({groundMapName, positionOne, positionTwo , ...props}) => {

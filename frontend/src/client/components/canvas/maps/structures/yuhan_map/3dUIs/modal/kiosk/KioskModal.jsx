@@ -29,7 +29,7 @@ const KioskModal = ({kioskName, position, ...props}) => {
     const [currentPage, setCurrentPage] = useState(0) // 현재 페이지 상태
 
     switch(kioskName) {
-        case '평화관':
+        case '평화관 정문', '평화관 후문':
             name = 'PEACE_HALL'
             break
         case '봉사관':
@@ -102,6 +102,9 @@ const KioskModal = ({kioskName, position, ...props}) => {
             <Html 
                 position={ position }
                 center
+                onClick={(e) => {
+                    e.stopPropagation()
+                }}
             >
                 <KioskWrapper>
                     <KioskHeader>
@@ -111,12 +114,19 @@ const KioskModal = ({kioskName, position, ...props}) => {
                             {/* 키오스크 content */}
                             {
                                 currentPage > 0 && (
-                                    <PageBtn onClick={handlePrevPage}>
+                                    <PageBtn onClick={(e) => {
+                                        e.stopPropagation()
+                                        handlePrevPage()
+                                    }}>
                                         <NavigateBefore /> {/* 이전 버튼 아이콘 */}
                                     </PageBtn>
                                 )
                             }
-                            <KioskList>
+                            <KioskList
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                }}
+                            >
                                 {
                                     paginatedData.map((item, idx) => (
                                         <KioskItem key={idx}>
@@ -129,7 +139,10 @@ const KioskModal = ({kioskName, position, ...props}) => {
                             </KioskList>
                             {
                                 (4 < paginatedData.length && !((currentPage + 1) * ITEMS_PER_PAGE >= selectedData.length)) ? (
-                                    <PageBtn onClick={handleNextPage}>
+                                    <PageBtn onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleNextPage()
+                                    }}>
                                         <NavigateNext /> {/* 다음 버튼 아이콘 */}
                                     </PageBtn>
                                 ) : <></>

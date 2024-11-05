@@ -18,6 +18,9 @@ export const INIT_MINI_MAP_TELEPORT = 'INIT_MINI_MAP_TELEPORT'
 export const MINI_MAP_TELEPORT = 'MINI_MAP_TELEPORT'
 
 // 애니메이션
+export const INIT_NPC_ANIMATION = 'INIT_NPC_ANIMATION'
+export const NPC_ANI_MOVE = 'NPC_ANI_MOVE'
+export const NPC_ANI_HANDS_UP = 'NPC_ANI_HANDS_UP'
 
 // 클라이언트 사이드 메뉴 - 성준
 export const INIT_SIDE_MENU = 'INIT_SIDE_MENU'
@@ -95,7 +98,7 @@ export const ENTER_STUDENTKIOSK = 'ENTER_STUDENTKIOSK';
 export const LEAVE_STUDENTKIOSK = 'LEAVE_STUDENTKIOSK';
 
 // 버스 정류장 - 자현
-export const INIT_BUS_STATION='INIT_BUS_STATION';
+export const INIT_BUS_STATION = 'INIT_BUS_STATION';
 export const ON_BUS_STATION_ONE = 'ON_BUS_STATION_ONE'
 export const ON_BUS_STATION_TWO = 'ON_BUS_STATION_TWO'
 // export const ENTER_BUS_STATION_ONE = 'ENTER_BUS_STATION_ONE';
@@ -110,13 +113,16 @@ export const ON_SMOKING_AREA = 'ON_SMOKING_AREA'
 // export const LEAVE_SMOKINGAREA = 'LEAVE_SMOKINGAREA'
 
 // 코딩경험영역 - 자현 INIT_CODINGAREA
-export const INIT_CODINGAREA = 'INIT_CODINGAREA';
-export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
-export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
+export const INIT_CODING_AREA = 'INIT_CODING_AREA'
+export const ENTER_CODING_AREA = 'ENTER_CODING_AREA'
+// export const INIT_CODINGAREA = 'INIT_CODINGAREA';
+// export const ENTER_CODINGAREA = 'ENTER_CODINGAREA';
+// export const LEAVE_CODINGAREA = 'LEAVE_CODINGAREA';
 
 // 학과장 애니메이션 on - 성준
 export const DEPT_HEAD_ANI_INIT = 'DEPT_HEAD_ANI_INIT'
 export const DEPT_HEAD_ANI_MOVE = 'DEPT_HEAD_ANI_MOVE'
+
 // 보물상자영역 - 자현
 export const INIT_GOLDBOXAREA = 'INIT_GOLDBOXAREA';
 export const ENTER_GOLDBOXAREA = 'ENTER_GOLDBOXAREA';
@@ -220,7 +226,7 @@ export const adminEnterModal = () => ({
 })
 
 // 클라이언트 사이드 메뉴 - 성준
-export const initSideMenu = () =>({
+export const initSideMenu = () => ({
     type: INIT_SIDE_MENU
 })
 export const consultation = () => ({
@@ -281,7 +287,7 @@ export const campusGuideView = () => ({
 
 // 버스정류장 진입여부
 export const initBusStation = () => ({
-    type:INIT_BUS_STATION,
+    type: INIT_BUS_STATION,
 })
 export const onBusStationOne = () => ({
     type: ON_BUS_STATION_ONE
@@ -346,19 +352,19 @@ export const kioskYujaela = (boolValue) => ({
 export const initStatue = () => ({
     type: INIT_STATUE
 })
-export const Enter_Statue = () =>({
-    type:ENTER_STATUE
+export const Enter_Statue = () => ({
+    type: ENTER_STATUE
 })
-export const Leave_Statue = () =>({
-    type:LEAVE_STATUE
+export const Leave_Statue = () => ({
+    type: LEAVE_STATUE
 })
 
 //학생 식당 오브젝트 소환
-export const Enter_StudentKiosk =() =>({
-    type:ENTER_STUDENTKIOSK
+export const Enter_StudentKiosk = () => ({
+    type: ENTER_STUDENTKIOSK
 })
-export const Leave_StudentKiosk =() =>({
-    type:LEAVE_STUDENTKIOSK
+export const Leave_StudentKiosk = () => ({
+    type: LEAVE_STUDENTKIOSK
 })
 
 // 흡연장
@@ -373,6 +379,19 @@ export const onSmokingArea = () => ({
 // })
 // export const Leave_SmokingArea = () =>({
 //     type:LEAVE_SMOKINGAREA
+// })
+
+// NPC 애니메이션 : 추후 개발 - 임성준
+// export const npcAniInit = () => ({
+//     type: INIT_NPC_ANIMATION
+// })
+
+// export const npcAniMove = () => ({
+//     type: NPC_ANI_MOVE
+// })
+
+// export const npcAniHandsUp = () => ({
+//     type: NPC_ANI_HANDS_UP
 // })
 
 // 학과체험 맵 학과 소개 - 성준
@@ -402,14 +421,14 @@ export const deptInfoDeptFeatures = () => ({
 
 //학과체험의 코딩영역
 export const initCodingArea = () => ({
-    type: INIT_CODINGAREA
+    type: INIT_CODING_AREA
 })
-export const EnterCodingArea= () => ({
-    type:ENTER_CODINGAREA
+export const enterCodingArea = () => ({
+    type: ENTER_CODING_AREA
 })
-export const LeaveCodingArea= () => ({
-    type:LEAVE_CODINGAREA 
-})
+// export const LeaveCodingArea = () => ({
+//     type: LEAVE_CODINGAREA
+// })
 
 // 학과장 소개 - 성준
 export const deptHeadAniInit = () => ({
@@ -433,22 +452,22 @@ export const LeaveGoldBoxArea = (zone, hasVisited) => ({
     hasVisited: hasVisited // 'hasVisitedZone1', 'hasVisitedZone2', 'hasVisitedZone3' 중 하나를 전달
 });
 // 갤러리 영역
-export const Enter_First_Work= () => ({
-    type:ENTER_FIRST_WORK
+export const Enter_First_Work = () => ({
+    type: ENTER_FIRST_WORK
 })
-export const Leave_First_Work= () => ({
-    type:LEAVE_FIRST_WORK
+export const Leave_First_Work = () => ({
+    type: LEAVE_FIRST_WORK
 })
-export const Enter_Second_Work= () => ({
-    type:ENTER_SECOND_WORK
+export const Enter_Second_Work = () => ({
+    type: ENTER_SECOND_WORK
 })
-export const Leave_Second_Work= () => ({
-    type:LEAVE_SECOND_WORK 
+export const Leave_Second_Work = () => ({
+    type: LEAVE_SECOND_WORK
 })
 
-export const Enter_Third_Work= () => ({
-    type:ENTER_THIRD_WORK
+export const Enter_Third_Work = () => ({
+    type: ENTER_THIRD_WORK
 })
-export const Leave_Third_Work= () => ({
-    type:LEAVE_THIRD_WORK 
+export const Leave_Third_Work = () => ({
+    type: LEAVE_THIRD_WORK
 })

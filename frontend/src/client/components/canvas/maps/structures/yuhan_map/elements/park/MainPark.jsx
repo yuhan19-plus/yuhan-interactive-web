@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 나눔의 숲 나무, 풀 생성 및 배치
+ */
+
 import React from 'react'
 import { TreeTwo } from './tree/TreeTwo'
 import { TreeThree } from './tree/TreeThree'

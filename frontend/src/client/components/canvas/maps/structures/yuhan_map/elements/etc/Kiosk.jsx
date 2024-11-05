@@ -62,7 +62,7 @@ export function Kiosk({position, name, ...props}) {
               }
               {
                 kioskName === '평화관 후문' && (
-                  <KioskModal kioskName={kioskName} position={[-70, 10, 0]} />
+                  <KioskModal kioskName={kioskName} position={[50, -50, 30]} />
                 )
               }
               {

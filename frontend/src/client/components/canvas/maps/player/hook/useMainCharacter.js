@@ -18,8 +18,6 @@ import {
     Leave_Second_Work,
     Enter_Third_Work,
     Leave_Third_Work,
-    EnterCodingArea,
-    LeaveCodingArea,
     Enter_Statue,
     Enter_StudentKiosk,
     Leave_Statue,
@@ -40,7 +38,8 @@ import {
     kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide, EnterGoldBoxArea, LeaveGoldBoxArea, initCodingArea, initBusStation, initSmokingArea,
     onBusStationOne,
     onBusStationTwo,
-    onSmokingArea
+    onSmokingArea,
+    enterCodingArea
 } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 import Swal from "sweetalert2"
@@ -535,7 +534,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         && (currentPosition.z >= 11 && currentPosition.z <= 33)) {
                         if (!gsapCameraState) {
                             setGsapCameraState(true)
-                            handleGSAPCamera(15, 15, 15)
+                            handleGSAPCamera(-3, 3, 0)
                         }
                         if (!kioskDispatchFlag.current) {
                             kioskDispatchFlag.current = true
@@ -895,7 +894,6 @@ export const useMainCharacter = ({ position, myChar }) => {
                         // console.log("동상 퇴장", isInStatueZone);
                     }
                 }
-                dispatch(initCodingArea())
             }
             else if (groundMapState.mapName === 'mini_game_map') {
                 // return
@@ -1040,7 +1038,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         (currentPosition.z >= -165 && currentPosition.z <= -85)) {
                         if (!gsapCameraState) {
                             setGsapCameraState(true)
-                            handleGSAPCamera(-125, 50, -50)
+                            handleGSAPCamera(-50, 50, -30)
                         }
                         if (!deptHeadAniFlag.current) {
                             deptHeadAniFlag.current = true
@@ -1126,18 +1124,22 @@ export const useMainCharacter = ({ position, myChar }) => {
                     // 코딩체험 위치
                     if ((currentPosition.x <= 70 && currentPosition.x >= 30) &&
                         (currentPosition.z <= 220 && currentPosition.z >= 180)) {
-                        handleCamera(currentPosition.x + 0, currentPosition.y, currentPosition.z - 100)
-                        // 영역진입체크
-                        if (isCodingArea === false) {
-                            setIsCodingArea(true);
-                            dispatch(EnterCodingArea()); // 리덕스 액션 디스패치
-                            // console.log("코딩영역에 진입했습니다.");
+                        if (!gsapCameraState) {
+                            setGsapCameraState(true)
+                            handleGSAPCamera(0, 10, 0)
                         }
-                    } else {
-                        if (isCodingArea === true) {
+                        if (!isCodingArea) {
+                            setIsCodingArea(true)
+                            dispatch(enterCodingArea())
+                        }
+                    }
+                    else {
+                        if (gsapCameraState) {
+                            setGsapCameraState(false)
+                        }
+                        if (isCodingArea) {
                             setIsCodingArea(false);
-                            dispatch(LeaveCodingArea()); // 리덕스 액션 디스패치
-                            // dispatch(initCodingArea())
+                            dispatch(initCodingArea())
                             // console.log("코딩영역을 떠났습니다.");
                         }
                     }

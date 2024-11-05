@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 학과장실 화분
+ */
+
 import React, { useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'
@@ -21,11 +26,11 @@ export function Pot({position, ...props}) {
       }
     })
   }, [scene])
-  
+
   return (
     <group position={position} {...props}>
       <group position={[-4.066, 4.324, -0.149]} rotation={[-0.302, 0.914, -2.314]} scale={0.3}>
-        <mesh geometry={nodes.큐브002_1.geometry} material={materials.colorGreen} />
+        <mesh geometry={nodes.큐브002_1.geometry} material={materials.colorGreen} scale={1.5} />
         <mesh geometry={nodes.큐브002_2.geometry} material={materials.colorBlack} />
         <mesh geometry={nodes.큐브002_3.geometry} material={materials.colorWood} />
         <mesh geometry={nodes.큐브002_4.geometry} material={materials.colorBrwon} />

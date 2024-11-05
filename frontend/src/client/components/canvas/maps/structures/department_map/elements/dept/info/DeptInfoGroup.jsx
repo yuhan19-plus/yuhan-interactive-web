@@ -4,8 +4,8 @@ import { DepartmentFeatures } from './DepartmentFeatures'
 import { EducationalGoals } from './EducationalGoals'
 import { License } from './License'
 import { MainEducationalFields } from './MainEducationalFields'
-import DeptNameObject from '../bio/DeptNameObject'
 import { useSelector } from 'react-redux'
+import DeptNameObject from './DeptNameObject'
 
 const DeptInfoGroup = ({groundMapName}) => {
     const deptInfoState = useSelector((state) => state.deptInfo)

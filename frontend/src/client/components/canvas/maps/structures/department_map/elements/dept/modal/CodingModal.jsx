@@ -63,7 +63,7 @@ const CodingModal = ({ inputNumber }) => {
     }, [CZone, JavaZone, PythonZone]);
 
     return (
-        <Html position={[-20, 0, 240]} center>
+        <Html position={[-60, 0, 240]} center>
             <MainContainer
                 // 마우스클릭 이벤트전파를 차단하는 부분 (※이유 모달창을 클릭 시 케릭터이동을 차단)
                 onPointerDown={(e) => e.stopPropagation()}
@@ -71,9 +71,9 @@ const CodingModal = ({ inputNumber }) => {
                 onPointerUp={(e) => e.stopPropagation()}
             >
                 <IconContainer>
-                    {!CZone ? (<IconStyle icon={faC} />) : (<VisitedIconC icon={faC} />)}
-                    {!JavaZone ? (<IconStyle icon={faJava} />) : (<VisitedIconJava icon={faJava} />)}
-                    {!PythonZone ? (<IconStyle icon={faPython} />) : (<VisitedIconPython icon={faPython} />)}
+                    {!CZone ? (<FontAwesomeIcon icon={faC} style={{color: 'gray' }} />) : (<FontAwesomeIcon icon={faC} style={{color: '#0000FF' }} />)}
+                    {!JavaZone ? (<FontAwesomeIcon icon={faJava} style={{color: 'gray' }} />) : (<FontAwesomeIcon icon={faJava} style={{color: '#FF0000' }} />)}
+                    {!PythonZone ? (<FontAwesomeIcon icon={faPython} style={{color: 'gray' }} />) : (<FontAwesomeIcon icon={faPython} style={{color: '#FFFF00' }} />)}
                 </IconContainer>
                 {(CZone || JavaZone || PythonZone) ? ( // 보물을 찾아야 언어를 선택가능
                     <>
@@ -131,62 +131,48 @@ const CodingModal = ({ inputNumber }) => {
 export default CodingModal;
 
 const MainContainer = styled.div`
-    background-color: white;
-    padding: 10px;
+    background-color: var(--sub-color);
+    padding: 0.8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 0.8rem;
     width: 35vw;
-    height: 35vh;
+    height: 50vh;
 `;
 
 const CodeContainer = styled.div`
-    width: 95%;
-    background-color: #f0f0f0;
-    padding: 1%;
-    border-radius: 2.5%;
+    width: 100%;
+    background-color: #F0F0F0;
+    padding: 1rem;
+    border-radius: 1rem;
     white-space: pre-wrap;
     word-break: break-word;
 `;
+
 const CodeTitle = styled.div`
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 const GoldBoxInfo = styled.div` /* 찾은 언어가 없는 경우 문구 style */
-    font-size: large;
     font-weight: 900;
-    color: red;
+    color: var(--error-color);
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
 `
+
 const IconContainer = styled.div` /* 아이콘을 상단에 고정 */
-    position: absolute;
-    top: 0;
-    height: 10%;
     width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 2rem;
 `;
 
-const IconStyle = styled(FontAwesomeIcon)`
-    font-size: 2rem;
-`;
-const VisitedIconJava = styled(FontAwesomeIcon)`
-    font-size: 2rem;
-    color: red;
-`;
-const VisitedIconC = styled(FontAwesomeIcon)`
-    font-size: 2rem;
-    color: purple; 
-`;
-const VisitedIconPython = styled(FontAwesomeIcon)`
-    font-size: 2rem;
-    color: blue;
-`;
 const ChooseLanguage = styled.div`
     padding: 0;
-    margin: 0;
-    margin-top: 4vh;
+    margin-top: 1rem;
 `

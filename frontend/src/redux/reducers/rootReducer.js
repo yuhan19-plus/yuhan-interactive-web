@@ -1,4 +1,6 @@
-// 파일 생성자 : 임성준
+/**
+ * 프로젝트에 사용 중인 모든 리듀서 결합
+ */
 
 import { combineReducers } from "redux";
 import { statueReducer } from "./StatueReducer";
@@ -21,6 +23,7 @@ import { guideReducer } from "./guideReducer";
 import { deptHeadAnimationReducer } from "./deptHeadAnimationReducer";
 import { goldBoxReducer } from "./goldBoxReducer";
 import { galleryAreaReducer } from "./galleryAreaReducer";
+import { npcAnimationReducer } from "./npcAnimationReducer";
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -38,16 +41,17 @@ const rootReducer = combineReducers({
     deptInfo: deptInfoReducer,
     guide: guideReducer,
     deptHeadAni: deptHeadAnimationReducer,
+    // npcAni: npcAnimationReducer,
 
     // 석재
     smokingArea: smokingAreaReducer,
-    galleryArea: galleryAreaReducer, 
+    galleryArea: galleryAreaReducer,
 
     // 자현
     bus: busReducer,
     codingArea: codingAreaReducer,
-    goldBox:goldBoxReducer,
-    
+    goldBox: goldBoxReducer,
+
     // 정민
     statue: statueReducer,
     studentKiosk: StudentKioskReducer

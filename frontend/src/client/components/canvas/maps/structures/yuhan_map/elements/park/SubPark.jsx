@@ -1,5 +1,6 @@
 /**
  * 임성준
+ * - 유재라관 공원 나무, 풀 생성 및 배치
  */
 import React from 'react'
 import { TreeTen } from './tree/TreeTen'

@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 import { useCsDeptCharacter } from '../hook/csDeptHook/useCsDeptCharacter'
 import TextBoard from '../../structures/department_map/3dUI/TextBoard'
 
-export function CSDeptHeadCharacter({myChar, groundMapName, position, ...props}) {
+export function CSDeptHeadCharacter({groundMapName, position, ...props}) {
   const { 
     nodes, 
     materials, 
@@ -11,8 +11,7 @@ export function CSDeptHeadCharacter({myChar, groundMapName, position, ...props})
     text, 
     displayText, 
     chatRef, 
-    nameRef } = useCsDeptCharacter({
-      myChar, 
+    nameRef } = useCsDeptCharacter({ 
       groundMapName, 
       position, 
       ...props

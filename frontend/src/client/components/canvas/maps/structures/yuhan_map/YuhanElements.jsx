@@ -30,7 +30,7 @@ const YuhanElements = () => {
             <EtcGroup />
             <StreetLampGroup/>
             <GoldBoxGroup/>
-            {/* <NpcGroup /> */}
+            <NpcGroup />
         </>
     )
 }
