@@ -4,7 +4,7 @@
  * 클라이언트(학생) 이 보는 오늘의메뉴 게시판
  * 
  */
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ const ClientFood = () => {
     const [ratings, setRating] = useState(0);
     const [isRating, setIsRating] = useState(false);
     const [cookies] = useCookies(['student']);
-    const defaultImage = "/public/assets/images/yuhan.png";
+    const defaultImage = "/assets/images/yuhan.png";
     const days = ['월', '화', '수', '목', '금'];
 
     const fetchMenuData = async () => {
@@ -37,7 +37,7 @@ const ClientFood = () => {
     const getMenuForDay = (dayIndex) => {
         const day = days[dayIndex];
         const filteredMenu = menuData.filter(menu =>
-            menu.day === day || menu.day === '매일'  // 선택된 요일과 매일에 해당하는 음식 필터링
+            menu.day === day || menu.day === '매일' 
         );
         return filteredMenu;
     };
@@ -45,7 +45,7 @@ const ClientFood = () => {
     const getMenuForSpecialDishes = (type) => {
         return menuData.filter(menu =>
             (menu.foodType === type) &&
-            (menu.day === days[selectedDay] || menu.day === '매일') // 매일도 포함
+            (menu.day === days[selectedDay] || menu.day === '매일') 
         );
     };
 
@@ -61,10 +61,10 @@ const ClientFood = () => {
 
     const submitRating = () => {
         const foodDetails = getFoodDetails(selectedFood);
-        const foodID = foodDetails.foodID; // foodID 가져오기
+        const foodID = foodDetails.foodID; 
         const user_id = cookies.user;
-
-        // 1. 평점 제출
+    
+        // 평점 제출
         fetch(`/api/food/ratings/${foodID}`, {
             method: 'POST',
             headers: {
@@ -77,8 +77,8 @@ const ClientFood = () => {
                     Swal.fire({
                         icon: "warning",
                         title: "에러",
-                        text: "평점을 저장 할 수 없습니다."
-                    })
+                        text: "평점을 저장할 수 없습니다."
+                    });
                 }
                 return response.text();
             })
@@ -87,17 +87,18 @@ const ClientFood = () => {
                     icon: "success",
                     title: "성공!",
                     text: "저장에 성공했습니다!"
-                }) // 성공 메시지 출력
-
-                // 평점 제출 후 상태 초기화
+                });
+    
                 setRating(0);
                 setIsRating(false);
+    
+                // 평점이 반영된 최신 데이터를 다시 가져옴
+                fetchMenuData();
             })
             .catch((error) => {
                 console.error('Error submitting rating:', error);
             });
     };
-
     const renderStars = (rating) => {
         return (
             <>
@@ -226,7 +227,6 @@ const ClientFood = () => {
 
                     </Grid>
 
-
                     <Grid sx={{ background: "white", borderRadius: 2, margin: 1, padding: 1, width: "22.5vw" }}>
 
                         <TitleLayout>
@@ -264,11 +264,9 @@ const ClientFood = () => {
                                     flexDirection: "column",
                                 }}>
                                     <Typography>별점: {renderStars(getFoodDetails(selectedFood)?.foodRating)} {getFoodDetails(selectedFood)?.foodRating?.toFixed(1) || '없음'}/5</Typography>
-                                    {/* 평가하기 버튼 클릭 시 별점 선택 UI 나타나기 */}
                                     <Button onClick={() => setIsRating(true)}>평가하기</Button>
                                     {isRating && (
                                         <div>
-                                            {/* 별점을 클릭하여 선택하는 UI */}
                                             {[...Array(5)].map((_, index) => (
                                                 <span
                                                     key={index}
@@ -278,7 +276,7 @@ const ClientFood = () => {
                                                     ★
                                                 </span>
                                             ))}
-                                            {cookies.user ? ( // 로그인 여부에 따라 저장 버튼 표시
+                                            {cookies.user ? (
                                                 <div>
                                                     <Button onClick={submitRating}>저장</Button>
                                                     <Button onClick={() => setIsRating(false)} style={{ marginLeft: '10px' }}>취소</Button>
