@@ -49,6 +49,15 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
 
     // 검색 기능 구현
     const handleSearch = async () => {
+        if (!searchQuery.trim()) { // 검색어가 비어 있을 때
+            Swal.fire({
+                icon: "warning",
+                title: "입력 오류",
+                text: "한 글자 이상 입력해주세요."
+            });
+            return;
+        }
+    
         try {
             const response = await fetch(`/api/food/search/${searchQuery}`);
             const data = await response.json();
@@ -59,8 +68,13 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                 icon: "warning",
                 title: "에러",
                 text: "검색에 실패 했습니다."
-            })
+            });
         }
+    };
+
+    const handleResetList = async () => {
+        setSearchQuery(''); // 검색어 초기화
+        await fetchFoods(); // 전체 목록 다시 불러오기
     };
 
     // 현재 페이지 데이터를 정렬하여 가져오는 함수
@@ -166,6 +180,9 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                         }
                     />
                     <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
+                    <Button variant="contained" color="primary" onClick={handleResetList} sx={{ ml: 1 }} >
+                    <img src="/assets/images/Reset.png" style={{width:'1vw',height:'2.5vh'}} ></img>
+                    </Button>
 
                     <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
                         <Select
