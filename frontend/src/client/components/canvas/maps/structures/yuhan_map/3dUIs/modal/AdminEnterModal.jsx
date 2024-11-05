@@ -56,8 +56,8 @@ const AdminEnterModal = () => {
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: '2차인증 실패!',
-                        text: '코드가 일치하지 않습니다.',
+                        title: '2차인증 실패',
+                        text: '2차인증 코드가 일치하지 않습니다.',
                     });
                 }
             } catch (error) {
@@ -65,14 +65,14 @@ const AdminEnterModal = () => {
                 Swal.fire({
                     icon: 'error',
                     title: '서버 오류',
-                    text: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+                    text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                 });
             }
         } else {
             Swal.fire({
                 icon: 'warning',
                 title: '입력 필요',
-                text: '코드를 입력하세요.',
+                text: '2차인증 코드를 입력하세요.',
             });
         }
     };
@@ -92,7 +92,7 @@ const AdminEnterModal = () => {
                     <p onClick={handleCloseModal}><Close /></p>
                 </AdminEnterModalHeader>
                 <AdminEnterModalContent>
-                    <em>관리자로 코드를 입력하세요</em>
+                    <em>2차인증 코드를 입력하세요.</em>
                     <TextField type='password' style={{ width: '100%' }} value={code} onChange={(e) => setCode(e.target.value)} />
                 </AdminEnterModalContent>
                 <AdminEnterModalFooter>

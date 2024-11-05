@@ -2,8 +2,9 @@
  * 관리자 루트 컴포넌트 - 임성준
  */
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useCookies } from 'react-cookie'; 
 import styled from 'styled-components'
 import AdminBoard from './board/AdminBoard'
 import AdminDeptRec from './dept_rec/AdminDeptRec'
@@ -16,6 +17,14 @@ import AdminGallery from './gallery/AdminGallery'
 const AdminMain = () => {
     const title = useLocation()
     const titleValue = title.state?.title || '관리자';
+    const [cookies, setCookie] = useCookies(['user', 'adminMode']);
+
+    // 쿠키가 존재하지 않으면 루트 경로로 리다이렉트
+    useEffect(() => {
+        if (!cookies.adminMode) {
+            window.location.href = '/';
+        }
+    }, [cookies]);
     console.log(titleValue)
     return (
         <>

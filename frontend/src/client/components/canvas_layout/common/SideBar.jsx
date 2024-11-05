@@ -61,6 +61,7 @@ const SideBar = () => {
         removeCookie('user', { path: '/' });
         removeCookie('userType', { path: '/' });
         removeCookie('userName', { path: '/' });
+        removeCookie('adminMode', { path: '/'});
         Swal.fire({
             title: '로그아웃 완료!',
             text: '성공적으로 로그아웃 되었습니다.',

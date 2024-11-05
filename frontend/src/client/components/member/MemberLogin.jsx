@@ -63,7 +63,7 @@ const MemberLogin = () => {
                 // 탈퇴한 계정인 경우
                 } else if (response.status === 403) {
                     Swal.fire({
-                        title: '로그인 실패!',
+                        title: '로그인 실패',
                         text: '해당 계정은 탈퇴(비활성화) 상태입니다. 관리자에게 문의하십시오.',
                         icon: 'error',
                         confirmButtonText: '확인'
@@ -71,7 +71,7 @@ const MemberLogin = () => {
                 // 아이디, 비밀번호 오류인 경우
                 } else {
                     Swal.fire({
-                        title: '로그인 실패!',
+                        title: '로그인 실패',
                         text: '아이디 또는 비밀번호가 올바르지 않습니다.',
                         icon: 'error',
                         confirmButtonText: '확인'
@@ -80,7 +80,7 @@ const MemberLogin = () => {
             // 서버 오류인 경우
             } catch (error) {
                 Swal.fire({
-                    title: '서버 오류!',
+                    title: '서버 오류',
                     text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.',
                     icon: 'error',
                     confirmButtonText: '확인'
@@ -100,12 +100,6 @@ const MemberLogin = () => {
     };
 
     // useEffect
-    // 쿠키가 존재하고 로그인 성공이 아닌 경우에만 리다이렉트
-    useEffect(() => {
-        if (cookies.user && !loginSuccess) {
-            window.location.href = '/';
-        }
-    }, cookies);
     // 쿠키가 존재하면 루트 경로로 리다이렉트
     useEffect(() => {
         if (cookies.user) {
