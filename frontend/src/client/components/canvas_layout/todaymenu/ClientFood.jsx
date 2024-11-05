@@ -239,9 +239,11 @@ const ClientFood = () => {
                                     src={`${getFoodDetails(selectedFood)?.foodImg}`}
                                     alt="Food"
                                     style={{
-                                        height: getFoodDetails(selectedFood)?.foodImgHeight > getFoodDetails(selectedFood)?.foodImgWidth ? '10vh' : 'auto',
-                                        width: getFoodDetails(selectedFood)?.foodImgHeight <= getFoodDetails(selectedFood)?.foodImgWidth ? '10vw' : 'auto',
-                                        objectFit: 'contain' // 비율 유지
+                                        height: getFoodDetails(selectedFood)?.foodImgHeight > getFoodDetails(selectedFood)?.foodImgWidth ? '5vh' : 'auto',
+                                        width: getFoodDetails(selectedFood)?.foodImgHeight <= getFoodDetails(selectedFood)?.foodImgWidth ? '5vw' : 'auto',
+                                        maxWidth: '80%',
+                                        maxHeight: '80%',
+                                        objectFit: 'contain'
                                     }}
                                 />
                             ) : (
