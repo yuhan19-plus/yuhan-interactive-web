@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { GalleryBoard } from './Galleryboard'
 import { Plane } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
@@ -7,18 +7,21 @@ import * as THREE from 'three';
 import axios from 'axios'
 import GalleryModal from '../modal/GalleryModal';
 import { Zone } from '../../../../common/Zone';
+import { galleryWorkData, galleryPictureData } from '../../../../../../../../../redux/actions/actions';
 
 const GalleryGroup = () => {
+    // useDispatch
+    // 갤러리 데이터 반영에 사용
+    const dispatch = useDispatch();
     
     // useSelector
     // 영역 진입 여부 가져오기
     const isInFirstWork = useSelector((state) => state.galleryArea.inFirstWork);
     const isInSecondWork = useSelector((state) => state.galleryArea.inSecondWork);
     const isInThirdWork = useSelector((state) => state.galleryArea.inThirdWork);
-
-    // 상태관리
-    const [pictures, setPictures] = useState([]);
-    const [workInfo, setWorkInfo] = useState([]);
+    // 갤러리 데이터 가져오기
+    const pictures = useSelector((state) => state.galleryData.pictureData);
+    const workInfo = useSelector((state) => state.galleryData.workData);
 
     // useLoader
     // 각 Box에 이미지 텍스처 적용
@@ -33,7 +36,7 @@ const GalleryGroup = () => {
         const fetchPictures = async () => {
             try {
                 const response = await axios.get('/api/gallery/fetchPicture');
-                setPictures(response.data);
+                dispatch(galleryPictureData(response.data)); // Redux에 pictures 저장
                 console.log("데이터 가져오기 완료!");
             } catch (error) {
                 console.error("Error fetching pictures:", error);
@@ -47,7 +50,7 @@ const GalleryGroup = () => {
         const fetchWorkInfo = async () => {
             try {
                 const response = await axios.get('/api/gallery/fetchAllWorkInfo');
-                setWorkInfo(response.data);
+                dispatch(galleryWorkData(response.data)); // Redux에 workInfo 저장
                 console.log("전체 작품 데이터 가져오기 완료!");
             } catch (error) {
                 console.error("Error fetching all work details:", error);
