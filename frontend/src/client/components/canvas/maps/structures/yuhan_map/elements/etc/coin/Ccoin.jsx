@@ -8,7 +8,7 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function Ccoin({ position, rotation }) {
-  const isZoneActive = useSelector((state) => state.goldBox.isZone1);
+  const isZoneActive = useSelector((state) => state.goldBox.isZone && state.goldBox.name ==="유재라관");
   
   const { nodes, materials } = useGLTF('/assets/models/etc/Ccoin.glb')
 

@@ -125,8 +125,9 @@ export const DEPT_HEAD_ANI_MOVE = 'DEPT_HEAD_ANI_MOVE'
 
 // 보물상자영역 - 자현
 export const INIT_GOLDBOXAREA = 'INIT_GOLDBOXAREA';
-export const ENTER_GOLDBOXAREA = 'ENTER_GOLDBOXAREA';
-export const LEAVE_GOLDBOXAREA = 'LEAVE_GOLDBOXAREA';
+export const ON_GOLDBOXAREAONE = 'ON_GOLDBOXAREAONE';
+export const ON_GOLDBOXAREATWO = 'ON_GOLDBOXAREATWO';
+export const ON_GOLDBOXAREATHREE = 'ON_GOLDBOXAREATHREE';
 // 갤러리 영역 - 석재
 export const ENTER_FIRST_WORK = 'ENTER_FIRST_WORK'
 export const LEAVE_FIRST_WORK = 'LEAVE_FIRST_WORK'
@@ -442,15 +443,15 @@ export const deptHeadAniMove = () => ({
 export const init_GoldboxArea = () => ({
     type: INIT_GOLDBOXAREA
 })
-export const EnterGoldBoxArea = (zone) => ({
-    type: ENTER_GOLDBOXAREA,
-    zone: zone // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
+export const OnGoldBoxAreaOne= () => ({
+    type:ON_GOLDBOXAREAONE
 });
-export const LeaveGoldBoxArea = (zone, hasVisited) => ({
-    type: LEAVE_GOLDBOXAREA,
-    zone: zone, // 'isZone1', 'isZone2', 'isZone3' 중 하나를 전달
-    hasVisited: hasVisited // 'hasVisitedZone1', 'hasVisitedZone2', 'hasVisitedZone3' 중 하나를 전달
+export const OnGoldBoxAreaTwo= () => ({
+    type:ON_GOLDBOXAREATWO
 });
+export const OnGoldBoxAreaThree= () => ({
+    type:ON_GOLDBOXAREATHREE
+})
 // 갤러리 영역
 export const Enter_First_Work = () => ({
     type: ENTER_FIRST_WORK

@@ -35,11 +35,14 @@ import {
     kioskChangjo,
     kioskJayu,
     kioskMemorialHall,
-    kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide, EnterGoldBoxArea, LeaveGoldBoxArea, initCodingArea, initBusStation, initSmokingArea,
+    kioskNanum, kioskPyeonghwaOne, kioskPyeonghwaTwo, kioskYujaela, mainChar, mainCharDept, deptHeadAniInit, deptHeadAniMove, welcomeGuide, initGuide, tvGuide, statueGuide, initCodingArea, initBusStation, initSmokingArea,
     onBusStationOne,
     onBusStationTwo,
     onSmokingArea,
-    enterCodingArea
+    enterCodingArea,
+    OnGoldBoxAreaThree,
+    OnGoldBoxAreaOne,
+    OnGoldBoxAreaTwo
 } from "../../../../../../redux/actions/actions"
 import { calculateMinimapPosition } from "../../../../../../utils/utils"
 import Swal from "sweetalert2"
@@ -503,7 +506,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         // 영역진입체크
                         if (!isGoldBoxArea2) {
                             setisGoldBoxArea2(true)
-                            dispatch(EnterGoldBoxArea('isZone2'));
+                            dispatch(OnGoldBoxAreaTwo());
                             // console.log("테라스 보물상자 진입")
                         }
                     }
@@ -512,17 +515,22 @@ export const useMainCharacter = ({ position, myChar }) => {
                             // console.log('te')
                             setGsapCameraState(false)
                         }
-
                         if (isGoldBoxArea2) {
                             setisGoldBoxArea2(false);
-                            dispatch(LeaveGoldBoxArea('isZone2', 'hasVisitedZone2'))
+                            dispatch(OnGoldBoxAreaTwo())
                             // console.log("테라스 보물상자 탈출")
                         }
-
                         if (kioskDispatchFlag.current) {
                             kioskDispatchFlag.current = false
                             dispatch(initKiosk())
                         }
+                    }
+                } else{
+                    // 텔레포트 경우 나감 처리
+                    if (isGoldBoxArea2) {
+                        setisGoldBoxArea2(false);
+                        dispatch(OnGoldBoxAreaTwo())
+                        // console.log("테라스 보물상자 탈출")
                     }
                 }
 
@@ -621,7 +629,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             // 영역진입체크
                             if (!isGoldBoxArea1) {
                                 setisGoldBoxArea1(true)
-                                dispatch(EnterGoldBoxArea('isZone1'));
+                                dispatch(OnGoldBoxAreaOne());
                                 // console.log("유재라관 보물상자 진입")
                             }
                         }
@@ -634,7 +642,7 @@ export const useMainCharacter = ({ position, myChar }) => {
 
                             if (isGoldBoxArea1) {
                                 setisGoldBoxArea1(false);
-                                dispatch(LeaveGoldBoxArea('isZone1', 'hasVisitedZone1'))
+                                dispatch(OnGoldBoxAreaOne())
                                 // console.log("유재라관 보물상자 탈출")
                             }
 
@@ -643,6 +651,13 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 dispatch(initKiosk())
                             }
                         }
+                    }
+                } else {
+                    // 텔레포트 경우 나감 처리
+                    if (isGoldBoxArea1) {
+                        setisGoldBoxArea1(false);
+                        dispatch(OnGoldBoxAreaOne())
+                        // console.log("유재라관 보물상자 탈출")
                     }
                 }
 
@@ -775,7 +790,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
                         if (!isGoldBoxArea3) {
                             setisGoldBoxArea3(true)
-                            dispatch(EnterGoldBoxArea('isZone3'));
+                            dispatch(OnGoldBoxAreaThree());
                             // console.log("나눔의 숲 보물상자 진입")
                         }
                     }
@@ -783,19 +798,24 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if (gsapCameraState) {
                             setGsapCameraState(false)
                         }
-
                         if (isGoldBoxArea3) {
                             setisGoldBoxArea3(false);
-                            dispatch(LeaveGoldBoxArea('isZone3', 'hasVisitedZone3'))
+                            dispatch(OnGoldBoxAreaThree())
                             // console.log("나눔의 숲 보물상자 탈출")
                         }
-
                         if (isInSmokingArea) {
                             setIsInSmokingArea(false);
                             dispatch(initSmokingArea())
                             // dispatch(Leave_SmokingArea());
                             // console.log("흡연구역 퇴장", isInSmokingArea);
                         }
+                    }
+                } else {
+                    // 텔레포트 경우 나감 처리
+                    if (isGoldBoxArea3) {
+                        setisGoldBoxArea3(false);
+                        dispatch(OnGoldBoxAreaThree())
+                        // console.log("나눔의 숲 보물상자 탈출")
                     }
                 }
 

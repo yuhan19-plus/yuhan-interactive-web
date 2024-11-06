@@ -23,7 +23,7 @@ const Direction = ({ position }) => {
             setOpenSection(section); // 다른 섹션을 클릭하면 해당 섹션을 열고 나머지는 닫음
         }
     };
-    
+
     // 카카오 API 호출
     useEffect(() => {
         const script = document.createElement("script");
@@ -55,13 +55,12 @@ const Direction = ({ position }) => {
     }, []);
 
     return (
-        <Html position={position} center
-            // 모든 마우스 이벤트에서 전파 차단
-            onPointerDown={(e) => e.stopPropagation()}
-            onPointerMove={(e) => e.stopPropagation()}
-            onPointerUp={(e) => e.stopPropagation()}
-        >
-            <DirectionWrapper>
+        <Html position={position} center>
+            <DirectionWrapper
+                // 모든 마우스 이벤트에서 전파 차단
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerMove={(e) => e.stopPropagation()}
+                onPointerUp={(e) => e.stopPropagation()}>
                 <div
                     id="map"
                     style={{ width: mapSize.width, height: mapSize.height }}
@@ -81,7 +80,7 @@ const Direction = ({ position }) => {
                     </DirectionTitle>
                     <DirectionContent>
                         <p>주소: 경기도 부천시 경인로 590</p>
-                        
+
                         <DirectionContentTitle onClick={() => toggleDropdown('subway')}>
                             <Subway />
                             <p>지하철 타고 오실 때</p>
@@ -145,7 +144,7 @@ const Direction = ({ position }) => {
 
                         {/* 주차 안내 (드롭다운) */}
                         <DirectionContentTitle onClick={() => toggleDropdown('parking')}>
-                            <LocalParking  />
+                            <LocalParking />
                             <p>주차안내</p>
                         </DirectionContentTitle>
                         {openSection === 'parking' && (
