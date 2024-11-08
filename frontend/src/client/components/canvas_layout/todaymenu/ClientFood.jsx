@@ -353,7 +353,7 @@ const TitleLayout = styled.div`
 const MenuListLayout = styled.div`
   display: flex;
   justify-content: center;
-  height: 9vh;
+  height: 10vh;
   width: 21.25vw;
   align-items: center; 
 `;
@@ -361,7 +361,7 @@ const MenuListLayout = styled.div`
 const MenuListButton = styled.button`
   background-color: white;
   height: 4vh;
-  font-Size: 18px;
+  font-Size: 15px;
   color: black; 
   text-Align: center;
   border: hidden;
