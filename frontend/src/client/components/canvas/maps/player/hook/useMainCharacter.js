@@ -89,6 +89,10 @@ export const useMainCharacter = ({ position, myChar }) => {
     const deptInfoCareerAndEmploymentFieldDispatchFlag = useRef(false)
     const deptHeadAniFlag = useRef(false)
     const busStationFlag = useRef(false)
+    const isGoldBoxAreaFlag1 = useRef(false)
+    const isGoldBoxAreaFlag2 = useRef(false)
+    const isGoldBoxAreaFlag3 = useRef(false)
+    const isCodingAreaFlag = useRef(false)
 
     const { camera } = useThree()
 
@@ -124,14 +128,6 @@ export const useMainCharacter = ({ position, myChar }) => {
 
     //학생회관 음식 호출
     const [isInStudentKioskZone, setIsInStudentKioskZone] = useState(false);
-
-    // 학과체험의 코딩영역 상태관리
-    const [isCodingArea, setIsCodingArea] = useState(false);
-
-    // 보물상자영역 상태관리
-    const [isGoldBoxArea1, setisGoldBoxArea1] = useState(false);
-    const [isGoldBoxArea2, setisGoldBoxArea2] = useState(false);
-    const [isGoldBoxArea3, setisGoldBoxArea3] = useState(false);
 
     // 갤러리 영역 상태관리
     const [isFirstWork, setIsFirstWork] = useState(false);
@@ -504,8 +500,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                             handleGSAPCamera(-160, 10, 165)
                         }
                         // 영역진입체크
-                        if (!isGoldBoxArea2) {
-                            setisGoldBoxArea2(true)
+                        if (!isGoldBoxAreaFlag2.current) {
+                            isGoldBoxAreaFlag2.current = true
                             dispatch(OnGoldBoxAreaTwo());
                             // console.log("테라스 보물상자 진입")
                         }
@@ -515,8 +511,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                             // console.log('te')
                             setGsapCameraState(false)
                         }
-                        if (isGoldBoxArea2) {
-                            setisGoldBoxArea2(false);
+                        if (isGoldBoxAreaFlag2.current) {
+                            isGoldBoxAreaFlag2.current = false
                             dispatch(OnGoldBoxAreaTwo())
                             // console.log("테라스 보물상자 탈출")
                         }
@@ -525,10 +521,10 @@ export const useMainCharacter = ({ position, myChar }) => {
                             dispatch(initKiosk())
                         }
                     }
-                } else{
+                } else {
                     // 텔레포트 경우 나감 처리
-                    if (isGoldBoxArea2) {
-                        setisGoldBoxArea2(false);
+                    if (isGoldBoxAreaFlag2.current) {
+                        isGoldBoxAreaFlag2.current = false
                         dispatch(OnGoldBoxAreaTwo())
                         // console.log("테라스 보물상자 탈출")
                     }
@@ -627,8 +623,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 handleGSAPCamera(-310, 10, -40)
                             }
                             // 영역진입체크
-                            if (!isGoldBoxArea1) {
-                                setisGoldBoxArea1(true)
+                            if (!isGoldBoxAreaFlag1.current) {
+                                isGoldBoxAreaFlag1.current=true;
                                 dispatch(OnGoldBoxAreaOne());
                                 // console.log("유재라관 보물상자 진입")
                             }
@@ -640,8 +636,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 // console.log("유재라관 setGsapCameraState")
                             }
 
-                            if (isGoldBoxArea1) {
-                                setisGoldBoxArea1(false);
+                            if (isGoldBoxAreaFlag1.current) {
+                                isGoldBoxAreaFlag1.current=false;
                                 dispatch(OnGoldBoxAreaOne())
                                 // console.log("유재라관 보물상자 탈출")
                             }
@@ -654,8 +650,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 } else {
                     // 텔레포트 경우 나감 처리
-                    if (isGoldBoxArea1) {
-                        setisGoldBoxArea1(false);
+                    if (isGoldBoxAreaFlag1.current) {
+                        isGoldBoxAreaFlag1.current=false;
                         dispatch(OnGoldBoxAreaOne())
                         // console.log("유재라관 보물상자 탈출")
                     }
@@ -788,8 +784,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                             setGsapCameraState(true)
                             handleGSAPCamera(75, 20, -272)
                         }
-                        if (!isGoldBoxArea3) {
-                            setisGoldBoxArea3(true)
+                        if (!isGoldBoxAreaFlag3.current) {
+                            isGoldBoxAreaFlag3.current = true
                             dispatch(OnGoldBoxAreaThree());
                             // console.log("나눔의 숲 보물상자 진입")
                         }
@@ -798,8 +794,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if (gsapCameraState) {
                             setGsapCameraState(false)
                         }
-                        if (isGoldBoxArea3) {
-                            setisGoldBoxArea3(false);
+                        if (isGoldBoxAreaFlag3.current) {
+                            isGoldBoxAreaFlag3.current = false
                             dispatch(OnGoldBoxAreaThree())
                             // console.log("나눔의 숲 보물상자 탈출")
                         }
@@ -812,8 +808,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                     }
                 } else {
                     // 텔레포트 경우 나감 처리
-                    if (isGoldBoxArea3) {
-                        setisGoldBoxArea3(false);
+                    if (isGoldBoxAreaFlag3.current) {
+                        isGoldBoxAreaFlag3.current = false
                         dispatch(OnGoldBoxAreaThree())
                         // console.log("나눔의 숲 보물상자 탈출")
                     }
@@ -1148,8 +1144,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                             setGsapCameraState(true)
                             handleGSAPCamera(0, 10, 0)
                         }
-                        if (!isCodingArea) {
-                            setIsCodingArea(true)
+                        if (!isCodingAreaFlag.current) {
+                            isCodingAreaFlag.current = true
                             dispatch(enterCodingArea())
                         }
                     }
@@ -1157,8 +1153,8 @@ export const useMainCharacter = ({ position, myChar }) => {
                         if (gsapCameraState) {
                             setGsapCameraState(false)
                         }
-                        if (isCodingArea) {
-                            setIsCodingArea(false);
+                        if (isCodingAreaFlag.current) {
+                            isCodingAreaFlag.current = false
                             dispatch(initCodingArea())
                             // console.log("코딩영역을 떠났습니다.");
                         }
