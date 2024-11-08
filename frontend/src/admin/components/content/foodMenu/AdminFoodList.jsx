@@ -61,11 +61,20 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
         try {
             const response = await fetch(`/api/food/search/${searchQuery}`);
             const data = await response.json();
-            setFoodList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
+    
+            if (data.length === 0) { // 검색 결과가 없을 때
+                Swal.fire({
+                    icon: "info",
+                    title: "검색 결과 없음",
+                    text: "검색된 항목이 없습니다."
+                });
+            } else {
+                setFoodList(data);
+                setTotalPages(Math.ceil(data.length / pageNum));
+            }
         } catch (error) {
             Swal.fire({
-                icon: "warning",
+                icon: "error",
                 title: "에러",
                 text: "검색에 실패 했습니다."
             });
@@ -79,21 +88,24 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
 
     // 현재 페이지 데이터를 정렬하여 가져오는 함수
     const getCurrentPageData = () => {
+        if (!Array.isArray(foodList)) {
+            return []; // foodList가 배열이 아닐 경우 빈 배열을 반환
+        }
+    
         const sortedData = [...foodList].sort((a, b) => {
             let compareA = a[sortCriteria];
             let compareB = b[sortCriteria];
-
+    
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
             return 0;
         });
-
+    
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
     };
-
     // 페이지 변경 처리
     const handlePageChange = (event, value) => {
         setCurrentPage(value);

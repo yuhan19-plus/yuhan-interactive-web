@@ -121,7 +121,7 @@ router.delete("/delete/:foodID", (req, res) => {
 // 음식 검색
 router.get("/search/:foodName", (req, res) => {
     const foodName = `%${req.params.foodName}%`;
-    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg FROM food_menu WHERE foodName LIKE ?";
+    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg, day FROM food_menu WHERE foodName LIKE ?";
 
     mysqlconnection.query(searchQuery, [foodName], (err, results) => {
         if (err) {
