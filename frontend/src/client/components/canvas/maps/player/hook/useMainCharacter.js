@@ -765,7 +765,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             handleGSAPCamera(70, 100, -170)
                         }
                         // if (!isInSmokingArea) {
-                        //     console.log('스모킹 온')
+                        //     // console.log('스모킹 온')
                         //     setIsInSmokingArea(true);
                         //     dispatch(onSmokingArea())
                         //     // dispatch(Enter_SmokingArea());
@@ -783,7 +783,7 @@ export const useMainCharacter = ({ position, myChar }) => {
                             handleGSAPCamera(75, 20, -272)
                         }
                         if (!isGoldBoxArea3) {
-                            console.log('코인 온')
+                            // console.log('코인 온')
                             setisGoldBoxArea3(true)
                             dispatch(EnterGoldBoxArea('isZone3'));
                             // console.log("나눔의 숲 보물상자 진입")
@@ -795,14 +795,14 @@ export const useMainCharacter = ({ position, myChar }) => {
                         }
 
                         if (isGoldBoxArea3) {
-                            console.log('코인 오프')
+                            // console.log('코인 오프')
                             setisGoldBoxArea3(false);
                             dispatch(LeaveGoldBoxArea('isZone3', 'hasVisitedZone3'))
                             // console.log("나눔의 숲 보물상자 탈출")
                         }
 
                         // if (isInSmokingArea) {
-                        //     console.log('스모킹 오프')
+                        //     // console.log('스모킹 오프')
                         //     setIsInSmokingArea(false);
                         //     dispatch(initSmokingArea())
                         //     // dispatch(Leave_SmokingArea());

@@ -31,7 +31,7 @@ const Floor = ({onMove, ...props}) => {
                 onPointerUp={(e) => {
                     if(!viewValue) {
                         const currentPosition = [e.point.x, 0.3, e.point.z]
-                        console.log('currentPosition', currentPosition) // 확인을 위한 출력
+                        // console.log('currentPosition', currentPosition) // 확인을 위한 출력
                         if (onMove) {
                             onMove(currentPosition)  // 클릭한 좌표를 전달
                         }

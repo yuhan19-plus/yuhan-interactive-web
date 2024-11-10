@@ -25,7 +25,8 @@ const AdminMain = () => {
             window.location.href = '/';
         }
     }, [cookies]);
-    console.log(titleValue)
+    // console.log(titleValue)
+    
     return (
         <>
             <div className='admin-content'>

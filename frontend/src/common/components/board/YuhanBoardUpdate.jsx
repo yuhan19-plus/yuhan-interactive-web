@@ -177,7 +177,7 @@ const YuhanBoardUpdate = ({ boardId, onCancel }) => {
                     files: updatedFiles, // 새로운 배열로 상태 업데이트
                 };
             });
-            console.log(attachments[fileIndex]);
+            // console.log(attachments[fileIndex]);
             setAttachments(prevAttachments =>
                 prevAttachments.map((attachment, index) =>
                     index === fileIndex ?

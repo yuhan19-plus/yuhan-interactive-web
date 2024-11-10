@@ -3,15 +3,23 @@
  */
 import { faBomb, faMessage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { AxiosError } from 'axios'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useRouteError } from 'react-router-dom'
 import styled from 'styled-components'
 
-const ErrorPage = ({errorCode, errorMessage}) => {
+let errorMessage
+const ErrorPage = () => {
+    const error = useRouteError()
+
+    if (error instanceof AxiosError) {
+      errorMessage = error?.response?.data
+    }
+
     return (
         <ErrorWrapper>
             <ErrorHeader>
-                <p>{errorCode} Error</p>
+                <p>Error</p>
                 <p><FontAwesomeIcon icon={faBomb} /></p>
             </ErrorHeader>
             <ErrorContent>

@@ -74,7 +74,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                 text: '댓글을 저장하는 중 문제가 발생했습니다.',
                 confirmButtonColor: '#d33',
             });
-            console.error(error.message);
+            // console.error(error.message);
         }
     };
 
@@ -99,7 +99,7 @@ export const YuhanBoardComment = ({ boardData }) => {
                 text: '댓글을 삭제하는 중 문제가 발생했습니다.',
                 confirmButtonColor: '#d33',
             });
-            console.error(error.message);
+            // console.error(error.message);
         }
     };
 

@@ -10,7 +10,7 @@ import { FONT_URL } from '../../../../../../../../../data/commonData'
 
 export function CalendarObject({position, ...props}) {
   const currentMonthDate = moment(new Date()).format("MM월")
-  console.log(currentMonthDate)
+  // console.log(currentMonthDate)
   const { nodes, materials } = useGLTF('/assets/models/dept_etc/Calendar.glb')
   
   const fontStyle = {

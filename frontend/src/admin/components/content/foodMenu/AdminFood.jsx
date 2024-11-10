@@ -22,7 +22,7 @@ const AdminFood = () => {
 
     const handleSelectUpdateItem = (foodID) => {
         setSelectedFood(foodID);
-        console.log(foodID)
+        // console.log(foodID)
         setCurrentView('update');
     };
 

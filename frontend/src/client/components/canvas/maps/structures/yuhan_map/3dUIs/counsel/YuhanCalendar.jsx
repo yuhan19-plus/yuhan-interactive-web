@@ -52,11 +52,11 @@ const YuhanCalendar = () => {
                     professorId: userType === 'student' ? myProfessorInfoState.myProfessorId : userId
                 }
             })
-            console.log(response.data.allCounselDates)
-            console.log(response.data.allCounselDatesAndTimes)
+            // console.log(response.data.allCounselDates)
+            // console.log(response.data.allCounselDatesAndTimes)
             setRegisteredDates(response.data.allCounselDates)
             setAllCounselDatesAndTimes(response.data.allCounselDatesAndTimes)
-            
+
             // Swal.fire({
             //     icon: 'success',
             //     title: '데이터 로드 성공.',
@@ -278,7 +278,7 @@ const YuhanCalendar = () => {
                                                         let cnt = 0
                                                         allCounselDatesAndTimes.forEach((allCounselDatesAndTime) => {
                                                             if (tempDate === allCounselDatesAndTime.counsel_date && allCounselDatesAndTime.counsel_state === 1) cnt++
-                                                            console.log('cnt', cnt)
+                                                            // console.log('cnt', cnt)
                                                         })
                                                         if (cnt === 6) {
                                                             return (
@@ -345,7 +345,7 @@ const YuhanCalendar = () => {
                                                         let cnt = 0
                                                         allCounselDatesAndTimes.forEach((allCounselDatesAndTime) => {
                                                             if (tempDate === allCounselDatesAndTime.counsel_date && allCounselDatesAndTime.counsel_state === 1) cnt++
-                                                            console.log('cnt', cnt)
+                                                            // console.log('cnt', cnt)
                                                         })
                                                         if (cnt === 6) {
                                                             return (

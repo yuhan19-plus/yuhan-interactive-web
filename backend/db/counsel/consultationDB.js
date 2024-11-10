@@ -372,8 +372,8 @@ router.get("/check-counsel-state", (req, res) => {
 // 상담 일정 테이블의 상담 상태 값 업데이트
 router.put("/update-counsel-state", (req, res) => {
     // console.log("상담상태 업데이트", req.body)
-    // // console.log(req.body.counselDate)
-    // // console.log(req.body.counselTime)
+    // console.log(req.body.counselDate)
+    // console.log(req.body.counselTime)
     const { counselDate, counselTime, professorId, counselState } = req.body
 
     const updateCounselDateAndTimeQuery = `

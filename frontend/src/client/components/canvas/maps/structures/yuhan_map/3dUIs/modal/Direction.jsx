@@ -68,7 +68,7 @@ const Direction = ({ position }) => {
                     onPointerUp={(e) => {
                         // 마우스가 지도 내에서 올라오면 이벤트를 막음
                         if (e.currentTarget.id === 'map') {
-                            console.log("마우스가 지도내부에서 떨어짐");
+                            // console.log("마우스가 지도내부에서 떨어짐");
                             e.stopPropagation();  // 이벤트 전파 중단
                         }
                     }}

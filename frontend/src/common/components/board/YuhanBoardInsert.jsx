@@ -260,7 +260,7 @@ const YuhanBoardInsert = ({ onCancel }) => {
                     }
                 });
             } else {
-                console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
+                // console.log(data.message); // 임시 저장 데이터가 없는 경우 메시지 출력
             }
         } catch (error) {
             console.error("Error checking temp data:", error);

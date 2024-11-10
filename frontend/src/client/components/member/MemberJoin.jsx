@@ -124,7 +124,7 @@ const MemberJoin = () => {
         event.preventDefault();
         // 유효성 검사
         if (validate()) {
-            console.log("폼이 제출되었습니다.");
+            // console.log("폼이 제출되었습니다.");
 
             const formData = {
                 memberID,

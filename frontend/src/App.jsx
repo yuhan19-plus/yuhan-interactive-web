@@ -64,13 +64,6 @@ function App() {
               유한게시판
             */}
             <Route path='/department/*' element={<DeptCanvasLayout />} errorElement={<ErrorPage />} />
-            {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
-              <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
-              <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
-            </Route> */}
-            {/* <Route path='/client-yuhanBoard' element={<YuhanBoard />} /> */}
-            {/* <Route path='/client-food' element={<FoodBoard />} /> */}
-
             <Route path='/admin' element={<AdminIndex />} errorElement={<ErrorPage />}>
               <Route path='/admin' element={<AdminMain />} />
               <Route path='/admin/member' element={<AdminMain />} errorElement={<ErrorPage />}>
