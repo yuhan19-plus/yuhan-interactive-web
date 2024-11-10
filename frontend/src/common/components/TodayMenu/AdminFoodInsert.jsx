@@ -59,6 +59,63 @@ const AdminFoodInsert = ({ onCancel }) => {
             day: food.day
         };
 
+        if (food.foodType === "일품1" || food.foodType === "일품2") {
+            try {
+                const response = await fetch('/api/food/checkCount', {  // 새로운 API 엔드포인트
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ foodType: food.foodType }),
+                });
+    
+                const data = await response.json();
+                if (data.count >= 5) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: `${food.foodType}은 최대 5개까지만 등록할 수 있습니다.`,
+                        text: '음식 등록을 할 수 없습니다.',
+                    });
+                    return;
+                }
+            } catch (error) {
+                console.error('음식 타입 개수 확인 중 오류 발생:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: `일품1 / 일품2는 최대 5개까지만 등록할 수 있습니다.`,
+                });
+                return;
+            }
+        }
+
+        // 양식/한식에 대한 요일별 등록 확인
+        if (food.foodType === "양식" || food.foodType === "한식") {
+            try {
+                const response = await fetch('/api/food/checkDay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ foodType: food.foodType, day: food.day }),
+                });
+
+                const data = await response.json();
+                if (data.count > 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: `${food.foodType}은 ${food.day}에 이미 등록된 음식이 있습니다.`,
+                        text: '',
+                    });
+                    return;  // 등록을 막음
+                }
+            } catch (error) {
+                console.error('양식/한식 등록 중 오류 발생:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '오류',
+                    text: '양식 / 한식은 요일 당 한개 씩만 등록 할 수 있습니다.',
+                });
+                return;
+            }
+        }
+
         // 등록 확인 알림
         const result = await Swal.fire({
             title: '등록 확인',
