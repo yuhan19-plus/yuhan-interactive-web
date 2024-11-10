@@ -1,14 +1,17 @@
-/** 파일생성자 : 임성준
- * Light 설정을 위한 Helper 셋팅 및 Light 설정 (24/08/02)
- * 오자현 : 해, 달, 별 적용
- * - 해와 달과 별배치, 각 시간대별 css 적용, 빛의 위치 및 강도 적용 (24/08/29)
+/** 
+ * 임성준
+ * - Light 설정을 위한 Helper 셋팅
+ * - Light 기본 설정
+ * - 시간대 별 색상 선정
+ * 
+ * 오자현
+ * - 해와 달과 별배치
+ * - 각 시간대별 css 적용
+ * - Light 위치 및 강도 수정
  */
-import { Sky, Stars, useHelper } from '@react-three/drei'
+import { Stars } from '@react-three/drei'
 import React, { useRef, useEffect, useState } from 'react'
-import * as THREE from 'three'
-// 해
 import { Sun } from '../maps/structures/yuhan_map/elements/etc/Sun'
-// 달
 import { Moon } from '../maps/structures/yuhan_map/elements/etc/Moon'
 import { useSelector } from 'react-redux'
 
@@ -137,14 +140,6 @@ const Light = () => {
                     )}
                 </>
             )}
-
-            {/* 이부분 나중에 자현이가 수정바람 - 성준 */}
-            {/* <Sky
-                distance={450000}  // 하늘이 펼쳐지는 거리
-                sunPosition={[0, 100, 0]}  // 태양의 위치
-                inclination={0}  // 태양의 기울기
-                azimuth={0.25}   // 태양의 방위각
-            /> */}
         </>
     )
 }

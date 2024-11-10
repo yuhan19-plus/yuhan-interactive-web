@@ -1,5 +1,8 @@
 /**
  * 파일생성자 오자현
+ * 
+ * 임성준
+ * - bus 상태관리 수정 및 Bus 컴포넌트 상태관리 부분 수정
  */
 import React, { useEffect } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
@@ -7,9 +10,12 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function Bus({ position }) {
+  const busStationState = useSelector((state) => state.bus)
+  const busStationValue = busStationState.value
+  const busStationName = busStationState.busStationName
   // Redux 상태에서 버스존 1과 2에 있는지 여부 가져오기
-  const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
-  const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
+  // const isInBusStationOne = useSelector(state => state.bus.inBusStationOne);
+  // const isInBusStationTwo = useSelector(state => state.bus.inBusStationTwo);
   // 찾아오는 길버튼의 클릭여부를 확인
   const directionsState = useSelector((state) => state.view.value && state.view.viewName === 'directionsView');
   const groupOne = React.useRef(); 
@@ -78,53 +84,55 @@ export function Bus({ position }) {
 
   return (
     <>
-      {(isInBusStationOne || directionsState) && (
-        <motion.group ref={groupOne} position={[position[0], position[1], position[2]]} scale={8}
-          animate={{ z: [position[2] - 370, position[2] - 50, position[2] + 500] }}
-          transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
-        >
-          <group name="Scene">
-            <group name="Cube" scale={[2, 2, 5]}>
-              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry}>
-                <meshStandardMaterial color={'#006961'} />
-              </mesh>
-              <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
-              <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
-              <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
+      {((busStationValue && busStationName === 'busStationOne') ||
+        directionsState) && (
+          <motion.group ref={groupOne} position={[position[0], position[1], position[2]]} scale={8}
+            animate={{ z: [position[2] - 370, position[2] - 50, position[2] + 500] }}
+            transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
+          >
+            <group name="Scene">
+              <group name="Cube" scale={[2, 2, 5]}>
+                <mesh name="Cube_1" geometry={nodes.Cube_1.geometry}>
+                  <meshStandardMaterial color={'#006961'} />
+                </mesh>
+                <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
+                <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
+                <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
+              </group>
+              <group name="front_wheel001" position={[0, -2.1, 3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
+                <mesh name="Cylinder002" geometry={nodes.Cylinder002.geometry} material={materials.black} />
+                <mesh name="Cylinder002_1" geometry={nodes.Cylinder002_1.geometry} material={materials.steel} />
+              </group>
+              <group name="back_wheel001" position={[0, -2.1, -3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
+                <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry} material={materials.black} />
+                <mesh name="Cylinder003_1" geometry={nodes.Cylinder003_1.geometry} material={materials.steel} />
+              </group>
             </group>
-            <group name="front_wheel001" position={[0, -2.1, 3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
-              <mesh name="Cylinder002" geometry={nodes.Cylinder002.geometry} material={materials.black} />
-              <mesh name="Cylinder002_1" geometry={nodes.Cylinder002_1.geometry} material={materials.steel} />
-            </group>
-            <group name="back_wheel001" position={[0, -2.1, -3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
-              <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry} material={materials.black} />
-              <mesh name="Cylinder003_1" geometry={nodes.Cylinder003_1.geometry} material={materials.steel} />
-            </group>
-          </group>
-        </motion.group>
+          </motion.group>
       )}
-      {(isInBusStationTwo || directionsState) && (
-        <motion.group ref={groupTwo} position={[position[0], position[1], position[2]]} scale={8} rotation={[0, Math.PI, 0]}
-          animate={{ x: [position[0] + 100, position[0] + 100, position[0] + 100], z: [position[2] + 500, position[2] - 60, position[2] - 370] }}
-          transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
-        >
-          <group name="Scene">
-            <group name="Cube" scale={[2, 2, 5]}>
-              <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} material={materials.main} />
-              <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
-              <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
-              <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
+      {((busStationValue && busStationName === 'busStationTwo') ||
+        directionsState) && (
+          <motion.group ref={groupTwo} position={[position[0], position[1], position[2]]} scale={8} rotation={[0, Math.PI, 0]}
+            animate={{ x: [position[0] + 100, position[0] + 100, position[0] + 100], z: [position[2] + 500, position[2] - 60, position[2] - 370] }}
+            transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
+          >
+            <group name="Scene">
+              <group name="Cube" scale={[2, 2, 5]}>
+                <mesh name="Cube_1" geometry={nodes.Cube_1.geometry} material={materials.main} />
+                <mesh name="Cube_2" geometry={nodes.Cube_2.geometry} material={materials.white} />
+                <mesh name="Cube_3" geometry={nodes.Cube_3.geometry} material={materials.Windows} />
+                <mesh name="Cube_4" geometry={nodes.Cube_4.geometry} material={materials.yellow} />
+              </group>
+              <group name="front_wheel001" position={[0, -2.1, 3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
+                <mesh name="Cylinder002" geometry={nodes.Cylinder002.geometry} material={materials.black} />
+                <mesh name="Cylinder002_1" geometry={nodes.Cylinder002_1.geometry} material={materials.steel} />
+              </group>
+              <group name="back_wheel001" position={[0, -2.1, -3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
+                <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry} material={materials.black} />
+                <mesh name="Cylinder003_1" geometry={nodes.Cylinder003_1.geometry} material={materials.steel} />
+              </group>
             </group>
-            <group name="front_wheel001" position={[0, -2.1, 3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
-              <mesh name="Cylinder002" geometry={nodes.Cylinder002.geometry} material={materials.black} />
-              <mesh name="Cylinder002_1" geometry={nodes.Cylinder002_1.geometry} material={materials.steel} />
-            </group>
-            <group name="back_wheel001" position={[0, -2.1, -3.65]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={[0.75, 0.35, 0.75]}>
-              <mesh name="Cylinder003" geometry={nodes.Cylinder003.geometry} material={materials.black} />
-              <mesh name="Cylinder003_1" geometry={nodes.Cylinder003_1.geometry} material={materials.steel} />
-            </group>
-          </group>
-        </motion.group>
+          </motion.group>
       )}
     </>
   );

@@ -1,6 +1,7 @@
-/** 파일생성자 : 임성준
- * 임성준 : 프론트엔드 개발
- * 
+/**
+ * 임성준
+ * - 학과 바닥 구현
+ * - 카메라 영역 표시
  */
 import { useBox } from '@react-three/cannon'
 import React from 'react'

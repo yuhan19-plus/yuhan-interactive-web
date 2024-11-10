@@ -5,7 +5,7 @@ import { BIO_PATH, CREATION_HALL, CSW_PATH, FN_PATH, FREE_HALL, ID_PATH, JAE_RA_
 import { useNavigate } from 'react-router-dom'
 import { NavigateBefore, NavigateNext } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBowlFood, faCode, faDna, faGamepad, faPenRuler } from '@fortawesome/free-solid-svg-icons'
+import { faCode, faGamepad } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux'
 import { computerSoftwareMap, foodNutritionMap, industrialDesignMap, miniGameMap, yuhanBioMap } from '../../../../../../../../../redux/actions/actions'
 

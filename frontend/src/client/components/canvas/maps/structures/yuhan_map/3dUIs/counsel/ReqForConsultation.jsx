@@ -323,10 +323,10 @@ const ReqForConsultationWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
+    padding: 1rem;
     background-color: #cccccc50;
     border-radius: 2%;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 `
 
 const StyledFormControl = styled(MuiFormControl)`
@@ -342,10 +342,10 @@ const StyledFormLabel = styled(MuiFormLabel)`
     p {
         font-size: 16px;
         font-weight: 600;
-        margin: 15px;
+        margin: 1rem;
     }
     border-right: 2px solid #ccc;
-    margin-right: 15px;
+    margin-right: 1rem;
 `
 
 const FormContent = styled.div`

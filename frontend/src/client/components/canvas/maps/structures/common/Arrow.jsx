@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 화살표 오브젝트 생성
+ * - 애니메이션 적용 및 그림자 설정
+ */
 import React, { useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'

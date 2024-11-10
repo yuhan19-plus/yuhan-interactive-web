@@ -1,7 +1,10 @@
-/** 임성준
- * 캐릭터 이동 기능
- * 카메라 설정
- * 캐릭터 애니메이션 설정
+/** 
+ * 임성준
+ * - 캐릭터 조작 기능
+ * - handleCamera 및 handelGSAPCamera 기능 구현
+ * - 카메라 영역 설정
+ * - 캐릭터 애니메이션 설정
+ * - 캐릭터 관리 훅
  */
 
 import { useGLTF } from "@react-three/drei"

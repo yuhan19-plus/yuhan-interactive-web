@@ -1,9 +1,13 @@
+/**
+ * 임성준
+ * - 학과소개 오브젝트 생성 및 그림자 설정
+ * - 애니메이션 설정 및 모달창 구현
+ */
 import React, { useEffect, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'
 import { motion } from 'framer-motion-3d'
 import DeptModal from '../modal/DeptModal'
-import styled from 'styled-components'
 
 export function EducationalGoals({name, deptInfoValue, deptInfoName, position, scale, ...props}) {
   const { scene, nodes, materials } = useGLTF('/assets/models/dept_info/education.glb')

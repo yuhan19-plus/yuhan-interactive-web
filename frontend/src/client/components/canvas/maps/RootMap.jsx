@@ -123,30 +123,22 @@ const RootMap = () => {
                         )  
                     }
 
-                    {viewDirectionsState ? (
+                    {viewDirectionsState && (
                             <>
                                 <Arrow position={[282, 25, -163]} scale={8} />
                                 <Arrow position={[502, 25, -237]} scale={8} />
                                 <Bus position={[355, 17.5, -150]} />
                             </>
-                        ) : (
-                            <>
-                                {/* 찾아오는 길 안내문 */}
-                                {(busStationValue) && (
-                                    <>
-                                        <Direction position={[170, 0, 0]} />
-                                        <Bus position={[355, 17.5, -150]} />
-                                    </>
-                                )}
-                                {/* {(busStationValue && busStationName === 'busStationTwo') && (
-                                    <>
-                                        <Direction position={[540, 0, 0]} />
-                                        <Bus position={[355, 17.5, -150]} />
-                                    </>
-                                )} */}
-                            </>
                         )
                     }
+                    
+                    {(busStationValue) && (
+                        <>
+                            <Direction position={[170, 0, 0]} />
+                            <Bus position={[355, 17.5, -150]} />
+                        </>
+                    )}
+                    
                     {/* React.Fragment: DOM 요소를 생성하지 않고 묶게 해줌 */}
                     <React.Fragment>
                         {/* 캐릭터 이동에 클릭한 위치를 전달, 초기에는 null 상태 */}

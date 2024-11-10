@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 캐릭터 생성 및 애니메이션 설정
+ */
 import React, { useEffect, useState } from 'react'
 import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'

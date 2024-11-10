@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 상담 신청 목록 컴포넌트 프론트엔드 개발
+ */
 import React, { useEffect, useState } from 'react'
 import { Button, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import styled from 'styled-components'
@@ -23,13 +27,15 @@ const ReqForConsultationList = ({currentUserState}) => {
                     professorId: userId
                 }
             })
+            
             const data = response.data.reqForConsultationList
             setReqForConsultationListData(data)
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '상담신청목록 데이터를 가져왔습니다.',
-            })
+
+            // Swal.fire({
+            //     icon: 'success',
+            //     title: '데이터 로드 성공.',
+            //     text: '상담신청목록 데이터를 가져왔습니다.',
+            // })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -264,13 +270,14 @@ const PaginationContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 15px 0px;
+    padding: 1rem 0;
 `
 
 const StyledPagination = styled(Pagination)`
     button {
         background-color: var(--main-color);
         color: var(--font-yellow-color);
+
         span {
             
         }

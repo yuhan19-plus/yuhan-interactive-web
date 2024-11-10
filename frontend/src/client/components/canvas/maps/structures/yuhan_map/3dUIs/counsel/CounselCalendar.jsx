@@ -12,7 +12,7 @@ const CounselCalendar = () => {
             <CalendarContentWrapper>
                 <CalendarContentItem>
                     <CalendarContentTitle>
-                        <FontAwesomeIcon icon={faBullhorn} color='#0F275C' /> 상담신청 안내사항
+                        <FontAwesomeIcon icon={faBullhorn} /> 상담신청 안내사항
                     </CalendarContentTitle>
                     <CalendarContent>
                         <p>1. <b>지난 날짜</b> 혹은 <b>당일</b>은 상담신청을 할 수 없습니다.</p>
@@ -31,10 +31,10 @@ const CounselCalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: 1rem;
+    margin-bottom: 1rem;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 1rem;
     box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.13);
 `
 
@@ -44,13 +44,13 @@ const CalendarContentWrapper = styled.div`
     align-items: center;
     width: 100%;
     border: none;
-    padding: 15px;
+    padding: 1rem;
 `
 
 const CalendarContentItem = styled.div`
     width: 100%;
-    margin-bottom: 15px;
-    padding: 15px;
+    margin-bottom: 1rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
 `
@@ -58,14 +58,19 @@ const CalendarContentItem = styled.div`
 const CalendarContentTitle = styled.h3`
     width: 100%;
     margin: 0;
-    border-bottom: 3px solid #0F275C;
-    margin-bottom: 15px;
+    border-bottom: 3px solid var(--main-color);
+    margin-bottom: 1rem;
+
+    svg {
+        color: var(--main-color);
+    }
 `
 
 const CalendarContent = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+
     p {
         margin: 0 5px 0 0;
     }

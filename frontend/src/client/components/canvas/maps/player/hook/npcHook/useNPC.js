@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - npc 훅
+ */
 import { useAnimations, useGLTF } from "@react-three/drei"
 import { useGraph } from "@react-three/fiber"
 import { useEffect, useMemo, useRef, useState } from "react"

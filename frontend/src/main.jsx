@@ -9,6 +9,6 @@ import './assets/client/client.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <CookiesProvider>
-            <App />
+        <App />
     </CookiesProvider>
 )

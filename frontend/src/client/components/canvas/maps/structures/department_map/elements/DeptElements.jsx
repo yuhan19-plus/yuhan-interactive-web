@@ -1,6 +1,7 @@
-/** 파일생성자 : 임성준
- * 임성준 : 바닥 및 투명벽 설정
- * 
+/**
+ * 임성준
+ * - 학과맵 구현
+ * - 추후 학과 추가 가능
  */
 import React from 'react'
 import CodingGroup from './dept/coding/CodingGroup'

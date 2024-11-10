@@ -56,11 +56,12 @@ const YuhanCalendar = () => {
             console.log(response.data.allCounselDatesAndTimes)
             setRegisteredDates(response.data.allCounselDates)
             setAllCounselDatesAndTimes(response.data.allCounselDatesAndTimes)
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '등록된 상담날짜 데이터를 가져왔습니다.'
-            })
+            
+            // Swal.fire({
+            //     icon: 'success',
+            //     title: '데이터 로드 성공.',
+            //     text: '등록된 상담날짜 데이터를 가져왔습니다.'
+            // })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -414,7 +415,7 @@ const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 
     /* 오늘 버튼 */
     button {
@@ -425,7 +426,7 @@ const CalendarWrapper = styled.div`
     .react-calendar {
         width: 100%;
         border: none;
-        padding: 15px;
+        padding: 1rem;
     }
 
     /* 달력 상단의 월/년도 이동 네비게이션 */
@@ -433,21 +434,21 @@ const CalendarWrapper = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #0F275C;
+        background: var(--main-color);
     }
 
     /* 네비게이션 버튼 */
     .react-calendar__navigation button {
         font-weight: 800;
         font-size: 1rem;
-        background: #0F275C;
-        color: white;
+        background: var(--main-color);
+        color: var(--sub-color);
     }
 
     /* 네비게이션 버튼 컬러 */
     .react-calendar__navigation button:focus,
     .react-calendar__navigation button:hover {
-        background-color: #0F275C;
+        background-color: var(--main-color);
     }
 
     /* 오늘 날짜 폰트 컬러 */
@@ -456,7 +457,7 @@ const CalendarWrapper = styled.div`
         abbr {
             color: #015850;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 1rem;
         }
     }
 
@@ -493,7 +494,7 @@ const CalendarWrapper = styled.div`
         justify-content: center;
     }
     .react-calendar__month-view__days__day {
-        padding: 15px;
+        padding: 1rem;
     }
 
     /* 선택한 날짜 스타일 적용 */
@@ -518,7 +519,7 @@ const CalendarWrapper = styled.div`
 /* 오늘 날짜에 텍스트 삽입 스타일 */
 const TodayDate = styled.div`
     font-size: x-small;
-    color: #0F275C;
+    color: var(--main-color);
     font-weight: 600;
 `
 

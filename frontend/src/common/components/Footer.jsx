@@ -70,7 +70,7 @@ const IconItem = styled.div`
     p {
         display: flex;
         align-items: center;
-        font-size: 24px;
+        font-size: 1.3rem;
         
         svg {
             margin-right: 0.3rem;

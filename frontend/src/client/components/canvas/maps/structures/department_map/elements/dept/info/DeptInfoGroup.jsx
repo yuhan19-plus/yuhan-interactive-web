@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 학과소개 오브젝트 그룹화
+ */
+
 import React from 'react'
 import { CareerAndEmploymentField } from './CareerAndEmploymentField'
 import { DepartmentFeatures } from './DepartmentFeatures'

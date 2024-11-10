@@ -1,6 +1,6 @@
 /** 
  * 임성준
- * - 학과장 캐릭터의 애니메이션을 위한 훅
+ * - 학과장 캐릭터 관리 훅
  */
 
 import { useAnimations, useGLTF } from "@react-three/drei"

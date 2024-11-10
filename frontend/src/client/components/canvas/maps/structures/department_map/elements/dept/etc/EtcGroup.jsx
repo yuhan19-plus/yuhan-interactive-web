@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 학과장실 오브젝트 그룹화
+ */
 import React from 'react'
 import { Pot } from './Pot'
 import { BookShelf } from './BookShelf'

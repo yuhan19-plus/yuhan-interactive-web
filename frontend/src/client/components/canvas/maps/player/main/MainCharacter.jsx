@@ -1,5 +1,6 @@
   /**
    * 임성준
+   * - 메인 캐릭터 생성 및 애니메이션 설정
    */
   import React from 'react'
   import { useGLTF, Stars } from '@react-three/drei'

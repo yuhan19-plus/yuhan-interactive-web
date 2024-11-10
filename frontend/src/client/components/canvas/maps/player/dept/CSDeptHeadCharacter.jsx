@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 캐릭터 생성 및 애니메이션 설정
+ * - 말풍선 기능
+ */
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useCsDeptCharacter } from '../hook/csDeptHook/useCsDeptCharacter'

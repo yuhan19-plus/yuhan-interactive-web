@@ -1,5 +1,6 @@
-/** 파일생성자 : 임성준
- * 임성준 : 프론트엔드 개발
+/** 
+ * 임성준
+ * - 학과 맵 구현
  */
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,7 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import { mainCharDept } from '../../../../../../redux/actions/actions'
 import { BioDeptHeadCharacter } from '../../player/dept/BioDeptHeadCharacter'
 import { CSDeptHeadCharacter } from '../../player/dept/CSDeptHeadCharacter'
-import { DesignDeptHeadCharacter } from '../../player/dept/DesignDeptHeadCharacter'
 import { FoodDeptHeadCharacter } from '../../player/dept/FoodDeptHeadCharacter'
 import { MainCharacter } from '../../player/main/MainCharacter'
 import DeptElements from './elements/DeptElements'

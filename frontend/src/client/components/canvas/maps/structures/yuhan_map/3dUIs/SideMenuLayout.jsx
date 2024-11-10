@@ -49,11 +49,11 @@ const SideMenuLayout = (props) => {
             // console.log("data", data)
             dispatch(currentStudentUserInfo(data.student))
 
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '학생 데이터를 가져왔습니다.',
-            })
+            // Swal.fire({
+            //     icon: 'success',
+            //     title: '데이터 로드 성공.',
+            //     text: '학생 데이터를 가져왔습니다.',
+            // })
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -76,11 +76,11 @@ const SideMenuLayout = (props) => {
             // console.log("data", data)
             dispatch(currentProfessorUserInfo(data.professor))
 
-            Swal.fire({
-                icon: 'success',
-                title: '데이터 로드 성공.',
-                text: '교수 데이터를 가져왔습니다.',
-            })
+            // Swal.fire({
+            //     icon: 'success',
+            //     title: '데이터 로드 성공.',
+            //     text: '교수 데이터를 가져왔습니다.',
+            // })
         } catch (error) {
             Swal.fire({
                 icon: 'error',

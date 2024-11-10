@@ -1,6 +1,6 @@
-/** 파일생성자 : 임성준
- * 임성준 : 프론트엔드 개발
- * 
+/** 
+ * 임성준
+ * - 학과 맵 캔버스 구현
  */
 import React from 'react'
 import { Canvas } from '@react-three/fiber'

@@ -5,13 +5,12 @@
  */
 
 import { Close } from '@mui/icons-material'
-import { Button, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import React, {useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import Swal from 'sweetalert2';
 import { initModal } from '../../../../../../../../redux/actions/actions'
-import axios from 'axios'; // axios를 사용하여 서버와 통신
 import { useCookies } from 'react-cookie'; // 쿠키에서 사용자 정보 가져오기
 import { useNavigate } from 'react-router-dom';
 

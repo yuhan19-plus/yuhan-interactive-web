@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 학과장실 오브젝트 생성 및 그림자 설정
+ * - 시계 기능 구현
+ */
 import React, { useEffect, useState } from 'react'
 import { Text3D, useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'

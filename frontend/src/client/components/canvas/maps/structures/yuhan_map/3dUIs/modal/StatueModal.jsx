@@ -3,16 +3,14 @@
  * 기능 구현- 이정민
  * 클라이언트(학생)이 동상 구역에 들어갔을 때 출력되는 창
  * 
- * **********************************************************
- * 정리할 부분
- * - 스타일 컴포넌트로 변경 후 코드 정리
- * **********************************************************
+ * 임성준
+ * - styled-components 적용
  */
 import { Html } from '@react-three/drei';
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 
 const StatueModal = ({ position }) => {
     return (

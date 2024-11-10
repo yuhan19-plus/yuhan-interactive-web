@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 애니메이션 텍스트 보드
+ */
 import { Text, Text3D } from '@react-three/drei'
 import React, { forwardRef } from 'react'
 

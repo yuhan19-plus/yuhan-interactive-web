@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 학과소개 벽면 오브젝트 제작
+ */
 import { Text3D } from '@react-three/drei'
 import React from 'react'
 import { motion } from 'framer-motion-3d'

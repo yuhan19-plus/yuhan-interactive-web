@@ -29,14 +29,14 @@ function App() {
 
   // 서버 연결 상태를 확인하는 함수
   const checkServerConnection = async () => {
-    console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
+    // console.log('서버의 응답을 기다리는 중...'); // 서버 응답 대기 메시지 출력
     try {
       const response = await fetch('/api/healthCheck'); // 백엔드 서버의 헬스체크 엔드포인트
       if (!response.ok) {
         throw new Error('서버 연결에 실패했습니다');
       }
       const data = await response.json();
-      console.log('서버와 연결되었습니다:', data.message); // 서버 연결 성공 메시지 출력
+      // console.log('서버와 연결되었습니다:', data.message); // 서버 연결 성공 메시지 출력
     } catch (error) {
       console.error('서버 연결 확인 중 오류 발생:', error);
     }

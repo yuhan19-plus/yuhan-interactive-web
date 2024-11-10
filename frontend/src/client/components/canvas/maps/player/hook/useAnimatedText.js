@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - npc 애니메이션 텍스트 훅
+ */
 import { useEffect, useState } from "react"
 
 export const useAnimatedText = (text, once, callback) => {
@@ -9,7 +13,7 @@ export const useAnimatedText = (text, once, callback) => {
     const [currentIndex, setCurrentIndex] = useState(0)
 
     useEffect(() => {
-        if(currentIndex < text.length) {
+        if (currentIndex < text.length) {
             const timeout = setTimeout(() => {
                 setDisplayText(displayText + text[currentIndex])
                 setCurrentIndex(currentIndex + 1)

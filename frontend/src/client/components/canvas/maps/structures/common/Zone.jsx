@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 카메라 영역을 위한 오브젝트 생성
+ */
 import React, { useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'

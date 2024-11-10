@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 학과장실 오브젝트 생성 및 그림자 설정
+ * - 캘린더 기능 구현
+ */
 import React from 'react'
 import { Text3D, useGLTF } from '@react-three/drei'
 import moment from 'moment'

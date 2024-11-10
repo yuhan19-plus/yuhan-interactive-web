@@ -1,3 +1,8 @@
+/**
+ * 임성준
+ * - 학과소개 오브젝트 생성 및 그림자 설정
+ * - 애니메이션 설정 및 모달창 구현
+ */
 import React, { useEffect, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'

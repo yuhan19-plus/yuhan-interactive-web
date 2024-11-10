@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 학과장실 오브젝트 생성 및 그림자 설정
+ */
 import React, { useEffect } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import { useBox } from '@react-three/cannon'

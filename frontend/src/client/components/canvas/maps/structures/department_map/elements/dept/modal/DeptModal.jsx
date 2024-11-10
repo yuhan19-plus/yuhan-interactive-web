@@ -1,3 +1,7 @@
+/**
+ * 임성준
+ * - 학과소개 모달창 구현
+ */
 import { Html } from '@react-three/drei'
 import React from 'react'
 import styled from 'styled-components'
