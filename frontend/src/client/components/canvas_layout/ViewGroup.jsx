@@ -98,10 +98,10 @@ const ViewGroup = () => {
                 <BtnItem onClick={handleAerialView} data-tooltip='항공뷰'>
                     <FontAwesomeIcon icon={faPlane} />
                 </BtnItem>
-                <BtnItem onClick={handleSmokingAreaView} data-tooltip='흡연구역'>
+                <BtnItem onClick={handleSmokingAreaView} data-tooltip='흡연구역안내'>
                     <FontAwesomeIcon icon={faSmoking} />
                 </BtnItem>
-                <BtnItem onClick={handleDirectionsView} data-tooltip='찾아오는 길'>
+                <BtnItem onClick={handleDirectionsView} data-tooltip='정류장안내'>
                     <FontAwesomeIcon icon={faBus} />
                 </BtnItem>
                 <BtnItem onClick={handleGuideView} data-tooltip='캠퍼스안내'>
