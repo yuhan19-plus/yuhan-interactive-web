@@ -52,10 +52,10 @@ function App() {
     <Provider store={store}>
         <BrowserRouter>
           <Routes>
-            <Route path='/' index element={<ClientIndex />} />
-            <Route path='/login' element={<MemberIndex value='login' />} />
-            <Route path='/join' element={<MemberIndex value='join' />} />
-            <Route path='/membermodify' element={<MemberIndex value='modify' />} />
+            <Route path='/' index element={<ClientIndex />} errorElement={<ErrorPage />} />
+            <Route path='/login' element={<MemberIndex value='login' />} errorElement={<ErrorPage />} />
+            <Route path='/join' element={<MemberIndex value='join' />} errorElement={<ErrorPage />} />
+            <Route path='/membermodify' element={<MemberIndex value='modify' />} errorElement={<ErrorPage />} />
 
             {/* client 부분 경로
               오늘의 메뉴
@@ -63,7 +63,7 @@ function App() {
               상담신청
               유한게시판
             */}
-            <Route path='/department/*' element={<DeptCanvasLayout />} />
+            <Route path='/department/*' element={<DeptCanvasLayout />} errorElement={<ErrorPage />} />
             {/* <Route path='/sideMenu' element={<SideMenuLayout />}>
               <Route path='/sideMenu/consultation' element={<SideMenuLayout pageName='consultation' />} />
               <Route path='/sideMenu/board' element={<SideMenuLayout pageName='board' />} />
@@ -71,24 +71,24 @@ function App() {
             {/* <Route path='/client-yuhanBoard' element={<YuhanBoard />} /> */}
             {/* <Route path='/client-food' element={<FoodBoard />} /> */}
 
-            <Route path='/admin' element={<AdminIndex />}>
+            <Route path='/admin' element={<AdminIndex />} errorElement={<ErrorPage />}>
               <Route path='/admin' element={<AdminMain />} />
-              <Route path='/admin/member' element={<AdminMain />}>
+              <Route path='/admin/member' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>
-              <Route path='/admin/foodMenu' element={<AdminMain />}>
+              <Route path='/admin/foodMenu' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>
-              <Route path='/admin/board' element={<AdminMain />}>
+              <Route path='/admin/board' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>
-              <Route path='/admin/deptRec' element={<AdminMain />}>
+              <Route path='/admin/deptRec' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>
-              <Route path='/admin/report' element={<AdminMain />}>
+              <Route path='/admin/report' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>
-              <Route path='/admin/gallery' element={<AdminMain />}>
+              <Route path='/admin/gallery' element={<AdminMain />} errorElement={<ErrorPage />}>
                 {/* 경로설정 */}
               </Route>            
             </Route>
