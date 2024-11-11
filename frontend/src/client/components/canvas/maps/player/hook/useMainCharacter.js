@@ -651,11 +651,18 @@ export const useMainCharacter = ({ position, myChar }) => {
                                 dispatch(initKiosk())
                             }
                         }
+                    } else {
+                        // 텔레포트 경우 나감 처리1
+                        if (isGoldBoxAreaFlag1.current) {
+                            isGoldBoxAreaFlag1.current = false;
+                            dispatch(OnGoldBoxAreaOne())
+                            // console.log("유재라관 보물상자 탈출")
+                        }
                     }
                 } else {
-                    // 텔레포트 경우 나감 처리
+                    // 텔레포트 경우 나감 처리2
                     if (isGoldBoxAreaFlag1.current) {
-                        isGoldBoxAreaFlag1.current=false;
+                        isGoldBoxAreaFlag1.current = false;
                         dispatch(OnGoldBoxAreaOne())
                         // console.log("유재라관 보물상자 탈출")
                     }
