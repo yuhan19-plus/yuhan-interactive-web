@@ -13,15 +13,17 @@ const ViewGroup = () => {
     const busState = useSelector((state) => state.bus)
     const smokingState = useSelector((state) => state.smokingArea)
     const statueState = useSelector((state) => state.statue)
+    const goldBoxState = useSelector((state) => state.goldBox)
     const kioskValue = kioskState.value
     const busValue = busState.value
     const smokingValue = smokingState.value
     const statueValue = statueState.inStatue
+    const goldBoxValue = goldBoxState.isZone
 
     // 미니맵 상단 버튼 handle메서드
     const handleAerialView = (e) => {
         e.stopPropagation()
-        if(kioskValue || busValue || smokingValue || statueValue) {
+        if (kioskValue || busValue || smokingValue || statueValue || goldBoxValue) {
             // if(kioskValue) dispatch(initKiosk())
             // if(busValue) dispatch(initBusStation())
             // if(smokingValue) dispatch(initSmokingArea())
@@ -39,7 +41,7 @@ const ViewGroup = () => {
     } 
     const handleDirectionsView = (e) => {
         e.stopPropagation()
-        if(kioskValue || busValue || smokingValue || statueValue) {
+        if (kioskValue || busValue || smokingValue || statueValue || goldBoxValue) {
             // if(kioskValue) dispatch(initKiosk())
             // if(busValue) dispatch(initBusStation())
             // if(smokingValue) dispatch(initSmokingArea())
@@ -57,7 +59,7 @@ const ViewGroup = () => {
     } 
     const handleSmokingAreaView = (e) => {
         e.stopPropagation()
-        if(kioskValue || busValue || smokingValue || statueValue) {
+        if (kioskValue || busValue || smokingValue || statueValue || goldBoxValue) {
             // if(kioskValue) dispatch(initKiosk())
             // if(busValue) dispatch(initBusStation())
             // if(smokingValue) dispatch(initSmokingArea())
@@ -75,7 +77,7 @@ const ViewGroup = () => {
     }
     const handleGuideView = (e) => {
         e.stopPropagation()
-        if(kioskValue || busValue || smokingValue || statueValue) {
+        if (kioskValue || busValue || smokingValue || statueValue || goldBoxValue) {
             // if(kioskValue) dispatch(initKiosk())
             // if(busValue) dispatch(initBusStation())
             // if(smokingValue) dispatch(initSmokingArea())

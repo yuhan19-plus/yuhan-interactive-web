@@ -1,5 +1,6 @@
 /**
  * 파일생성자 오자현
+ * 문제 보물상자영역에 들어간 상태로 다른 곳으로 텔포해서 보물상자 보면 보물상자가 열려있음
  */
 import React from 'react';
 import { useGLTF } from '@react-three/drei';
@@ -7,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion-3d';
 
 export function GoldBox({ position, rotation }) {
-  const isZoneActive = useSelector((state) => state.goldBox.isZone1 || state.goldBox.isZone2 || state.goldBox.isZone3);
+  const isZoneActive = useSelector((state) => state.goldBox.isZone);
   const { nodes, materials } = useGLTF('/assets/models/etc/goldBox.glb');
 
   return (

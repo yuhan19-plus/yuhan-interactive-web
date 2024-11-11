@@ -150,11 +150,22 @@ const AdminBoardReportList = ({ onReportManagement }) => {
             </List>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-                <Pagination
+            <Pagination
                     count={totalPages}
                     page={currentPage}
                     onChange={handlePageChange}
-                    color='primary'
+                    sx={{
+                        "& .MuiPaginationItem-root": {
+                            backgroundColor: 'var(--sub-color) !important',
+                        },
+                        "& .Mui-selected": {
+                            backgroundColor: 'var(--main-color) !important',
+                            color: 'var(--sub-color) !important',
+                            "&:hover": {
+                                backgroundColor: 'var(--main-color) !important',
+                            },
+                        },
+                    }}
                 />
             </Box>
         </>

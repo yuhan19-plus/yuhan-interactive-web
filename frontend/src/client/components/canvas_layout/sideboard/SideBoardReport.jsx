@@ -150,6 +150,7 @@ const InputReportContent = styled(TextField).attrs({
     fullWidth: true,
     label: "신고내용",
     variant: "outlined",
+    name:"report_content",
     rows: 4,
 })`
     border-radius: 0.5vh;

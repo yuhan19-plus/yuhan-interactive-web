@@ -8,7 +8,7 @@ import { motion } from 'framer-motion-3d';
 import { useSelector } from 'react-redux';
 
 export function PythonCoin({ position, rotation }) {
-  const isZoneActive = useSelector((state) => state.goldBox.isZone3);
+  const isZoneActive = useSelector((state) => state.goldBox.isZone && state.goldBox.name ==="나눔의 숲");
   
   const { nodes, materials } = useGLTF('/assets/models/etc/PythonCoin.glb')
 

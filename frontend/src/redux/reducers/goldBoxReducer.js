@@ -1,16 +1,14 @@
 /**
  * 오자현 보물상자영역 리듀서
  */
-import { ENTER_GOLDBOXAREA, INIT_GOLDBOXAREA, LEAVE_GOLDBOXAREA } from "../actions/actions";
+import { INIT_GOLDBOXAREA, ON_GOLDBOXAREAONE, ON_GOLDBOXAREATHREE, ON_GOLDBOXAREATWO } from "../actions/actions";
 
 const initialState = {
-    isZone1: false, // 1번 영역 진입 여부 (유재라관)
-    isZone2: false, // 2번 영역 진입 여부 (테라스)
-    isZone3: false,  // 3번 영역 진입 여부 (농구장)
-    // 아래의 3개는 한번이라도 진입했는지 여부
-    hasVisitedZone1: false, // 1번 영역
-    hasVisitedZone2: false, // 2번 영역
-    hasVisitedZone3: false, // 3번 영역
+    isZone: false,
+    name: '',
+    hasVisitedZone1: false,
+    hasVisitedZone2: false,
+    hasVisitedZone3: false,
 };
 
 export function goldBoxReducer(state = initialState, action) {
@@ -18,22 +16,31 @@ export function goldBoxReducer(state = initialState, action) {
         case INIT_GOLDBOXAREA:
             return {
                 ...state,
-                isZone1: false,
-                isZone2: false,
-                isZone3: false,
+                isZone: false,
+                name: '',
             }
-        case ENTER_GOLDBOXAREA:
-            // console.log('진입한 zone:', action.zone);
+        case ON_GOLDBOXAREAONE:
             return {
                 ...state,
-                [action.zone]: true,  // 진입한 영역의 상태를 true로 설정
+                isZone: !state.isZone,
+                name: '유재라관',
+                hasVisitedZone1: state.hasVisitedZone1 || state.isZone,
             };
-        case LEAVE_GOLDBOXAREA:
+        case ON_GOLDBOXAREATWO:
             return {
                 ...state,
-                [action.zone]: false, // 떠난 영역의 상태를 false로 설정
-                [action.hasVisited]: true,  // 진입한 영역의 방문 이력을 true로 설정
+                isZone: !state.isZone,
+                name: '테라스',
+                hasVisitedZone2: state.hasVisitedZone2 || state.isZone,
             };
+        case ON_GOLDBOXAREATHREE:
+            return {
+                ...state,
+                isZone: !state.isZone,
+                name: '나눔의 숲',
+                hasVisitedZone3: state.hasVisitedZone3 || state.isZone,
+            };
+
         default:
             return state;
     }

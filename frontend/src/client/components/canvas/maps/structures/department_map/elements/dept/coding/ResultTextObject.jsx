@@ -98,17 +98,17 @@ const ResultTextObject = ({ receivedNumber }) => {
     }, [receivedNumber, font]); // 폰트가 로드된 후 실행
 
     return (
-        <group position={[120, 60, 260]} rotation={[0, Math.PI, 0]}>
+        <group position={[120, 70, 200]} rotation={[0, 10.2, 0]}>
             <motion.group
-                animate={{ scale: [1, 1.125, 1], y: [0, 5, 0] }}
+                animate={{ scale: [1, 1.1, 1], y: [0, 2, 0] }}
                 transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
             >
                 <group ref={firstmMshRef}></group>
             </motion.group>
             <group ref={staticMeshRef}></group>
             <motion.group
-                animate={{ scale: [1, 1.125, 1], y: [0, 5, 0] }}
-                transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
+                animate={{ scale: [1, 1.1, 1], y: [0, 2, 0] }}
+                transition={{ duration: 5, repeat: Infinity, repeatType: 'loop' }}
             >
                 <group ref={finalMeshRef}></group>
             </motion.group>
