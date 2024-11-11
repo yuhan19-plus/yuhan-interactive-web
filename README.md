@@ -1,18 +1,17 @@
-# <strong style="color: gold;">차세대 학교 홍보 플랫폼</strong><br />3D 인터랙티브 웹 프로젝트
+# <span>$\bf{\large{\color{#FFFF00}차세대 학교 홍보 플랫폼}}$</span><br />3D 인터랙티브 웹 프로젝트
 ## 📌 프로젝트 소개 및 목표
-최신 기술 스택인 <strong style="color: gold;">React</strong>와 <strong style="color: gold;">Three.js</strong>를 사용하여 개발한
-<strong style="color: gold;">차세대 학교 홍보 플랫폼</strong>
+최신 기술 스택인 <span>$\bf{\rm{\color{#FFFF00}React}}$</span>와 <span>$\bf{\rm{\color{#FFFF00}Three.js}}$</span>를 사용하여 개발한
+<span>$\bf{\rm{\color{#FFFF00}차세대 학교 홍보 플랫폼}}$</span>
 
-<strong>
-    <span style="color: #009484;">Y</span>
-    <span style="color: #005850;">U</span>
-    <span style="color: #64C9B9;">H</span>
-    <span style="color: #80BD02;">A</span>
-    <span style="color: #F4CE3D;">N</span>
-    <span style="color: #EF7421;">3D INTERACTIVE</span>
-    <span style="color: #0F275C;">WEB</span>
-</strong>
-입니다.
+
+<span>$\bf{\rm{\color{#009484}Y}}$</span>
+<span>$\bf{\rm{\color{#005850}U}}$</span>
+<span>$\bf{\rm{\color{#64C9B9}H}}$</span>
+<span>$\bf{\rm{\color{#80BD02}A}}$</span>
+<span>$\bf{\rm{\color{#F4CE3D}N}}$</span>
+<span>$\bf{\rm{\color{#EF7421}3D INTERACTIVE}}$</span>
+<span>$\bf{\rm{\color{#0F275C}WEB}}$</span>
+입니다.<br/><br/>
 
 ```
 저희 프로젝트의 목표는 3D 인터랙티브 웹을 통해 유한대학교 웹 사이트에 접속하는 모든 사용자가
@@ -34,9 +33,10 @@
 ![Welcome Zone](project/images/Welcome존-1.png)
 <hr />
 
-<video controls src="project/videos/맵 탐방.mp4" title="맵 탐방" muted autoplay></video>
+## 🎥 영상
+[맵탐방](/project/videos/맵탐방.mp4)
 
-<video controls src="project/videos/캠퍼스안내.mp4" title="캠퍼스안내" muted autoplay></video>
+[캠퍼스안내](/project/videos/캠퍼스안내.mp4)
 
 ## 📝 업무분담
 ### 👨‍💻임성준 (팀 리더 및 프로젝트 관리자)
@@ -74,93 +74,64 @@ UI | 관리자 메인 UI<br/>클라이언트 및 관리자 유한게시판 UI<br
 ## 💻 기술스택
 
 ### 서버 구축
-<div
-    style="
-        display: flex;
-    "
->
-    <p style="margin-right: 1rem">
+<div>
+    <span style="margin-right: 1rem">
         <img src="https://img.shields.io/badge/docker-white?style=for-the-badge&logo=docker&logoColor=lightblue">
-    </p>
+    </span>
 </div>
 
 ### 3D 모델링
-<div
-    style="
-        display: flex;
-    "
->
-    <p style="margin-right: 1rem">
+<div>
+    <span style="margin-right: 1rem">
         <img src="https://img.shields.io/badge/blender-white?style=for-the-badge&logo=blender&logoColor=orange">
-    </p>
+    </span>
 </div>
 
 ### Frontend
-<div
-    style="
-        display: flex;
-        flex-direction: column;
-    "
->
-    <div
-        style="
-            display: flex;
-        "
-    >
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/Javascript-yellow?style=for-the-badge&logo=Javascript&logoColor=white">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/react-blue?style=for-the-badge&logo=react&logoColor=darkblue">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/redux-purple?style=for-the-badge&logo=redux&logoColor=violet">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/three-black?style=for-the-badge&logo=three.js&logoColor=white">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/axios-white?style=for-the-badge&logo=axios&logoColor=purple">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/styled components-white?style=for-the-badge&logo=styled-components&logoColor=orange">
-        </p>
-    </div>
-    <div
-        style="
-            display: flex;
-        "
-    >
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/mui-black?style=for-the-badge&logo=mui&logoColor=blue">
-        </p>
-        <p style="margin-right: 1rem">
-            <img src="https://img.shields.io/badge/fontawesome-black?style=for-the-badge&logo=fontawesome&logoColor=blue">
-        </p>
-    </div>
+<div>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/Javascript-yellow?style=for-the-badge&logo=Javascript&logoColor=white">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/react-blue?style=for-the-badge&logo=react&logoColor=darkblue">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/redux-purple?style=for-the-badge&logo=redux&logoColor=violet">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/three-black?style=for-the-badge&logo=three.js&logoColor=white">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/axios-white?style=for-the-badge&logo=axios&logoColor=purple">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/styled components-white?style=for-the-badge&logo=styled-components&logoColor=orange">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/mui-black?style=for-the-badge&logo=mui&logoColor=blue">
+    </span>
+    <span style="margin-right: 1rem">
+        <img src="https://img.shields.io/badge/fontawesome-black?style=for-the-badge&logo=fontawesome&logoColor=blue">
+    </span>
 </div>
 
 ### Backend
-<div
-    style="
-        display: flex;
-    "
->
-    <p style="margin-right: 1rem">
+<div>
+    <span style="margin-right: 1rem">
         <img src="https://img.shields.io/badge/mysql-white?style=for-the-badge&logo=mysql&logoColor=blue">
-    </p>
-    <p style="margin-right: 1rem">
+    </span>
+    <span style="margin-right: 1rem">
         <img src="https://img.shields.io/badge/node js-green?style=for-the-badge&logo=node.js&logoColor=darkgreen">
-    </p>
-    <p style="margin-right: 1rem">
+    </span>
+    <span style="margin-right: 1rem">
         <img src="https://img.shields.io/badge/express js-white?style=for-the-badge&logo=express&logoColor=black">
-    </p>
+    </span>
 </div>
 
 ## ✉ 프로젝트 후기
 이름 | 후기내용
 -- | --
-임성준 | **"색다른 웹 프로젝트로 한 층 더 성장할 수 있는 계기가 되었습니다."**<br/><br/>좋은 팀원들을 만나서 프로젝트를 진행하는 동안 편했습니다.<br/>프로젝트 기술 스택의 경험이 적어서 힘들었을텐데 각자 파트를 잘 수행해줘서<br/>프로젝트를 더욱 더 성공적으로 마무리한 거 같습니다.<br/><br/>개인적으로 프로젝트 기획부터 마무리까지 모든 업무를 담당하면서 저의 부족한 부분을 확인하고 많은 걸 배우면서 더욱 더 발전할 수 있는 계기가 되었고 즐거웠습니다.
-이석재 |
-이정민 |
-오자현 | 
+**임성준** | **"색다른 웹 프로젝트로 한 층 더 성장할 수 있는 계기가 되었습니다."**<br/><br/>좋은 팀원들을 만나서 프로젝트를 진행하는 동안 편했습니다.<br/>프로젝트 기술 스택의 경험이 적어서 힘들었을텐데 각자 파트를 잘 수행해줘서<br/>프로젝트를 더욱 더 성공적으로 마무리한 거 같습니다.<br/><br/>개인적으로 프로젝트 기획부터 마무리까지 모든 업무를 담당하면서<br/>저의 부족한 부분을 확인하고 많은 걸 배우면서 더욱 더 발전할 수 있는 계기가 되었고 즐거웠습니다.
+**이석재** |
+**이정민** |
+**오자현** | 
