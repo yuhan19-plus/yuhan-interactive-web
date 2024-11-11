@@ -49,37 +49,63 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
 
     // 검색 기능 구현
     const handleSearch = async () => {
+        if (!searchQuery.trim()) { // 검색어가 비어 있을 때
+            Swal.fire({
+                icon: "warning",
+                title: "입력 오류",
+                text: "한 글자 이상 입력해주세요."
+            });
+            return;
+        }
+    
         try {
             const response = await fetch(`/api/food/search/${searchQuery}`);
             const data = await response.json();
-            setFoodList(data);
-            setTotalPages(Math.ceil(data.length / pageNum));
+    
+            if (data.length === 0) { // 검색 결과가 없을 때
+                Swal.fire({
+                    icon: "info",
+                    title: "검색 결과 없음",
+                    text: "검색된 항목이 없습니다."
+                });
+            } else {
+                setFoodList(data);
+                setTotalPages(Math.ceil(data.length / pageNum));
+            }
         } catch (error) {
             Swal.fire({
-                icon: "warning",
+                icon: "error",
                 title: "에러",
                 text: "검색에 실패 했습니다."
-            })
+            });
         }
+    };
+
+    const handleResetList = async () => {
+        setSearchQuery(''); // 검색어 초기화
+        await fetchFoods(); // 전체 목록 다시 불러오기
     };
 
     // 현재 페이지 데이터를 정렬하여 가져오는 함수
     const getCurrentPageData = () => {
+        if (!Array.isArray(foodList)) {
+            return []; // foodList가 배열이 아닐 경우 빈 배열을 반환
+        }
+    
         const sortedData = [...foodList].sort((a, b) => {
             let compareA = a[sortCriteria];
             let compareB = b[sortCriteria];
-
+    
             // 기본 내림차순 정렬
             if (compareA > compareB) return -1;
             if (compareA < compareB) return 1;
             return 0;
         });
-
+    
         const startIndex = (currentPage - 1) * pageNum;
         const endIndex = startIndex + pageNum;
         return sortedData.slice(startIndex, endIndex);
     };
-
     // 페이지 변경 처리
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
@@ -166,6 +192,9 @@ const AdminFoodList = ({ onCreatePost, onSelectUpdateItem }) => {
                         }
                     />
                     <Button variant="contained" color="primary" onClick={handleSearch}>검색</Button>
+                    <Button variant="contained" color="primary" onClick={handleResetList} sx={{ ml: 1 }} >
+                    <img src="/assets/images/Reset.png" style={{width:'1vw',height:'2.5vh'}} ></img>
+                    </Button>
 
                     <FormControl sx={{ marginLeft: '1vw', minWidth: 100 }}>
                         <Select

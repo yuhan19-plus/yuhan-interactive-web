@@ -239,9 +239,11 @@ const ClientFood = () => {
                                     src={`${getFoodDetails(selectedFood)?.foodImg}`}
                                     alt="Food"
                                     style={{
-                                        height: getFoodDetails(selectedFood)?.foodImgHeight > getFoodDetails(selectedFood)?.foodImgWidth ? '10vh' : 'auto',
-                                        width: getFoodDetails(selectedFood)?.foodImgHeight <= getFoodDetails(selectedFood)?.foodImgWidth ? '10vw' : 'auto',
-                                        objectFit: 'contain' // 비율 유지
+                                        height: getFoodDetails(selectedFood)?.foodImgHeight > getFoodDetails(selectedFood)?.foodImgWidth ? '5vh' : 'auto',
+                                        width: getFoodDetails(selectedFood)?.foodImgHeight <= getFoodDetails(selectedFood)?.foodImgWidth ? '5vw' : 'auto',
+                                        maxWidth: '80%',
+                                        maxHeight: '80%',
+                                        objectFit: 'contain'
                                     }}
                                 />
                             ) : (
@@ -351,7 +353,7 @@ const TitleLayout = styled.div`
 const MenuListLayout = styled.div`
   display: flex;
   justify-content: center;
-  height: 9vh;
+  height: 10vh;
   width: 21.25vw;
   align-items: center; 
 `;
@@ -359,7 +361,7 @@ const MenuListLayout = styled.div`
 const MenuListButton = styled.button`
   background-color: white;
   height: 4vh;
-  font-Size: 18px;
+  font-Size: 15px;
   color: black; 
   text-Align: center;
   border: hidden;

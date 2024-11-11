@@ -54,26 +54,79 @@ router.get("/:foodID", (req, res) => {
 });
 
 // 음식 등록 (이미지 데이터 포함)
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     const { foodType, foodName, foodPrice, foodImg, day } = req.body;
 
     if (!foodType || !foodName || !foodPrice) {
         return res.status(400).send("foodType, foodName, foodPrice의 값이 필요합니다.");
     }
 
-    // 이미지 데이터를 BLOB으로 저장
-    const foodImgBlob = foodImg ? Buffer.from(foodImg, 'base64') : null;
+    // 음식 타입이 "일품1" 또는 "일품2"인 경우 개수 제한 체크
+    if (foodType === "일품1" || foodType === "일품2") {
+        try {
+            // 음식 타입의 개수 확인
+            const [results] = await mysqlconnection.promise().query(
+                `SELECT COUNT(*) AS count FROM food_menu WHERE foodType = ?`, 
+                [foodType]
+            );
 
-    const insertFoodQuery = `INSERT INTO food_menu (foodType, foodName, foodPrice, foodImg, day) VALUES (?, ?, ?, ?, ?)`;
+            const { count } = results[0];
+            if (count >= 5) {
+                return res.status(400).json({ message: `${foodType}은 최대 5개까지만 등록할 수 있습니다.` });
+            }
 
-    mysqlconnection.query(insertFoodQuery, [foodType, foodName, foodPrice, foodImgBlob, day], (err) => {
-        if (err) {
-            // console.error("음식 등록 중 에러 발생:", err);
-            return res.status(500).json({ message: "음식 등록 중 오류가 발생했습니다." });
+            // 개수가 5 미만일 때만 등록 진행
+            await registerFood();
+            res.send("음식 등록 성공");
+
+        } catch (err) {
+            console.error("음식 개수 확인 중 에러 발생:", err);
+            return res.status(500).json({ message: "음식 개수 확인 중 오류가 발생했습니다." });
         }
+    } else if (foodType === "양식" || foodType === "한식") {
+        try {
+            // 양식 또는 한식의 경우, 해당 요일에 이미 등록된 음식이 있는지 확인
+            const [existingFood] = await mysqlconnection.promise().query(
+                `SELECT COUNT(*) AS count FROM food_menu WHERE foodType = ? AND day = ?`,
+                [foodType, day]
+            );
+
+            const { count } = existingFood[0];
+            if (count > 0) {
+                return res.status(400).json({ message: `${foodType}은 ${day}에 이미 등록된 음식이 있습니다.` });
+            }
+
+            // 등록 가능하면 음식 등록
+            await registerFood();
+            res.send("음식 등록 성공");
+
+        } catch (err) {
+            console.error("양식/한식 등록 중 에러 발생:", err);
+            return res.status(500).json({ message: "양식/한식 등록 중 오류가 발생했습니다." });
+        }
+    } else {
+        // 다른 foodType은 개수 제한 없이 등록
+        await registerFood();
         res.send("음식 등록 성공");
-    });
+    }
+
+    // 음식 등록 함수
+    async function registerFood() {
+        // 이미지 데이터를 BLOB으로 저장
+        const foodImgBlob = foodImg ? Buffer.from(foodImg, 'base64') : null;
+
+        try {
+            await mysqlconnection.promise().query(
+                `INSERT INTO food_menu (foodType, foodName, foodPrice, foodImg, day) VALUES (?, ?, ?, ?, ?)`,
+                [foodType, foodName, foodPrice, foodImgBlob, day]
+            );
+        } catch (err) {
+            console.error("음식 등록 중 에러 발생:", err);
+            throw new Error("음식 등록 중 오류가 발생했습니다.");
+        }
+    }
 });
+
 
 // 음식 수정
 router.put("/update/:food_id", (req, res) => {
@@ -121,7 +174,7 @@ router.delete("/delete/:foodID", (req, res) => {
 // 음식 검색
 router.get("/search/:foodName", (req, res) => {
     const foodName = `%${req.params.foodName}%`;
-    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg FROM food_menu WHERE foodName LIKE ?";
+    const searchQuery = "SELECT foodID, foodType, foodName, foodPrice, foodImg, day FROM food_menu WHERE foodName LIKE ?";
 
     mysqlconnection.query(searchQuery, [foodName], (err, results) => {
         if (err) {
