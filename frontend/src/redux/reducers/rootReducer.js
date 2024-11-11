@@ -24,6 +24,7 @@ import { deptHeadAnimationReducer } from "./deptHeadAnimationReducer";
 import { goldBoxReducer } from "./goldBoxReducer";
 import { galleryAreaReducer } from "./galleryAreaReducer";
 import { npcAnimationReducer } from "./npcAnimationReducer";
+import { galleryDataReducer } from "./galleryDataReducer"; 
 
 // 모든 리듀서 결합 - 성준
 const rootReducer = combineReducers({
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
     // 석재
     smokingArea: smokingAreaReducer,
     galleryArea: galleryAreaReducer,
+    galleryData: galleryDataReducer,
 
     // 자현
     bus: busReducer,

@@ -8,6 +8,10 @@ export const CURRENT_PROFESSOR_USER = 'CURRENT_PROFESSOR_USER'
 // 교수정보 저장 - 성준
 export const MY_PROFESSOR_INFO = 'MY_PROFESSOR_INFO'
 
+// 갤러리 데이터 저장 - 석재
+export const GALLERY_WORK_DATA = 'GALLERY_WORK_DATA'
+export const GALLERY_PICTURE_DATA = 'GALLERY_PICTURE_DATA'
+
 // 캐릭터 - 성준
 export const INIT_CHARACTER = 'INIT_CHARACTER'
 export const MAIN_CHARACTER = 'MAIN_CHARACTER'
@@ -151,6 +155,16 @@ export const currentProfessorUserInfo = (currentProfessorUserInfoData) => ({
 export const myProfessorInfo = (myProfessorInfo) => ({
     type: MY_PROFESSOR_INFO,
     payload: myProfessorInfo
+})
+
+// 갤러리 데이터 - 석재
+export const galleryWorkData = (galleryWorkData) => ({
+    type: GALLERY_WORK_DATA,
+    payload: galleryWorkData
+})
+export const galleryPictureData = (galleryPictureData) => ({
+    type: GALLERY_PICTURE_DATA,
+    payload: galleryPictureData
 })
 
 // 캐릭터 - 성준
