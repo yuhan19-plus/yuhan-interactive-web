@@ -311,7 +311,7 @@ if (result) {
 
   return (
     <RecommendContainer>
-      <h2>학부추천 (로테이션 {rotationCount + 1})</h2>
+      <h2>학부추천</h2>
       {currentQuestionSet.map((currentQuestion, index) => (
         <QuestionContainer key={`${currentQuestion.dept}-${currentQuestion.question}-${index}`}>
           <p>{currentQuestion.question}</p>
