@@ -50,73 +50,16 @@ const AdminFoodInsert = ({ onCancel }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        // 음식 등록 로직 실행
         const todaymenu = {
             foodType: food.foodType,
             foodName: food.foodName,
             foodPrice: food.foodPrice,
             foodImg: files[0]?.file_data, // base64 이미지 데이터
-            day: food.day
+            day: food.day,
         };
-
-        if (food.foodType === "일품1" || food.foodType === "일품2") {
-            try {
-                const response = await fetch('/api/food/checkCount', {  // 새로운 API 엔드포인트
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ foodType: food.foodType }),
-                });
     
-                const data = await response.json();
-                if (data.count >= 5) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: `${food.foodType}은 최대 5개까지만 등록할 수 있습니다.`,
-                        text: '음식 등록을 할 수 없습니다.',
-                    });
-                    return;
-                }
-            } catch (error) {
-                console.error('음식 타입 개수 확인 중 오류 발생:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: '오류',
-                    text: `일품1 / 일품2는 최대 5개까지만 등록할 수 있습니다.`,
-                });
-                return;
-            }
-        }
-
-        // 양식/한식에 대한 요일별 등록 확인
-        if (food.foodType === "양식" || food.foodType === "한식") {
-            try {
-                const response = await fetch('/api/food/checkDay', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ foodType: food.foodType, day: food.day }),
-                });
-
-                const data = await response.json();
-                if (data.count > 0) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: `${food.foodType}은 ${food.day}에 이미 등록된 음식이 있습니다.`,
-                        text: '',
-                    });
-                    return;  // 등록을 막음
-                }
-            } catch (error) {
-                console.error('양식/한식 등록 중 오류 발생:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: '오류',
-                    text: '양식 / 한식은 요일 당 한개 씩만 등록 할 수 있습니다.',
-                });
-                return;
-            }
-        }
-
-        // 등록 확인 알림
         const result = await Swal.fire({
             title: '등록 확인',
             text: '음식을 등록하시겠습니까?',
@@ -125,9 +68,9 @@ const AdminFoodInsert = ({ onCancel }) => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: '등록',
-            cancelButtonText: '취소'
+            cancelButtonText: '취소',
         });
-
+    
         if (result.isConfirmed) {
             try {
                 const response = await fetch('/api/food', {
@@ -135,6 +78,8 @@ const AdminFoodInsert = ({ onCancel }) => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(todaymenu),
                 });
+
+                const responseData = await response.json();
 
                 if (response.ok) {
                     Swal.fire({
@@ -144,10 +89,11 @@ const AdminFoodInsert = ({ onCancel }) => {
                     });
                     onCancel(); // 등록 후 취소 기능 호출
                 } else {
+                    // 서버에서 받은 오류 메시지를 기반으로 사용자에게 알림
                     Swal.fire({
                         icon: 'error',
                         title: '오류',
-                        text: '음식 등록 중 오류 발생',
+                        text: responseData.message || '알 수 없는 오류가 발생했습니다.',
                     });
                 }
             } catch (error) {
