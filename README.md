@@ -3,15 +3,7 @@
 최신 기술 스택인 <mark>**React**</mark>와 <mark>**Three.js**</mark>를 사용하여 개발한
 <mark>**차세대 학교 홍보 플랫폼**</mark>
 
-
-<span>$\bf{\rm{\color{#009484}Y}}$</span>
-<span>$\bf{\rm{\color{#005850}U}}$</span>
-<span>$\bf{\rm{\color{#64C9B9}H}}$</span>
-<span>$\bf{\rm{\color{#80BD02}A}}$</span>
-<span>$\bf{\rm{\color{#F4CE3D}N}}$</span>
-<span>$\bf{\rm{\color{#EF7421}3D INTERACTIVE}}$</span>
-<span>$\bf{\rm{\color{#0F275C}WEB}}$</span>
-입니다.<br/><br/>
+`Yuhan 3D Interactive Web` 입니다.<br/><br/>
 
 ### [프로젝트 FrontEnd 링크](https://yuhan-interactive-web-fe.netlify.app/)
 
