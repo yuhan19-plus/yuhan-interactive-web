@@ -32,6 +32,7 @@ const mysqlconnection = mysql.createConnection({
   user: dbconfig.user,
   password: dbconfig.password,
   database: dbconfig.database,
+  port: dbconfig.port
 });
 
 // MySQL 연결 체크
